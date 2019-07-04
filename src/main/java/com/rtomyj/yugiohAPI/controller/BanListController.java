@@ -30,7 +30,7 @@ public class BanListController {
             {
                 card.put("cardName", "Xtra Hero Wonder Driver");
                 card.put("cardInfo", "Warrior Link Effect");
-                card.put("cardEffect", "Summary");
+                card.put("cardEffect", "2 'HERO' Monsters\nIf a 'HERO' monster is Normal or Special Summoned to your zone this card points to..");
                 cards += card.toString();
 
                 if (ind + 1 != size)
