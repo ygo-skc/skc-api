@@ -1,13 +1,14 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import com.rtomyj.yugiohAPI.Card;
 import com.rtomyj.yugiohAPI.repository.BanListRepository;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 
 
 @RestController
@@ -15,32 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path="/ban_list")
 public class BanListController {
     @Autowired
-    BanListRepository userRepo;
+    BanListRepository banListRepository;
 
     @GetMapping
     public String check()
     {
         String cards = "{ \"cards\": [\n";
-        int size = 3;
-
-        for (int ind = 0; ind < size; ind++)
+        ArrayList<Card> bannedCards = (ArrayList) banListRepository.getBanList();
+        for (int ind = 0; ind < bannedCards.size(); ind++)
         {
-            JSONObject card = new JSONObject();
-            try
-            {
-                card.put("cardName", "Xtra Hero Wonder Driver");
-                card.put("cardInfo", "Warrior Link Effect");
-                card.put("cardEffect", "2 'HERO' Monsters\nIf a 'HERO' monster is Normal or Special Summoned to your zone this card points to..");
-                cards += card.toString();
+            cards += bannedCards.get(ind).toJSON();
 
-                if (ind + 1 != size)
-                {
-                    cards += ", \n";
-                }
-            } catch (Exception e)
-            {
-
-            }
+            if (ind + 1 != bannedCards.size())  cards += ", \n";
         }
 
         cards += "\n ] }";

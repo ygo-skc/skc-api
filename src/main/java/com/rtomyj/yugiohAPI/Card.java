@@ -1,19 +1,32 @@
 package com.rtomyj.yugiohAPI;
 
+import org.json.JSONObject;
+
 public class Card {
 
-    public Card(String card_name, String rarity, int quantity)
+    public Card(String cardName, String monsterType, String cardColor, String cardEffect)
     {
-        this.card_name = card_name;
-        this.rarity = rarity;
-        this.quantity = quantity;
+        this.cardName = cardName;
+        this.monsterType = monsterType;
+        this.cardColor = cardColor;
+        this.cardEffect = cardEffect;
     }
 
-    private String card_name, rarity;
-    private int quantity;
+    private String cardName, monsterType, cardColor, cardEffect;
 
-    public String toString()
+    public String toJSON()
     {
-        return String.join(" | ", card_name, rarity, Integer.toString(quantity));
+        JSONObject card = new JSONObject();
+        try
+        {
+            card.put("cardName", cardName);
+            card.put("monsterType", monsterType);
+            card.put("cardColor", cardColor);
+            card.put("cardEffect", cardEffect);
+        }catch (Exception e)
+        {
+
+        }
+        return card.toString();
     }
 }

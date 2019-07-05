@@ -20,14 +20,14 @@ public class BanListRepository {
 
     public List<Card> getBanList()
     {
-        return jdbcTemplate.query("select card_name, rarity, quantity from Collection where rarity = 'Super Rare' order by card_name", new ResultSetExtractor<List<Card>>()
+        return jdbcTemplate.query("select card_name, monster_type, card_color, card_effect from card_colors, cards where card_colors.color_id = cards.color_id", new ResultSetExtractor<List<Card>>()
         {
             @Override
             public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
                 List<Card> cardList = new ArrayList<>();
                 while(row.next())
                 {
-                    cardList.add(new Card(row.getString(1), row.getString(2), row.getInt(3)));
+                    cardList.add(new Card(row.getString(1), row.getString(2), row.getString(3), row.getString(4)));
                 }
                 return cardList;
             }
