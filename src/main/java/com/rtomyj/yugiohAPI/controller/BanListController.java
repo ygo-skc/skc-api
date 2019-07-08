@@ -21,16 +21,45 @@ public class BanListController {
     @GetMapping
     public String check()
     {
-        String cards = "{ \"cards\": [\n";
-        ArrayList<Card> bannedCards = (ArrayList) banListRepository.getBanList();
+        String cards = "{ \"bannedCards\": {\n";
+        ArrayList<Card> bannedCards = (ArrayList) banListRepository.getForbiddenCards();
+
+        /*  Forbidden cards */
+        cards += "\"forbidden\": [\n";
+
         for (int ind = 0; ind < bannedCards.size(); ind++)
         {
             cards += bannedCards.get(ind).toJSON();
 
             if (ind + 1 != bannedCards.size())  cards += ", \n";
         }
+        cards += "\n ] ";
 
-        cards += "\n ] }";
+        /*  Limited cards */
+        cards += ", \"limited\": [\n";
+
+        bannedCards = (ArrayList) banListRepository.getLimitedCards();
+        for (int ind = 0; ind < bannedCards.size(); ind++)
+        {
+            cards += bannedCards.get(ind).toJSON();
+
+            if (ind + 1 != bannedCards.size())  cards += ", \n";
+        }
+        cards += "\n ] ";
+
+        /*  Semi-Limited cards */
+        cards += ", \"semiLimited\": [\n";
+
+        bannedCards = (ArrayList) banListRepository.getSemiLimitedCards();
+        for (int ind = 0; ind < bannedCards.size(); ind++)
+        {
+            cards += bannedCards.get(ind).toJSON();
+
+            if (ind + 1 != bannedCards.size())  cards += ", \n";
+        }
+        cards += "\n ] ";
+
+        cards += "\n } }";
         System.out.println(cards);
         return cards;
     }

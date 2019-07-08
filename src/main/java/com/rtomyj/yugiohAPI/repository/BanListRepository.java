@@ -18,9 +18,41 @@ public class BanListRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<Card> getBanList()
+    public List<Card> getForbiddenCards()
     {
-        return jdbcTemplate.query("select card_name, monster_type, card_color, card_effect from card_colors, cards where card_colors.color_id = cards.color_id", new ResultSetExtractor<List<Card>>()
+        return jdbcTemplate.query("SELECT card_name, monster_type, card_color, card_effect FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = 'Forbidden' ORDER BY card_color, card_name;", new ResultSetExtractor<List<Card>>()
+        {
+            @Override
+            public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
+                List<Card> cardList = new ArrayList<>();
+                while(row.next())
+                {
+                    cardList.add(new Card(row.getString(1), row.getString(2), row.getString(3), row.getString(4)));
+                }
+                return cardList;
+            }
+        });
+    }
+
+    public List<Card> getLimitedCards()
+    {
+        return jdbcTemplate.query("SELECT card_name, monster_type, card_color, card_effect FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = 'Limited' ORDER BY card_color, card_name;", new ResultSetExtractor<List<Card>>()
+        {
+            @Override
+            public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
+                List<Card> cardList = new ArrayList<>();
+                while(row.next())
+                {
+                    cardList.add(new Card(row.getString(1), row.getString(2), row.getString(3), row.getString(4)));
+                }
+                return cardList;
+            }
+        });
+    }
+
+    public List<Card> getSemiLimitedCards()
+    {
+        return jdbcTemplate.query("SELECT card_name, monster_type, card_color, card_effect FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = 'Semi-Limited' ORDER BY card_color, card_name;", new ResultSetExtractor<List<Card>>()
         {
             @Override
             public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
