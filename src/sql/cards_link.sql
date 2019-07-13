@@ -46,3 +46,27 @@ VALUES (
 If another monster is Special Summoned to a zone a Link Monster points to, while this monster is on the field: Discard 1 or 2 random cards, then your opponent discards the same number. If this card is Extra Linked and your opponent has at least 1 card in their hand: You can make your opponent discard 1 or 2 cards (whichever is higher), then, if they have no more cards in their hand, inflict 3000 damage to them. You can only use 1 'Topologic Gumblar Dragon' effect per turn, and only once that turn."
 	, 'Cyberse/Link/Effect', 3000, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'24094258', (select color_id from card_colors where card_color = 'Link'), 'Heavymetalfoes Electrumite', 'Fire',
+	"2 Pendulum Monsters
+If this card is Link Summoned: You can add 1 Pendulum Monster from your Deck to your Extra Deck face-up. Once per turn: You can target 1 other face-up card you control; destroy it, then add 1 face-up Pendulum Monster from your Extra Deck to your hand. If a card(s) in your Pendulum Zone leaves the field: Draw 1 card. You can only use this effect of 'Heavymetalfoes Electrumite' once per turn."
+	, 'Psychic/Link/Effect', 1800, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'63288573', (select color_id from card_colors where card_color = 'Link'), 'Sky Striker Ace - Kagari', 'Fire',
+	"1 non-FIRE 'Sky Striker Ace' monster
+If this card is Special Summoned: You can target 1 'Sky Striker' Spell in your GY; add it to your hand. Gains 100 ATK for each Spell in your GY. You can only Special Summon 'Sky Striker Ace - Kagari(s)' once per turn."
+	, 'Machine/Link/Effect', 1500, null
+);

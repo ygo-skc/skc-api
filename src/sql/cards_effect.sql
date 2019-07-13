@@ -317,3 +317,308 @@ VALUES (
 	"If this card is Normal Summoned: Shuffle all banished cards into the Deck. This card gains 100 ATK for each card shuffled into the Main Deck by this effect. If this card is banished: Each player banishes 5 cards from the top of their Deck (or their entire Deck, if less than 5).",
 	'Zombie/Effect', 1200, 1800
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'28985331', (select color_id from card_colors where card_color = 'Effect'), 'Armageddon Knight', 'Dark',
+	"When this card is Summoned: You can send 1 DARK monster from your Deck to the GY.",
+	'Warrior/Effect', 1400, 1200
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'82301904', (select color_id from card_colors where card_color = 'Effect'), 'haos Emperor Dragon - Envoy of the End', 'Dark',
+	"Cannot be Normal Summoned/Set. Must be Special Summoned (from your hand) by banishing 1 LIGHT and 1 DARK monster from your GY. You can pay 1000 Life Points; send as many cards in both players' hands and on the field as possible to the GY, then inflict 300 damage to your opponent for each card sent to the opponent's GY by this effect. You cannot activate other cards or effects during the turn you activate this card's effect.",
+	'Dragon/Effect', 3000, 2500
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'57143342', (select color_id from card_colors where card_color = 'Effect'), 'Cir, Malebranche of the Burning Abyss', 'Dark',
+	"If you control a monster that is not a 'Burning Abyss' monster, destroy this card. You can only use 1 of these effects of 'Cir, Malebranche of the Burning Abyss' per turn, and only once that turn.
+● If you control no Spell/Trap Cards: You can Special Summon this card from your hand.
+● If this card is sent to the Graveyard: You can target 1 'Burning Abyss' monster in your Graveyard, except 'Cir, Malebranche of the Burning Abyss'; Special Summon it.",
+	'Fiend/Effect', 1600, 1200
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'69015963', (select color_id from card_colors where card_color = 'Effect'), 'Cyber-Stein', 'Dark',
+	"Pay 5000 Life Points. Special Summon 1 Fusion Monster from your Extra Deck to the field in Attack Position.",
+	'Machine/Effect', 700, 500
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'65192027', (select color_id from card_colors where card_color = 'Effect'), 'Dark Armed Dragon', 'Dark',
+	"Cannot be Normal Summoned/Set. Must be Special Summoned (from your hand) by having exactly 3 DARK monsters in your GY. You can banish 1 DARK monster from your GY, then target 1 card on the field; destroy that target.",
+	'Dragon/Effect', 2800, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'14536035', (select color_id from card_colors where card_color = 'Effect'), 'Dark Grepher', 'Dark',
+	"You can Special Summon this card (from your hand) by discarding 1 Level 5 or higher DARK monster. Once per turn: You can discard 1 DARK monster; send 1 DARK monster from your Deck to the GY.",
+	'Warrior/Effect', 1700, 1600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'78868119', (select color_id from card_colors where card_color = 'Effect'), 'Deep Sea Diva', 'Water',
+	"When this card is Normal Summoned: You can Special Summon 1 Level 3 or lower Sea Serpent-Type monster from your Deck.",
+	'Sea Serpent/Effect', 200, 400
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'58984738', (select color_id from card_colors where card_color = 'Effect'), 'Dinomight Knight, the True Dracofighter', 'Water',
+	"To Tribute Summon this card face-up, you can Tribute a Continuous Spell/Trap Card you control, instead of a monster. Once per turn, during either player's turn, when your opponent activates a card or effect while you control this Tribute Summoned monster: You can take 1 'True Draco' or 'True King' Continuous Trap Card from your Deck, and either activate it or add it to your hand.",
+	'Wyrm/Effect', 2500, 1200
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'96570609', (select color_id from card_colors where card_color = 'Effect'), 'Ehther the Heavenly Monarch', 'Light',
+	"You can Tribute Summon this card by Tributing 1 Tribute Summoned monster. If this card is Tribute Summoned: You can send 2 'Monarch' Spell/Trap Cards with different names from your hand and/or Deck to the Graveyard, and if you do, Special Summon 1 monster with 2400 or more ATK and 1000 DEF from your Deck, but return it to the hand during the End Phase. During your opponent's Main Phase, if this card is in your hand: You can banish 1 'Monarch' Spell/Trap Card from your Graveyard; immediately after this effect resolves, Tribute Summon this card (this is a Quick Effect).",
+	'Fairy/Effect', 2800, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'40044918', (select color_id from card_colors where card_color = 'Effect'), 'Elemental HERO Stratos', 'Wind',
+	"When this card is Normal or Special Summoned: You can activate 1 of these effects.
+● You can destroy Spell/Trap Cards on the field, up to the number of 'HERO' monsters you control, except this card.
+● Add 1 'HERO' monster from your Deck to your hand.",
+	'Warrior/Effect', 1800, 300
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'33396948', (select color_id from card_colors where card_color = 'Effect'), 'Exodia the Forbidden One', 'Dark',
+	"If you have 'Right Leg of the Forbidden One', 'Left Leg of the Forbidden One', 'Right Arm of the Forbidden One' and 'Left Arm of the Forbidden One' in addition to this card in your hand, you win the Duel.",
+	'Spellcaster/Effect', 1000, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'64034255', (select color_id from card_colors where card_color = 'Effect'), 'Genex Ally Birdman', 'Dark',
+	"You can return 1 face-up monster you control to the hand; Special Summon this card from your hand, but banish it when it leaves the field, also it gains 500 ATK if the returned monster was WIND on the field.",
+	'Machine/Effect', 1400, 400
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'20758643', (select color_id from card_colors where card_color = 'Effect'), 'Graff, Malebranche of the Burning Abyss', 'Dark',
+	"If you control a monster that is not a 'Burning Abyss' monster, destroy this card. You can only use 1 of these effects of 'Graff, Malebranche of the Burning Abyss' per turn, and only once that turn.
+● If you control no Spell/Trap Cards: You can Special Summon this card from your hand.
+● If this card is sent to the Graveyard: You can Special Summon 1 'Burning Abyss' monster from your Deck, except 'Graff, Malebranche of the Burning Abyss'.",
+	'Fiend/Effect', 1000, 1500
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'99177923', (select color_id from card_colors where card_color = 'Effect'), 'Infernity Archfiend', 'Dark',
+	"When you draw this card, if you have no other cards in your hand: You can reveal this card; Special Summon this card from your hand. When this card is Special Summoned: You can add 1 'Infernity' card from your Deck to your hand. You must have no cards in your hand to activate and to resolve this effect.",
+	'Fiend/Effect', 1800, 1200
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'68184115', (select color_id from card_colors where card_color = 'Effect'), 'Inzektor Dragonfly', 'Dark',
+	"Once per turn: You can equip 1 'Inzektor' monster from your hand or Graveyard to this card. If an Equip Card(s) is sent to your Graveyard while equipped to this card (except during the Damage Step): You can Special Summon 1 'Inzektor' monster from your Deck, except 'Inzektor Dragonfly'. While this card is equipped to a monster, that monster's Level is increased by 3.",
+	'Insect/Effect', 1000, 1800
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'16188701', (select color_id from card_colors where card_color = 'Effect'), 'Lady Debug', 'Light',
+	"If this card is Normal or Special Summoned: You can add 1 Level 3 or lower Cyberse monster from your Deck to your hand. You can only use this effect of “Lady Debug” once per turn.",
+	'Cyberse/Effect', 1700, 1400
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'33508719', (select color_id from card_colors where card_color = 'Effect'), 'Morphing Jar', 'Earth',
+	"FLIP: Both players discard their entire hands, then draw 5 cards.",
+	'Rock/Flip/Effect', 700, 600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'16226786', (select color_id from card_colors where card_color = 'Effect'), 'Night Assailant', 'Dark',
+	"FLIP: Target 1 monster your opponent controls; destroy that target.
+When this card is sent from the hand to the Graveyard: Target 1 Flip Effect Monster in your Graveyard, except this card; return that target to the hand.",
+	'Fiend/Flip/Effect', 200, 500
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'68819554', (select color_id from card_colors where card_color = 'Effect'), 'Performage Damage Juggler', 'Light',
+	"When a card or effect is activated that would inflict damage to you (Quick Effect): You can discard this card; negate the activation, and if you do, destroy that card. During the Battle Phase (Quick Effect): You can discard this card; reduce the next battle damage you would take this turn to 0. You can banish this card from your GY; add 1 'Performage' monster from your Deck to your hand, except 'Performage Damage Juggler'. You can only use this effect of 'Performage Damage Juggler' once per turn.",
+	'Spellcaster/Effect', 1500, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'12958919', (select color_id from card_colors where card_color = 'Effect'), 'Phantom Skyblaster', 'Dark',
+	"When this card is Normal or Flip Summoned: You can Special Summon any number of 'Skyblaster Tokens' (Fiend/DARK/Level 4/ATK 500/DEF 500), up to the number of monsters you control. Once per turn, during your Standby Phase: You can inflict 300 damage to your opponent for each 'Skyblaster' monster you control. 'Skyblaster' monsters you control cannot declare an attack during the turn you activate this effect.",
+	'Fiend/Effect', 1100, 800
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'88264978', (select color_id from card_colors where card_color = 'Effect'), 'Red-Eyes Darkness Metal Dragon', 'Dark',
+	"You can Special Summon this card (from your hand) by banishing 1 face-up Dragon-Type monster you control. Once per turn: You can Special Summon 1 Dragon-Type monster from your hand or Graveyard, except 'Red-Eyes Darkness Metal Dragon'.",
+	'Dragon/Effect', 2800, 2400
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'90307777', (select color_id from card_colors where card_color = 'Effect'), 'NecroShurit, Strategist of the Nekrozface', 'Water',
+	"If you Ritual Summon exactly 1 'Nekroz' Ritual Monster with a card effect that requires use of monsters, this card can be used as the entire requirement. If this card is Tributed by a card effect: You can add 1 Warrior 'Nekroz' Ritual Monster from your Deck to your hand. You can only use this effect of 'Shurit, Strategist of the Nekroz' once per turn.",
+	'Warrior/Effect', 300, 1800
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'81275020', (select color_id from card_colors where card_color = 'Effect'), 'Speedroid Terrortop', 'Wind',
+	"If you control no monsters, you can Special Summon this card (from your hand). When this card is Normal or Special Summoned: You can add 1 'Speedroid' monster from your Deck to your hand, except 'Speedroid Terrortop'. You can only use this effect of 'Speedroid Terrortop' once per turn.",
+	'Machine/Effect', 1200, 600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'04474060', (select color_id from card_colors where card_color = 'Effect'), 'SPYRAL GEAR - Drone', 'Wind',
+	"If this card is Normal or Special Summoned: You can look at the top 3 cards of your opponent's Deck, and if you do, place them on top of their Deck in any order. During either player's turn: You can Tribute this card, then target 1 'SPYRAL' monster you control; it gains 500 ATK for each card your opponent controls. You can banish this card and 1 'SPYRAL' card from your Graveyard, then target 1 'SPYRAL Super Agent' in your Graveyard; add it to your hand.",
+	'Machine/Effect', 100, 100
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'78080961', (select color_id from card_colors where card_color = 'Effect'), 'SPYRAL Quik-Fix', 'Earth',
+	"If this card is Normal or Special Summoned: You can add 1 'SPYRAL GEAR' card from your Deck to your hand. If this card is in your GY and you control 'SPYRAL Super Agent': You can discard 1 card; Special Summon this card, but banish it when it leaves the field.",
+	'Machine/Effect', 500, 400
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'10802915', (select color_id from card_colors where card_color = 'Effect'), 'Tour Guide From the Underworld', 'Dark',
+	"When this card is Normal Summoned: You can Special Summon 1 Level 3 Fiend monster from your hand or Deck, but it has its effects negated, also it cannot be used as a Synchro Material.",
+	'Warrior/Effect', 1000, 600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'78872731', (select color_id from card_colors where card_color = 'Effect'), 'Zoodiac Ratpier', 'Earth',
+	"If this card is Normal Summoned: You can send 1 'Zoodiac' card from your Deck to the Graveyard. An Xyz Monster whose original Type is Beast-Warrior and has this card as Xyz Material gains this effect.
+● Once per turn: You can detach 1 Xyz Material from this card; Special Summon 1 'Zoodiac Ratpier' from your hand or Deck.",
+	'Beast-Warrior/Effect', 0, 0
+);

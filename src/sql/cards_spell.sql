@@ -343,3 +343,370 @@ VALUES (
 	"Add 1 Field Spell from your Deck to your hand."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'08949584', (select color_id from card_colors where card_color = 'Spell'), "A Hero Lives", 'Spell',
+	"If you control no face-up monsters: Pay half your LP; Special Summon 1 Level 4 or lower 'Elemental HERO' monster from your Deck."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'14087893', (select color_id from card_colors where card_color = 'Spell'), "Book of Moon", 'Spell',
+	"Target 1 face-up monster on the field; change that target to face-down Defense Position."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'07394770', (select color_id from card_colors where card_color = 'Spell'), "Brilliant Fusion", 'Spell',
+	"When this card is activated: Fusion Summon 1 'Gem-Knight' Fusion Monster from your Extra Deck, using monsters from your Deck as Fusion Material, but change its ATK/DEF to 0. If this card leaves the field, destroy that monster. Once per turn: You can discard 1 Spell; the monster Special Summoned by this card's effect gains ATK/DEF equal to its original ATK/DEF, until the end of your opponent's turn. You can only activate 1 'Brilliant Fusion' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'72892473', (select color_id from card_colors where card_color = 'Spell'), "Card Destruction", 'Spell',
+	"Each player discards their entire hand, then draws the same number of cards they discarded."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'91623717', (select color_id from card_colors where card_color = 'Spell'), "Chain Strike", 'Spell',
+	"Activate only as Chain Link 2 or higher; inflict 400 damage to your opponent times the Chain Link number of this card. You cannot activate this card if multiple cards/effects with the same name are in that Chain."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'53129443', (select color_id from card_colors where card_color = 'Spell'), "Dark Hole", 'Spell',
+	"Destroy all monsters on the field."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'81674782', (select color_id from card_colors where card_color = 'Spell'), "Dimensional Fissure", 'Spell',
+	"Any monster sent to the Graveyard is banished instead."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'15854426', (select color_id from card_colors where card_color = 'Spell'), "Divine Wind of Mist Valley", 'Spell',
+	"Once per turn, if a WIND monster you control returns to the hand (except during the Damage Step): You can Special Summon 1 Level 4 or lower WIND monster from your Deck."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'14733538', (select color_id from card_colors where card_color = 'Spell'), "Draco Face-Off", 'Spell',
+	"Reveal 1 'Dracoslayer' Pendulum Monster and 1 'Dracoverlord' Pendulum Monster from your Deck, your opponent randomly picks 1 of them for you to place in your Pendulum Zone or Special Summon (your choice), and you add the other card to your Extra Deck face-up. You can only activate 1 'Draco Face-Off' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'67723438', (select color_id from card_colors where card_color = 'Spell'), "Emergency Teleport", 'Spell',
+	"Special Summon 1 Level 3 or lower Psychic-Type monster from your hand or Deck, but banish it during the End Phase of this turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'95308449', (select color_id from card_colors where card_color = 'Spell'), "Final Countdown", 'Spell',
+	"Pay 2000 Life Points. After 20 turns have passed (counting the turn you activate this card as the 1st turn), you win the Duel."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'81439173', (select color_id from card_colors where card_color = 'Spell'), "Foolish Burial", 'Spell',
+	"Send 1 monster from your Deck to the GY."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'27970830', (select color_id from card_colors where card_color = 'Spell'), "Gateway of the Six", 'Spell',
+	"Each time a 'Six Samurai' monster(s) is Normal or Special Summoned, place 2 Bushido Counters on this card. You can remove Bushido Counters from your field to activate these effects.
+● 2 Counters: Target 1 'Six Samurai' or 'Shien' Effect Monster; that target gains 500 ATK until the end of this turn.
+● 4 Counters: Add 1 'Six Samurai' monster from your Deck or GY to your hand.
+● 6 Counters: Target 1 'Shien' Effect Monster in your GY; Special Summon that target."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'75500286', (select color_id from card_colors where card_color = 'Spell'), "Gold Sarcophagus", 'Spell',
+	"Banish 1 card from your Deck, face-up. During your second Standby Phase after this card's activation, add that card to your hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'66957584', (select color_id from card_colors where card_color = 'Spell'), "Infernity Launcher", 'Spell',
+	"Once per turn: You can send 1 'Infernity' monster from your hand to the Graveyard. You can send this card to the Graveyard, then target up to 2 'Infernity' monsters in your Graveyard; Special Summon them. You must have no cards in your hand to activate and to resolve this effect."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'71650854', (select color_id from card_colors where card_color = 'Spell'), "Magical Mid-Breaker Field", 'Spell',
+	"Activate this card at the start of your Main Phase 1 or 2. During each player's Main Phase 1, monsters on the field cannot be destroyed by their opponent's card effects, also neither player can target monsters their opponent controls. You cannot activate or Set Field Spell Cards."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'43040603', (select color_id from card_colors where card_color = 'Spell'), "Monster Gate", 'Spell',
+	"Tribute 1 monster; excavate cards from the top of your Deck until you excavate a monster that can be Normal Summoned/Set. Special Summon it, also send the other excavated cards to the Graveyard."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'83764718', (select color_id from card_colors where card_color = 'Spell'), "Monster Reborn", 'Spell',
+	"Target 1 monster in either player's GY; Special Summon it."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'33782437', (select color_id from card_colors where card_color = 'Spell'), "One Day of Peace", 'Spell',
+	"Each player draws 1 card, and neither player takes damage until the end of the opponent's next turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'02295440', (select color_id from card_colors where card_color = 'Spell'), "One for One", 'Spell',
+	"Send 1 monster from your hand to the Graveyard; Special Summon 1 Level 1 monster from your hand or Deck."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'22842126', (select color_id from card_colors where card_color = 'Spell'), "Pantheism of the Monarchs", 'Spell',
+	"Send 1 'Monarch' Spell/Trap Card from your hand to the Graveyard; draw 2 cards. You can banish this card from your Graveyard; reveal 3 'Monarch' Spell/Trap Cards from your Deck, your opponent chooses 1 for you to add to your hand, and you shuffle the rest back into your Deck. You can only use this effect of 'Pantheism of the Monarchs' once per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'12580477', (select color_id from card_colors where card_color = 'Spell'), "Raigeki", 'Spell',
+	"Destroy all monsters your opponent controls."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'58577036', (select color_id from card_colors where card_color = 'Spell'), "Reasoning", 'Spell',
+	"Your opponent declares a monster Level. Excavate cards from the top of your Deck until you excavate a monster that can be Normal Summoned/Set. If that monster is the same Level as the one declared by your opponent, send all excavated cards to the Graveyard. If not, Special Summon the excavated monster, also send the remaining cards to the Graveyard."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'32807846', (select color_id from card_colors where card_color = 'Spell'), "Reinforcement of the Army", 'Spell',
+	"Add 1 Level 4 or lower Warrior monster from your Deck to your hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'74845897', (select color_id from card_colors where card_color = 'Spell'), "Rekindling", 'Spell',
+	"Special Summon from your Graveyard as many FIRE monsters as possible with 200 DEF, but banish them during the End Phase."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'72405967', (select color_id from card_colors where card_color = 'Spell'), "Royal Tribute", 'Spell',
+	"If you control 'Necrovalley': Both players discard any monsters in their hands."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'73915051', (select color_id from card_colors where card_color = 'Spell'), "Scapegoat", 'Spell',
+	"Special Summon 4 'Sheep Tokens' (Beast/EARTH/Level 1/ATK 0/DEF 0) in Defense Position. They cannot be Tributed for a Tribute Summon. You cannot Summon other monsters the turn you activate this card (but you can Normal Set)."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'73468603', (select color_id from card_colors where card_color = 'Spell'), "Set Rotation", 'Spell',
+	"Set 2 Field Spells with different names from your Deck on the field (1 on your field, and 1 on your opponent's field). While either of those cards remain Set on the field, neither player can activate or Set other Field Spells."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'52340444', (select color_id from card_colors where card_color = 'Spell'), "Sky Striker Mecha - Hornet Drones", 'Spell',
+	"f you control no monsters in your Main Monster Zones: Special Summon 1 'Sky Striker Ace Token' (Warrior/DARK/Level 1/ATK 0/DEF 0) in Defense Position, which cannot be Tributed, and if you have 3 or more Spells in your GY when this effect resolves, the Token's ATK/DEF become 1500 instead."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'71344451', (select color_id from card_colors where card_color = 'Spell'), "Slash Draw
+", 'Spell',
+	"Discard 1 card; send cards from the top of your Deck to the GY equal to the number of cards your opponent controls, then draw 1 card, and show it. Then, if it was 'Slash Draw', send it to the GY, and if you do, destroy as many cards on the field as possible, then, inflict 2000 damage to your opponent for each card destroyed and sent to the GY by this effect. If the card you drew was not 'Slash Draw', shuffle cards from the GY into your Deck, equal to the number of cards sent from your Deck to the GY by this effect. You can only activate 1 'Slash Draw' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'54631665', (select color_id from card_colors where card_color = 'Spell'), "SPYRAL Resort", 'Spell',
+	"Your opponent cannot target other 'SPYRAL' cards you control with card effects. Once per turn: You can add 1 'SPYRAL' monster from your Deck to your hand. Once per turn, during your End Phase, shuffle 1 monster from your Graveyard into the Deck or destroy this card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'45305419', (select color_id from card_colors where card_color = 'Spell'), "Symbol of Heritage", 'Spell',
+	"Activate only while there are 3 Monster Cards with the same name in your Graveyard. Select 1 of those monsters, Special Summon it, and equip it with this card. When this card is destroyed, destroy the equipped monster."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'70368879', (select color_id from card_colors where card_color = 'Spell'), "Upstart Goblin", 'Spell',
+	"Draw 1 card, then your opponent gains 1000 Life Points."
+	, null, null, null
+);

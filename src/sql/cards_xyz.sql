@@ -136,3 +136,14 @@ VALUES (
 Once per turn, you can also Xyz Summon 'Zoodiac Drident' by using 1 'Zoodiac' monster you control with a different name as Xyz Material. (If you used an Xyz Monster, any Xyz Materials attached to it also become Xyz Materials on this card.) This card gains ATK and DEF equal to the ATK and DEF of all 'Zoodiac' monsters attached to it as Materials. Once per turn, during either player's turn: You can detach 1 Xyz Material from this card, then target 1 face-up card on the field; destroy it."
 	, 'Beast-Warrior/Xyz/Effect', 0, 0
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'27552504', (select color_id from card_colors where card_color = 'Xyz'), 'Beatrice, Lady of the Eternal', 'Light',
+	"2 Level 6 monsters / You can also Xyz Summon this card by sending 1 'Burning Abyss' monster from your hand to the Graveyard, then using 1 'Dante' monster you control as the Xyz Material. (Xyz Materials attached to that monster also become Xyz Materials on this card.) If Summoned this way, the following effect cannot be activated this turn. Once per turn, during either player's turn: You can detach 1 Xyz Material from this card; send 1 card from your Deck to the Graveyard. If this card in your possession is destroyed by your opponent's card (by battle or card effect) and sent to your Graveyard: You can Special Summon 1 'Burning Abyss' monster from your Extra Deck, ignoring its Summoning conditions."
+	, 'Fairy/Xyz/Effect', 2500, 2800
+);

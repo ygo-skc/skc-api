@@ -75,3 +75,15 @@ Monster Effect
 When this card is Normal Summoned: You can add 1 'Performapal' monster, 'Magician' Pendulum Monster, or 'Odd-Eyes' monster from your Deck to your hand, except 'Performapal Skullcrobat Joker'."
 	, 'Spellcaster/Pendulum/Effect', 1800, 100
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'92746535', (select color_id from card_colors where card_color = 'Pendulum'), 'Luster Pendulum, the Dracoslayer', 'Light',
+	"Pendulum EffectOnce per turn, if you have a card in your other Pendulum Zone: You can destroy that card, and if you do, add 1 card from your Deck to your hand, with the same name as that card.
+Monster EffectCannot Special Summon Fusion, Synchro or Xyz Monsters using this card as a Material, except 'Dracoslayer' monsters."
+	, 'Dragon/Pendulum/Tuner/Effect', 1850, 0
+);
