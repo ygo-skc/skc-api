@@ -335,7 +335,7 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
-	'82301904', (select color_id from card_colors where card_color = 'Effect'), 'haos Emperor Dragon - Envoy of the End', 'Dark',
+	'82301904', (select color_id from card_colors where card_color = 'Effect'), 'Chaos Emperor Dragon - Envoy of the End', 'Dark',
 	"Cannot be Normal Summoned/Set. Must be Special Summoned (from your hand) by banishing 1 LIGHT and 1 DARK monster from your GY. You can pay 1000 Life Points; send as many cards in both players' hands and on the field as possible to the GY, then inflict 300 damage to your opponent for each card sent to the opponent's GY by this effect. You cannot activate other cards or effects during the turn you activate this card's effect.",
 	'Dragon/Effect', 3000, 2500
 );
@@ -562,7 +562,7 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
-	'90307777', (select color_id from card_colors where card_color = 'Effect'), 'NecroShurit, Strategist of the Nekrozface', 'Water',
+	'90307777', (select color_id from card_colors where card_color = 'Effect'), 'Shurit, Strategist of the Nekrozface', 'Water',
 	"If you Ritual Summon exactly 1 'Nekroz' Ritual Monster with a card effect that requires use of monsters, this card can be used as the entire requirement. If this card is Tributed by a card effect: You can add 1 Warrior 'Nekroz' Ritual Monster from your Deck to your hand. You can only use this effect of 'Shurit, Strategist of the Nekroz' once per turn.",
 	'Warrior/Effect', 300, 1800
 );

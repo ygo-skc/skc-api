@@ -473,6 +473,16 @@ VALUES ('2019-04-29', '52687916', 'Limited');
 
 /*
 	Limited
+	Pendulum Effect Monsters
+*/
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2019-04-29', '65518099', 'Limited');
+
+
+
+/*
+	Limited
 	Link Monsters
 */
 
@@ -481,6 +491,16 @@ VALUES ('2019-04-29', '24094258', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '63288573', 'Limited');
+
+
+
+/*
+	Limited
+	Xyz Monsters
+*/
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2019-04-29', '27552504', 'Limited');
 
 
 

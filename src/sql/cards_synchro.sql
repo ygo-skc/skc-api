@@ -17,7 +17,7 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
-	'65536818', (select color_id from card_colors where card_color = 'Synchro'), 'DENGLONG, FIRST OF THE YANG ZING', 'Light',
+	'65536818', (select color_id from card_colors where card_color = 'Synchro'), 'Denglong, First of the Yang Zing', 'Light',
 	"1 Tuner + 1 or more non-Tuner monsters
 If this card is Special Summoned: You can add 1 'Yang Zing' card from your Deck to your hand. Once per turn: You can send 1 Wyrm-Type monster from your Deck to the Graveyard; this card's Level becomes the sent monster's. If this face-up card leaves the field: You can Special Summon 1 'Yang Zing' monster from your Deck. You can only Special Summon 'Denglong, First of the Yang Zing(s)' once per turn."
 	, 'Wyrm/Synchro/Tuner/Effect', 0, 2800
