@@ -38,7 +38,7 @@ public class BanListController {
         cards += "\n ] ";
 
         cards += "\n } }";
-        System.out.println(cards);
+        System.out.println("Fetched ban list");
         return cards;
     }
 
