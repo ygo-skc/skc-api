@@ -13,39 +13,39 @@ import static com.rtomyj.yugiohAPI.Card.toJSON;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class BanListController {
-    @Autowired
-    BanListRepository banListRepository;
+	@Autowired
+	BanListRepository banListRepository;
 
-    @RequestMapping(path="/ban_list", method = RequestMethod.GET, produces = "application/json; charset=utf-8" )
-    @ResponseBody
-    public String allCurrentBannedCards()
-    {
-        String cards = "{ \"bannedCards\": {\n";
+	@RequestMapping(path="/ban_list", method = RequestMethod.GET, produces = "application/json; charset=utf-8" )
+	@ResponseBody
+	public String allCurrentBannedCards()
+	{
+		String cards = "{ \"bannedCards\": {\n";
 
-        /*  Forbidden cards */
-        cards += "\"forbidden\": [\n";
-        cards += toJSON( (ArrayList<Card>) banListRepository.getForbiddenCards() );
-        cards += "\n ] ";
+		/*  Forbidden cards */
+		cards += "\"forbidden\": [\n";
+		cards += toJSON( (ArrayList<Card>) banListRepository.getForbiddenCards("2019-07-15") );
+		cards += "\n ] ";
 
-        /*  Limited cards */
-        cards += ", \"limited\": [\n";;
-        cards += toJSON( (ArrayList<Card>) banListRepository.getLimitedCards() );
-        cards += "\n ] ";
+		/*  Limited cards */
+		cards += ", \"limited\": [\n";;
+		cards += toJSON( (ArrayList<Card>) banListRepository.getLimitedCards("2019-07-15") );
+		cards += "\n ] ";
 
-        /*  Semi-Limited cards */
-        cards += ", \"semiLimited\": [\n";
-        cards += toJSON( (ArrayList<Card>) banListRepository.getSemiLimitedCards() );
-        cards += "\n ] ";
+		/*  Semi-Limited cards */
+		cards += ", \"semiLimited\": [\n";
+		cards += toJSON( (ArrayList<Card>) banListRepository.getSemiLimitedCards("2019-07-15") );
+		cards += "\n ] ";
 
-        cards += "\n } }";
-        System.out.println("Fetched ban list");
-        return cards;
-    }
+		cards += "\n } }";
+		System.out.println("Fetched ban list");
+		return cards;
+	}
 
-    @RequestMapping(path="ban_list/all")
-    public String test()
-    {
-        return banListRepository.getBanListDates().toString();
-    }
+	@RequestMapping(path="ban_list/all")
+	public String test()
+	{
+		return banListRepository.getBanListDates().toString();
+	}
 
 }
