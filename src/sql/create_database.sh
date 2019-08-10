@@ -12,4 +12,5 @@ mysql -u root < "cards_link.sql"
 mysql -u root < "cards_spell.sql"
 mysql -u root < "cards_trap.sql"
 
-mysql -u root < "ban_list.sql"
+mysql -u root < "2019-04-29_ban_list.sql"
+mysql -u root < "2019-07-15_ban_list.sql"

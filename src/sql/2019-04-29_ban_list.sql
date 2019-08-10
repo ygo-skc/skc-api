@@ -1,12 +1,8 @@
 USE yugioh_API_DB;
 
 /*
-	Forbidden
+	Forbidden Effect
 */
-/*
-	Effect
-*/
-
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '09929398', 'Forbidden');
@@ -91,7 +87,7 @@ VALUES ('2019-04-29', '03078576', 'Forbidden');
 
 
 /*
-	Fusion
+	Forbidden Fusion
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -102,7 +98,7 @@ VALUES ('2019-04-29', '43387895', 'Forbidden');
 
 
 /*
-	Link
+	Forbidden Link
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -119,7 +115,7 @@ VALUES ('2019-04-29', '22953417', 'Forbidden');
 
 
 /*
-	Synchro
+	Forbidden Synchro
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -130,7 +126,7 @@ VALUES ('2019-04-29', '65536818', 'Forbidden');
 
 
 /*
-	xyz
+	Forbidden Xyz
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -168,7 +164,7 @@ VALUES ('2019-04-29', '48905153', 'Forbidden');
 
 
 /*
-	Pendulums
+	Forbidded Effect Pendulums
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -189,8 +185,9 @@ VALUES ('2019-04-29', '17330916', 'Forbidden');
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '40318957', 'Forbidden');
 
+
 /*
-	Spells
+	Forbidden Spells
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -282,7 +279,7 @@ VALUES ('2019-04-29', '03298689', 'Forbidden');
 
 
 /*
-	Traps
+	Forbidden Traps
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -313,10 +310,8 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '05851097', 'Forbidden');
 
 
-
 /*
-	Limited
-	Normal Monsters
+	Limited Normal Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -333,8 +328,7 @@ VALUES ('2019-04-29', '08124921', 'Limited');
 
 
 /*
-	Limited
-	Effect Monsters
+	Limited Effect Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -419,10 +413,8 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '78872731', 'Limited');
 
 
-
 /*
-	Limited
-	Ritual Monsters
+	Limited Ritual Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -435,10 +427,8 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '89463537', 'Limited');
 
 
-
 /*
-	Limited
-	Fusion Monsters
+	Limited Fusion Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -451,10 +441,8 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '48063985', 'Limited');
 
 
-
 /*
-	Limited
-	Syncrho Monsters
+	Limited Syncrho Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -470,20 +458,16 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '52687916', 'Limited');
 
 
-
 /*
-	Limited
-	Pendulum Effect Monsters
+	Limited Pendulum Effect Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '65518099', 'Limited');
 
 
-
 /*
-	Limited
-	Link Monsters
+	Limited Link Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -493,20 +477,16 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '63288573', 'Limited');
 
 
-
 /*
-	Limited
-	Xyz Monsters
+	Limited Xyz Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '27552504', 'Limited');
 
 
-
 /*
-	Limited
-	Spells
+	Limited Spells
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -610,8 +590,7 @@ VALUES ('2019-04-29', '70368879', 'Limited');
 
 
 /*
-	Limited
-	Spells
+	Limited Spells
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -643,8 +622,7 @@ VALUES ('2019-04-29', '17078030', 'Limited');
 
 
 /*
-	Semi-Limited
-	Effect Monsters
+	Semi-Limited Effect Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
@@ -654,16 +632,14 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '28297833', 'Semi-Limited');
 
 /*
-	Semi-Limited
-	Pendulum Effect Monsters
+	Semi-Limited Pendulum Effect Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '92746535', 'Semi-Limited');
 
 /*
-	Semi-Limited
-	Spells
+	Semi-Limited Spells
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
