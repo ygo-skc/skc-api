@@ -60,7 +60,7 @@ public class BanListController {
 		String dates = "";
 		dates += "{\n\"banListStartDates\": [";
 		for (String date: banStartDates)
-	{
+		{
 			dates += "\"";
 			dates += date;
 			dates += "\",";
