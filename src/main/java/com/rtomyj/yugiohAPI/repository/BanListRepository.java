@@ -66,18 +66,19 @@ public class BanListRepository {
 		});
 	}
 
-	public List<String> getBanListDates() {
+	public List<String> getBanListStartDates() {
 		//SELECT DISTINCT ban_list_date from ban_lists;
-		return jdbcTemplate.query("SELECT DISTINCT ban_list_date from ban_lists;",
+		return  jdbcTemplate.query("SELECT DISTINCT ban_list_date from ban_lists ORDER BY ban_list_date DESC;",
 				new ResultSetExtractor<List<String>>() {
 					@Override
 					public List<String> extractData(ResultSet row) throws SQLException, DataAccessException {
 						List<String> banListDates = new ArrayList<>();
 						while (row.next()) {
-							banListDates.add(row.getDate(1).toString());
+							banListDates.add(row.getString(1));
 						}
 						return banListDates;
 					}
 				});
+
 	}
 }
