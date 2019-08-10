@@ -70,3 +70,15 @@ VALUES (
 If this card is Special Summoned: You can target 1 'Sky Striker' Spell in your GY; add it to your hand. Gains 100 ATK for each Spell in your GY. You can only Special Summon 'Sky Striker Ace - Kagari(s)' once per turn."
 	, 'Machine/Link/Effect', 1500, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'26692769', (select color_id from card_colors where card_color = 'Link'), 'The Phantom Knights of Rusty Bardiche', 'Dark',
+	"2+ DARK monsters
+During your Main Phase: You can send 1 'The Phantom Knights' monster from your Deck to the GY, Set 1 'Phantom Knights' Spell/Trap directly from your Deck in your Spell & Trap Zone. If a DARK Xyz Monster(s) is Special Summoned to a zone(s) this card points to while this card is on the field, except during the Damage Step: You can target 1 card on the field; destroy it. You can only use each effect of 'The Phantom Knights of Rusty Bardiche' once per turn. Cannot be used as Link Material."
+	, 'Warrior/Link/Effect', 2100, null
+);

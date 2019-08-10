@@ -199,3 +199,14 @@ VALUES (
 	"Activate by paying any multiple of 1000 Life Points. Monsters your opponent controls cannot attack if their ATK is less than or equal to the amount you paid."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'89208725', (select color_id from card_colors where card_color = 'Trap'), 'Metaverse', 'Trap',
+	"Take 1 Field Spell from your Deck, and either activate it or add it to your hand."
+	, null, null, null
+);

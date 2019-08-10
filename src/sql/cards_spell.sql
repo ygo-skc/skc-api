@@ -710,3 +710,28 @@ VALUES (
 	"Draw 1 card, then your opponent gains 1000 Life Points."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'52155219', (select color_id from card_colors where card_color = 'Spell'), "Salamangreat Circle", 'Spell',
+	"Activate 1 of these effects:
+● Add 1 “Salamangreat” monster from your Deck to your hand.
+●Target 1 'Salamangreat' Link Monster you control that was Link Summoned using a monster with its same name as material; that Link Monster is unaffected by monster effects this turn, except its own.
+You can only activate 1 “Salamangreat Circle” per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'35371948', (select color_id from card_colors where card_color = 'Spell'), "Trickstar Light Stage", 'Spell',
+	"When this card is activated: You can add 1 'Trickstar' monster from your Deck to your hand. Once per turn: You can target 1 Set card in your opponent's Spell & Trap Zone; while this card is in the Field Zone, that Set card cannot be activated until the End Phase, and your opponent must activate it during the End Phase or else send it to the GY. Each time a 'Trickstar' monster you control inflicts battle or effect damage to your opponent, inflict 200 damage to them."
+	, null, null, null
+);

@@ -622,3 +622,91 @@ VALUES (
 ● Once per turn: You can detach 1 Xyz Material from this card; Special Summon 1 'Zoodiac Ratpier' from your hand or Deck.",
 	'Beast-Warrior/Effect', 0, 0
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'51858306', (select color_id from card_colors where card_color = 'Effect'), 'Eclipse Wyvern', 'Light',
+	"If this card is sent to the Graveyard: Banish 1 Level 7 or higher LIGHT or DARK Dragon-Type monster from your Deck. If this card is banished from your Graveyard: You can add the monster banished by this card's effect to your hand.",
+	'Dragon/Effect', 1600, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'42790071', (select color_id from card_colors where card_color = 'Effect'), 'Altergeist Multifaker', 'Dark',
+	"If you activate a Trap Card (except during the Damage Step): You can Special Summon this card from your hand. If this card is Special Summoned: You can Special Summon 1 'Altergeist' monster from your Deck in Defense Position, except 'Altergeist Multifaker'. You cannot Special Summon monsters the turn you activate this effect, except 'Altergeist' monsters. You can only use each effect of 'Altergeist Multifaker' once per turn.",
+	'Spellcaster/Effect', 1200, 800
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'61901281', (select color_id from card_colors where card_color = 'Effect'), 'Black Dragon Collapserpent', 'Dark',
+	"Cannot be Normal Summoned/Set. Must be Special Summoned (from your hand) by banishing 1 LIGHT monster from your Graveyard, and cannot be Special Summoned by other ways. You can only Special Summon 'Black Dragon Collapserpent' once per turn this way. If this card is sent from the field to the Graveyard: You can add 1 'White Dragon Wyverburster' from your Deck to your hand.",
+	'Dragon/Effect', 1800, 1700
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'26889158', (select color_id from card_colors where card_color = 'Effect'), 'Salamangreat Gazelle', 'Fire',
+	"If a 'Salamangreat' monster is sent to your GY, except 'Salamangreat Gazelle' (except during the Damage Step): You can Special Summon this card from your hand. If this card is Normal or Special Summoned: You can send 1 'Salamangreat' card from your Deck to the GY, except 'Salamangreat Gazelle'. You can only use each effect of 'Salamangreat Gazelle' once per turn.",
+	'Cyberse/Effect', 1500, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'99234526', (select color_id from card_colors where card_color = 'Effect'), 'White Dragon Wyverburster', 'Light',
+	"Cannot be Normal Summoned/Set. Must be Special Summoned (from your hand) by banishing 1 DARK monster from your Graveyard, and cannot be Special Summoned by other ways. You can only Special Summon 'White Dragon Wyverburster' once per turn this way. If this card is sent from the field to the Graveyard: You can add 1 'Black Dragon Collapserpent' from your Deck to your hand.",
+	'Dragon/Effect', 1700, 1800
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'70711847', (select color_id from card_colors where card_color = 'Effect'), 'Danger! Nessie!', 'Dark',
+	"You can reveal this card in your hand; your opponent randomly chooses 1 card from your entire hand, then you discard the chosen card. Then, if the discarded card was not 'Danger! Nessie!', Special Summon 1 'Danger! Nessie!' from your hand, and if you do, draw 1 card. If this card is discarded: You can add 1 'Danger!' card from your Deck to your hand, except 'Danger! Nessie!'. You can only use this effect of 'Danger! Nessie!' once per turn.",
+	'Aqua/Effect', 1600, 2800
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'43694650', (select color_id from card_colors where card_color = 'Effect'), 'Danger!? Jackalope?', 'Dark',
+	"You can reveal this card in your hand; your opponent randomly chooses 1 card from your entire hand, then you discard the chosen card. Then, if the discarded card was not 'Danger!? Jackalope?', Special Summon 1 'Danger!? Jackalope?' from your hand, and if you do, draw 1 card. If this card is discarded: You can Special Summon 1 'Danger!' monster from your Deck in Defense Position, except 'Danger!? Jackalope?'. You can only use this effect of 'Danger!? Jackalope?' once per turn.",
+	'Beast/Effect', 500, 2000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'99745551', (select color_id from card_colors where card_color = 'Effect'), 'Danger!? Tsuchinoko?', 'Dark',
+	"You can reveal this card in your hand; your opponent randomly chooses 1 card from your entire hand, then you discard the chosen card. Then, if the discarded card was not 'Danger!? Tsuchinoko?', Special Summon 1 'Danger!? Tsuchinoko?' from your hand, and if you do, draw 1 card. If this card is discarded: You can Special Summon this card. You can only use this effect of 'Danger!? Tsuchinoko?' once per turn.",
+	'Reptile/Effect', 1300, 0
+);
