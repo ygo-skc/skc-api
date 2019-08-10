@@ -31,17 +31,17 @@ public class BanListController {
 
 		/*  Forbidden cards */
 		cards += "\"forbidden\": [\n";
-		cards += toJSON( (ArrayList<Card>) banListRepository.getForbiddenCards("2019-07-15") );
+		cards += Card.toJSON( (ArrayList<Card>) banListRepository.getForbiddenCards(startDate) );
 		cards += "\n ] ";
 
 		/*  Limited cards */
 		cards += ", \"limited\": [\n";;
-		cards += toJSON( (ArrayList<Card>) banListRepository.getLimitedCards("2019-07-15") );
+		cards += Card.toJSON( (ArrayList<Card>) banListRepository.getLimitedCards(startDate) );
 		cards += "\n ] ";
 
 		/*  Semi-Limited cards */
 		cards += ", \"semiLimited\": [\n";
-		cards += toJSON( (ArrayList<Card>) banListRepository.getSemiLimitedCards("2019-07-15") );
+		cards += Card.toJSON( (ArrayList<Card>) banListRepository.getSemiLimitedCards(startDate) );
 		cards += "\n ] ";
 
 		cards += "\n } }";
