@@ -3,11 +3,13 @@ package com.rtomyj.yugiohAPI.controller;
 import com.rtomyj.yugiohAPI.Card;
 import com.rtomyj.yugiohAPI.repository.BanListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
-import static com.rtomyj.yugiohAPI.Card.toJSON;
 
 
 @RestController
@@ -45,8 +47,8 @@ public class BanListController {
 		cards += "\n ] ";
 
 		cards += "\n } }";
-		System.out.println("Fetched ban list");
-		return cards;
+		System.out.println(String.format("Fetched ban list: %s", startDate));
+		return new ResponseEntity<String>(cards, HttpStatus.OK);
 	}
 
 	@RequestMapping(path="ban_list/startDates")
