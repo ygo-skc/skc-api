@@ -49,10 +49,24 @@ public class BanListController {
 		return cards;
 	}
 
-	@RequestMapping(path="ban_list/all")
-	public String test()
+	@RequestMapping(path="ban_list/startDates")
+	public String startDatesOfBanLists()
 	{
-		return banListRepository.getBanListDates().toString();
+		ArrayList<String> banStartDates = (ArrayList<String>) banListRepository.getBanListStartDates();
+
+
+		String dates = "";
+		dates += "{\n\"banListStartDates\": [";
+		for (String date: banStartDates)
+	{
+			dates += "\"";
+			dates += date;
+			dates += "\",";
+		}
+		dates = dates.substring(0, dates.length() - 1);
+		dates += "]\n}";
+
+		return dates;
 	}
 
 }
