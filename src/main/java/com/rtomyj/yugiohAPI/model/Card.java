@@ -38,7 +38,7 @@ public class Card {
 
 	public static List<HashMap<String, String>> toHashMap(List<Card> cards)
 	{
-		List<HashMap<String, String>> cardHashMapList = new ArrayList();
+		List<HashMap<String, String>> cardHashMapList = new ArrayList<>();
 		for (Card card: cards)
 		{
 			HashMap<String, String> cardInfo = new HashMap<>();

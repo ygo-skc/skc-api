@@ -13,7 +13,7 @@ public class TestCallController
 {
 	@GetMapping()
 	public Map<String, HashMap<String, String>> testCall(){
-		HashMap<String, HashMap<String, String>> outer = new HashMap();
+		HashMap<String, HashMap<String, String>> outer = new HashMap<>();
 		HashMap<String, String> inner = new HashMap<>();
 
 		inner.put("key", "value");
