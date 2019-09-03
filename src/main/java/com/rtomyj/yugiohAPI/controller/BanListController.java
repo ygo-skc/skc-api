@@ -22,9 +22,9 @@ public class BanListController
 	BanListRepository banListRepository;
 
 	@GetMapping()
-	public Map<String, List> startDatesOfBanLists() {
+	public Map<String, List<String>> startDatesOfBanLists() {
 		List<String> banStartDates = (ArrayList<String>) banListRepository.getBanListStartDates();
-		HashMap<String, List> response = new HashMap();
+		HashMap<String, List<String>> response = new HashMap();
 		response.put("banListStartDates", banStartDates);
 
 		return response;
