@@ -3,11 +3,12 @@ package com.rtomyj.yugiohAPI.controller;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.repository.BannedCardsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 
@@ -20,34 +21,25 @@ public class BannedCardsController {
 
 	@ResponseBody
 	@GetMapping("/{startDate}")
-	public ResponseEntity<String> getBannedCards(@PathVariable String startDate)
+	public HashMap<String, LinkedHashMap<String, List<HashMap<String, String>>>> getBannedCards(
+			@PathVariable String startDate)
 	{
 		Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
 		if (! datePattern.matcher(startDate).matches())
 		{
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+			return null;
 		}
 
+		HashMap<String, LinkedHashMap<String, List<HashMap<String, String>>>> banList = new HashMap<>();
+		LinkedHashMap<String, List<HashMap<String, String>>> banListSections = new LinkedHashMap<>();
 
-		String cards = "{ \"bannedCards\": {\n";
+		banListSections.put("forbidden", Card.toHashMap(bannedCardsRepository.getForbiddenCards(startDate)));
+		banListSections.put("limited", Card.toHashMap(bannedCardsRepository.getLimitedCards(startDate)));
+		banListSections.put("semiLimited", Card.toHashMap(bannedCardsRepository.getSemiLimitedCards(startDate)));
 
-		/*  Forbidden cards */
-		cards += "\"forbidden\": [\n";
-		cards += Card.toJSON( (ArrayList<Card>) bannedCardsRepository.getForbiddenCards(startDate) );
-		cards += "\n ] ";
+		banList.put("bannedCards", banListSections);
 
-		/*  Limited cards */
-		cards += ", \"limited\": [\n";;
-		cards += Card.toJSON( (ArrayList<Card>) bannedCardsRepository.getLimitedCards(startDate) );
-		cards += "\n ] ";
+		return banList;
 
-		/*  Semi-Limited cards */
-		cards += ", \"semiLimited\": [\n";
-		cards += Card.toJSON( (ArrayList<Card>) bannedCardsRepository.getSemiLimitedCards(startDate) );
-		cards += "\n ] ";
-
-		cards += "\n } }";
-		System.out.println(String.format("Fetched ban list: %s", startDate));
-		return new ResponseEntity<String>(cards, HttpStatus.OK);
 	}
 }
