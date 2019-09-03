@@ -1,6 +1,9 @@
 package com.rtomyj.yugiohAPI.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.rtomyj.yugiohAPI.repository.BanListRepository;
 
@@ -19,19 +22,11 @@ public class BanListController
 	BanListRepository banListRepository;
 
 	@GetMapping()
-	public String startDatesOfBanLists() {
-		ArrayList<String> banStartDates = (ArrayList<String>) banListRepository.getBanListStartDates();
+	public Map<String, List> startDatesOfBanLists() {
+		List<String> banStartDates = (ArrayList<String>) banListRepository.getBanListStartDates();
+		HashMap<String, List> response = new HashMap();
+		response.put("banListStartDates", banStartDates);
 
-		String dates = "";
-		dates += "{\n\"banListStartDates\": [";
-		for (String date : banStartDates) {
-			dates += "\"";
-			dates += date;
-			dates += "\",";
-		}
-		dates = dates.substring(0, dates.length() - 1);
-		dates += "]\n}";
-
-		return dates;
+		return response;
 	}
 }
