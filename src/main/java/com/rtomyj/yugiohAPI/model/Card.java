@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Card {
 
@@ -31,6 +33,24 @@ public class Card {
 			System.out.println("Error creating JSON from Card object " + Card.class);
 		}
 		return card.toString();
+	}
+
+
+	public static List<HashMap<String, String>> toHashMap(List<Card> cards)
+	{
+		List<HashMap<String, String>> cardHashMapList = new ArrayList();
+		for (Card card: cards)
+		{
+			HashMap<String, String> cardInfo = new HashMap<>();
+			cardInfo.put("cardName", card.cardName);
+			cardInfo.put("monsterType", card.monsterType);
+			cardInfo.put("cardColor", card.cardColor);
+			cardInfo.put("cardEffect", card.cardEffect);
+
+			cardHashMapList.add(cardInfo);
+		}
+
+		return cardHashMapList;
 	}
 
 
