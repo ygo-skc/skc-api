@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI;
+package com.rtomyj.yugiohAPI.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
