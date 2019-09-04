@@ -10,18 +10,18 @@ import java.util.List;
 
 public class Card {
 
-	public Card(String cardName, String monsterType, String cardColor, String cardEffect)
+	public Card(String cardName, String monsterType, String cardColor, String cardEffect, String cardID)
 	{
 		this.cardName = cardName;
 		this.monsterType = monsterType;
 		this.cardColor = cardColor;
 		this.cardEffect = cardEffect;
+		this.cardID = cardID;
 	}
 
 	public Card(String cardName, String monsterType, String cardColor, String cardEffect, String cardID, String cardAttribute, int monsterAttack, int monsterDefense) {
-		this(cardName, monsterType, cardColor, cardEffect);
+		this(cardName, monsterType, cardColor, cardEffect, cardID);
 
-		this.cardID = cardID;
 		this.cardAttribute = cardAttribute;
 		this.monsterAttack = monsterAttack;
 		this.monsterDefense = monsterDefense;
@@ -29,23 +29,6 @@ public class Card {
 
 	private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
 	private int monsterAttack, monsterDefense;
-
-	public String toJSON()
-	{
-		JSONObject card = new JSONObject();
-		try
-		{
-			card.put("cardName", cardName);
-			card.put("monsterType", monsterType);
-			card.put("cardColor", cardColor);
-			card.put("cardEffect", cardEffect);
-		}catch (JSONException e)
-		{
-			System.out.println("Error creating JSON from Card object " + Card.class);
-		}
-		return card.toString();
-	}
-
 
 	public static List<HashMap<String, String>> toHashMap(List<Card> cards)
 	{
@@ -57,6 +40,7 @@ public class Card {
 			cardInfo.put("monsterType", card.monsterType);
 			cardInfo.put("cardColor", card.cardColor);
 			cardInfo.put("cardEffect", card.cardEffect);
+			cardInfo.put("cardID", card.cardID);
 
 			cardHashMapList.add(cardInfo);
 		}
@@ -72,21 +56,8 @@ public class Card {
 		cardInfo.put("monsterType", card.monsterType);
 		cardInfo.put("cardColor", card.cardColor);
 		cardInfo.put("cardEffect", card.cardEffect);
+		cardInfo.put("cardID", card.cardID);
 
 		return cardInfo;
-	}
-
-
-	public static String toJSON(ArrayList<Card> cards)
-	{
-
-		String cardJSON = "";
-		for (Card card: cards)
-		{
-			if (cardJSON != "") cardJSON += ", \n";
-			cardJSON += card.toJSON();
-		}
-
-		return cardJSON;
 	}
 }
