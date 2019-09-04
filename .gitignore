@@ -32,3 +32,6 @@ HELP.md
 
 ### Java ###
 bin/
+
+### Mac ###
+.DS_Store
