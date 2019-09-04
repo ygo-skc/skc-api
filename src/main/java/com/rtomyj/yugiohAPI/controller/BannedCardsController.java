@@ -34,9 +34,9 @@ public class BannedCardsController {
 		HashMap<String, LinkedHashMap<String, List<HashMap<String, String>>>> banList = new HashMap<>();
 		LinkedHashMap<String, List<HashMap<String, String>>> banListSections = new LinkedHashMap<>();
 
-		banListSections.put("forbidden", Card.toHashMap(bannedCardsRepository.getForbiddenCards(startDate)));
-		banListSections.put("limited", Card.toHashMap(bannedCardsRepository.getLimitedCards(startDate)));
-		banListSections.put("semiLimited", Card.toHashMap(bannedCardsRepository.getSemiLimitedCards(startDate)));
+		banListSections.put("forbidden", Card.toHashMap(bannedCardsRepository.getBanListByBanStatus(startDate, "Forbidden")));
+		banListSections.put("limited", Card.toHashMap(bannedCardsRepository.getBanListByBanStatus(startDate, "Limited")));
+		banListSections.put("semiLimited", Card.toHashMap(bannedCardsRepository.getBanListByBanStatus(startDate, "Semi-Limited")));
 
 		banList.put("bannedCards", banListSections);
 
