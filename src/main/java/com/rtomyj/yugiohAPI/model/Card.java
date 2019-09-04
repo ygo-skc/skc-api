@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Card {
@@ -17,7 +18,17 @@ public class Card {
 		this.cardEffect = cardEffect;
 	}
 
-	private String cardName, monsterType, cardColor, cardEffect;
+	public Card(String cardName, String monsterType, String cardColor, String cardEffect, String cardID, String cardAttribute, int monsterAttack, int monsterDefense) {
+		this(cardName, monsterType, cardColor, cardEffect);
+
+		this.cardID = cardID;
+		this.cardAttribute = cardAttribute;
+		this.monsterAttack = monsterAttack;
+		this.monsterDefense = monsterDefense;
+	}
+
+	private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
+	private int monsterAttack, monsterDefense;
 
 	public String toJSON()
 	{
@@ -51,6 +62,18 @@ public class Card {
 		}
 
 		return cardHashMapList;
+	}
+
+
+	public static LinkedHashMap<String, String> toHashMap(Card card)
+	{
+		LinkedHashMap<String, String> cardInfo = new LinkedHashMap<>();
+		cardInfo.put("cardName", card.cardName);
+		cardInfo.put("monsterType", card.monsterType);
+		cardInfo.put("cardColor", card.cardColor);
+		cardInfo.put("cardEffect", card.cardEffect);
+
+		return cardInfo;
 	}
 
 
