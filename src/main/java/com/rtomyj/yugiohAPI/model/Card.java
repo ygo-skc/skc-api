@@ -57,6 +57,9 @@ public class Card {
 		cardInfo.put("cardColor", card.cardColor);
 		cardInfo.put("cardEffect", card.cardEffect);
 		cardInfo.put("cardID", card.cardID);
+		cardInfo.put("cardAttribute", card.cardAttribute);
+		cardInfo.put("monsterAtk", Integer.toString(card.monsterAttack));
+		cardInfo.put("monsterDef", Integer.toString(card.monsterDefense));
 
 		return cardInfo;
 	}
