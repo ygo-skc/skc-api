@@ -1,35 +1,36 @@
 package com.rtomyj.yugiohAPI.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManagerFactory;
+
+import com.rtomyj.yugiohAPI.model.BanLists;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class BanListRepository {
 
+
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private EntityManagerFactory entityManagerFactory;
 
-	public List<String> getBanListStartDates() {
-		//SELECT DISTINCT ban_list_date from ban_lists;
-		return  jdbcTemplate.query("SELECT DISTINCT ban_list_date from ban_lists ORDER BY ban_list_date DESC;",
-				new ResultSetExtractor<List<String>>() {
-					@Override
-					public List<String> extractData(ResultSet row) throws SQLException, DataAccessException {
-						List<String> banListDates = new ArrayList<>();
-						while (row.next()) {
-							banListDates.add(row.getString(1));
-						}
-						return banListDates;
-					}
-				});
+	public List<BanLists> getBanListStartDates() {
+		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
+		Criteria criteria = session.createCriteria(BanLists.class);
+		criteria.addOrder(Order.desc("banListDate"));
+		criteria.setProjection(Projections.distinct(Projections.property("banListDate")));
 
+		List<BanLists> banLists = criteria.list();
+		List<String> banListsDates;
+
+
+		return banLists;
 	}
 }
