@@ -2,7 +2,7 @@ package com.rtomyj.yugiohAPI.service;
 
 import java.util.List;
 
-import com.rtomyj.yugiohAPI.dao.YGO_API_dao;
+import com.rtomyj.yugiohAPI.dao.Dao;
 import com.rtomyj.yugiohAPI.model.BanLists;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class BanListService {
 
 	@Autowired
 	@Qualifier("hibernate")
-	private YGO_API_dao dao;
+	private Dao dao;
 
 	public List<BanLists> getBanListStartDates() {
 		return dao.getBanListStartDates();

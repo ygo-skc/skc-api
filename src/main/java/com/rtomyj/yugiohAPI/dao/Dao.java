@@ -5,7 +5,7 @@ import com.rtomyj.yugiohAPI.model.Card;
 
 import java.util.List;
 
-public interface YGO_API_dao
+public interface Dao
 {
 	public List<BanLists> getBanListStartDates();
 	public Card getCardInfo(String cardID);

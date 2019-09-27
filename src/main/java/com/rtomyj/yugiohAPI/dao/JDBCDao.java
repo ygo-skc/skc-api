@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 @Repository("mysql_jdbc")
-public class YGO_API_mysql_jdbc_dao implements YGO_API_dao {
+public class JDBCDao implements Dao {
 
 	@Autowired
 	JdbcTemplate jdbcConn;

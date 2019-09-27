@@ -1,6 +1,6 @@
 package com.rtomyj.yugiohAPI.service;
 
-import com.rtomyj.yugiohAPI.dao.YGO_API_dao;
+import com.rtomyj.yugiohAPI.dao.Dao;
 import com.rtomyj.yugiohAPI.model.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +13,7 @@ public class BannedCardsService {
 
 	@Autowired
 	@Qualifier("mysql_jdbc")
-	private YGO_API_dao dao;
+	private Dao dao;
 
 	public List<Card> getBanListByBanStatus(String date, String status) {
 		return dao.getBanListByBanStatus(date, status);

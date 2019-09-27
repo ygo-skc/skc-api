@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("hibernate")
-public class YGO_API_hibernate_dao implements YGO_API_dao {
+public class HibernateDao implements Dao {
 
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
