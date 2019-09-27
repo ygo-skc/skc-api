@@ -3,7 +3,7 @@ package com.rtomyj.yugiohAPI.controller;
 import java.util.LinkedHashMap;
 
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.repository.CardRepository;
+import com.rtomyj.yugiohAPI.service.CardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CardController
 {
 	@Autowired
-	CardRepository cardRepository;
+	CardService cardService;
 
 
 	@GetMapping("{cardID}")
 	public ResponseEntity<LinkedHashMap<String, String>> getCard(@PathVariable("cardID") String cardID)
 	{
-		return new ResponseEntity<>(Card.toHashMap(cardRepository.getCardInfo(cardID)), HttpStatus.OK);
+		return new ResponseEntity<>(Card.toHashMap(cardService.getCardInfo(cardID)), HttpStatus.OK);
 	}
 }

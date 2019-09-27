@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.rtomyj.yugiohAPI.model.BanLists;
-import com.rtomyj.yugiohAPI.repository.BanListRepository;
+import com.rtomyj.yugiohAPI.service.BanListService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class BanListController
 {
 	@Autowired
-	BanListRepository banListRepository;
+	BanListService banListService;
 
 	@GetMapping()
 	public Map<String, List<BanLists>> startDatesOfBanLists() {
-		List<BanLists> banStartDates = (ArrayList<BanLists>) banListRepository.getBanListStartDates();
+		List<BanLists> banStartDates = (ArrayList<BanLists>) banListService.getBanListStartDates();
 		HashMap<String, List<BanLists>> response = new HashMap<>();
 		response.put("banListStartDates", banStartDates);
 

@@ -1,7 +1,8 @@
 package com.rtomyj.yugiohAPI.controller;
 
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.repository.BannedCardsRepository;
+import com.rtomyj.yugiohAPI.service.BannedCardsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 @CrossOrigin(origins = "http://localhost:3000")
 public class BannedCardsController {
 	@Autowired
-	BannedCardsRepository bannedCardsRepository;
+	BannedCardsService bannedCardsService;
 
 	@ResponseBody
 	@GetMapping(path = "{startDate}")
@@ -34,9 +35,9 @@ public class BannedCardsController {
 		HashMap<String, LinkedHashMap<String, List<HashMap<String, String>>>> banList = new HashMap<>();
 		LinkedHashMap<String, List<HashMap<String, String>>> banListSections = new LinkedHashMap<>();
 
-		banListSections.put("forbidden", Card.toHashMap(bannedCardsRepository.getBanListByBanStatus(startDate, "Forbidden")));
-		banListSections.put("limited", Card.toHashMap(bannedCardsRepository.getBanListByBanStatus(startDate, "Limited")));
-		banListSections.put("semiLimited", Card.toHashMap(bannedCardsRepository.getBanListByBanStatus(startDate, "Semi-Limited")));
+		banListSections.put("forbidden", Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, "Forbidden")));
+		banListSections.put("limited", Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, "Limited")));
+		banListSections.put("semiLimited", Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, "Semi-Limited")));
 
 		banList.put("bannedCards", banListSections);
 
