@@ -1,0 +1,16 @@
+mysql -fu root < "cards.sql"
+
+mysql -fu root < "cards_normal.sql"
+mysql -fu root < "cards_effect.sql"
+mysql -fu root < "cards_ritual.sql"
+mysql -fu root < "cards_fusion.sql"
+mysql -fu root < "cards_synchro.sql"
+mysql -fu root < "cards_xyz.sql"
+mysql -fu root < "cards_normal_pendulum.sql"
+mysql -fu root < "cards_effect_pendulum.sql"
+mysql -fu root < "cards_link.sql"
+mysql -fu root < "cards_spell.sql"
+mysql -fu root < "cards_trap.sql"
+
+mysql -fu root < "2019-04-29_ban_list.sql"
+mysql -fu root < "2019-07-15_ban_list.sql"

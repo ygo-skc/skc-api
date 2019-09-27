@@ -1,4 +1,3 @@
-CREATE DATABASE yugioh_API_DB;
 USE yugioh_API_DB;
 
 DROP TABLE ban_lists;
