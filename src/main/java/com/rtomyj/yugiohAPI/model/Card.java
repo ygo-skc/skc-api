@@ -7,6 +7,9 @@ import java.util.List;
 
 public class Card {
 
+	private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
+	private int monsterAttack, monsterDefense;
+
 	public Card(String cardName, String monsterType, String cardColor, String cardEffect, String cardID)
 	{
 		this.cardName = cardName;
@@ -23,9 +26,6 @@ public class Card {
 		this.monsterAttack = monsterAttack;
 		this.monsterDefense = monsterDefense;
 	}
-
-	private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
-	private int monsterAttack, monsterDefense;
 
 	public static List<HashMap<String, String>> toHashMap(List<Card> cards)
 	{

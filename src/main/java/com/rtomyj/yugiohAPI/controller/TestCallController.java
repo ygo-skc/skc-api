@@ -1,8 +1,12 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,13 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestCallController
 {
 	@GetMapping()
-	public Map<String, HashMap<String, String>> testCall(){
-		HashMap<String, HashMap<String, String>> outer = new HashMap<>();
-		HashMap<String, String> inner = new HashMap<>();
-
-		inner.put("key", "value");
-		outer.put("inner", inner);
-
-		return outer;
+	public ResponseEntity<String> testCall(){
+		return new ResponseEntity<>("Test call worked", HttpStatus.OK);
 	}
 }

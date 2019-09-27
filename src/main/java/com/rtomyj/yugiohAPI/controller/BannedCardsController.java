@@ -21,7 +21,7 @@ public class BannedCardsController {
 	BannedCardsRepository bannedCardsRepository;
 
 	@ResponseBody
-	@GetMapping("{startDate}")
+	@GetMapping(path = "{startDate}")
 	public ResponseEntity<HashMap<String, LinkedHashMap<String, List<HashMap<String, String>>>>> getBannedCards(
 			@PathVariable String startDate)
 	{

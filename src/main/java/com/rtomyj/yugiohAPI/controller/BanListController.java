@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(path = "api/v1/ban_lists", produces = "application/json; charset=utf-8")
+@RequestMapping(path = "api/v1/ban_list_dates", produces = "application/json; charset=utf-8")
 @RestController
 @CrossOrigin("http://localhost:3000")
 public class BanListController

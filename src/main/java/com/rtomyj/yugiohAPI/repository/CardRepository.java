@@ -20,7 +20,7 @@ public class CardRepository
 	public Card getCardInfo(String cardID)
 	{
 		return jdbcConn.query(String.format(
-			"SELECT card_name, monster_type, card_color, card_effect, card_attribute, monster_attack, monster_defense FROM cards, card_colors WHERE card_number = '%s' AND card_colors.color_id = cards.color_id",
+			"SELECT card_name, cards.monster_type, card_colors.card_color, cards.card_effect, cards.card_attribute, cards.monster_attack, cards.monster_defense FROM cards, card_colors WHERE cards.card_number = '%s' AND card_colors.color_id = cards.color_id",
 				cardID), new ResultSetExtractor<Card>()
 			{
 				@Override

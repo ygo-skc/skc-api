@@ -21,8 +21,8 @@ public class BannedCardsRepository {
 
 	public List<Card> getBanListByBanStatus(String date, String status) {
 		return jdbcTemplate.query(
-				"SELECT card_name, monster_type, card_color, card_effect, cards.card_number FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = '" + status + "' AND ban_list_date = '"
-						+ date + "' ORDER BY card_color, card_name;",
+				"SELECT card_name, monster_type, card_colors.card_color, card_effect, cards.card_number FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = '" + status + "' AND ban_list_date = '"
+						+ date + "' ORDER BY card_colors.card_color, card_name;",
 				new ResultSetExtractor<List<Card>>() {
 					@Override
 					public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
