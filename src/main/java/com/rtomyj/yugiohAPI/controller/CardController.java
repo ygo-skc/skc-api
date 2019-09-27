@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(path = "card/v1/")
+@RequestMapping(path = "api/v1/card")
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class CardController
@@ -23,7 +23,7 @@ public class CardController
 	CardRepository cardRepository;
 
 
-	@GetMapping("/{cardID}")
+	@GetMapping("{cardID}")
 	public ResponseEntity<LinkedHashMap<String, String>> getCard(@PathVariable("cardID") String cardID)
 	{
 		return new ResponseEntity<>(Card.toHashMap(cardRepository.getCardInfo(cardID)), HttpStatus.OK);

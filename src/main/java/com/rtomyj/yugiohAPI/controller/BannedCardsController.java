@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 
-@RequestMapping(path = "banned_cards/v1", produces = "application/json; charset=utf-8")
+@RequestMapping(path = "api/v1/banned_cards", produces = "application/json; charset=utf-8")
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class BannedCardsController {
@@ -21,7 +21,7 @@ public class BannedCardsController {
 	BannedCardsRepository bannedCardsRepository;
 
 	@ResponseBody
-	@GetMapping("/{startDate}")
+	@GetMapping("{startDate}")
 	public ResponseEntity<HashMap<String, LinkedHashMap<String, List<HashMap<String, String>>>>> getBannedCards(
 			@PathVariable String startDate)
 	{

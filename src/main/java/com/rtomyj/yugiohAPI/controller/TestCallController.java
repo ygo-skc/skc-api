@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(path = "/testcall")
+@RequestMapping(path = "api/v1/testcall")
 @RestController
 public class TestCallController
 {
