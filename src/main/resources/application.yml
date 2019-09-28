@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/yugioh_API_DB
+    username: root
+    password:
+  profiles:
+    active: production
+
+server:
+  port: 9999
