@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping(path = "api/v1/card")
+@RequestMapping(path="api/v1/card", produces = "application/json; charset=UTF-8")
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class CardController

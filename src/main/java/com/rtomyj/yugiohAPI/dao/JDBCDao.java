@@ -10,12 +10,14 @@ import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
-@Repository("mysql_jdbc")
+@Repository()
+@Qualifier("mysql_jdbc")
 public class JDBCDao implements Dao {
 
 	@Autowired
