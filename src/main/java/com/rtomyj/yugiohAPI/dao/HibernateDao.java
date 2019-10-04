@@ -3,15 +3,15 @@ package com.rtomyj.yugiohAPI.dao;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,13 +24,16 @@ public class HibernateDao implements Dao {
 	@Override
 	public List<BanLists> getBanListStartDates() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		Criteria criteria = session.createCriteria(BanLists.class);
-		criteria.addOrder(Order.desc("banListDate"));
-		criteria.setProjection(Projections.distinct(Projections.property("banListDate")));
+		CriteriaBuilder cb = entityManagerFactory.getCriteriaBuilder();
 
-		List<BanLists> banLists = criteria.list();
+		CriteriaQuery<BanLists> q = cb.createQuery(BanLists.class);
+		Root<BanLists> c = q.from(BanLists.class);
+		q.select(c.get("banListDate")).distinct(true);
+		q.orderBy(cb.desc(c.get("banListDate")));
+		List<BanLists> l = session.createQuery(q).getResultList();
 
-		return banLists;
+		session.close();
+		return l;
 	}
 
 	@Override
