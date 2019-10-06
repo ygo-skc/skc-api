@@ -35,10 +35,14 @@ public class JDBCDao implements Dao {
 				cardID), new ResultSetExtractor<Card>() {
 					@Override
 					public Card extractData(ResultSet row) throws SQLException, DataAccessException {
-						row.next();
-						Card card = new Card(row.getString(1), row.getString(2), row.getString(3), row.getString(4), cardID,
-								row.getString(5), row.getInt(6), row.getInt(7));
-						return card;
+						if (row.next())
+						{
+							Card card = new Card(row.getString(1), row.getString(2), row.getString(3), row.getString(4), cardID,
+									row.getString(5), row.getInt(6), row.getInt(7));
+							return card;
+						}
+
+						return null;
 					}
 				});
 	}

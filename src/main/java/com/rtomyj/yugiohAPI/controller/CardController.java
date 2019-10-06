@@ -45,8 +45,17 @@ public class CardController
 		}
 
 
+		Card foundCard = cardService.getCardInfo(cardID);
+		if (foundCard == null)
+		{
+			HttpStatus status = HttpStatus.NO_CONTENT;
+			LOG.info(String.format("%s/{ %s } hit - responding with: %s", endPoint, cardID, status));
+			return new ResponseEntity<>(status);
+		}
+
+
 		HttpStatus status = HttpStatus.OK;
 		LOG.info(String.format("%s/{ %s } hit - responding with: %s", endPoint, cardID, status));
-		return new ResponseEntity<>(Card.toHashMap(cardService.getCardInfo(cardID)), status);
+		return new ResponseEntity<>(Card.toHashMap(foundCard), status);
 	}
 }
