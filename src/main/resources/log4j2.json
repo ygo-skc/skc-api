@@ -1,24 +1,19 @@
 {
 	"configuration": {
-		"status": "error",
-		"name": "JSONConfig",
 		"packages": "com.rtomyj",
-		"ThresholdFilter": {
-			"level": "debug"
-		},
 		"appenders": {
 			"Console": {
-				"name": "STDOUT",
+				"name": "STD_Out",
 				"PatternLayout": {
-					"pattern": "%d [%t] %-5p %c - %m%n"
+					"pattern": "[ %d{YYYY/dd/MM HH:mm:ss.SSS} ] [%t] %-5p %c: %m%n"
 				}
 			}
 		},
 		"loggers": {
 			"root": {
-				"level": "debug",
+				"level": "info",
 				"AppenderRef": {
-					"ref": "STDOUT"
+					"ref": "STD_Out"
 				}
 			}
 		}
