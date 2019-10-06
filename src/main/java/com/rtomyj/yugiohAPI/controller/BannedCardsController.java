@@ -3,8 +3,8 @@ package com.rtomyj.yugiohAPI.controller;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.BannedCardsService;
 
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class BannedCardsController {
 	@Autowired
 	BannedCardsService bannedCardsService;
 
-	private static final Logger LOG = LogManager.getLogger(BannedCardsController.class.getName());
+	private static final Logger LOG = LogManager.getLogger();
 
 	@ResponseBody
 	@GetMapping(path = "{startDate}")
