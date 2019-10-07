@@ -34,6 +34,6 @@ jar {
 		version =  version
 		group = group
 		manifest {
-				attributes 'Implementation-Title': 'Title Of Project'
+				attributes 'Implementation-Title': 'Yugioh_API'
 		}
 }
