@@ -1,0 +1,16 @@
+cf mysql YGO_API_DB -f < "cards.sql"
+
+cf mysql YGO_API_DB -f < "cards_normal.sql"
+cf mysql YGO_API_DB -f < "cards_effect.sql"
+cf mysql YGO_API_DB -f < "cards_ritual.sql"
+cf mysql YGO_API_DB -f < "cards_fusion.sql"
+cf mysql YGO_API_DB -f < "cards_synchro.sql"
+cf mysql YGO_API_DB -f < "cards_xyz.sql"
+cf mysql YGO_API_DB -f < "cards_normal_pendulum.sql"
+cf mysql YGO_API_DB -f < "cards_effect_pendulum.sql"
+cf mysql YGO_API_DB -f < "cards_link.sql"
+cf mysql YGO_API_DB -f < "cards_spell.sql"
+cf mysql YGO_API_DB -f < "cards_trap.sql"
+
+cf mysql YGO_API_DB -f < "2019-04-29_ban_list.sql"
+cf mysql YGO_API_DB -f < "2019-07-15_ban_list.sql"
