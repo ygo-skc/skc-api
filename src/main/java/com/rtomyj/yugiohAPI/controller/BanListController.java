@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(path = "${ygo.endpoints.ban-list-dates-v1}", produces = "application/json; charset=utf-8")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class BanListController
 {
 	@Autowired

@@ -16,10 +16,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RequestMapping(path = "${ygo.endpoints.banned-cards-v1}", produces = "application/json; charset=utf-8")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class BannedCardsController {
 	@Autowired
 	private BannedCardsService bannedCardsService;
@@ -27,6 +29,9 @@ public class BannedCardsController {
 	@Autowired
 	@Value("${ygo.endpoints.banned-cards-v1}")
 	private String endPoint;
+
+	@Autowired
+	private HttpServletRequest request;
 
 	private static final Logger LOG = LogManager.getLogger();
 
@@ -61,7 +66,7 @@ public class BannedCardsController {
 		else
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(String.format("%s/{ %s } hit - responding with: { %s }", endPoint, startDate, status));
+			LOG.info(String.format("%s %s/{ %s } hit - responding with: { %s }", request.getRemoteHost(), endPoint, startDate, status));
 			banList.put("bannedCards", banListSections);
 			return new ResponseEntity<>(banList, status);
 		}

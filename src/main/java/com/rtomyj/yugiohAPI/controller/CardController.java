@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(path="${ygo.endpoints.card-v1}", produces = "application/json; charset=UTF-8")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class CardController
 {
 	@Autowired
