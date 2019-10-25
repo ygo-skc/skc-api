@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BannedCardsService {
-
+public class BannedCardsService
+{
 	@Autowired
 	@Qualifier("mysql_jdbc")
 	private Dao dao;
 
-	public List<Card> getBanListByBanStatus(String date, String status) {
+
+	public List<Card> getBanListByBanStatus(String date, String status)
+	{
 		return dao.getBanListByBanStatus(date, status);
 	}
 }

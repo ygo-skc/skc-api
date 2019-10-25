@@ -14,6 +14,7 @@ public class CardService
 	@Qualifier("mysql_jdbc")
 	private Dao dao;
 
+
 	public Card getCardInfo(String cardID)
 	{
 		return dao.getCardInfo(cardID);

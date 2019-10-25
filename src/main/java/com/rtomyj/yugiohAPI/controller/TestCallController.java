@@ -18,10 +18,10 @@ public class TestCallController
 {
 	private static final Logger LOG = LogManager.getLogger();
 
-
 	@Autowired
 	@Value("${ygo.endpoints.test-call-v1}")
 	private String endPoint;
+
 
 	@GetMapping()
 	public ResponseEntity<String> testCall()

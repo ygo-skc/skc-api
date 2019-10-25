@@ -1,6 +1,5 @@
 package com.rtomyj.yugiohAPI.controller;
-
-import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.rtomyj.yugiohAPI.model.Card;
@@ -34,7 +33,7 @@ public class CardController
 
 
 	@GetMapping("{cardID}")
-	public ResponseEntity<LinkedHashMap<String, String>> getCard(@PathVariable("cardID") String cardID)
+	public ResponseEntity<Map<String, String>> getCard(@PathVariable("cardID") String cardID)
 	{
 		Pattern cardIDPattern = Pattern.compile("[0-9]{8}");
 		if (!cardIDPattern.matcher(cardID).matches())

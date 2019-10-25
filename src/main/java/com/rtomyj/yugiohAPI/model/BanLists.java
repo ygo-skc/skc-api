@@ -10,9 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * BanList REST endpoint
- */
+
 @Entity
 @Table(name = "ban_lists", schema = "yugioh_API_DB")
 public class BanLists implements Serializable {

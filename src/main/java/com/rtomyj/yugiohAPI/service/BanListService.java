@@ -10,13 +10,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BanListService {
-
+public class BanListService
+{
 	@Autowired
 	@Qualifier("hibernate")
 	private Dao dao;
 
-	public List<BanLists> getBanListStartDates() {
+
+	public List<BanLists> getBanListStartDates()
+	{
 		return dao.getBanListStartDates();
 	}
 }

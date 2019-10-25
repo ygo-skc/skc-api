@@ -16,10 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("hibernate")
-public class HibernateDao implements Dao {
-
+public class HibernateDao implements Dao
+{
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
+
 
 	@Override
 	public List<BanLists> getBanListStartDates() {
@@ -36,14 +37,17 @@ public class HibernateDao implements Dao {
 		return l;
 	}
 
+
 	@Override
-	public Card getCardInfo(String cardID) {
+	public Card getCardInfo(String cardID)
+	{
 		return null;
 	}
 
+
 	@Override
-	public List<Card> getBanListByBanStatus(String date, String status) {
+	public List<Card> getBanListByBanStatus(String date, String status)
+	{
 		return null;
 	}
-
 }

@@ -1,12 +1,12 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.5.RELEASE'
+	id 'org.springframework.boot' version '2.2.0.RELEASE'
 	id 'java'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.rtomyj'
-version = '0.0.1-SNAPSHOT'
+group 'com.rtomyj'
+version '1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -30,10 +30,12 @@ configurations {
 }
 
 jar {
-		baseName = 'Yugioh_API'
-		version =  version
-		group = group
-		manifest {
-				attributes 'Implementation-Title': 'Yugioh_API'
-		}
+	group 'Build'
+	description 'Creates a JAR file that can be executed to launch YGO service'
+
+	baseName = 'Yugioh_API'
+	version =  version
+	manifest {
+			attributes 'Implementation-Title': 'Yugioh_API'
+	}
 }

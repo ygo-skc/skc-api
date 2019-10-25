@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/yugioh_API_DB
-    username: root
-    password:
+    url: jdbc:mysql://localhost/yugioh_API_DB?user=root&password=
     tomcat:
       initial-size: 15
       max-wait: 20000

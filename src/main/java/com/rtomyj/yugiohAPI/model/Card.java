@@ -4,35 +4,57 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Card {
+public class Card
+{
+
+	public static class Builder
+	{
+		private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
+		private int monsterAttack, monsterDefense;
+
+		public Builder cardName(String cardName) {this.cardName = cardName; return this;}
+		public Builder monsterType(String monsterType) {this.monsterType = monsterType; return this;}
+		public Builder cardColor(String cardColor) {this.cardColor = cardColor; return this;}
+		public Builder cardEffect(String cardEffect) {this.cardEffect = cardEffect; return this;}
+		public Builder cardID(String cardID) {this.cardID = cardID; return this;}
+		public Builder cardAttribute(String cardAttribute) {this.cardAttribute = cardAttribute; return this;}
+		public Builder monsterAttack(int monsterAttack) {this.monsterAttack = monsterAttack; return this;}
+		public Builder monsterDefense(int monsterDefense) {this.monsterDefense = monsterDefense; return this;}
+
+		public Card build()
+		{
+			Card card = new Card();
+			// String
+			card.cardName = this.cardName;
+			card.monsterType = this.monsterType;
+			card.cardColor = this.cardColor;
+			card.cardEffect = this.cardEffect;
+			card.cardID = this.cardID;
+			card.cardAttribute = this.cardAttribute;
+
+			// Ints
+			card.monsterAttack = this.monsterAttack;
+			card.monsterDefense = this.monsterDefense;
+			return card;
+		}
+	}
+
 
 	private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
 	private int monsterAttack, monsterDefense;
 
-	public Card(String cardName, String monsterType, String cardColor, String cardEffect, String cardID)
+
+	public Card() {}
+
+
+	public static List<Map<String, String>> toHashMap(List<Card> cards)
 	{
-		this.cardName = cardName;
-		this.monsterType = monsterType;
-		this.cardColor = cardColor;
-		this.cardEffect = cardEffect;
-		this.cardID = cardID;
-	}
-
-	public Card(String cardName, String monsterType, String cardColor, String cardEffect, String cardID, String cardAttribute, int monsterAttack, int monsterDefense) {
-		this(cardName, monsterType, cardColor, cardEffect, cardID);
-
-		this.cardAttribute = cardAttribute;
-		this.monsterAttack = monsterAttack;
-		this.monsterDefense = monsterDefense;
-	}
-
-	public static List<HashMap<String, String>> toHashMap(List<Card> cards)
-	{
-		List<HashMap<String, String>> cardHashMapList = new ArrayList<>();
+		List<Map<String, String>> cardHashMapList = new ArrayList<>();
 		for (Card card: cards)
 		{
-			HashMap<String, String> cardInfo = new HashMap<>();
+			Map<String, String> cardInfo = new HashMap<>();
 			cardInfo.put("cardName", card.cardName);
 			cardInfo.put("monsterType", card.monsterType);
 			cardInfo.put("cardColor", card.cardColor);
@@ -46,9 +68,9 @@ public class Card {
 	}
 
 
-	public static LinkedHashMap<String, String> toHashMap(Card card)
+	public static Map<String, String> toHashMap(Card card)
 	{
-		LinkedHashMap<String, String> cardInfo = new LinkedHashMap<>();
+		Map<String, String> cardInfo = new LinkedHashMap<>();
 		cardInfo.put("cardName", card.cardName);
 		cardInfo.put("monsterType", card.monsterType);
 		cardInfo.put("cardColor", card.cardColor);
