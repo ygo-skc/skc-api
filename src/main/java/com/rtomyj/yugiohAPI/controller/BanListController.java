@@ -19,9 +19,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RequestMapping(path = "${ygo.endpoints.ban-list-dates-v1}", produces = "application/json; charset=utf-8")
 @RestController
 @CrossOrigin(origins = "*")
+@Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class BanListController
 {
 	@Autowired
@@ -35,6 +41,11 @@ public class BanListController
 
 
 	@GetMapping()
+	@ApiOperation(value = "Get dates of ban lists stored in database", response = ResponseEntity.class, tags = "Ban List")
+	@ApiResponses( value = {
+		@ApiResponse(code = 200, message = "OK")
+	}
+	)
 	public ResponseEntity<Map<String, List<BanLists>>> startDatesOfBanLists()
 	{
 		List<BanLists> banStartDates = (ArrayList<BanLists>) banListService.getBanListStartDates();
