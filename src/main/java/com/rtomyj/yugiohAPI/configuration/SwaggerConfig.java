@@ -16,6 +16,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
+	/**
+	 * @return item Docket
+	 */
 	@Bean
 	public Docket productApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -25,6 +29,10 @@ public class SwaggerConfig {
 			.apiInfo(infoSection());
 	}
 
+
+	/**
+	 * @return item ApiInfo
+	 */
 	private ApiInfo infoSection()
 	{
 		return new ApiInfo("Yugioh API", "Desc", "v1.0", "Terms", new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com"), "Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>());

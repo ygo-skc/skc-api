@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
-public class BanListController
+public class BanListDatesController
 {
 	@Autowired
 	private BanListService banListService;
@@ -40,6 +40,10 @@ public class BanListController
 	private static final Logger LOG = LogManager.getLogger();
 
 
+
+	/**
+	 * @return item
+	 */
 	@GetMapping()
 	@ApiOperation(value = "Get dates of ban lists stored in database", response = ResponseEntity.class, tags = "Ban List")
 	@ApiResponses( value = {

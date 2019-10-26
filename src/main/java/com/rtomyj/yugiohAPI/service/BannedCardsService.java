@@ -12,10 +12,16 @@ import java.util.List;
 public class BannedCardsService
 {
 	@Autowired
-	@Qualifier("mysql_jdbc")
+	@Qualifier("jdbc")
 	private Dao dao;
 
 
+
+	/**
+	 * @param date
+	 * @param status
+	 * @return item
+	 */
 	public List<Card> getBanListByBanStatus(String date, String status)
 	{
 		return dao.getBanListByBanStatus(date, status);

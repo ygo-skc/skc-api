@@ -17,13 +17,17 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 @Repository()
-@Qualifier("mysql_jdbc")
+@Qualifier("jdbc")
 public class JDBCDao implements Dao
 {
 	@Autowired
 	JdbcTemplate jdbcConn;
 
 
+
+	/**
+	 * @return item
+	 */
 	@Override
 	public List<BanLists> getBanListStartDates()
 	{
@@ -31,6 +35,11 @@ public class JDBCDao implements Dao
 	}
 
 
+
+	/**
+	 * @param cardID
+	 * @return item
+	 */
 	@Override
 	public Card getCardInfo(String cardID)
 	{
@@ -59,6 +68,12 @@ public class JDBCDao implements Dao
 	}
 
 
+
+	/**
+	 * @param date
+	 * @param status
+	 * @return item
+	 */
 	@Override
 	public List<Card> getBanListByBanStatus(String date, String status)
 	{

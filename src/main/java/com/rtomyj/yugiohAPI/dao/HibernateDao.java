@@ -22,22 +22,31 @@ public class HibernateDao implements Dao
 	private EntityManagerFactory entityManagerFactory;
 
 
+
+	/**
+	 * @return item
+	 */
 	@Override
 	public List<BanLists> getBanListStartDates() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		CriteriaBuilder cb = entityManagerFactory.getCriteriaBuilder();
+		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
-		CriteriaQuery<BanLists> q = cb.createQuery(BanLists.class);
-		Root<BanLists> c = q.from(BanLists.class);
-		q.select(c.get("banListDate")).distinct(true);
-		q.orderBy(cb.desc(c.get("banListDate")));
-		List<BanLists> l = session.createQuery(q).getResultList();
+		CriteriaQuery<BanLists> criteriaQuery = criteriaBuilder.createQuery(BanLists.class);
+		Root<BanLists> root = criteriaQuery.from(BanLists.class);
+		criteriaQuery.select(root.get("banListDate")).distinct(true);
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
+		List<BanLists> results = session.createQuery(criteriaQuery).getResultList();
 
 		session.close();
-		return l;
+		return results;
 	}
 
 
+
+	/**
+	 * @param cardID
+	 * @return item
+	 */
 	@Override
 	public Card getCardInfo(String cardID)
 	{
@@ -45,6 +54,12 @@ public class HibernateDao implements Dao
 	}
 
 
+
+	/**
+	 * @param date
+	 * @param status
+	 * @return item
+	 */
 	@Override
 	public List<Card> getBanListByBanStatus(String date, String status)
 	{

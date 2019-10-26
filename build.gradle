@@ -13,12 +13,19 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+	build {
+		java.srcDir file('src/main/java')
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
+	implementation 'org.apache.maven.plugins:maven-javadoc-plugin:3.0.0'
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -30,7 +37,6 @@ configurations {
 	implementation {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
-
 }
 
 jar {
@@ -42,4 +48,8 @@ jar {
 	manifest {
 			attributes 'Implementation-Title': 'Yugioh_API'
 	}
+}
+
+task createJavadocs(type: Javadoc) {
+	source 'sourceSets.main.allJava'
 }

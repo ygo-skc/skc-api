@@ -30,31 +30,55 @@ public class BanLists implements Serializable {
 	private String banStatus;
 
 
+
+	/**
+	 * @return item
+	 */
 	public String getCardNumber() {
 		return cardNumber;
 	}
 
 
+
+	/**
+	 * @return item
+	 */
 	public String getBanStatus() {
 		return banStatus;
 	}
 
 
+
+	/**
+	 * @param banStatus
+	 */
 	public void setBanStatus(String banStatus) {
 		this.banStatus = banStatus;
 	}
 
 
+
+	/**
+	 * @return item
+	 */
 	public Date getBanListDate() {
 		return banListDate;
 	}
 
 
+
+	/**
+	 * @param banListDate
+	 */
 	public void setBanListDate(Date banListDate) {
 		this.banListDate = banListDate;
 	}
 
 
+
+	/**
+	 * @param cardNumber
+	 */
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}

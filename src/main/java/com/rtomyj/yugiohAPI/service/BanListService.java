@@ -17,6 +17,10 @@ public class BanListService
 	private Dao dao;
 
 
+
+	/**
+	 * @return item
+	 */
 	public List<BanLists> getBanListStartDates()
 	{
 		return dao.getBanListStartDates();

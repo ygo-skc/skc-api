@@ -6,21 +6,67 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class defines properties a Yugioh card can contain
+ */
 public class Card
 {
-
+	/**
+	 * Used to create a Card instance
+	 */
 	public static class Builder
 	{
-		private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
+		/** Name of the card */
+		private String cardName;
+		private String monsterType, cardColor, cardEffect, cardID, cardAttribute;
 		private int monsterAttack, monsterDefense;
 
+		/**
+		 * @param cardName The name of the card.
+		 * @return This Builder object.
+		 */
 		public Builder cardName(String cardName) {this.cardName = cardName; return this;}
+
+		/**
+		 * @param monsterType The type of monster card.
+		 * @return This Builder object.
+		 */
 		public Builder monsterType(String monsterType) {this.monsterType = monsterType; return this;}
+
+		/**
+		 * @param cardColor The color of the card.
+		 * @return This Builder object.
+		 */
 		public Builder cardColor(String cardColor) {this.cardColor = cardColor; return this;}
+
+		/**
+		 * @param cardEffect The effect of the card.
+		 * @return This Builder object.
+		 */
 		public Builder cardEffect(String cardEffect) {this.cardEffect = cardEffect; return this;}
+
+		/**
+		 * @param cardID The ID of the card (bottom of card).
+		 * @return This Builder object.
+		 */
 		public Builder cardID(String cardID) {this.cardID = cardID; return this;}
+
+		/**
+		 * @param cardAttribute The attribute of the card.
+		 * @return This Builder object.
+		 */
 		public Builder cardAttribute(String cardAttribute) {this.cardAttribute = cardAttribute; return this;}
+
+		/**
+		 * @param monsterAttack The attack of the card (if it is a monster card).
+		 * @return This Builder object.
+		 */
 		public Builder monsterAttack(int monsterAttack) {this.monsterAttack = monsterAttack; return this;}
+
+		/**
+		 * @param monsterDefense The defense of the card (if it is a monster card).
+		 * @return This Builder object.
+		 */
 		public Builder monsterDefense(int monsterDefense) {this.monsterDefense = monsterDefense; return this;}
 
 		public Card build()
@@ -42,13 +88,25 @@ public class Card
 	}
 
 
-	private String cardName, monsterType, cardColor, cardEffect, cardID, cardAttribute;
+	/** Name of the card */
+	private String cardName;
+	private String monsterType, cardColor, cardEffect, cardID, cardAttribute;
 	private int monsterAttack, monsterDefense;
 
 
+
+	/**
+	 * Default constructor
+	 */
 	public Card() {}
 
 
+
+	/**
+	 * Transforms a List of Cards to a List of Maps that contain the props of each Card.
+	 * @param cards The List of Cards to transform into Maps
+	 * @return The List of Maps where each list item corresponds to a Card
+	 */
 	public static List<Map<String, String>> toHashMap(List<Card> cards)
 	{
 		List<Map<String, String>> cardHashMapList = new ArrayList<>();
@@ -68,6 +126,12 @@ public class Card
 	}
 
 
+
+	/**
+	 * Transforms a Card object into a Map where each key is a prop and the value is the current prop value of the Card object.
+	 * @param card Instance to transform into Map
+	 * @return Map where the key is the prop and the value is the props value
+	 */
 	public static Map<String, String> toHashMap(Card card)
 	{
 		Map<String, String> cardInfo = new LinkedHashMap<>();

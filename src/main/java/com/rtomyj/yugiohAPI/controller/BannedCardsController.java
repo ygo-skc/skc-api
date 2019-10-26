@@ -43,6 +43,10 @@ public class BannedCardsController {
 	private static final Logger LOG = LogManager.getLogger();
 
 
+
+	/**
+	 * @return item
+	 */
 	@ResponseBody
 	@GetMapping(path = "{startDate}")
 	@ApiOperation(value = "Retrieve the full ban list of a specified {startDate}", response = ResponseEntity.class, tags = "Ban List")

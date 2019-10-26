@@ -11,10 +11,15 @@ import org.springframework.stereotype.Service;
 public class CardService
 {
 	@Autowired
-	@Qualifier("mysql_jdbc")
+	@Qualifier("jdbc")
 	private Dao dao;
 
 
+
+	/**
+	 * @param cardID
+	 * @return item
+	 */
 	public Card getCardInfo(String cardID)
 	{
 		return dao.getCardInfo(cardID);

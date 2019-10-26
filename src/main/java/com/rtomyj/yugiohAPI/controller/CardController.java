@@ -38,6 +38,10 @@ public class CardController
 	private static final Logger LOG = LogManager.getLogger();
 
 
+
+	/**
+	 * @return item
+	 */
 	@GetMapping("{cardID}")
 	@ApiOperation(value = "Get information about a specific card", response = ResponseEntity.class, tags = "Card")
 	@ApiResponses(value = {
