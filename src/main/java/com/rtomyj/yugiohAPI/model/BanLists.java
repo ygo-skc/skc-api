@@ -11,6 +11,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 
+/**
+ * Entity used to make DB calls with Hibernate on the ban_lists table.
+ */
 @Entity
 @Table(name = "ban_lists", schema = "yugioh_API_DB")
 public class BanLists implements Serializable {
@@ -32,7 +35,8 @@ public class BanLists implements Serializable {
 
 
 	/**
-	 * @return item
+	 * Get card number.
+	 * @return Card number.
 	 */
 	public String getCardNumber() {
 		return cardNumber;
@@ -41,7 +45,8 @@ public class BanLists implements Serializable {
 
 
 	/**
-	 * @return item
+	 * Get ban status
+	 * @return Ban status.
 	 */
 	public String getBanStatus() {
 		return banStatus;
@@ -50,7 +55,8 @@ public class BanLists implements Serializable {
 
 
 	/**
-	 * @param banStatus
+	 * Set ban status.
+	 * @param banStatus Ban Status.
 	 */
 	public void setBanStatus(String banStatus) {
 		this.banStatus = banStatus;
@@ -59,7 +65,8 @@ public class BanLists implements Serializable {
 
 
 	/**
-	 * @return item
+	 * Get ban list date.
+	 * @return Date of the ban list.
 	 */
 	public Date getBanListDate() {
 		return banListDate;
@@ -68,7 +75,8 @@ public class BanLists implements Serializable {
 
 
 	/**
-	 * @param banListDate
+	 * Set ban list date
+	 * @param banListDate Date of the ban list.
 	 */
 	public void setBanListDate(Date banListDate) {
 		this.banListDate = banListDate;
@@ -77,7 +85,8 @@ public class BanLists implements Serializable {
 
 
 	/**
-	 * @param cardNumber
+	 * Set card number
+	 * @param cardNumber Card number.
 	 */
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;

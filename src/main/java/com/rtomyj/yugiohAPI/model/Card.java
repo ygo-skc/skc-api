@@ -69,6 +69,10 @@ public class Card
 		 */
 		public Builder monsterDefense(int monsterDefense) {this.monsterDefense = monsterDefense; return this;}
 
+		/**
+		 * Uses this builder instance to create a new Card instance.
+		 * @return New Card instance.
+		 */
 		public Card build()
 		{
 			Card card = new Card();
@@ -86,6 +90,7 @@ public class Card
 			return card;
 		}
 	}
+
 
 
 	/** Name of the card */

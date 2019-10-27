@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.service;
 
 import com.rtomyj.yugiohAPI.dao.Dao;
+import com.rtomyj.yugiohAPI.dao.Dao.Status;
 import com.rtomyj.yugiohAPI.model.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +23,7 @@ public class BannedCardsService
 	 * @param status
 	 * @return item
 	 */
-	public List<Card> getBanListByBanStatus(String date, String status)
+	public List<Card> getBanListByBanStatus(String date, Status status)
 	{
 		return dao.getBanListByBanStatus(date, status);
 	}

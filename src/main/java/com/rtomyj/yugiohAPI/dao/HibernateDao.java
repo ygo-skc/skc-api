@@ -61,7 +61,7 @@ public class HibernateDao implements Dao
 	 * @return item
 	 */
 	@Override
-	public List<Card> getBanListByBanStatus(String date, String status)
+	public List<Card> getBanListByBanStatus(String date, Status status)
 	{
 		return null;
 	}
