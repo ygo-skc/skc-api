@@ -1,5 +1,7 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import com.rtomyj.yugiohAPI.dao.Dao.Status;
+import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.BannedCardsService;
 
@@ -42,6 +44,8 @@ public class BannedCardsController {
 
 	private static final Logger LOG = LogManager.getLogger();
 
+	private static Map<String, Map<String, Map<String, List<Map<String, String>>>>> cache = new HashMap();
+
 
 
 	/**
@@ -61,31 +65,43 @@ public class BannedCardsController {
 		if (! datePattern.matcher(startDate).matches())
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(String.format("%s/{ %s } hit - responding with: { %s }", endPoint, startDate, status));
+			LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
 			return new ResponseEntity<>(status);
 		}
 
 
-		Map<String, Map<String, List<Map<String, String>>>> banList = new HashMap<>();
-		Map<String, List<Map<String, String>>> banListSections = new LinkedHashMap<>();
-
-		banListSections.put("forbidden", Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, "Forbidden")));
-		banListSections.put("limited", Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, "Limited")));
-		banListSections.put("semiLimited", Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, "Semi-Limited")));
-
-
-		if (banListSections.get("forbidden").size() == 0 && banListSections.get("limited").size() == 0 && banListSections.get("semiLimited").size() == 0)
+		if (cache.get(startDate) != null)
 		{
-			HttpStatus status = HttpStatus.NO_CONTENT;
-			LOG.info(String.format("%s/{ %s } hit - responding with: { %s }", endPoint, startDate, status));
-			return new ResponseEntity<>(status);
+			HttpStatus status = HttpStatus.OK;
+			LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Retrieved from cache: Responding with: { %s }", status)));
+
+			return new ResponseEntity<>(cache.get(startDate), status);
 		}
 		else
 		{
-			HttpStatus status = HttpStatus.OK;
-			LOG.info(String.format("%s %s/{ %s } hit - responding with: { %s }", request.getRemoteHost(), endPoint, startDate, status));
-			banList.put("bannedCards", banListSections);
-			return new ResponseEntity<>(banList, status);
+			Map<String, Map<String, List<Map<String, String>>>> banList = new HashMap<>();
+			Map<String, List<Map<String, String>>> banListSections = new LinkedHashMap<>();
+
+			banListSections.put("forbidden",
+					Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, Status.FORBIDDEN)));
+			banListSections.put("limited",
+					Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, Status.LIMITED)));
+			banListSections.put("semiLimited",
+					Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, Status.SEMI_LIMITED)));
+
+			if (banListSections.get("forbidden").size() == 0 && banListSections.get("limited").size() == 0
+					&& banListSections.get("semiLimited").size() == 0) {
+				HttpStatus status = HttpStatus.NO_CONTENT;
+				LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+				return new ResponseEntity<>(status);
+			} else {
+				HttpStatus status = HttpStatus.OK;
+				LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+				banList.put("bannedCards", banListSections);
+
+				cache.put(startDate, banList);
+				return new ResponseEntity<>(banList, status);
+			}
 		}
 	}
 }
