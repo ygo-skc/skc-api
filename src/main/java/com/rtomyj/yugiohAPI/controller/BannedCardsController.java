@@ -44,7 +44,7 @@ public class BannedCardsController {
 
 	private static final Logger LOG = LogManager.getLogger();
 
-	private static Map<String, Map<String, Map<String, List<Map<String, String>>>>> cache = new HashMap();
+	private static Map<String, Map<String, Map<String, List<Map<String, String>>>>> cache = new HashMap<>();
 
 
 
