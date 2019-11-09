@@ -82,3 +82,27 @@ VALUES (
 During your Main Phase: You can send 1 'The Phantom Knights' monster from your Deck to the GY, Set 1 'Phantom Knights' Spell/Trap directly from your Deck in your Spell & Trap Zone. If a DARK Xyz Monster(s) is Special Summoned to a zone(s) this card points to while this card is on the field, except during the Damage Step: You can target 1 card on the field; destroy it. You can only use each effect of 'The Phantom Knights of Rusty Bardiche' once per turn. Cannot be used as Link Material."
 	, 'Warrior/Link/Effect', 2100, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'59537380', (select color_id from card_colors where card_color = 'Link'), 'Guardragon Agarpain', 'Dark',
+	"2 Dragon monsters
+You cannot Special Summon monsters, except Dragon monsters. During your Main Phase: You can Special Summon 1 Dragon monster from your Extra Deck, to an Extra Monster Zone or Main Monster Zone you can Summon to, that 2 or more Link Monsters point to. You can only use this effect of “Guardragon Agarpain” once per turn. You can only Special Summon “Guardragon Agarpain(s)” once per turn."
+	, 'Dragon/Link/Effect', 1500, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'03679218', (select color_id from card_colors where card_color = 'Link'), 'Knightmare Mermaid', 'Water',
+	"1 'Knightmare' monster, except 'Knightmare Mermaid'
+If this card is Link Summoned: You can discard 1 card; Special Summon 1 'Knightmare' monster from your Deck, then if this card was co-linked when this effect was activated, you can draw 1 card. You can only use this effect of 'Knightmare Mermaid' once per turn. Monsters on the field lose 1000 ATK/DEF, unless they are co-linked."
+	, 'Fiend/Link/Effect', 1000, null
+);
