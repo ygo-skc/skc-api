@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.service.BanListService;
 
@@ -37,7 +40,12 @@ public class BanListDatesController
 	@Value("${ygo.endpoints.ban-list-dates-v1}")
 	private String endPoint;
 
+	@Autowired
+	private HttpServletRequest httpRequest;
+
 	private static final Logger LOG = LogManager.getLogger();
+
+	private static final Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE = new HashMap<>();
 
 
 
@@ -52,12 +60,15 @@ public class BanListDatesController
 	)
 	public ResponseEntity<Map<String, List<BanLists>>> startDatesOfBanLists()
 	{
-		List<BanLists> banStartDates = (ArrayList<BanLists>) banListService.getBanListStartDates();
-		HashMap<String, List<BanLists>> response = new HashMap<>();
-		response.put("banListStartDates", banStartDates);
+		if (BAN_LISTS_START_DATES_CACHE.size() == 0)
+		{
+			List<BanLists> banStartDates = (ArrayList<BanLists>) banListService.getBanListStartDates();
+			BAN_LISTS_START_DATES_CACHE.put("banListStartDates", banStartDates);
+		}
+
 
 		HttpStatus status = HttpStatus.OK;
-		LOG.info(String.format("%s hit - responding with: %s", endPoint, status));
-		return new ResponseEntity<>(response, status);
+		LOG.info(LogHelper.requestInfo(httpRequest.getRemoteHost(), endPoint, String.format("Responding with { %s }", status)));
+		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
 	}
 }

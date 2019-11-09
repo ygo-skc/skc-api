@@ -44,7 +44,7 @@ public class BannedCardsController {
 
 	private static final Logger LOG = LogManager.getLogger();
 
-	private static Map<String, Map<String, Map<String, List<Map<String, String>>>>> cache = new HashMap<>();
+	private static final Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE = new HashMap<>();
 
 
 
@@ -59,7 +59,7 @@ public class BannedCardsController {
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure startDate is valid")
 	})
-	public ResponseEntity<Map<String, Map<String, List<Map<String, String>>>>> getBannedCards(@PathVariable String startDate)
+	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate)
 	{
 		Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
 		if (! datePattern.matcher(startDate).matches())
@@ -70,24 +70,21 @@ public class BannedCardsController {
 		}
 
 
-		if (cache.get(startDate) != null)
+		if (BAN_LIST_CARDS_CACHE.get(startDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Retrieved from cache: Responding with: { %s }", status)));
+			LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Retrieved from BAN_LIST_CARDS_CACHE: Responding with: { %s }", status)));
 
-			return new ResponseEntity<>(cache.get(startDate), status);
+			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(startDate), status);
 		}
 		else
 		{
-			Map<String, Map<String, List<Map<String, String>>>> banList = new HashMap<>();
-			Map<String, List<Map<String, String>>> banListSections = new LinkedHashMap<>();
+			Map<String, Map<String, List<Card>>> banList = new HashMap<>();
+			Map<String, List<Card>> banListSections = new LinkedHashMap<>();
 
-			banListSections.put("forbidden",
-					Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, Status.FORBIDDEN)));
-			banListSections.put("limited",
-					Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, Status.LIMITED)));
-			banListSections.put("semiLimited",
-					Card.toHashMap(bannedCardsService.getBanListByBanStatus(startDate, Status.SEMI_LIMITED)));
+			banListSections.put("forbidden", bannedCardsService.getBanListByBanStatus(startDate, Status.FORBIDDEN));
+			banListSections.put("limited", bannedCardsService.getBanListByBanStatus(startDate, Status.LIMITED));
+			banListSections.put("semiLimited", bannedCardsService.getBanListByBanStatus(startDate, Status.SEMI_LIMITED));
 
 			if (banListSections.get("forbidden").size() == 0 && banListSections.get("limited").size() == 0
 					&& banListSections.get("semiLimited").size() == 0) {
@@ -99,7 +96,7 @@ public class BannedCardsController {
 				LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
 				banList.put("bannedCards", banListSections);
 
-				cache.put(startDate, banList);
+				BAN_LIST_CARDS_CACHE.put(startDate, banList);
 				return new ResponseEntity<>(banList, status);
 			}
 		}
