@@ -735,3 +735,25 @@ VALUES (
 	"When this card is activated: You can add 1 'Trickstar' monster from your Deck to your hand. Once per turn: You can target 1 Set card in your opponent's Spell & Trap Zone; while this card is in the Field Zone, that Set card cannot be activated until the End Phase, and your opponent must activate it during the End Phase or else send it to the GY. Each time a 'Trickstar' monster you control inflicts battle or effect damage to your opponent, inflict 200 damage to them."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'98338152', (select color_id from card_colors where card_color = 'Spell'), "Sky Striker Mecha - Widow Anchor", 'Spell',
+	"If you control no monsters in your Main Monster Zones: Target 1 Effect Monster on the field; negate that face-up monster's effects until the end of this turn, then, if you have 3 or more Spells in your GY, you can take control of that monster until the End Phase."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'24010609', (select color_id from card_colors where card_color = 'Spell'), "Sky Striker Mecha Modules - Multirole", 'Spell',
+	"Once per turn: You can target 1 other card you control; send that card to the GY, also your opponent cannot activate cards or effects in response to your Spell Card activations for the rest of this turn (even if this cards leaves the field). Once per turn, during the End Phase: You can Set 'Sky Striker' Spells with different names from your GY, up to the number of 'Sky Striker' Spell Cards you activated this turn while this card was face-up on the field, but banish them when they leave the field."
+	, null, null, null
+);

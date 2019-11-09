@@ -14,3 +14,4 @@ mysql -fu root < "cards_trap.sql"
 
 mysql -fu root < "2019-04-29_ban_list.sql"
 mysql -fu root < "2019-07-15_ban_list.sql"
+mysql -fu root < "2019-10-14_ban_list.sql"

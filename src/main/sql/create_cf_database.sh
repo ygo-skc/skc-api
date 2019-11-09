@@ -14,3 +14,4 @@ cf mysql YGO_API_DB -f < "cards_trap.sql"
 
 cf mysql YGO_API_DB -f < "2019-04-29_ban_list.sql"
 cf mysql YGO_API_DB -f < "2019-07-15_ban_list.sql"
+cf mysql YGO_API_DB -f < "2019-10-14_ban_list.sql"
