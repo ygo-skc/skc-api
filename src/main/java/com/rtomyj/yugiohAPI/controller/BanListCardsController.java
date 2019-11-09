@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @CrossOrigin(origins = "*")
 @Api(tags = "Ban List")
-public class BannedCardsController {
+public class BanListCardsController {
 	@Autowired
 	private BannedCardsService bannedCardsService;
 
