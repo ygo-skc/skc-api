@@ -10,10 +10,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.Data;
+
 
 /**
  * Entity used to make DB calls with Hibernate on the ban_lists table.
  */
+@Data
 @Entity
 @Table(name = "ban_lists", schema = "yugioh_API_DB")
 public class BanLists implements Serializable {
@@ -31,65 +34,4 @@ public class BanLists implements Serializable {
 
 	@Column(name = "ban_status", length=15)
 	private String banStatus;
-
-
-
-	/**
-	 * Get card number.
-	 * @return Card number.
-	 */
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-
-
-	/**
-	 * Get ban status
-	 * @return Ban status.
-	 */
-	public String getBanStatus() {
-		return banStatus;
-	}
-
-
-
-	/**
-	 * Set ban status.
-	 * @param banStatus Ban Status.
-	 */
-	public void setBanStatus(String banStatus) {
-		this.banStatus = banStatus;
-	}
-
-
-
-	/**
-	 * Get ban list date.
-	 * @return Date of the ban list.
-	 */
-	public Date getBanListDate() {
-		return banListDate;
-	}
-
-
-
-	/**
-	 * Set ban list date
-	 * @param banListDate Date of the ban list.
-	 */
-	public void setBanListDate(Date banListDate) {
-		this.banListDate = banListDate;
-	}
-
-
-
-	/**
-	 * Set card number
-	 * @param cardNumber Card number.
-	 */
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
 }

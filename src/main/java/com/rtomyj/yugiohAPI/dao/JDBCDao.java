@@ -52,7 +52,7 @@ public class JDBCDao implements Dao
 				{
 					if (row.next())
 					{
-						return new Card.Builder().cardName(row.getString(1))
+						return Card.builder().cardName(row.getString(1))
 							.monsterType(row.getString(2))
 							.cardColor(row.getString(3))
 							.cardEffect(row.getString(4))
@@ -86,7 +86,7 @@ public class JDBCDao implements Dao
 					List<Card> cardList = new ArrayList<>();
 					while (row.next()) {
 						cardList.add(
-							new Card.Builder().cardName(row.getString(1))
+							Card.builder().cardName(row.getString(1))
 								.monsterType(row.getString(2))
 								.cardColor(row.getString(3))
 								.cardEffect(row.getString(4))

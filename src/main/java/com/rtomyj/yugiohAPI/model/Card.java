@@ -6,104 +6,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Builder;
+import lombok.Data;
+
 /**
  * Class defines properties a Yugioh card can contain
  */
+@Data
+@Builder
 public class Card
 {
-	/**
-	 * Used to create a Card instance
-	 */
-	public static class Builder
-	{
-		/** Name of the card */
-		private String cardName;
-		private String monsterType, cardColor, cardEffect, cardID, cardAttribute;
-		private int monsterAttack, monsterDefense;
-
-		/**
-		 * @param cardName The name of the card.
-		 * @return This Builder object.
-		 */
-		public Builder cardName(String cardName) {this.cardName = cardName; return this;}
-
-		/**
-		 * @param monsterType The type of monster card.
-		 * @return This Builder object.
-		 */
-		public Builder monsterType(String monsterType) {this.monsterType = monsterType; return this;}
-
-		/**
-		 * @param cardColor The color of the card.
-		 * @return This Builder object.
-		 */
-		public Builder cardColor(String cardColor) {this.cardColor = cardColor; return this;}
-
-		/**
-		 * @param cardEffect The effect of the card.
-		 * @return This Builder object.
-		 */
-		public Builder cardEffect(String cardEffect) {this.cardEffect = cardEffect; return this;}
-
-		/**
-		 * @param cardID The ID of the card (bottom of card).
-		 * @return This Builder object.
-		 */
-		public Builder cardID(String cardID) {this.cardID = cardID; return this;}
-
-		/**
-		 * @param cardAttribute The attribute of the card.
-		 * @return This Builder object.
-		 */
-		public Builder cardAttribute(String cardAttribute) {this.cardAttribute = cardAttribute; return this;}
-
-		/**
-		 * @param monsterAttack The attack of the card (if it is a monster card).
-		 * @return This Builder object.
-		 */
-		public Builder monsterAttack(int monsterAttack) {this.monsterAttack = monsterAttack; return this;}
-
-		/**
-		 * @param monsterDefense The defense of the card (if it is a monster card).
-		 * @return This Builder object.
-		 */
-		public Builder monsterDefense(int monsterDefense) {this.monsterDefense = monsterDefense; return this;}
-
-		/**
-		 * Uses this builder instance to create a new Card instance.
-		 * @return New Card instance.
-		 */
-		public Card build()
-		{
-			Card card = new Card();
-			// String
-			card.cardName = this.cardName;
-			card.monsterType = this.monsterType;
-			card.cardColor = this.cardColor;
-			card.cardEffect = this.cardEffect;
-			card.cardID = this.cardID;
-			card.cardAttribute = this.cardAttribute;
-
-			// Ints
-			card.monsterAttack = this.monsterAttack;
-			card.monsterDefense = this.monsterDefense;
-			return card;
-		}
-	}
-
-
-
 	/** Name of the card */
 	private String cardName;
-	private String monsterType, cardColor, cardEffect, cardID, cardAttribute;
-	private int monsterAttack, monsterDefense;
-
-
-
-	/**
-	 * Default constructor
-	 */
-	public Card() {}
+	private String monsterType;
+	private String cardColor;
+	private String cardEffect;
+	private String cardID;
+	private String cardAttribute;
+	private int monsterAttack;
+	private int monsterDefense;
 
 
 

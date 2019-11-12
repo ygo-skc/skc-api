@@ -35,3 +35,5 @@ bin/
 
 ### Mac ###
 .DS_Store
+
+application.yml
