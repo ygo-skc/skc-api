@@ -1,5 +1,8 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import com.rtomyj.yugiohAPI.service.BanListNewContentService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/ban_list_new_content", produces = "application/json; charset=UTF-8")
-public class BanListNewContent
+public class BanListNewContentController
 {
+	@Autowired
+	private BanListNewContentService newContentService;
 
-	@GetMapping(path = "{banListDate}")
-	public ResponseEntity<String> getNewContent(@PathVariable String banListDate)
+	@GetMapping(path = "/{banListDate}")
+	public ResponseEntity<Integer> getNewContent(@PathVariable String banListDate)
 	{
-		return new ResponseEntity<>(banListDate, HttpStatus.OK);
+		return new ResponseEntity<>(newContentService.getBanListPosition(), HttpStatus.OK);
 	}
 }

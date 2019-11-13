@@ -65,4 +65,24 @@ public class HibernateDao implements Dao
 	{
 		return null;
 	}
+
+
+
+	/**
+	 *
+	 */
+	public int getNumberOfBanLists()
+	{
+		return 0;
+	}
+
+
+
+	/**
+	 *
+	 */
+	public int getBanListPosition()
+	{
+		return 0;
+	}
 }

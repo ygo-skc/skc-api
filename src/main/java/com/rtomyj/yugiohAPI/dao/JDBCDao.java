@@ -79,7 +79,7 @@ public class JDBCDao implements Dao
 	{
 		return jdbcConn.query(
 			"SELECT card_name, monster_type, card_colors.card_color, card_effect, cards.card_number FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = '"
-					+ status.toString() + "' AND ban_list_date = '" + date + "' ORDER BY card_colors.card_color, card_name;",
+					+ status.toString() + "' AND ban_list_date = '" + date + "' ORDER BY card_colors.card_color, card_name",
 			new ResultSetExtractor<List<Card>>() {
 				@Override
 				public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
@@ -96,5 +96,44 @@ public class JDBCDao implements Dao
 					return cardList;
 				}
 			});
+	}
+
+
+
+	/**
+	*
+	*/
+	public int getNumberOfBanLists() {
+
+		String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
+		return jdbcConn.query(query, new ResultSetExtractor<Integer>() {
+
+			@Override
+			public Integer extractData(ResultSet row) throws SQLException, DataAccessException {
+				if (row.next())	return Integer.parseInt(row.getString(1));
+
+				return 0;
+			}
+		});
+	}
+
+
+
+	/**
+	 *
+	 */
+	public int getBanListPosition()
+	{
+		String query = "SELECT row_num FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter) AS sorted WHERE ban_list_date = '2019-07-15'";
+		return jdbcConn.query(query, new ResultSetExtractor<Integer>(){
+
+			@Override
+			public Integer extractData(ResultSet row) throws SQLException, DataAccessException {
+				if (row.next())	return (int) Float.parseFloat(row.getString(1));	// somehow row_num is treated as a float
+
+				return 0;
+			}
+
+		});
 	}
 }

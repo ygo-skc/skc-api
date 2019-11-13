@@ -38,12 +38,16 @@ public interface Dao
 	 */
 	public List<BanLists> getBanListStartDates();
 
+
+
 	/**
 	 * Retrieve the information about a Card given the ID.
 	 * @param cardID The ID of a Yugioh card.
 	 * @return The Card requested.
 	 */
 	public Card getCardInfo(String cardID);
+
+
 
 	/**
 	 *
@@ -52,4 +56,18 @@ public interface Dao
 	 * @return List of Cards that have the status wanted for the desired date.
 	 */
 	public List<Card> getBanListByBanStatus(String date, Status status);
+
+
+
+	/**
+	 *
+	 */
+	public int getNumberOfBanLists();
+
+
+
+	/**
+	 *
+	 */
+	public int getBanListPosition();
 }
