@@ -69,5 +69,19 @@ public interface Dao
 	/**
 	 *
 	 */
-	public int getBanListPosition();
+	public int getBanListPosition(String banListDate);
+
+
+
+	/**
+	 *
+	 */
+	public String getPreviousBanList(String currentBanList);
+
+
+
+	/**
+	 *
+	 */
+	public List<String> getNewContentFromBanList(String banListDate, String status);
 }

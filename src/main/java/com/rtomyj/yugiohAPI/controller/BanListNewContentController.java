@@ -20,6 +20,7 @@ public class BanListNewContentController
 	@GetMapping(path = "/{banListDate}")
 	public ResponseEntity<Integer> getNewContent(@PathVariable String banListDate)
 	{
-		return new ResponseEntity<>(newContentService.getBanListPosition(), HttpStatus.OK);
+		System.out.println(newContentService.getNewContentFromBanList(banListDate, "Forbidden"));
+		return new ResponseEntity<>(newContentService.getBanListPosition(banListDate), HttpStatus.OK);
 	}
 }

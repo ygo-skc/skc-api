@@ -1,5 +1,7 @@
 package com.rtomyj.yugiohAPI.service;
 
+import java.util.List;
+
 import com.rtomyj.yugiohAPI.dao.Dao;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,8 +22,19 @@ public class BanListNewContentService
 	}
 
 
-	public int getBanListPosition()
+	public int getBanListPosition(String banListDate)
 	{
-		return dao.getBanListPosition();
+		return dao.getBanListPosition(banListDate);
+	}
+
+
+	public List<String> getNewContentFromBanList(String banListDate, String status)
+	{
+		return dao.getNewContentFromBanList(banListDate, status);
+	}
+
+
+	public String getPreviousBanList(String currentBanList) {
+		return dao.getPreviousBanList(currentBanList);
 	}
 }
