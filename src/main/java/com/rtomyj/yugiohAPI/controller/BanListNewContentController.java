@@ -1,5 +1,9 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.rtomyj.yugiohAPI.service.BanListNewContentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +22,12 @@ public class BanListNewContentController
 	private BanListNewContentService newContentService;
 
 	@GetMapping(path = "/{banListDate}")
-	public ResponseEntity<Integer> getNewContent(@PathVariable String banListDate)
+	public ResponseEntity<Map<String, List<String>>> getNewContent(@PathVariable String banListDate)
 	{
-		System.out.println(newContentService.getNewContentFromBanList(banListDate, "Forbidden"));
-		return new ResponseEntity<>(newContentService.getBanListPosition(banListDate), HttpStatus.OK);
+		Map<String, List<String>> newContent = new HashMap<>();
+		newContent.put("Forbidden", newContentService.getNewContentFromBanList(banListDate, "Forbidden"));
+		newContent.put("Limited", newContentService.getNewContentFromBanList(banListDate, "Limited"));
+		newContent.put("Semi-Limited", newContentService.getNewContentFromBanList(banListDate, "Semi-Limited"));
+		return new ResponseEntity<>(newContent, HttpStatus.OK);
 	}
 }
