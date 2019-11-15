@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
@@ -100,5 +101,14 @@ public class BanListCardsController {
 				return new ResponseEntity<>(banList, status);
 			}
 		}
+	}
+
+
+
+	@Scheduled(fixedRate = 1000 * 60 * 60)
+	public void invalidateCache()
+	{
+		LOG.info("Removing ban list content from cache.");
+		BAN_LIST_CARDS_CACHE.clear();
 	}
 }
