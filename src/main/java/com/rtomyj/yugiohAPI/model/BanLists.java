@@ -14,7 +14,7 @@ import lombok.Data;
 
 
 /**
- * Entity used to make DB calls with Hibernate on the ban_lists table.
+ * Entity describing the ban_lists table in mysql DB.
  */
 @Data
 @Entity
@@ -23,15 +23,24 @@ public class BanLists implements Serializable {
 
 	private static final long serialVersionUID = 3890245600312215281L;
 
+	/**
+	 * Start date of ban list.
+	 */
 	@Id
 	@Temporal(TemporalType.DATE)
 	@Column(name = "ban_list_date")
 	private Date banListDate;
 
+	/**
+	 * The ID of the card.
+	 */
 	@Id
 	@Column(name = "card_number", length=8)
 	private String cardNumber;
 
+	/**
+	 * Whether card is forbidden, limited, or semi-limited
+	 */
 	@Column(name = "ban_status", length=15)
 	private String banStatus;
 }

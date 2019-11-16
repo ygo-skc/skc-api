@@ -15,6 +15,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Hibernate implementation of DB DAO interface.
+ */
 @Repository("hibernate")
 public class HibernateDao implements Dao
 {
@@ -23,9 +26,6 @@ public class HibernateDao implements Dao
 
 
 
-	/**
-	 * @return item
-	 */
 	@Override
 	public List<BanLists> getBanListStartDates() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
@@ -43,10 +43,7 @@ public class HibernateDao implements Dao
 
 
 
-	/**
-	 * @param cardID
-	 * @return item
-	 */
+
 	@Override
 	public Card getCardInfo(String cardID)
 	{
@@ -55,11 +52,7 @@ public class HibernateDao implements Dao
 
 
 
-	/**
-	 * @param date
-	 * @param status
-	 * @return item
-	 */
+
 	@Override
 	public List<Card> getBanListByBanStatus(String date, Status status)
 	{

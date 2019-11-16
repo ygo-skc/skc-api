@@ -26,31 +26,45 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+/**
+ * Configures endpoint(s) for returning user the dates of the ban lists in the database.
+ */
 @RequestMapping(path = "${ygo.endpoints.ban-list-dates-v1}", produces = "application/json; charset=utf-8")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class BanListDatesController
 {
+	/**
+	 * Service object used to interface the database DAO
+	 */
 	@Autowired
 	private BanListService banListService;
 
+	/**
+	 * The base endpoint used by this controller.
+	 */
 	@Autowired
 	@Value("${ygo.endpoints.ban-list-dates-v1}")
 	private String endPoint;
 
+	/**
+	 * Object containing info about the request.
+	 */
 	@Autowired
 	private HttpServletRequest httpRequest;
 
 	private static final Logger LOG = LogManager.getLogger();
 
+	/**
+	 * Cache for storing previous queries
+	 */
 	private static final Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE = new HashMap<>();
 
 
-
 	/**
-	 * @return item
+	 * Looks in the database or cache for the start dates of all ban lists stored in database.
+	 * @return Map that contains a list of all dates of the ban lists in database.
 	 */
 	@GetMapping()
 	@ApiOperation(value = "Get dates of ban lists stored in database", response = ResponseEntity.class, tags = "Ban List")
@@ -60,6 +74,9 @@ public class BanListDatesController
 	)
 	public ResponseEntity<Map<String, List<BanLists>>> startDatesOfBanLists()
 	{
+		/**
+		 * If cache is empty, querying the DB is required. DB results are then cached.
+		 */
 		if (BAN_LISTS_START_DATES_CACHE.size() == 0)
 		{
 			List<BanLists> banStartDates = (ArrayList<BanLists>) banListService.getBanListStartDates();
@@ -67,8 +84,11 @@ public class BanListDatesController
 		}
 
 
+		/**
+		 * Configures the ResponseEntity to return,
+		 */
 		HttpStatus status = HttpStatus.OK;
-		LOG.info(LogHelper.requestInfo(httpRequest.getRemoteHost(), endPoint, String.format("Responding with { %s }", status)));
+		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), endPoint, String.format("Responding with { %s }", status)));
 		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
 	}
 }

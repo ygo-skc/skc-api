@@ -9,9 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service used to interface with the ban_lists table in DB.
+ */
 @Service
 public class BanListService
 {
+	/**
+	 * DB access object.
+	 */
 	@Autowired
 	@Qualifier("hibernate")
 	private Dao dao;
@@ -19,7 +25,7 @@ public class BanListService
 
 
 	/**
-	 * @return item
+	 * @return List of BanLists objects
 	 */
 	public List<BanLists> getBanListStartDates()
 	{

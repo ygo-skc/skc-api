@@ -65,9 +65,12 @@ public class BanListCardsController {
 
 	/**
 	 * User can get the contents of a ban list by the start date of the ban list.
-	 * User data will be validated. A regular expression is used to ensure that the user passed a valid date.
-	 * The ban list cache will be utilized to speed up delivery. If desired ban list contents are not in query
-	 * , the ban list contents will be fetched from DB.
+	 * User data will be validated. A regular expression is used to ensure that the
+	 * user passed a valid date. The ban list cache will be utilized to speed up
+	 * delivery. If desired ban list contents are not in query , the ban list
+	 * contents will be fetched from DB.
+	 *
+	 * @param startDate The date the desired ban list took effect.
 	 * @return ban list for specified ban list start date.
 	 */
 	@ResponseBody
@@ -87,7 +90,7 @@ public class BanListCardsController {
 		if (! datePattern.matcher(startDate).matches())
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
 			return new ResponseEntity<>(status);
 		}
 
@@ -98,7 +101,7 @@ public class BanListCardsController {
 		if (BAN_LIST_CARDS_CACHE.get(startDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Retrieved from BAN_LIST_CARDS_CACHE: Responding with: { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Retrieved from BAN_LIST_CARDS_CACHE: Responding with: { %s }", status)));
 
 			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(startDate), status);
 		}
@@ -124,7 +127,7 @@ public class BanListCardsController {
 					&& banListSections.get("semiLimited").size() == 0)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
 				return new ResponseEntity<>(status);
 			}
 			/*
@@ -133,7 +136,7 @@ public class BanListCardsController {
 			else
 			{
 				HttpStatus status = HttpStatus.OK;
-				LOG.info(LogHelper.requestInfo(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
 				banList.put("bannedCards", banListSections);
 
 				BAN_LIST_CARDS_CACHE.put(startDate, banList);
