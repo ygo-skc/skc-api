@@ -28,30 +28,52 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * Configures endpoint(s) that can be used to get card data for cards stored in database.
+ */
 @RequestMapping(path="${ygo.endpoints.card-v1}", produces = "application/json; charset=UTF-8")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "", tags = "Card")
 public class CardController
 {
+	/**
+	 * Service object used to interface with DB DAO.
+	 */
 	@Autowired
 	private CardService cardService;
 
+	/**
+	 * Object with information about http request.
+	 */
 	@Autowired
 	private HttpServletRequest httpRequest;
 
+	/**
+	 * Base url for this endpoint.
+	 */
 	@Autowired
 	@Value("${ygo.endpoints.card-v1}")
 	private String endPoint;
 
 	private static final Logger LOG = LogManager.getLogger();
 
+	/**
+	 * Cache used to store card data to prevent querying DB.
+	 */
 	private static final Map<String, Card> CARD_CACHE = new HashMap<>();
 
 
 
 	/**
-	 * @return item
+	 * Accepts a cardID which is used to query the DB/Cache to get information about the card.
+	 * cardID must be in proper format. A regular expression is used to validate the format. If the format isn't correct, card cannot be looked up.
+	 * If Card cannot be looked up, an appropriate HTTP response is sent.
+	 *
+	 * If the cardID is in proper format, the DB/Cache will be queried. If cardID is found in DB/Cache, a card object will be returned
+	 * , else only an appropriate HTTP response is sent.
+	 * @param cardID The unique identification of the card desired.
+	 * @return Card object as a response.
 	 */
 	@GetMapping("{cardID}")
 	@ResponseBody
@@ -63,37 +85,50 @@ public class CardController
 	})
 	public ResponseEntity<Card> getCard(@PathVariable("cardID") String cardID)
 	{
-		String requestIP = httpRequest.getRemoteHost();
+		String requestIP = httpRequest.getRemoteHost();	// IP address of the client accessing endpoint
 
+		 /*
+			Checks user provided cardID with regex.
+			If cardID fails, HTTP status code with no content is sent.
+		 */
 		Pattern cardIDPattern = Pattern.compile("[0-9]{8}");
 		if (!cardIDPattern.matcher(cardID).matches())
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestInfo(requestIP, endPoint, String.format("Responding with { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Responding with { %s }", status)));
 			return new ResponseEntity<>(status);
 		}
 
 
+		/*
+			Checks the cache.
+			If requested card is in cache, return it.
+		*/
 		Card cachedCard = CARD_CACHE.get(cardID);
 		if (cachedCard != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestInfo(requestIP, endPoint, String.format("Retrieved from cache: Responding with { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Retrieved from cache: Responding with { %s }", status)));
 			return new ResponseEntity<>(cachedCard, status);
-		} else
+		}
+		/*
+			If requested card isn't in cache, attempt to retrieve from DB.
+			If DB returns a result, save result in cache and return the Card object.
+		*/
+		else
 		{
 			Card foundCard = cardService.getCardInfo(cardID);
 			if (foundCard == null)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestInfo(requestIP, endPoint, String.format("Responding with { %s }", status)));
+				LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Responding with { %s }", status)));
 				return new ResponseEntity<>(status);
 			}
 
-			CARD_CACHE.put(cardID, foundCard);
+			CARD_CACHE.put(cardID, foundCard);	// puts card into cache
 
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestInfo(requestIP, endPoint, String.format("Responding with { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Responding with { %s }", status)));
 			return new ResponseEntity<>(foundCard, status);
 		}
 	}

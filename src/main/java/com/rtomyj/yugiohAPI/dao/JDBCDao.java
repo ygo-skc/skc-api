@@ -15,6 +15,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
+/**
+ * JDBC implementation of DB DAO interface.
+ */
 @Repository()
 @Qualifier("jdbc")
 public class JDBCDao implements Dao
@@ -24,9 +27,6 @@ public class JDBCDao implements Dao
 
 
 
-	/**
-	 * @return item
-	 */
 	@Override
 	public List<BanLists> getBanListStartDates()
 	{
@@ -35,10 +35,6 @@ public class JDBCDao implements Dao
 
 
 
-	/**
-	 * @param cardID
-	 * @return item
-	 */
 	@Override
 	public Card getCardInfo(String cardID)
 	{
@@ -68,11 +64,6 @@ public class JDBCDao implements Dao
 
 
 
-	/**
-	 * @param date
-	 * @param status
-	 * @return item
-	 */
 	@Override
 	public List<Card> getBanListByBanStatus(String date, Status status)
 	{
