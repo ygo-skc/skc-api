@@ -10,10 +10,23 @@ import java.util.List;
  */
 public interface Dao
 {
+	/**
+	 * Defines statuses of a card a ban list that is used by the database.
+	 * In other words, these strings are used in the database to differentiate between different statuses.
+	 */
 	public enum Status
 	{
+		/**
+		 * Card cannot be used in advanced format
+		 */
 		FORBIDDEN("forbidden"),
+		/**
+		 * Only one instance of the card can be used.
+		 */
 		LIMITED("limited"),
+		/**
+		 * Only two instance of the card can be used.
+		 */
 		SEMI_LIMITED("semi-limited");
 
 		private final String status;
@@ -23,14 +36,15 @@ public interface Dao
 			this.status = status;
 		}
 
+		/**
+		 * String representation of enum.
+		 */
 		@Override
 		public String toString()
 		{
 			return status;
 		}
 	}
-
-
 
 	/**
 	 * Get the list of dates of all the ban lists stored in the database.

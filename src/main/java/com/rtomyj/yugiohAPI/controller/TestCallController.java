@@ -16,6 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * Configures endpoint(s) for testing the health of the API.
+ */
 @RequestMapping(path = "${ygo.endpoints.test-call-v1}")
 @RestController
 @CrossOrigin(origins = "*")
@@ -24,6 +27,9 @@ public class TestCallController
 {
 	private static final Logger LOG = LogManager.getLogger();
 
+	/**
+	 * Base endpoint for this class.
+	 */
 	@Autowired
 	@Value("${ygo.endpoints.test-call-v1}")
 	private String endPoint;
@@ -31,7 +37,8 @@ public class TestCallController
 
 
 	/**
-	 * @return item
+	 * Used to see if endpoint is up.
+	 * @return String confirming API is up.
 	 */
 	@GetMapping()
 	@ApiOperation(value = "Testcall", response = ResponseEntity.class, tags = "Testcall")

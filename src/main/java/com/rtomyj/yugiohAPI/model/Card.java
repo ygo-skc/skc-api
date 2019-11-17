@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * Class defines properties a Yugioh card can contain
+ * Class defines properties a Yugioh card can contain.
  */
 @Data
 @Builder

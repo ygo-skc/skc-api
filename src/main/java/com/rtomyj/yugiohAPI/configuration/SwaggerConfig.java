@@ -13,12 +13,16 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Configuration class for Swagger UI
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
 	/**
-	 * @return item Docket
+	 * Configures Swagger by specifying the package API controllers are stored.
+	 * @return bean with Swagger configuration
 	 */
 	@Bean
 	public Docket productApi() {
@@ -30,11 +34,14 @@ public class SwaggerConfig {
 	}
 
 
+
 	/**
-	 * @return item ApiInfo
+	 * Create and returns an object that has information about me.
+	 * @return info about me. Will be used by swagger to display contact information and licenses.
 	 */
 	private ApiInfo infoSection()
 	{
-		return new ApiInfo("Yugioh API", "Desc", "v1.0", "Terms", new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com"), "Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>());
+		return new ApiInfo("Yugioh API", "Desc", "v1.0", "Terms", new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com")
+		, "Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>());
 	}
 }
