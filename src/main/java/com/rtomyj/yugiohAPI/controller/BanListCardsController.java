@@ -71,6 +71,7 @@ public class BanListCardsController {
 	 * contents will be fetched from DB.
 	 *
 	 * @param startDate The date the desired ban list took effect.
+	 * @param origin Where the request is coming from. Will be used to see which requests come from
 	 * @return ban list for specified ban list start date.
 	 */
 	@ResponseBody
@@ -81,8 +82,9 @@ public class BanListCardsController {
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure startDate is valid")
 	})
-	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate)
+	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate, @RequestHeader(value = "Origin", required = false) String origin )
 	{
+		LOG.info(origin);
 		Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");	// used to validate ban list date, this is the only format acceptable
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
