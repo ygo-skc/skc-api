@@ -4,6 +4,10 @@ plugins {
 	id 'java'
 }
 
+ext {
+	baseName = 'Yugioh_API'
+}
+
 group 'com.rtomyj'
 version '1.0'
 sourceCompatibility = '1.8'
@@ -46,10 +50,13 @@ bootJar {
 	description 'Creates a JAR file that can be executed to launch YGO service'
 
 	baseName 'Yugioh_API'
-	version version
 	manifest {
 			attributes 'Implementation-Title': baseName
 	}
+}
+
+task bootJarName {
+	println project.baseName + '-' + version + '.jar'
 }
 
 task createJavadocs(type: Javadoc) {
