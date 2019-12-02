@@ -506,6 +506,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'38572779', (select color_id from card_colors where card_color = 'Effect'), 'Miscellaneousaurus', 'Fire',
+	"During either player's Main Phase: You can send this card from your hand to the Graveyard; during this Main Phase, Dinosaur-Type monsters you control are unaffected by your opponent's activated effects. You can banish any number of Dinosaur-Type monsters from your Graveyard, including this card; Special Summon 1 Dinosaur-Type monster from your Deck with a Level equal to the total number of monsters banished to activate this effect, but destroy it during the End Phase. You can only use this effect of 'Miscellaneousaurus' once per turn.",
+	'Dinosaur/Effect', 1800, 1000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'33508719', (select color_id from card_colors where card_color = 'Effect'), 'Morphing Jar', 'Earth',
 	"FLIP: Both players discard their entire hands, then draw 5 cards.",
 	'Rock/Flip/Effect', 700, 600
