@@ -518,8 +518,19 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'23171610', (select color_id from card_colors where card_color = 'Spell'), "Limiter Removal", 'Spell',
+	"Once per turn: You can send 1 'Infernity' monster from your hand to the Graveyard. You can send this card to the Graveyard, then target up to 2 'Infernity' monsters in your Graveyard; Special Summon them. You must have no cards in your hand to activate and to resolve this effect."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'71650854', (select color_id from card_colors where card_color = 'Spell'), "Magical Mid-Breaker Field", 'Spell',
-	"Activate this card at the start of your Main Phase 1 or 2. During each player's Main Phase 1, monsters on the field cannot be destroyed by their opponent's card effects, also neither player can target monsters their opponent controls. You cannot activate or Set Field Spell Cards."
+	"Double the ATK of all Machine monsters you currently control, until the end of this turn. During the End Phase of this turn, destroy those monsters."
 	, null, null, null
 );
 
@@ -639,6 +650,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'17639150', (select color_id from card_colors where card_color = 'Spell'), "Saqlifice", 'Spell',
+	"Equip only to a 'Qli' monster. It gains 300 ATK and cannot be destroyed by battle. The equipped monster can be treated as 2 Tributes for the Tribute Summon of a 'Qli' monster. If this card is sent from the field to the Graveyard: You can add 1 'Qli' monster from your Deck to your hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'73915051', (select color_id from card_colors where card_color = 'Spell'), "Scapegoat", 'Spell',
 	"Special Summon 4 'Sheep Tokens' (Beast/EARTH/Level 1/ATK 0/DEF 0) in Defense Position. They cannot be Tributed for a Tribute Summon. You cannot Summon other monsters the turn you activate this card (but you can Normal Set)."
 	, null, null, null
@@ -652,6 +674,17 @@ INSERT INTO cards(
 VALUES (
 	'73468603', (select color_id from card_colors where card_color = 'Spell'), "Set Rotation", 'Spell',
 	"Set 2 Field Spells with different names from your Deck on the field (1 on your field, and 1 on your opponent's field). While either of those cards remain Set on the field, neither player can activate or Set other Field Spells."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'54031490', (select color_id from card_colors where card_color = 'Spell'), "Shien's Smoke Signal", 'Spell',
+	"Add 1 Level 3 or lower 'Six Samurai' monster from your Deck to your hand."
 	, null, null, null
 );
 

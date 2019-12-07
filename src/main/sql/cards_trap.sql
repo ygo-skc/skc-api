@@ -210,3 +210,47 @@ VALUES (
 	"Take 1 Field Spell from your Deck, and either activate it or add it to your hand."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'97077563', (select color_id from card_colors where card_color = 'Trap'), 'Call of the Haunted', 'Trap',
+	"Activate this card by targeting 1 monster in your GY; Special Summon that target in Attack Position. When this card leaves the field, destroy that monster. When that monster is destroyed, destroy this card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'94192409', (select color_id from card_colors where card_color = 'Trap'), 'Compulsory Evacuation Device', 'Trap',
+	"Target 1 monster on the field; return that target to the hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'15800838', (select color_id from card_colors where card_color = 'Trap'), 'Mind Crush', 'Trap',
+	"Declare 1 card name; if that card is in your opponent's hand, they must discard all copies of it, otherwise you discard 1 random card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'70342110', (select color_id from card_colors where card_color = 'Trap'), 'Dimensional Prison', 'Trap',
+	"When an opponent's monster declares an attack: Target that attacking monster; banish that target."
+	, null, null, null
+);
