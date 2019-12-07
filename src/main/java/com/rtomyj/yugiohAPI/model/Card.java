@@ -6,9 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,7 +14,6 @@ import lombok.Data;
  */
 @Data
 @Builder
-@JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 public class Card
 {
 	/** Name of the card */
@@ -27,11 +23,8 @@ public class Card
 	private String cardEffect;
 	private String cardID;
 	private String cardAttribute;
-	/**
-	 * Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
-	 */
-	private Integer monsterAttack;
-	private Integer monsterDefense;
+	private int monsterAttack;
+	private int monsterDefense;
 
 
 

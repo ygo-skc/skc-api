@@ -88,7 +88,7 @@ public class BanListDatesController
 		 * Configures the ResponseEntity to return,
 		 */
 		HttpStatus status = HttpStatus.OK;
-		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "ban list dates", endPoint, status));
+		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), endPoint, String.format("Responding with { %s }", status)));
 		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
 	}
 }

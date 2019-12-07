@@ -1,9 +1,5 @@
 package com.rtomyj.yugiohAPI.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +25,6 @@ import io.swagger.annotations.ApiResponses;
 @Api(description = "Endpoint to check if API is online.", tags = "Testcall")
 public class TestCallController
 {
-	/**
-	 * Object containing info about the user who initiates a request
-	 */
-	@Autowired
-	private HttpServletRequest httpRequest;
-
 	private static final Logger LOG = LogManager.getLogger();
 
 	/**
@@ -57,7 +47,7 @@ public class TestCallController
 	})
 	public ResponseEntity<String> testCall()
 	{
-		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "status", endPoint, HttpStatus.OK));
+		LOG.info(String.format("%s hit", endPoint));
 		return new ResponseEntity<>("API is online.", HttpStatus.OK);
 	}
 }

@@ -7,7 +7,7 @@ INSERT INTO cards(
 VALUES (
 	'05043010', (select color_id from card_colors where card_color = 'Link'), 'Firewall Dragon', 'Light',
 	"2+ monsters
-Once while face-up on the field (Quick Effect): You can target monsters on the field and/or GY up to the number of monsters co-linked to this card; return them to the hand. If a monster this card points to is destroyed by battle or sent to the GY: You can Special Summon 1 monster from your hand."
+	Once while face-up on the field (Quick Effect): You can target monsters on the field and/or GY up to the number of monsters co-linked to this card; return them to the hand. If a monster this card points to is destroyed by battle or sent to the GY: You can Special Summon 1 monster from your hand."
 	, 'Cyberse/Link/Effect', 2500, null
 );
 
