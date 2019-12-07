@@ -1,7 +1,6 @@
 package com.rtomyj.yugiohAPI.dao;
 
 import java.util.List;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class JDBCDao implements Dao
 	{
 		return jdbcConn.query(
 			"SELECT card_name, monster_type, card_colors.card_color, card_effect, cards.card_number FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = '"
-					+ status.toString() + "' AND ban_list_date = '" + date + "' ORDER BY card_colors.card_color, card_name;",
+					+ status.toString() + "' AND ban_list_date = '" + date + "' ORDER BY card_colors.card_color, card_name",
 			new ResultSetExtractor<List<Card>>() {
 				@Override
 				public List<Card> extractData(ResultSet row) throws SQLException, DataAccessException {
@@ -87,5 +86,94 @@ public class JDBCDao implements Dao
 					return cardList;
 				}
 			});
+	}
+
+
+
+	/**
+	*
+	*/
+	public int getNumberOfBanLists() {
+
+		String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
+		return jdbcConn.query(query, new ResultSetExtractor<Integer>() {
+
+			@Override
+			public Integer extractData(ResultSet row) throws SQLException, DataAccessException {
+				if (row.next())	return Integer.parseInt(row.getString(1));
+
+				return null;
+			}
+		});
+	}
+
+
+
+	/**
+	 *
+	 */
+	public int getBanListPosition(String banListDate)
+	{
+		String query = String.format("SELECT row_num FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter) AS sorted WHERE ban_list_date = '%1$s'", banListDate);
+		return jdbcConn.query(query, new ResultSetExtractor<Integer>(){
+
+			@Override
+			public Integer extractData(ResultSet row) throws SQLException, DataAccessException {
+				if (row.next())	return (int) Float.parseFloat(row.getString(1));	// somehow row_num is treated as a float
+
+				return null;
+			}
+
+		});
+	}
+
+
+
+	/**
+	 *
+	 */
+	public String getPreviousBanList(String currentBanList)
+	{
+		int banListPosition = this.getBanListPosition(currentBanList);
+		if (banListPosition == 1)	return null;
+
+		String query = String.format("SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = %d", banListPosition - 1);
+		return jdbcConn.query(query, new ResultSetExtractor<String>(){
+
+			@Override
+			public String extractData(ResultSet row) throws SQLException, DataAccessException {
+				if (row.next())	return row.getString(1);
+				return null;
+			}
+
+		});
+	}
+
+
+
+	/**
+	 *
+	 */
+	public List<String> getNewContentFromBanList(String banListDate, String status)
+	{
+		String oldBanList = this.getPreviousBanList(banListDate);
+		if (oldBanList == null)	return new ArrayList<String>();
+
+		String query = String.format("select new_list.card_number from (select card_number from ban_lists where ban_list_date = '%2$s' and ban_status = '%1$s') as new_list left join (select card_number from ban_lists where ban_list_date = '%3$s' and ban_status = '%1$s') as old_list on new_list.card_number = old_list.card_number where old_list.card_number is NULL"
+		, status, banListDate, oldBanList);
+
+		return jdbcConn.query(query, new ResultSetExtractor<List<String>>() {
+			List<String> newContent = new ArrayList<String>();
+
+			@Override
+			public List<String> extractData(ResultSet row) throws SQLException, DataAccessException {
+				while (row.next())
+				{
+					newContent.add(row.getString(1));
+				}
+				return newContent;
+			}
+
+		});
 	}
 }
