@@ -95,7 +95,7 @@ public class CardController
 		if (!cardIDPattern.matcher(cardID).matches())
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Responding with { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status));
 			return new ResponseEntity<>(status);
 		}
 
@@ -108,7 +108,7 @@ public class CardController
 		if (cachedCard != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Retrieved from cache: Responding with { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status, true));
 			return new ResponseEntity<>(cachedCard, status);
 		}
 		/*
@@ -121,14 +121,14 @@ public class CardController
 			if (foundCard == null)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Responding with { %s }", status)));
+				LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status));
 				return new ResponseEntity<>(status);
 			}
 
 			CARD_CACHE.put(cardID, foundCard);	// puts card into cache
 
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, endPoint, String.format("Responding with { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status, false));
 			return new ResponseEntity<>(foundCard, status);
 		}
 	}

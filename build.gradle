@@ -4,7 +4,9 @@ plugins {
 	id 'java'
 }
 
-apply plugin: 'io.spring.dependency-management'
+ext {
+	baseName = 'Yugioh_API'
+}
 
 group 'com.rtomyj'
 version '1.0.1'
@@ -47,10 +49,13 @@ bootJar {
 	description 'Creates a JAR file that can be executed to launch YGO service'
 
 	baseName 'Yugioh_API'
-	version version
 	manifest {
 			attributes 'Implementation-Title': baseName
 	}
+}
+
+task bootJarName {
+	print project.baseName + '-' + version + '.jar'
 }
 
 task createJavadocs(type: Javadoc) {

@@ -5,9 +5,9 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
-	'7412721', (select color_id from card_colors where card_color = 'Fusion'), 'Elder Entity Norden', 'Water',
+	'17412721', (select color_id from card_colors where card_color = 'Fusion'), 'Elder Entity Norden', 'Water',
 	"1 Synchro or Xyz Monster + 1 Synchro or Xyz Monster
-	When this card is Special Summoned: You can target 1 Level 4 or lower monster in your Graveyard; Special Summon it, but its effects are negated, also banish it when this card leaves the field."
+When this card is Special Summoned: You can target 1 Level 4 or lower monster in your Graveyard; Special Summon it, but its effects are negated, also banish it when this card leaves the field."
 	, 'Fairy/Fusion/Effect', 2000, 2200
 );
 

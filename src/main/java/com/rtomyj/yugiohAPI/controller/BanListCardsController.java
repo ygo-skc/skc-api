@@ -72,6 +72,7 @@ public class BanListCardsController {
 	 * contents will be fetched from DB.
 	 *
 	 * @param startDate The date the desired ban list took effect.
+	 * @param origin Where the request is coming from. Will be used to see which requests come from
 	 * @return ban list for specified ban list start date.
 	 */
 	@ResponseBody
@@ -82,8 +83,9 @@ public class BanListCardsController {
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure startDate is valid")
 	})
-	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate)
+	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate, @RequestHeader(value = "Origin", required = false) String origin )
 	{
+		LOG.info(origin);
 		Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");	// used to validate ban list date, this is the only format acceptable
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
@@ -91,7 +93,7 @@ public class BanListCardsController {
 		if (! datePattern.matcher(startDate).matches())
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status));
 			return new ResponseEntity<>(status);
 		}
 
@@ -102,7 +104,7 @@ public class BanListCardsController {
 		if (BAN_LIST_CARDS_CACHE.get(startDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Retrieved from BAN_LIST_CARDS_CACHE: Responding with: { %s }", status)));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, true));
 
 			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(startDate), status);
 		}
@@ -128,7 +130,7 @@ public class BanListCardsController {
 					&& banListSections.get("semiLimited").size() == 0)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status));
 				return new ResponseEntity<>(status);
 			}
 			/*
@@ -137,7 +139,7 @@ public class BanListCardsController {
 			else
 			{
 				HttpStatus status = HttpStatus.OK;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), endPoint, String.format("Responding with: { %s }", status)));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, false));
 				banList.put("bannedCards", banListSections);
 
 				BAN_LIST_CARDS_CACHE.put(startDate, banList);
