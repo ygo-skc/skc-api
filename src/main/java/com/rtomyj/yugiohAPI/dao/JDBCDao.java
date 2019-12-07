@@ -132,12 +132,13 @@ public class JDBCDao implements Dao
 	/**
 	 *
 	 */
-	public String getPreviousBanList(String currentBanList)
+	public String getPreviousBanListDate(String currentBanList)
 	{
-		int banListPosition = this.getBanListPosition(currentBanList);
-		if (banListPosition == 1)	return null;
+		int currentBanListPosition = this.getBanListPosition(currentBanList);
+		if (currentBanListPosition == 1)	return null;
+		int previousBanListPosition = currentBanListPosition - 1;
 
-		String query = String.format("SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = %d", banListPosition - 1);
+		String query = String.format("SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = %1$d", previousBanListPosition);
 		return jdbcConn.query(query, new ResultSetExtractor<String>(){
 
 			@Override
@@ -156,7 +157,7 @@ public class JDBCDao implements Dao
 	 */
 	public List<String> getNewContentFromBanList(String banListDate, String status)
 	{
-		String oldBanList = this.getPreviousBanList(banListDate);
+		String oldBanList = this.getPreviousBanListDate(banListDate);
 		if (oldBanList == null)	return new ArrayList<String>();
 
 		String query = String.format("select new_list.card_number from (select card_number from ban_lists where ban_list_date = '%2$s' and ban_status = '%1$s') as new_list left join (select card_number from ban_lists where ban_list_date = '%3$s' and ban_status = '%1$s') as old_list on new_list.card_number = old_list.card_number where old_list.card_number is NULL"
