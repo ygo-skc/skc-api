@@ -1,52 +1,28 @@
 package com.rtomyj.yugiohAPI.helper;
 
-import org.springframework.http.HttpStatus;
-
 /**
  * Class containing convenience methods for frequently used logging templates.
  */
 public class LogHelper
 {
 	/**
-	 * Builds a String to be used in a logger to record the status of the request from the user along with the users IP
+	 * Builds a String to be used in a logging method to record the status of the request from the user along with the users IP
 	 * 	and the endpoint they requested.
-	 * @param ip address of request.
-	 * @param resourceRequested String representation of the what the user was trying to query.
-	 * @param endPoint requested endpoint of API.
-	 * @param status Unique comment for log explaining what the process being executed.
+	 * @param ip address of request
+	 * @param endPoint requested endpoint of API
+	 * @param comment Unique comment for log explaining what the process being executed.
 	 * @return String to use in logger method.
 	 */
-	public static String requestStatusLogString(String ip, String resourceRequested, String endPoint, HttpStatus status)
+	public static String requestStatusLogString(String ip, String endPoint, String comment)
 	{
-		return new StringBuilder().append(ip)
+		// %s/{ %s } hit - responding with: { %s }
+		String log = new StringBuilder().append(ip)
 			.append(" requested ")
-			.append(String.format("(( %s ))", resourceRequested))
-			.append(" from ")
 			.append(endPoint)
 			.append(" - ")
-			.append(String.format("Responding with {{ %s }}", status))
+			.append(comment)
 			.toString();
-	}
 
-
-
-	/**
-	 * Builds a String to be used in a logger to record the status of the request from the user along with the users IP
-	 * 	and the endpoint they requested.
-	 * @param ip address of request.
-	 * @param resourceRequested String representation of the what the user was trying to query.
-	 * @param endPoint requested endpoint of API.
-	 * @param status Unique comment for log explaining what the process being executed.
-	 * @param retrievedFromCache Whether a cache was used to obtain the resource.
-	 * @return String to use in logger method.
-	 */
-	public static String requestStatusLogString(String ip, String resourceRequested, String endPoint, HttpStatus status, boolean retrievedFromCache)
-	{
-		String locationOfResource = (retrievedFromCache) ? "From CACHE": "From DATABASE";
-
-		return new StringBuilder()
-			.append(LogHelper.requestStatusLogString(ip, resourceRequested, endPoint, status))
-			.append(String.format(": {{ %s }} ", locationOfResource))
-			.toString();
+		return log;
 	}
 }

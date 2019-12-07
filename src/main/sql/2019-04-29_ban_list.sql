@@ -91,7 +91,7 @@ VALUES ('2019-04-29', '03078576', 'Forbidden');
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-04-29', '17412721', 'Forbidden');
+VALUES ('2019-04-29', '7412721', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2019-04-29', '43387895', 'Forbidden');
