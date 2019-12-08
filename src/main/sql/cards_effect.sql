@@ -721,3 +721,14 @@ VALUES (
 	"You can reveal this card in your hand; your opponent randomly chooses 1 card from your entire hand, then you discard the chosen card. Then, if the discarded card was not 'Danger!? Tsuchinoko?', Special Summon 1 'Danger!? Tsuchinoko?' from your hand, and if you do, draw 1 card. If this card is discarded: You can Special Summon this card. You can only use this effect of 'Danger!? Tsuchinoko?' once per turn.",
 	'Reptile/Effect', 1300, 0
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'69207766', (select color_id from card_colors where card_color = 'Effect'), 'Inzektor Hornet', 'Dark',
+	"Once per turn: You can equip 1 'Inzektor' monster from your hand or Graveyard to this card. While this card is equipped to a monster, that monster's Level is increased by 3, also it gains ATK and DEF equal to this card's ATK and DEF. While this card is equipped to a monster: You can send this Equip Card to the Graveyard to target 1 card on the field; destroy that target.",
+	'Insect/Effect', 500, 200
+);

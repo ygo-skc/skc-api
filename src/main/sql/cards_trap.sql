@@ -254,3 +254,25 @@ VALUES (
 	"When an opponent's monster declares an attack: Target that attacking monster; banish that target."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'54974237', (select color_id from card_colors where card_color = 'Trap'), 'Eradicator Epidemic Virus', 'Trap',
+	"Tribute 1 DARK monster with 2500 or more ATK, and declare 1 type of card (Spell or Trap); look at your opponent's hand, all Spells/Traps they control, and all cards they draw until the end of their 3rd turn after this card's activation, and destroy all cards of that type."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'09059700', (select color_id from card_colors where card_color = 'Trap'), 'Infernity Barrier', 'Trap',
+	"When your opponent activates a Spell/Trap Card, or monster effect, while you control a face-up Attack Position 'Infernity' monster and have no cards in your hand: Negate the activation, and if you do, destroy that card."
+	, null, null, null
+);

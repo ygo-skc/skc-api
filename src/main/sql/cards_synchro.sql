@@ -70,3 +70,15 @@ VALUES (
 When this card is Synchro Summoned: You can banish up to 1 card each from your opponent's hand, field, and GY. (The card in the hand is chosen at random.)"
 	, 'Dragon/Synchro/Effect', 2700, 2000
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'90953320', (select color_id from card_colors where card_color = 'Synchro'), 'T.G. Hyper Librarian', 'Dark',
+	"1 Tuner + 1 or more non-Tuner monsters
+If a monster is Synchro Summoned: Draw 1 card. This card must be face-up on the field to activate and to resolve this effect."
+	, 'Spellcaster/Synchro/Effect', 2400, 1800
+);

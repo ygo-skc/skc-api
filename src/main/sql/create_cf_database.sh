@@ -14,6 +14,7 @@ cf mysql ${DB_NAME} -f < "cards_link.sql"
 cf mysql ${DB_NAME} -f < "cards_spell.sql"
 cf mysql ${DB_NAME} -f < "cards_trap.sql"
 
+cf mysql ${DB_NAME} -f < "2018-12-03_ban_list.sql"
 cf mysql ${DB_NAME} -f < "2019-01-28_ban_list.sql"
 cf mysql ${DB_NAME} -f < "2019-04-29_ban_list.sql"
 cf mysql ${DB_NAME} -f < "2019-07-15_ban_list.sql"

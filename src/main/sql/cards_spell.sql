@@ -790,3 +790,26 @@ VALUES (
 	"Once per turn: You can target 1 other card you control; send that card to the GY, also your opponent cannot activate cards or effects in response to your Spell Card activations for the rest of this turn (even if this cards leaves the field). Once per turn, during the End Phase: You can Set 'Sky Striker' Spells with different names from your GY, up to the number of 'Sky Striker' Spell Cards you activated this turn while this card was face-up on the field, but banish them when they leave the field."
 	, null, null, null
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'99330325', (select color_id from card_colors where card_color = 'Spell'), "Interrupted Kaiju Slumber", 'Spell',
+	"Destroy as many monsters on the field as possible, then Special Summon in Attack Position, 2 'Kaiju' monsters with different names from your Deck (1 on each side), but they cannot change their battle positions, and must attack, if able. During your Main Phase, except the turn this card was sent to the Graveyard: You can banish this card from your Graveyard; add 1 'Kaiju' monster from your Deck to your hand. You can only activate 1 'Interrupted Kaiju Slumber' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'79844764', (select color_id from card_colors where card_color = 'Spell'), "The Monarchs Stormforth
+", 'Spell',
+	"Once during this turn, if you would Tribute a monster for a Tribute Summon, you can Tribute 1 monster your opponent controls even though you do not control it. You can only activate 1 'The Monarchs Stormforth' per turn. During the turn you activate this card, you cannot Special Summon monsters from the Extra Deck."
+	, null, null, null
+);
