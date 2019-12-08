@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -105,7 +106,7 @@ public class HibernateDao implements Dao
 	 * @param newBanList
 	 * @return
 	 */
-	public List<String> getRemovedContentOfBanList(String newBanList)
+	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
 	{
 		return null;
 	}

@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.rtomyj.yugiohAPI.dao.Dao;
 
@@ -17,6 +18,6 @@ public class BanListDiffService
 
 
 	public List<String> getNewContentFromBanList(String banListDate, String string)	{ return dao.getNewContentFromBanList(banListDate, string); }
-	public List<String> getRemovedContentOfBanList(String banListDate)	{ return dao.getRemovedContentOfBanList(banListDate); }
+	public List<Map<String, String>> getRemovedContentOfBanList(String banListDate)	{ return dao.getRemovedContentOfBanList(banListDate); }
 	public String getPreviousBanListDate(String banList)	{ return dao.getPreviousBanListDate(banList); }
 }

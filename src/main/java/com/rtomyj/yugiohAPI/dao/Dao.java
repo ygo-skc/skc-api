@@ -4,6 +4,7 @@ import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contract for database operations.
@@ -106,5 +107,5 @@ public interface Dao
 	 * @param newBanList
 	 * @return
 	 */
-	public List<String> getRemovedContentOfBanList(String newBanList);
+	public List<Map<String, String>>  getRemovedContentOfBanList(String newBanList);
 }

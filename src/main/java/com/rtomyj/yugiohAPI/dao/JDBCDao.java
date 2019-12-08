@@ -1,8 +1,10 @@
 package com.rtomyj.yugiohAPI.dao;
 
 import java.util.List;
+import java.util.Map;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -154,19 +156,25 @@ public class JDBCDao implements Dao
 	/**
 	 *
 	 */
-	public List<String> getRemovedContentOfBanList(String newBanList)
+	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == null)	return new ArrayList<String>();
+		if (oldBanList == null)	return new ArrayList<Map<String, String>>();
 
-		String query = String.format("select old_list.card_number from (select card_number from ban_lists where ban_list_date = '%1$s') as new_list right join (select card_number from ban_lists where ban_list_date = '%2$s') as old_list on new_list.card_number = old_list.card_number where new_list.card_number is NULL;", newBanList, oldBanList);
+		String query = String.format("select old_list.card_number, ban_status from (select card_number from ban_lists where ban_list_date = '%1$s') as new_list right join (select card_number, ban_status from ban_lists where ban_list_date = '%2$s') as old_list on new_list.card_number = old_list.card_number where new_list.card_number is NULL;", newBanList, oldBanList);
 
 		return jdbcConn.query(query, (ResultSet row) -> {
-			List<String> removedContent = new ArrayList<>();
+			final List<Map<String, String>> REMOVED_CARDS = new ArrayList<>();
 
-			while(row.next())	removedContent.add(row.getString(1));
+			while(row.next())
+			{
+				final Map<String, String> REMOVED_CARD = new HashMap<>();
+				REMOVED_CARD.put("id", row.getString(1));
+				REMOVED_CARD.put("previousStatus", row.getString(2));
+				REMOVED_CARDS.add(REMOVED_CARD);
+			}
 
-			return removedContent;
+			return REMOVED_CARDS;
 		});
 	}
 }
