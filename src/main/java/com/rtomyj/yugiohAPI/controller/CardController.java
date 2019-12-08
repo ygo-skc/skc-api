@@ -1,6 +1,5 @@
 package com.rtomyj.yugiohAPI.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -13,6 +12,7 @@ import com.rtomyj.yugiohAPI.service.CardService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +61,9 @@ public class CardController
 	/**
 	 * Cache used to store card data to prevent querying DB.
 	 */
-	private static final Map<String, Card> CARD_CACHE = new HashMap<>();
+	@Autowired
+	@Qualifier("cardsCache")
+	private Map<String, Card> CARD_CACHE;
 
 
 

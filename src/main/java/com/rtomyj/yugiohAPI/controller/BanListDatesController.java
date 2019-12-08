@@ -1,7 +1,6 @@
 package com.rtomyj.yugiohAPI.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import com.rtomyj.yugiohAPI.service.BanListService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +59,9 @@ public class BanListDatesController
 	/**
 	 * Cache for storing previous queries
 	 */
-	private static final Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE = new HashMap<>();
+	@Autowired
+	@Qualifier("banListStartDatesCache")
+	private Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE;
 
 
 	/**

@@ -8,10 +8,10 @@ import com.rtomyj.yugiohAPI.service.BannedCardsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
@@ -60,7 +60,9 @@ public class BanListCardsController {
 	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
 	 * Each type has cards with that status.
 	 */
-	private static final Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE = new HashMap<>();
+	@Autowired
+	@Qualifier("banListCardsCache")
+	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE;
 
 
 
@@ -85,7 +87,6 @@ public class BanListCardsController {
 	})
 	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate, @RequestHeader(value = "Origin", required = false) String origin )
 	{
-		LOG.info(origin);
 		Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");	// used to validate ban list date, this is the only format acceptable
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
@@ -146,14 +147,5 @@ public class BanListCardsController {
 				return new ResponseEntity<>(banList, status);
 			}
 		}
-	}
-
-
-
-	@Scheduled(fixedRate = 1000 * 60 * 60)
-	public void invalidateCache()
-	{
-		LOG.info("Removing ban list content from cache.");
-		BAN_LIST_CARDS_CACHE.clear();
 	}
 }
