@@ -17,7 +17,7 @@ public class BanListDiffService
 	private Dao dao;
 
 
-	public List<String> getNewContentFromBanList(String banListDate, String string)	{ return dao.getNewContentFromBanList(banListDate, string); }
+	public List<Map<String, String>>getNewContentOfBanList(String banListDate, String string)	{ return dao.getNewContentOfBanList(banListDate, string); }
 	public List<Map<String, String>> getRemovedContentOfBanList(String banListDate)	{ return dao.getRemovedContentOfBanList(banListDate); }
 	public String getPreviousBanListDate(String banList)	{ return dao.getPreviousBanListDate(banList); }
 }

@@ -95,7 +95,7 @@ public class HibernateDao implements Dao
 	/**
 	 *
 	 */
-	public List<String> getNewContentFromBanList(String banListDate, String status){
+	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status){
 		return null;
 	}
 
@@ -108,6 +108,12 @@ public class HibernateDao implements Dao
 	 */
 	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
 	{
+		return null;
+	}
+
+	@Override
+	public String getCardBanListStatusByDate(String cardId, String banListDate) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -98,7 +98,7 @@ public interface Dao
 	/**
 	 *
 	 */
-	public List<String> getNewContentFromBanList(String banListDate, String status);
+	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status);
 
 
 
@@ -108,4 +108,8 @@ public interface Dao
 	 * @return
 	 */
 	public List<Map<String, String>>  getRemovedContentOfBanList(String newBanList);
+
+
+
+	public String getCardBanListStatusByDate(String cardId, String banListDate);
 }

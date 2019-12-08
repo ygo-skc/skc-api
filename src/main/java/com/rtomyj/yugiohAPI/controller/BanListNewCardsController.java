@@ -26,10 +26,10 @@ public class BanListNewCardsController
 	@GetMapping(path = "/{banListDate}")
 	public ResponseEntity<Map<String, Object>> getNewContent(@PathVariable String banListDate)
 	{
-		Map<String, List<String>> newCards = new LinkedHashMap<>();
-		newCards.put(Status.FORBIDDEN.toString(), banListDiffService.getNewContentFromBanList(banListDate, "Forbidden"));
-		newCards.put(Status.LIMITED.toString(), banListDiffService.getNewContentFromBanList(banListDate, "Limited"));
-		newCards.put(Status.SEMI_LIMITED.toString(), banListDiffService.getNewContentFromBanList(banListDate, "Semi-Limited"));
+		Map<String, List<Map<String, String>>> newCards = new LinkedHashMap<>();
+		newCards.put(Status.FORBIDDEN.toString(), banListDiffService.getNewContentOfBanList(banListDate, "Forbidden"));
+		newCards.put(Status.LIMITED.toString(), banListDiffService.getNewContentOfBanList(banListDate, "Limited"));
+		newCards.put(Status.SEMI_LIMITED.toString(), banListDiffService.getNewContentOfBanList(banListDate, "Semi-Limited"));
 
 		Map<String, Object> newCardsMeta = new HashMap<>();
 		newCardsMeta.put("listRequested", banListDate);
