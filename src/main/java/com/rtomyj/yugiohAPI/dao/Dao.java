@@ -90,7 +90,7 @@ public interface Dao
 	/**
 	 *
 	 */
-	public String getPreviousBanList(String currentBanList);
+	public String getPreviousBanListDate(String currentBanList);
 
 
 
@@ -98,4 +98,13 @@ public interface Dao
 	 *
 	 */
 	public List<String> getNewContentFromBanList(String banListDate, String status);
+
+
+
+	/**
+	 *
+	 * @param newBanList
+	 * @return
+	 */
+	public List<String> getRemovedContentOfBanList(String newBanList);
 }

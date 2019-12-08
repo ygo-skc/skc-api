@@ -84,7 +84,7 @@ public class HibernateDao implements Dao
 	/**
 	 *
 	 */
-	public String getPreviousBanList(String currentBanList)
+	public String getPreviousBanListDate(String currentBanList)
 	{
 		return "";
 	}
@@ -95,6 +95,18 @@ public class HibernateDao implements Dao
 	 *
 	 */
 	public List<String> getNewContentFromBanList(String banListDate, String status){
+		return null;
+	}
+
+
+
+	/**
+	 *
+	 * @param newBanList
+	 * @return
+	 */
+	public List<String> getRemovedContentOfBanList(String newBanList)
+	{
 		return null;
 	}
 }
