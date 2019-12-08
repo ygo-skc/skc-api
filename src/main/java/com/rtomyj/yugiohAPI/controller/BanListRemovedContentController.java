@@ -1,5 +1,6 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,14 @@ public class BanListRemovedContentController {
 	BanListDiffService banListDiffService;
 
 	@GetMapping(path = "/{banListDate}")
-	public List<Map<String, String>> getRemovedContent(@PathVariable(name = "banListDate") String banListDate)
+	public Map<String, Object> getRemovedContent(@PathVariable(name = "banListDate") String banListDate)
 	{
-		return banListDiffService.getRemovedContentOfBanList(banListDate);
+		final Map<String, Object> removedCards = new HashMap<>();
+
+		removedCards.put("listRequested", banListDate);
+		removedCards.put("comparedTo", banListDiffService.getPreviousBanListDate(banListDate));
+		removedCards.put("removedCards", banListDiffService.getRemovedContentOfBanList(banListDate));
+
+		return removedCards;
 	}
 }
