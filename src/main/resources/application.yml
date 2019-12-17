@@ -1,0 +1,9 @@
+ygo:
+  endpoints:
+    test-call-v1: /api/v1/testcall
+    ban-list-dates-v1: /api/v1/ban_list_dates
+    ban-list-new-cards: /api/v1/ban_list_new_cards
+    ban-list-removed-cards: /api/v1/ban_list_removed_cards
+    banned-cards-v1: /api/v1/banned_cards
+    card-v1: /api/v1/card
+
