@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
  */
-@RequestMapping(path="${ygo.endpoints.card-v1}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "", tags = "Card")
@@ -53,7 +53,7 @@ public class CardController
 	 * Base url for this endpoint.
 	 */
 	@Autowired
-	@Value("${ygo.endpoints.card-v1}")
+	@Value("${ygo.endpoints.v1.card}")
 	private String endPoint;
 
 	private static final Logger LOG = LogManager.getLogger();

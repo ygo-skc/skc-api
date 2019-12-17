@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "${ygo.endpoints.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 public class BanListNewCardsController
 {

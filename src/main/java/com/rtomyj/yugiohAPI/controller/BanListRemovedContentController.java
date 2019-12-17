@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "${ygo.endpoints.ban-list-removed-cards}")
+@RequestMapping(path = "${ygo.endpoints.v1.ban-list-removed-cards}")
 @CrossOrigin(origins = "*")
 public class BanListRemovedContentController {
 	@Autowired

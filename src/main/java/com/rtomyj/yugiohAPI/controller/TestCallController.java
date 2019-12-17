@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * Configures endpoint(s) for testing the health of the API.
  */
-@RequestMapping(path = "${ygo.endpoints.test-call-v1}")
+@RequestMapping(path = "${ygo.endpoints.v1.test-call}")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "Endpoint to check if API is online.", tags = "Testcall")
@@ -41,7 +41,7 @@ public class TestCallController
 	 * Base endpoint for this class.
 	 */
 	@Autowired
-	@Value("${ygo.endpoints.test-call-v1}")
+	@Value("${ygo.endpoints.v1.test-call}")
 	private String endPoint;
 
 

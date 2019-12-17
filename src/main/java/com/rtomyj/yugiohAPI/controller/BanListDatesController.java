@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
-@RequestMapping(path = "${ygo.endpoints.ban-list-dates-v1}", produces = "application/json; charset=utf-8")
+@RequestMapping(path = "${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=utf-8")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
@@ -45,7 +45,7 @@ public class BanListDatesController
 	 * The base endpoint used by this controller.
 	 */
 	@Autowired
-	@Value("${ygo.endpoints.ban-list-dates-v1}")
+	@Value("${ygo.endpoints.v1.ban-list-dates}")
 	private String endPoint;
 
 	/**

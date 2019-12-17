@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
-@RequestMapping(path = "${ygo.endpoints.banned-cards-v1}", produces = "application/json; charset=utf-8")
+@RequestMapping(path = "${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=utf-8")
 @RestController
 @CrossOrigin(origins = "*")
 @Api(tags = "Ban List")
@@ -45,7 +45,7 @@ public class BanListCardsController {
 	 * The base endpoint for this controller.
 	 */
 	@Autowired
-	@Value("${ygo.endpoints.banned-cards-v1}")
+	@Value("${ygo.endpoints.v1.banned-cards}")
 	private String endPoint;
 
 	/**
