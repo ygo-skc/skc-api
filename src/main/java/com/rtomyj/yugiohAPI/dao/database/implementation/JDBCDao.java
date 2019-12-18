@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.dao;
+package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.util.List;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;
 

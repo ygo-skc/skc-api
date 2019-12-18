@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.dao;
+package com.rtomyj.yugiohAPI.dao.database;
 
 import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;

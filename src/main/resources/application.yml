@@ -9,3 +9,11 @@ ygo:
       banned-cards: /api/v1/ban/cards
       card: /api/v1/card
 
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/yugioh_API_DB
+    username: root
+    password:
+
+server:
+  port: 9999

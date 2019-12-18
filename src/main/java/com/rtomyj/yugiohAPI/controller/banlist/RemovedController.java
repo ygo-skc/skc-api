@@ -1,9 +1,9 @@
-package com.rtomyj.yugiohAPI.controller;
+package com.rtomyj.yugiohAPI.controller.banlist;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rtomyj.yugiohAPI.service.BanListDiffService;
+import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.ban-list-removed-cards}")
 @CrossOrigin(origins = "*")
-public class BanListRemovedContentController {
+public class RemovedController {
 	@Autowired
-	BanListDiffService banListDiffService;
+	DiffService banListDiffService;
 
 	@GetMapping(path = "/{banListDate}")
 	public Map<String, Object> getRemovedContent(@PathVariable(name = "banListDate") String banListDate)

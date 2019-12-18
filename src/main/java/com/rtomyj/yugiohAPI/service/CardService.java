@@ -1,6 +1,6 @@
 package com.rtomyj.yugiohAPI.service;
 
-import com.rtomyj.yugiohAPI.dao.Dao;
+import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;

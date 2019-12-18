@@ -1,9 +1,9 @@
-package com.rtomyj.yugiohAPI.controller;
+package com.rtomyj.yugiohAPI.controller.banlist;
 
-import com.rtomyj.yugiohAPI.dao.Dao.Status;
+import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.service.BannedCardsService;
+import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,12 +34,12 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @CrossOrigin(origins = "*")
 @Api(tags = "Ban List")
-public class BanListCardsController {
+public class CardsController {
 	/**
 	 * Service object used to get information about banned cards from the database.
 	 */
 	@Autowired
-	private BannedCardsService bannedCardsService;
+	private CardsService bannedCardsService;
 
 	/**
 	 * The base endpoint for this controller.

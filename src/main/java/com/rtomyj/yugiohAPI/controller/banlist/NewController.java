@@ -1,12 +1,12 @@
-package com.rtomyj.yugiohAPI.controller;
+package com.rtomyj.yugiohAPI.controller.banlist;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.rtomyj.yugiohAPI.dao.Dao.Status;
-import com.rtomyj.yugiohAPI.service.BanListDiffService;
+import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
+import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
-public class BanListNewCardsController
+public class NewController
 {
 	@Autowired
-	private BanListDiffService banListDiffService;
+	private DiffService banListDiffService;
 
 	@GetMapping(path = "/{banListDate}")
 	public ResponseEntity<Map<String, Object>> getNewContent(@PathVariable String banListDate)

@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.controller;
+package com.rtomyj.yugiohAPI.controller.banlist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.BanLists;
-import com.rtomyj.yugiohAPI.service.BanListService;
+import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,13 +33,13 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
-public class BanListDatesController
+public class DatesController
 {
 	/**
 	 * Service object used to interface the database DAO
 	 */
 	@Autowired
-	private BanListService banListService;
+	private BanService banListService;
 
 	/**
 	 * The base endpoint used by this controller.

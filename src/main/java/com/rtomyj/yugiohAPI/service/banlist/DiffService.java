@@ -1,16 +1,16 @@
-package com.rtomyj.yugiohAPI.service;
+package com.rtomyj.yugiohAPI.service.banlist;
 
 import java.util.List;
 import java.util.Map;
 
-import com.rtomyj.yugiohAPI.dao.Dao;
+import com.rtomyj.yugiohAPI.dao.database.Dao;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BanListDiffService
+public class DiffService
 {
 	@Autowired
 	@Qualifier("jdbc")
