@@ -1,11 +1,11 @@
 package com.rtomyj.yugiohAPI.controller;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.ResourceValidator;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
@@ -67,36 +67,35 @@ public class CardController
 
 
 	/**
-	 * Accepts a cardID which is used to query the DB/Cache to get information about the card.
-	 * cardID must be in proper format. A regular expression is used to validate the format. If the format isn't correct, card cannot be looked up.
+	 * Accepts a cardId which is used to query the DB/Cache to get information about the card.
+	 * cardId must be in proper format. A regular expression is used to validate the format. If the format isn't correct, card cannot be looked up.
 	 * If Card cannot be looked up, an appropriate HTTP response is sent.
 	 *
-	 * If the cardID is in proper format, the DB/Cache will be queried. If cardID is found in DB/Cache, a card object will be returned
+	 * If the cardId is in proper format, the DB/Cache will be queried. If cardId is found in DB/Cache, a card object will be returned
 	 * , else only an appropriate HTTP response is sent.
-	 * @param cardID The unique identification of the card desired.
+	 * @param cardId The unique identification of the card desired.
 	 * @return Card object as a response.
 	 */
-	@GetMapping("{cardID}")
+	@GetMapping("{cardId}")
 	@ResponseBody
 	@ApiOperation(value = "Get information about a specific card", response = ResponseEntity.class, tags = "Card")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 204, message = "Request yielded no content"),
-		@ApiResponse(code = 400, message = "Malformed request, make sure cardID is valid")
+		@ApiResponse(code = 400, message = "Malformed request, make sure cardId is valid")
 	})
-	public ResponseEntity<Card> getCard(@PathVariable("cardID") String cardID)
+	public ResponseEntity<Card> getCard(@PathVariable("cardId") String cardId)
 	{
 		String requestIP = httpRequest.getRemoteHost();	// IP address of the client accessing endpoint
 
-		 /*
-			Checks user provided cardID with regex.
-			If cardID fails, HTTP status code with no content is sent.
+		/*
+			Checks user provided cardId with regex.
+			If cardId fails, HTTP status code with no content is sent.
 		 */
-		Pattern cardIDPattern = Pattern.compile("[0-9]{8}");
-		if (!cardIDPattern.matcher(cardID).matches())
+		if ( !ResourceValidator.isValidCardId(cardId))
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status));
 			return new ResponseEntity<>(status);
 		}
 
@@ -105,11 +104,11 @@ public class CardController
 			Checks the cache.
 			If requested card is in cache, return it.
 		*/
-		Card cachedCard = CARD_CACHE.get(cardID);
+		Card cachedCard = CARD_CACHE.get(cardId);
 		if (cachedCard != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status, true));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, true, true));
 			return new ResponseEntity<>(cachedCard, status);
 		}
 		/*
@@ -118,18 +117,18 @@ public class CardController
 		*/
 		else
 		{
-			Card foundCard = cardService.getCardInfo(cardID);
+			Card foundCard = cardService.getCardInfo(cardId);
 			if (foundCard == null)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status));
+				LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status));
 				return new ResponseEntity<>(status);
 			}
 
-			CARD_CACHE.put(cardID, foundCard);	// puts card into cache
+			CARD_CACHE.put(cardId, foundCard);	// puts card into cache
 
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, cardID, endPoint, status, false));
+			LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
 			return new ResponseEntity<>(foundCard, status);
 		}
 	}

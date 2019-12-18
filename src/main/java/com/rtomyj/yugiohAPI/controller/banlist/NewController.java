@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.ResourceValidator;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.apache.logging.log4j.LogManager;
@@ -51,30 +52,39 @@ public class NewController
 	{
 		HttpStatus requestStatus = null;
 		Map<String, Object> newCardsMeta = cache.get(banListDate);
-		boolean inCache = false;
+		boolean isInCache = false, isContentReturned = false;
 
-		if (newCardsMeta == null)
+		if ( !ResourceValidator.isValidBanListDate(banListDate) )	requestStatus = HttpStatus.BAD_REQUEST;
+		else if ( newCardsMeta == null && ResourceValidator.isValidBanListDate(banListDate) )
 		{
 			final Map<String, List<Map<String, String>>> newCards = new LinkedHashMap<>();
 			newCards.put("forbidden", banListDiffService.getNewContentOfBanList(banListDate, Status.FORBIDDEN.toString()));
 			newCards.put("limited", banListDiffService.getNewContentOfBanList(banListDate, Status.LIMITED.toString()));
 			newCards.put("semiLimited", banListDiffService.getNewContentOfBanList(banListDate, Status.SEMI_LIMITED.toString()));
 
-			newCardsMeta = new HashMap<>();
-			newCardsMeta.put("listRequested", banListDate);
-			newCardsMeta.put("comparedTo", banListDiffService.getPreviousBanListDate(banListDate));
-			newCardsMeta.put("newCards", newCards);
+			if ( newCards.get("forbidden").size() != 0 && newCards.get("limited").size() != 0 && newCards.get("semiLimited").size() != 0 )
+			{
+				newCardsMeta = new HashMap<>();
+				newCardsMeta.put("listRequested", banListDate);
+				newCardsMeta.put("comparedTo", banListDiffService.getPreviousBanListDate(banListDate));
+				newCardsMeta.put("newCards", newCards);
 
-			cache.put(banListDate, newCardsMeta);
-			requestStatus = HttpStatus.OK;
+
+				cache.put(banListDate, newCardsMeta);
+
+				requestStatus = HttpStatus.OK;
+				isContentReturned = true;
+			}
+			else	requestStatus = HttpStatus.NO_CONTENT;
 		}
-		else
+		else if (  newCardsMeta != null && ResourceValidator.isValidBanListDate(banListDate) )
 		{
-			inCache = true;
 			requestStatus = HttpStatus.OK;
+			isInCache = true;
+			isContentReturned = true;
 		}
 
-		LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListDate, endPoint, requestStatus, inCache));
+		LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListDate, endPoint, requestStatus, isInCache, isContentReturned));
 		return new ResponseEntity<>(newCardsMeta, requestStatus);
 	}
 }

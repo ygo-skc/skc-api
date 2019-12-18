@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.ResourceValidator;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
@@ -23,7 +24,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -86,11 +86,10 @@ public class CardsController {
 	})
 	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate, @RequestHeader(value = "Origin", required = false) String origin )
 	{
-		Pattern datePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");	// used to validate ban list date, this is the only format acceptable
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
 		*/
-		if (! datePattern.matcher(startDate).matches())
+		if ( !ResourceValidator.isValidBanListDate(startDate) )
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
 			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status));
@@ -104,7 +103,7 @@ public class CardsController {
 		if (BAN_LIST_CARDS_CACHE.get(startDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, true));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, true, true));
 
 			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(startDate), status);
 		}
@@ -139,7 +138,7 @@ public class CardsController {
 			else
 			{
 				HttpStatus status = HttpStatus.OK;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, false));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, false, true));
 				banList.put("bannedCards", banListSections);
 
 				BAN_LIST_CARDS_CACHE.put(startDate, banList);

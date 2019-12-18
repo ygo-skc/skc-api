@@ -38,15 +38,18 @@ public class LogHelper
 	 * @param endPoint requested endpoint of API.
 	 * @param status Unique comment for log explaining what the process being executed.
 	 * @param retrievedFromCache Whether a cache was used to obtain the resource.
+	 * @param isResourceReturned Whether something is returned to the user from an endpoint
 	 * @return String to use in logger method.
 	 */
-	public static String requestStatusLogString(String ip, String resourceRequested, String endPoint, HttpStatus status, boolean retrievedFromCache)
+	public static String requestStatusLogString(String ip, String resourceRequested, String endPoint, HttpStatus status
+		, boolean retrievedFromCache, boolean isResourceReturned)
 	{
-		String locationOfResource = (retrievedFromCache) ? "From CACHE": "From DATABASE";
+		String locationOfResource = (retrievedFromCache) ? ": {{ From CACHE }}": ": {{ From DATABASE }}";
+		locationOfResource = (isResourceReturned)? locationOfResource: "";
 
 		return new StringBuilder()
 			.append(LogHelper.requestStatusLogString(ip, resourceRequested, endPoint, status))
-			.append(String.format(": {{ %s }} ", locationOfResource))
+			.append( locationOfResource )
 			.toString();
 	}
 }
