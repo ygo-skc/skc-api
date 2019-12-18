@@ -30,6 +30,10 @@ public class PurgeCache
 	@Qualifier("cardsCache")
 	private Map<String, Card> CARD_CACHE;
 
+	@Autowired
+	@Qualifier("banListNewCardsCache")
+	private Map<String, Map<String, Object>> BAN_LISTS_NEW_CARDS_CACHE;
+
 
 	private static final Logger LOG = LogManager.getLogger();
 
@@ -42,5 +46,6 @@ public class PurgeCache
 		BAN_LIST_CARDS_CACHE.clear();
 		BAN_LISTS_START_DATES_CACHE.clear();
 		CARD_CACHE.clear();
+		BAN_LISTS_NEW_CARDS_CACHE.clear();
 	}
 }

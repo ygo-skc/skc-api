@@ -40,7 +40,6 @@ public class TestCallController
 	/**
 	 * Base endpoint for this class.
 	 */
-	@Autowired
 	@Value("${ygo.endpoints.v1.test-call}")
 	private String endPoint;
 

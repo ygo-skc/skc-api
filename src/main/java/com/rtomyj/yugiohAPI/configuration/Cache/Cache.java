@@ -17,36 +17,24 @@ public class Cache
 	 *
 	 */
 	@Bean(name = "banListCardsCache")
-	public Map<String, Map<String, Map<String, List<Card>>>> geBanListCardsCache()
-	{
-		Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE = new HashMap<>();
-		return BAN_LIST_CARDS_CACHE;
-	}
-
-
+	public Map<String, Map<String, Map<String, List<Card>>>> geBanListCardsCache()	{ return new HashMap<String, Map<String, Map<String, List<Card>>>>(); }
 
 	/**
 	 *
 	 * @return
 	 */
 	@Bean(name = "banListStartDatesCache")
-	public Map<String, List<BanLists>> getBanListStartDatesCache()
-	{
-		Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE = new HashMap<>();
-		return BAN_LISTS_START_DATES_CACHE;
-	}
+	public Map<String, List<BanLists>> getBanListStartDatesCache()	{ return new HashMap<String, List<BanLists>>(); }
 	//private static final Map<String, Card> CARD_CACHE = new HashMap<>();
-
-
 
 	/**
 	 *
 	 * @return
 	 */
 	@Bean(name = "cardsCache")
-	public Map<String, Card> getCardsCache()
-	{
-		Map<String, Card> CARD_CACHE = new HashMap<>();
-		return CARD_CACHE;
-	}
+	public Map<String, Card> getCardsCache()	{ return new HashMap<String, Card>(); }
+
+	@Bean(name = "banListNewCardsCache")
+	public Map<String, Map<String, Object>> getBanListNewCardsCache()	{ return new HashMap<String, Map<String, Object>>(); }
+
 }

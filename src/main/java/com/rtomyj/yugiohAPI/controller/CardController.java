@@ -52,7 +52,6 @@ public class CardController
 	/**
 	 * Base url for this endpoint.
 	 */
-	@Autowired
 	@Value("${ygo.endpoints.v1.card}")
 	private String endPoint;
 

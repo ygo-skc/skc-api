@@ -44,7 +44,6 @@ public class CardsController {
 	/**
 	 * The base endpoint for this controller.
 	 */
-	@Autowired
 	@Value("${ygo.endpoints.v1.banned-cards}")
 	private String endPoint;
 

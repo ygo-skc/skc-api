@@ -44,7 +44,6 @@ public class DatesController
 	/**
 	 * The base endpoint used by this controller.
 	 */
-	@Autowired
 	@Value("${ygo.endpoints.v1.ban-list-dates}")
 	private String endPoint;
 
