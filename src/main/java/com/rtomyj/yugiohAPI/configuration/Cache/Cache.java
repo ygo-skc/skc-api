@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.configuration.Cache;
+package com.rtomyj.yugiohAPI.configuration.cache;
 
 import java.util.HashMap;
 import java.util.List;
