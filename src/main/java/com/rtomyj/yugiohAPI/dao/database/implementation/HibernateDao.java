@@ -43,17 +43,11 @@ public class HibernateDao implements Dao
 		return results;
 	}
 
-
-
-
 	@Override
 	public Card getCardInfo(String cardID)
 	{
 		return null;
 	}
-
-
-
 
 	@Override
 	public List<Card> getBanListByBanStatus(String date, Status status)
@@ -61,52 +55,25 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-
-
-	/**
-	 *
-	 */
 	public int getNumberOfBanLists()
 	{
 		return 0;
 	}
 
-
-
-	/**
-	 *
-	 */
 	public int getBanListPosition(String banListDate)
 	{
 		return 0;
 	}
 
-
-
-	/**
-	 *
-	 */
 	public String getPreviousBanListDate(String currentBanList)
 	{
 		return "";
 	}
 
-
-
-	/**
-	 *
-	 */
 	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status){
 		return null;
 	}
 
-
-
-	/**
-	 *
-	 * @param newBanList
-	 * @return
-	 */
 	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
 	{
 		return null;
@@ -114,7 +81,6 @@ public class HibernateDao implements Dao
 
 	@Override
 	public String getCardBanListStatusByDate(String cardId, String banListDate) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

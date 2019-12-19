@@ -53,6 +53,9 @@ public class DatesController
 	@Autowired
 	private HttpServletRequest httpRequest;
 
+	/**
+	 * Logging object.
+	 */
 	private static final Logger LOG = LogManager.getLogger();
 
 	/**
@@ -71,8 +74,7 @@ public class DatesController
 	@ApiOperation(value = "Get dates of ban lists stored in database", response = ResponseEntity.class, tags = "Ban List")
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK")
-	}
-	)
+	})
 	public ResponseEntity<Map<String, List<BanLists>>> startDatesOfBanLists()
 	{
 		/**

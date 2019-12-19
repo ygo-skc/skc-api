@@ -35,6 +35,9 @@ public class TestCallController
 	@Autowired
 	private HttpServletRequest httpRequest;
 
+	/**
+	 * Logging object.
+	 */
 	private static final Logger LOG = LogManager.getLogger();
 
 	/**

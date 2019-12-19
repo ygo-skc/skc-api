@@ -55,6 +55,9 @@ public class CardController
 	@Value("${ygo.endpoints.v1.card}")
 	private String endPoint;
 
+	/**
+	 * Logging object.
+	 */
 	private static final Logger LOG = LogManager.getLogger();
 
 	/**
