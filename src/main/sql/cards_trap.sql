@@ -27,6 +27,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'83555666', (select color_id from card_colors where card_color = 'Trap'), 'Ring of Destruction', 'Trap',
+	"During your opponent's turn: Target 1 face-up monster your opponent controls whose ATK is less than or equal to their LP; destroy that face-up monster, and if you do, take damage equal to its original ATK, then inflict damage to your opponent, equal to the damage you took. You can only activate 1 Ring of Destruction' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'93016201', (select color_id from card_colors where card_color = 'Trap'), 'Royal Oppression', 'Trap',
 	"Either player can pay 800 Life Points to negate the Special Summon of a monster(s), and/or an effect that Special Summons a monster(s), and destroy those cards."
 	, null, null, null

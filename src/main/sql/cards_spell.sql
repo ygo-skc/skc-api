@@ -5,8 +5,30 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'48976825', (select color_id from card_colors where card_color = 'Spell'), 'Burial from a Different Dimension', 'Spell',
+	"Target up to 3 banished monsters; return them to the Graveyard."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'69243953', (select color_id from card_colors where card_color = 'Spell'), 'Butterfly Dagger - Elma', 'Spell',
 	"The equipped monster gains 300 ATK. When this card is destroyed and sent to the Graveyard while equipped: You can return this card to the hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'24224830', (select color_id from card_colors where card_color = 'Spell'), 'Called by the Grave', 'Spell',
+	"Target 1 monster in your opponent's GY; banish it, and if you do, until the end of the next turn, its effects are negated, as well as the activated effects and effects on the field of monsters with the same original name."
 	, null, null, null
 );
 

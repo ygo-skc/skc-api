@@ -5,6 +5,28 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'30012506', (select color_id from card_colors where card_color = 'Effect'), 'A-Assault Core', 'Light',
+	"Once per turn, you can either: Target 1 LIGHT Machine monster you control; equip this card to that target, OR: Unequip this card and Special Summon it. A monster equipped with this card is unaffected by your opponent's monster effects (except its own), also if the equipped monster would be destroyed by battle or card effect, destroy this card instead. If this card is sent from the field to the GY: You can add 1 other Union monster from your GY to your hand.",
+	'Machine/Union/Effect', 1900, 200
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'27279764', (select color_id from card_colors where card_color = 'Effect'), 'Apoqliphort Towers', 'Earth',
+	"Cannot be Special Summoned. Requires 3 'Qli' Tributes to Normal Summon/Set. If this card is Normal Summoned/Set, it is unaffected by Spell/Trap effects and by activated effects from any monster whose original Level/Rank is lower than this card's current Level. All Special Summoned monsters lose 500 ATK and DEF. Once per turn: You can make your opponent send 1 monster from their hand or their side of the field to the Graveyard (their choice).",
+	'Machine/Effect', 3000, 2600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'09929398', (select color_id from card_colors where card_color = 'Effect'), 'Blackwing - Gofu the Vague Shadow', 'Dark',
 	"Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) while you control no monsters. When this card is Special Summoned from the hand: You can Special Summon 2 'Vague Shadow Tokens' (Winged Beast-Type/DARK/Level 1/ATK 0/DEF 0), but they cannot be Tributed or be used as Synchro Material. You can banish this card and 1 or more face-up non-Tuners you control, then target 1 'Blackwing' Synchro Monster in your Graveyard whose Level equals the total Levels the banished monsters had on the field; Special Summon it, and if you do, it is treated as a Tuner.",
 	'Winged-Beast/Tuner/Effect', 0, 0
@@ -41,6 +63,17 @@ VALUES (
 	'15341821', (select color_id from card_colors where card_color = 'Effect'), 'Dandylion', 'Earth',
 	"If this card is sent to the Graveyard: Special Summon 2 'Fluff Tokens' (Plant-Type/WIND/Level 1/ATK 0/DEF 0) in Defense Position. These Tokens cannot be Tributed for a Tribute Summon during the turn they are Special Summoned.",
 	'Plant/Effect', 300, 300
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'56570271', (select color_id from card_colors where card_color = 'Effect'), 'Destiny HERO - Disk Commander', 'Dark',
+	"Cannot be Special Summoned from the GY the turn this card was sent to the GY. If this card is Special Summoned from the GY: You can draw 2 cards. You can only use this effect of 'Destiny HERO - Disk Commander' once per Duel.",
+	'Warrior/Effect', 300, 300
 );
 
 
@@ -96,6 +129,17 @@ VALUES (
 	'75732622', (select color_id from card_colors where card_color = 'Effect'), 'Grinder Golem', 'Dark',
 	"Cannot be Normal Summoned or Set. Must first be Special Summoned (from your hand) to your opponent's side of the field by Special Summoning 2 'Grinder Tokens' (Fiend-Type/DARK/Level 1/ATK 0/DEF 0) in face-up Attack Position on your side of the field. If you Special Summon this monster, you cannot Normal Summon or Set a monster during the same turn.",
 	'Fiend/Effect', 3000, 300
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'55885348', (select color_id from card_colors where card_color = 'Effect'), 'Kozmo Dark Destroyer', 'Dark',
+	"If this card is Normal or Special Summoned: You can target 1 monster on the field; destroy it. Cannot be targeted by an opponent's card effects. If this card is destroyed by battle or card effect and sent to the Graveyard: You can banish this card from your Graveyard; Special Summon 1 Level 7 or lower 'Kozmo' monster from your Deck.",
+	'Machine/Effect', 3000, 1800
 );
 
 
