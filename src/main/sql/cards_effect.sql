@@ -117,6 +117,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'40737112', (select color_id from card_colors where card_color = 'Effect'), 'Dark Magician of Chaos', 'Dark',
+	"During the End Phase, if this card was Normal or Special Summoned this turn: You can target 1 Spell in your GY; add it to your hand. You can only use this effect of 'Dark Magician of Chaos' once per turn. If this card destroys an opponent's monster by battle, after damage calculation: Banish that opponent's monster. If this face-up card would leave the field, banish it instead.",
+	'Spellcaster/Effect', 2800, 2600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'14943837', (select color_id from card_colors where card_color = 'Effect'), 'Debris Dragon', 'Wind',
 	"When this card is Normal Summoned: You can target 1 monster with 500 or less ATK in your GY; Special Summon that target in Attack Position, but it has its effects negated. Cannot be used as Synchro Material, except for the Synchro Summon of a Dragon monster. The other Synchro Material(s) cannot be Level 4.",
 	'Dragon/Effect', 1000, 2000
@@ -392,6 +403,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'26202165', (select color_id from card_colors where card_color = 'Effect'), 'Sangan', 'Dark',
+	"If this card is sent from the field to the GY: Add 1 monster with 1500 or less ATK from your Deck to your hand, but you cannot activate cards, or the effects of cards, with that name for the rest of this turn. You can only use this effect of 'Sangan' once per turn.",
+	'Fiend/Effect', 1000, 600
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'20663556', (select color_id from card_colors where card_color = 'Effect'), 'Substitoad', 'Water',
 	"You can Tribute 1 monster to Special Summon 1 'Frog' monster from your Deck, except 'Frog the Jam'. 'Frog' monsters, except 'Frog the Jam', cannot be destroyed by battle.",
 	'Aqua/Effect', 100, 2000
@@ -458,6 +480,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'98777036', (select color_id from card_colors where card_color = 'Effect'), 'Tragoedia', 'Dark',
+	"When you take battle damage: You can Special Summon this card from your hand. Gains 600 ATK/DEF for each card in your hand. Once per turn: You can send 1 monster from your hand to the GY, then target 1 face-up monster your opponent controls with the same Level the sent monster had in the hand; take control of that face-up monster. Once per turn: You can target 1 monster in your GY; this card's Level becomes the same as that target's, until the end of this turn.",
+	'Fiend/Effect', null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'33184167', (select color_id from card_colors where card_color = 'Effect'), 'Tribe-Infecting Virus', 'Water',
 	"Discard 1 card from your hand and declare 1 Type of monster. Destroy all face-up monsters of the declared Type on the field.",
 	'Aqua/Effect', 1600, 1000
@@ -483,6 +516,17 @@ VALUES (
 	'44910027', (select color_id from card_colors where card_color = 'Effect'), 'Victory Dragon', 'Dark',
 	"This card cannot be Special Summoned. To Tribute Summon this card, you must Tribute 3 Dragon-Type monsters. If this card attacks your opponent directly and reduces their Life Points to 0, you win the Match.",
 	'Dragon/Effect', 2400, 3000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'59297550', (select color_id from card_colors where card_color = 'Effect'), 'Wind-Up Magician', 'Fire',
+	"If the effect of a 'Wind-Up' monster is activated, except 'Wind-Up Magician': You can Special Summon 1 Level 4 or lower 'Wind-Up' monster from your Deck in face-up Defense Position. This effect can only be used once while this card is face-up on the field.",
+	'Spellcaster/Effect', 600, 1800
 );
 
 

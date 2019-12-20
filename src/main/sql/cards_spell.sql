@@ -6,6 +6,28 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'46052429', (select color_id from card_colors where card_color = 'Spell'), 'Advanced Ritual Art', 'Spell',
+	"This card can be used to Ritual Summon any 1 Ritual Monster. You must also send Normal Monsters from your Deck to the Graveyard whose total Levels equal the Level of that Ritual Monster."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'01475311', (select color_id from card_colors where card_color = 'Spell'), 'Allure of Darkness', 'Spell',
+	"Draw 2 cards, then banish 1 DARK monster from your hand, or, if you do not have any in your hand, send your entire hand to the GY."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'87910978', (select color_id from card_colors where card_color = 'Spell'), 'Brain Control', 'Spell',
 	"Pay 800 LP, then target 1 face-up monster your opponent controls that can be Normal Summoned/Set; take control of that target until the End Phase."
 	, null, null, null
@@ -178,6 +200,17 @@ INSERT INTO cards(
 VALUES (
 	'42703248', (select color_id from card_colors where card_color = 'Spell'), 'Giant Trunade', 'Spell',
 	"Return all Spell and Trap Cards on the field to the hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'75500286', (select color_id from card_colors where card_color = 'Spell'), 'Gold Sarcophagus', 'Spell',
+	"Banish 1 card from your Deck, face-up. During your second Standby Phase after this card's activation, add that card to your hand."
 	, null, null, null
 );
 
@@ -614,17 +647,6 @@ VALUES (
 ● 2 Counters: Target 1 'Six Samurai' or 'Shien' Effect Monster; that target gains 500 ATK until the end of this turn.
 ● 4 Counters: Add 1 'Six Samurai' monster from your Deck or GY to your hand.
 ● 6 Counters: Target 1 'Shien' Effect Monster in your GY; Special Summon that target."
-	, null, null, null
-);
-
-
-INSERT INTO cards(
-	card_number, color_id, card_name, card_attribute,
-	card_effect,
-	monster_type, monster_attack, monster_defense)
-VALUES (
-	'75500286', (select color_id from card_colors where card_color = 'Spell'), "Gold Sarcophagus", 'Spell',
-	"Banish 1 card from your Deck, face-up. During your second Standby Phase after this card's activation, add that card to your hand."
 	, null, null, null
 );
 

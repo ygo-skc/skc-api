@@ -601,6 +601,9 @@ VALUES ('2017-11-06', '28297833', 'Semi-Limited');
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2017-11-06', '71564252', 'Semi-Limited');
 
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-11-06', '59297550', 'Semi-Limited');
+
 
 /*
 	Semi-Limited Synchro Monsters

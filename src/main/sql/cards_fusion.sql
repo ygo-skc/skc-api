@@ -38,6 +38,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'63519819', (select color_id from card_colors where card_color = 'Fusion'), 'Thousand-Eyes Restrict', 'Dark',
+	"'Relinquished' + 'Thousand-Eyes Idol'
+Other monsters on the field cannot change their battle positions or attack. Once per turn: You can target 1 monster your opponent controls; equip that target to this card (max. 1). This card's ATK/DEF become equal to that equipped monster's. If this card would be destroyed by battle, destroy that equipped monster instead."
+	, 'Spellcaster/Fusion/Effect', 0, 0
+);
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'39512984', (select color_id from card_colors where card_color = 'Fusion'), 'Gem-Knight Master Diamond', 'Earth',
 	"3 'Gem-Knight' monsters
 Must first be Fusion Summoned. This card gains 100 ATK for each 'Gem-' monster in your Graveyard. Once per turn: You can banish 1 Level 7 or lower 'Gem-Knight' Fusion Monster from your Graveyard; until the End Phase, this card's name becomes that monster's, and replace this effect with that monster's original effects."

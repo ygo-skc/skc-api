@@ -598,6 +598,9 @@ INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2017-06-12', '71564252', 'Semi-Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-06-12', '59297550', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
 VALUES ('2017-06-12', '78872731', 'Semi-Limited');
 
 
