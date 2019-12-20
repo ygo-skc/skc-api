@@ -5,6 +5,28 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'29401950', (select color_id from card_colors where card_color = 'Trap'), 'Bottomless Trap Hole', 'Trap',
+	"When your opponent Summons a monster(s) with 1500 or more ATK: Destroy that monster(s) with 1500 or more ATK, and if you do, banish it."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'36468556', (select color_id from card_colors where card_color = 'Trap'), 'Ceasefire', 'Trap',
+	"If a face-down Defense Position monster or an Effect Monster is on the field: Change all face-down Defense Position monsters on the field to face-up Defense Position (Flip monsters' effects are not activated at this time), also inflict 500 damage to your opponent for each Effect Monster on the field."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'28566710', (select color_id from card_colors where card_color = 'Trap'), 'Last Turn', 'Trap',
 	"This card can only be activated during your opponent's turn when your Life Points are 1000 or less. Select 1 monster on your side of the field and send all other cards on the field and in their respective owner's hands to their respective Graveyards. After that, your opponent selects and Special Summons 1 monster from their Deck in face-up Attack Position and attacks your selected monster. (Any Battle Damage from this battle is treated as 0.) The player whose monster remains alone on the field at the End Phase of this turn wins the Duel. Any other case results in a DRAW."
 	, null, null, null
@@ -82,6 +104,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'53582587', (select color_id from card_colors where card_color = 'Trap'), 'Torrential Tribute', 'Trap',
+	"When a monster(s) is Summoned: Destroy all monsters on the field."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'64697231', (select color_id from card_colors where card_color = 'Trap'), 'Trap Dustshoot', 'Trap',
 	"Activate only if your opponent has 4 or more cards in their hand. Look at your opponent's hand, select 1 Monster Card in it, and return that card to its owner's Deck."
 	, null, null, null
@@ -139,6 +172,17 @@ INSERT INTO cards(
 VALUES (
 	'32723153', (select color_id from card_colors where card_color = 'Trap'), 'Magical Explosion', 'Trap',
 	"Activate only while you have no cards in your hand. Inflict 200 damage to your opponent for each Spell Card in your Graveyard."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'29843091', (select color_id from card_colors where card_color = 'Trap'), 'Ojama Trio', 'Trap',
+	"Special Summon 3 'Ojama Tokens' (Beast-Type/LIGHT/Level 2/ATK 0/DEF 1000) to your opponent's field in Defense Position. They cannot be Tributed for a Tribute Summon, and each time 1 is destroyed, its controller takes 300 damage."
 	, null, null, null
 );
 

@@ -87,3 +87,15 @@ VALUES (
 Monster EffectCannot Special Summon Fusion, Synchro or Xyz Monsters using this card as a Material, except 'Dracoslayer' monsters."
 	, 'Dragon/Pendulum/Tuner/Effect', 1850, 0
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'72714461', (select color_id from card_colors where card_color = 'Pendulum-Effect'), 'Wisdom-Eye Magician', 'Light',
+	"Pendulum EffectIf you have a 'Magician' or 'Performapal' card in your other Pendulum Zone: You can destroy this card, and if you do, place 1 'Magician' Pendulum Monster from your Deck in your Pendulum Zone, except 'Wisdom-Eye Magician'.
+Monster EffectYou can discard this card, then target 1 card in your Pendulum Zone, whose current Pendulum Scale is different from its original Pendulum Scale; its Pendulum Scale becomes its original Pendulum Scale until the end of this turn."
+	, 'Spellcaster/Pendulum/Effect', 1500, 1500
+);

@@ -17,6 +17,18 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'50321796', (select color_id from card_colors where card_color = 'Synchro'), 'Brionac, Dragon of the Ice Barrier', 'Water',
+	"1 Tuner + 1 or more non-Tuner monsters
+You can discard any number of cards to the Graveyard, then target the same number of cards your opponent controls; return those cards to the hand. You can only use this effect of 'Brionac, Dragon of the Ice Barrier' once per turn."
+	, 'Sea-Serpent/Synchro/Effect', 2300, 1400
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'65536818', (select color_id from card_colors where card_color = 'Synchro'), 'Denglong, First of the Yang Zing', 'Light',
 	"1 Tuner + 1 or more non-Tuner monsters
 If this card is Special Summoned: You can add 1 'Yang Zing' card from your Deck to your hand. Once per turn: You can send 1 Wyrm-Type monster from your Deck to the Graveyard; this card's Level becomes the sent monster's. If this face-up card leaves the field: You can Special Summon 1 'Yang Zing' monster from your Deck. You can only Special Summon 'Denglong, First of the Yang Zing(s)' once per turn."
