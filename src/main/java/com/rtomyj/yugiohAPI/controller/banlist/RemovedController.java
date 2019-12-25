@@ -77,11 +77,10 @@ public class RemovedController {
 		{
 			// retrieving removed cards by ban list status
 
-			final Map<String, List<Map<String, String>>> removedCards = new HashMap<>();
-			removedCards.put("removedCards", banListDiffService.getRemovedContentOfBanList(banListStartDate));
+			List<Map<String, String>> removedCards = banListDiffService.getRemovedContentOfBanList(banListStartDate);
 
 			// There are changes for requested date - ie, requested date found in DB
-			if ( removedCards.get("removedCards").size() != 0 )
+			if ( removedCards.size() != 0 )
 			{
 				// builds meta data object for removed cards request
 				removedCardsMeta = new HashMap<>();
