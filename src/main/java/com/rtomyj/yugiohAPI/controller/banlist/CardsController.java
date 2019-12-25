@@ -30,10 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
-@RequestMapping(path = "${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=utf-8")
 @RestController
+@RequestMapping(path = "${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=utf-8")
 @CrossOrigin(origins = "*")
-@Api(tags = "Ban List")
+@Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class CardsController {
 	/**
 	 * Service object used to get information about banned cards from the database.
@@ -75,26 +75,26 @@ public class CardsController {
 	 * delivery. If desired ban list contents are not in query , the ban list
 	 * contents will be fetched from DB.
 	 *
-	 * @param startDate The date the desired ban list took effect.
+	 * @param banListStartDate The date the desired ban list took effect.
 	 * @return ban list for specified ban list start date.
 	 */
 	@ResponseBody
-	@GetMapping(path = "{startDate}")
-	@ApiOperation(value = "Retrieve the full ban list of a specified {startDate}", response = ResponseEntity.class, tags = "Ban List")
+	@GetMapping(path = "{banListStartDate}")
+	@ApiOperation(value = "Retrieve the full ban list of a given valid date a ban list started (use /api/v1/ban/dates to see a valid list)", response = ResponseEntity.class, tags = "Ban List")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 204, message = "Request yielded no content"),
-		@ApiResponse(code = 400, message = "Malformed request, make sure startDate is valid")
+		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String startDate)
+	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String banListStartDate)
 	{
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
 		*/
-		if ( !ResourceValidator.isValidBanListDate(startDate) )
+		if ( !ResourceValidator.isValidBanListDate(banListStartDate) )
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
 			return new ResponseEntity<>(status);
 		}
 
@@ -102,12 +102,12 @@ public class CardsController {
 		/*
 			If the requested ban list is cached, access the cache and return the contents of the ban list.
 		*/
-		if (BAN_LIST_CARDS_CACHE.get(startDate) != null)
+		if (BAN_LIST_CARDS_CACHE.get(banListStartDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, true, true));
+			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
 
-			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(startDate), status);
+			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(banListStartDate), status);
 		}
 		/*
 			If not in cache, try to retrieve ban list contents from DB
@@ -120,9 +120,9 @@ public class CardsController {
 			/*
 				Retrieves ban lists from DB by status
 			*/
-			banListSections.put("forbidden", bannedCardsService.getBanListByBanStatus(startDate, Status.FORBIDDEN));
-			banListSections.put("limited", bannedCardsService.getBanListByBanStatus(startDate, Status.LIMITED));
-			banListSections.put("semiLimited", bannedCardsService.getBanListByBanStatus(startDate, Status.SEMI_LIMITED));
+			banListSections.put("forbidden", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN));
+			banListSections.put("limited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED));
+			banListSections.put("semiLimited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED));
 
 			/*
 				If DB doesn't return at least one card for at least one status, the users ban list isn't in the DB
@@ -131,7 +131,7 @@ public class CardsController {
 					&& banListSections.get("semiLimited").size() == 0)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
 				return new ResponseEntity<>(status);
 			}
 			/*
@@ -140,10 +140,10 @@ public class CardsController {
 			else
 			{
 				HttpStatus status = HttpStatus.OK;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), startDate, endPoint, status, false, true));
+				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
 				banList.put("bannedCards", banListSections);
 
-				BAN_LIST_CARDS_CACHE.put(startDate, banList);
+				BAN_LIST_CARDS_CACHE.put(banListStartDate, banList);
 				return new ResponseEntity<>(banList, status);
 			}
 		}

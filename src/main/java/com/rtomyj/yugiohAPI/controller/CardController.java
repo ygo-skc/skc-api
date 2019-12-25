@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @RestController
 @CrossOrigin(origins = "*")
-@Api(description = "", tags = "Card")
+@Api(description = "Request information about card data stored in database.", tags = "Card")
 public class CardController
 {
 	/**

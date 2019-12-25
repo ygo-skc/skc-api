@@ -29,8 +29,8 @@ import io.swagger.annotations.ApiResponses;
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
-@RequestMapping(path = "${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=utf-8")
 @RestController
+@RequestMapping(path = "${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=utf-8")
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class DatesController
@@ -71,7 +71,7 @@ public class DatesController
 	 * @return Map that contains a list of all dates of the ban lists in database.
 	 */
 	@GetMapping()
-	@ApiOperation(value = "Get dates of ban lists stored in database", response = ResponseEntity.class, tags = "Ban List")
+	@ApiOperation(value = "Retrieve dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints.", response = ResponseEntity.class, tags = "Ban List")
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK")
 	})
