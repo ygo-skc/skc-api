@@ -147,3 +147,15 @@ VALUES (
 	"2 Level 6 monsters / You can also Xyz Summon this card by sending 1 'Burning Abyss' monster from your hand to the Graveyard, then using 1 'Dante' monster you control as the Xyz Material. (Xyz Materials attached to that monster also become Xyz Materials on this card.) If Summoned this way, the following effect cannot be activated this turn. Once per turn, during either player's turn: You can detach 1 Xyz Material from this card; send 1 card from your Deck to the Graveyard. If this card in your possession is destroyed by your opponent's card (by battle or card effect) and sent to your Graveyard: You can Special Summon 1 'Burning Abyss' monster from your Extra Deck, ignoring its Summoning conditions."
 	, 'Fairy/Xyz/Effect', 2500, 2800
 );
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'46772449', (select color_id from card_colors where card_color = 'Xyz'), 'Evilswarm Exciton Knight', 'Light',
+	"2 Level 4 monsters
+Once per chain, during your Main Phase or your opponent's Battle Phase, if your opponent has more total cards in their hand and field than you do (Quick Effect): You can detach 1 material from this card; destroy all other cards on the field, also your opponent takes no further damage this turn."
+	, 'Fiend/Xyz/Effect', 1900, 0
+);

@@ -1,5 +1,49 @@
 USE yugioh_API_DB;
 
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'46052429', (select color_id from card_colors where card_color = 'Spell'), 'Advanced Ritual Art', 'Spell',
+	"This card can be used to Ritual Summon any 1 Ritual Monster. You must also send Normal Monsters from your Deck to the Graveyard whose total Levels equal the Level of that Ritual Monster."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'01475311', (select color_id from card_colors where card_color = 'Spell'), 'Allure of Darkness', 'Spell',
+	"Draw 2 cards, then banish 1 DARK monster from your hand, or, if you do not have any in your hand, send your entire hand to the GY."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'87910978', (select color_id from card_colors where card_color = 'Spell'), 'Brain Control', 'Spell',
+	"Pay 800 LP, then target 1 face-up monster your opponent controls that can be Normal Summoned/Set; take control of that target until the End Phase."
+	, null, null, null
+);
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'48976825', (select color_id from card_colors where card_color = 'Spell'), 'Burial from a Different Dimension', 'Spell',
+	"Target up to 3 banished monsters; return them to the Graveyard."
+	, null, null, null
+);
+
+
 INSERT INTO cards(
 	card_number, color_id, card_name, card_attribute,
 	card_effect,
@@ -7,6 +51,17 @@ INSERT INTO cards(
 VALUES (
 	'69243953', (select color_id from card_colors where card_color = 'Spell'), 'Butterfly Dagger - Elma', 'Spell',
 	"The equipped monster gains 300 ATK. When this card is destroyed and sent to the Graveyard while equipped: You can return this card to the hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'24224830', (select color_id from card_colors where card_color = 'Spell'), 'Called by the Grave', 'Spell',
+	"Target 1 monster in your opponent's GY; banish it, and if you do, until the end of the next turn, its effects are negated, as well as the activated effects and effects on the field of monsters with the same original name."
 	, null, null, null
 );
 
@@ -29,6 +84,17 @@ INSERT INTO cards(
 VALUES (
 	'04031928', (select color_id from card_colors where card_color = 'Spell'), 'Change of Heart', 'Spell',
 	"Target 1 monster your opponent controls; take control of it until the End Phase."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'94886282', (select color_id from card_colors where card_color = 'Spell'), 'Charge of the Light Brigade', 'Spell',
+	"Send the top 3 cards of your Deck to the Graveyard; add 1 Level 4 or lower 'Lightsworn' monster from your Deck to your hand."
 	, null, null, null
 );
 
@@ -97,8 +163,54 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'62265044', (select color_id from card_colors where card_color = 'Spell'), 'Dragon Ravine', 'Spell',
+	"Once per turn: You can discard 1 card, then activate 1 of these effects;
+● Add 1 Level 4 or lower 'Dragunity' monster from your Deck to your hand.
+● Send 1 Dragon monster from your Deck to the GY."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'06417578', (select color_id from card_colors where card_color = 'Spell'), 'El Shaddoll Fusion', 'Spell',
+	"Fusion Summon 1 'Shaddoll' Fusion Monster from your Extra Deck, using monsters from your hand or your side of the field as Fusion Materials. You can only activate 1 'El Shaddoll Fusion' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'77565204', (select color_id from card_colors where card_color = 'Spell'), 'Future Fusion', 'Spell',
+	"During your 1st Standby Phase after this card's activation: Show 1 Fusion Monster in your Extra Deck and send the Fusion Materials listed on it from your Main Deck to the GY. During your 2nd Standby Phase after this card's activation: Fusion Summon 1 Fusion Monster from your Extra Deck with the same name as the monster you showed, and target it with this card. When this card leaves the field, destroy that target. When that target is destroyed, destroy this card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'42703248', (select color_id from card_colors where card_color = 'Spell'), 'Giant Trunade', 'Spell',
 	"Return all Spell and Trap Cards on the field to the hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'75500286', (select color_id from card_colors where card_color = 'Spell'), 'Gold Sarcophagus', 'Spell',
+	"Banish 1 card from your Deck, face-up. During your second Standby Phase after this card's activation, add that card to your hand."
 	, null, null, null
 );
 
@@ -185,6 +297,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'37520316', (select color_id from card_colors where card_color = 'Spell'), 'Mind Control', 'Spell',
+	"Target 1 monster your opponent controls; until the End Phase, take control of that target, but it cannot declare an attack or be Tributed."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'41482598', (select color_id from card_colors where card_color = 'Spell'), 'Mirage of Nightmare', 'Spell',
 	"Once per turn, during your opponent's Standby Phase: Draw cards until you have 4 cards in your hand. If you do, during your next Standby Phase after that: Randomly discard the same number of cards you drew (or your entire hand, if you do not have enough cards)."
 	, null, null, null
@@ -198,6 +321,17 @@ INSERT INTO cards(
 VALUES (
 	'74191942', (select color_id from card_colors where card_color = 'Spell'), 'Painful Choice', 'Spell',
 	"Select 5 cards from your Deck and show them to your opponent. Your opponent selects 1 card among them. Add that card to your hand and discard the remaining cards to the Graveyard."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'53208660', (select color_id from card_colors where card_color = 'Spell'), 'Pendulum Call', 'Spell',
+	"Discard 1 card; add 2 'Magician' Pendulum Monsters with different names from your Deck to your hand, also, until the end of your opponent's next turn after this card resolves, 'Magician' cards in your Pendulum Zones cannot be destroyed by card effects. You can only activate 1 'Pendulum Call' per turn. You cannot activate this card if you activated a 'Magician' monster's Pendulum Effect this turn."
 	, null, null, null
 );
 
@@ -231,6 +365,17 @@ INSERT INTO cards(
 VALUES (
 	'70828912', (select color_id from card_colors where card_color = 'Spell'), 'Premature Burial', 'Spell',
 	"Activate this card by paying 800 LP, then target 1 monster in your Graveyard; Special Summon that target in Attack Position and equip it with this card. When this card is destroyed, destroy the equipped monster."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'96729612', (select color_id from card_colors where card_color = 'Spell'), 'Preparation of Rites', 'Spell',
+	"Add 1 Level 7 or lower Ritual Monster from your Deck to your hand, then you can add 1 Ritual Spell from your GY to your hand."
 	, null, null, null
 );
 
@@ -319,6 +464,21 @@ INSERT INTO cards(
 VALUES (
 	'03298689', (select color_id from card_colors where card_color = 'Spell'), "The Phantom Knights' Rank-Up-Magic Launch", 'Spell',
 	"During the Main Phase: Target 1 DARK Xyz Monster you control with no Xyz Materials; Special Summon from your Extra Deck, 1 DARK Xyz Monster that is 1 Rank higher than that monster you control, by using it as the Xyz Material, and if you do, attach this card to it as additional Xyz Material. (This Special Summon is treated as an Xyz Summon. Xyz Materials attached to it also become Xyz Materials on the Summoned monster.) During your Main Phase: You can banish this card from your Graveyard, then target 1 DARK Xyz Monster you control; attach 1 'The Phantom Knights' monster from your hand to that monster as Xyz Material."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'31222701', (select color_id from card_colors where card_color = 'Spell'), "Wavering Eyes' Rank-Up-Magic Launch", 'Spell',
+	"Destroy as many cards in each player's Pendulum Zones as possible, then apply these effects, in sequence, depending on the number of cards destroyed by this effect.
+● 1 or more: Inflict 500 damage to your opponent.
+● 2 or more: You can add 1 Pendulum Monster from your Main Deck to your hand.
+● 3 or more: You can banish 1 card on the field.
+● 4: You can add 1 'Wavering Eyes' from your Deck to your hand."
 	, null, null, null
 );
 
@@ -496,17 +656,6 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
-	'75500286', (select color_id from card_colors where card_color = 'Spell'), "Gold Sarcophagus", 'Spell',
-	"Banish 1 card from your Deck, face-up. During your second Standby Phase after this card's activation, add that card to your hand."
-	, null, null, null
-);
-
-
-INSERT INTO cards(
-	card_number, color_id, card_name, card_attribute,
-	card_effect,
-	monster_type, monster_attack, monster_defense)
-VALUES (
 	'66957584', (select color_id from card_colors where card_color = 'Spell'), "Infernity Launcher", 'Spell',
 	"Once per turn: You can send 1 'Infernity' monster from your hand to the Graveyard. You can send this card to the Graveyard, then target up to 2 'Infernity' monsters in your Graveyard; Special Summon them. You must have no cards in your hand to activate and to resolve this effect."
 	, null, null, null
@@ -518,8 +667,19 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'23171610', (select color_id from card_colors where card_color = 'Spell'), "Limiter Removal", 'Spell',
+	"Once per turn: You can send 1 'Infernity' monster from your hand to the Graveyard. You can send this card to the Graveyard, then target up to 2 'Infernity' monsters in your Graveyard; Special Summon them. You must have no cards in your hand to activate and to resolve this effect."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'71650854', (select color_id from card_colors where card_color = 'Spell'), "Magical Mid-Breaker Field", 'Spell',
-	"Activate this card at the start of your Main Phase 1 or 2. During each player's Main Phase 1, monsters on the field cannot be destroyed by their opponent's card effects, also neither player can target monsters their opponent controls. You cannot activate or Set Field Spell Cards."
+	"Double the ATK of all Machine monsters you currently control, until the end of this turn. During the End Phase of this turn, destroy those monsters."
 	, null, null, null
 );
 
@@ -639,6 +799,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'17639150', (select color_id from card_colors where card_color = 'Spell'), "Saqlifice", 'Spell',
+	"Equip only to a 'Qli' monster. It gains 300 ATK and cannot be destroyed by battle. The equipped monster can be treated as 2 Tributes for the Tribute Summon of a 'Qli' monster. If this card is sent from the field to the Graveyard: You can add 1 'Qli' monster from your Deck to your hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'73915051', (select color_id from card_colors where card_color = 'Spell'), "Scapegoat", 'Spell',
 	"Special Summon 4 'Sheep Tokens' (Beast/EARTH/Level 1/ATK 0/DEF 0) in Defense Position. They cannot be Tributed for a Tribute Summon. You cannot Summon other monsters the turn you activate this card (but you can Normal Set)."
 	, null, null, null
@@ -652,6 +823,17 @@ INSERT INTO cards(
 VALUES (
 	'73468603', (select color_id from card_colors where card_color = 'Spell'), "Set Rotation", 'Spell',
 	"Set 2 Field Spells with different names from your Deck on the field (1 on your field, and 1 on your opponent's field). While either of those cards remain Set on the field, neither player can activate or Set other Field Spells."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'54031490', (select color_id from card_colors where card_color = 'Spell'), "Shien's Smoke Signal", 'Spell',
+	"Add 1 Level 3 or lower 'Six Samurai' monster from your Deck to your hand."
 	, null, null, null
 );
 
@@ -755,5 +937,28 @@ INSERT INTO cards(
 VALUES (
 	'24010609', (select color_id from card_colors where card_color = 'Spell'), "Sky Striker Mecha Modules - Multirole", 'Spell',
 	"Once per turn: You can target 1 other card you control; send that card to the GY, also your opponent cannot activate cards or effects in response to your Spell Card activations for the rest of this turn (even if this cards leaves the field). Once per turn, during the End Phase: You can Set 'Sky Striker' Spells with different names from your GY, up to the number of 'Sky Striker' Spell Cards you activated this turn while this card was face-up on the field, but banish them when they leave the field."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'99330325', (select color_id from card_colors where card_color = 'Spell'), "Interrupted Kaiju Slumber", 'Spell',
+	"Destroy as many monsters on the field as possible, then Special Summon in Attack Position, 2 'Kaiju' monsters with different names from your Deck (1 on each side), but they cannot change their battle positions, and must attack, if able. During your Main Phase, except the turn this card was sent to the Graveyard: You can banish this card from your Graveyard; add 1 'Kaiju' monster from your Deck to your hand. You can only activate 1 'Interrupted Kaiju Slumber' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'79844764', (select color_id from card_colors where card_color = 'Spell'), "The Monarchs Stormforth
+", 'Spell',
+	"Once during this turn, if you would Tribute a monster for a Tribute Summon, you can Tribute 1 monster your opponent controls even though you do not control it. You can only activate 1 'The Monarchs Stormforth' per turn. During the turn you activate this card, you cannot Special Summon monsters from the Extra Deck."
 	, null, null, null
 );

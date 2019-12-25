@@ -1,12 +1,14 @@
-package com.rtomyj.yugiohAPI.dao;
+package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanLists;
 import com.rtomyj.yugiohAPI.model.Card;
 
@@ -41,21 +43,44 @@ public class HibernateDao implements Dao
 		return results;
 	}
 
-
-
-
 	@Override
 	public Card getCardInfo(String cardID)
 	{
 		return null;
 	}
 
-
-
-
 	@Override
 	public List<Card> getBanListByBanStatus(String date, Status status)
 	{
+		return null;
+	}
+
+	public int getNumberOfBanLists()
+	{
+		return 0;
+	}
+
+	public int getBanListPosition(String banListDate)
+	{
+		return 0;
+	}
+
+	public String getPreviousBanListDate(String currentBanList)
+	{
+		return "";
+	}
+
+	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status){
+		return null;
+	}
+
+	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
+	{
+		return null;
+	}
+
+	@Override
+	public String getCardBanListStatusByDate(String cardId, String banListDate) {
 		return null;
 	}
 }

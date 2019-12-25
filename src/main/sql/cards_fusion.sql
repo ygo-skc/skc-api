@@ -5,9 +5,9 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
-	'7412721', (select color_id from card_colors where card_color = 'Fusion'), 'Elder Entity Norden', 'Water',
+	'17412721', (select color_id from card_colors where card_color = 'Fusion'), 'Elder Entity Norden', 'Water',
 	"1 Synchro or Xyz Monster + 1 Synchro or Xyz Monster
-	When this card is Special Summoned: You can target 1 Level 4 or lower monster in your Graveyard; Special Summon it, but its effects are negated, also banish it when this card leaves the field."
+When this card is Special Summoned: You can target 1 Level 4 or lower monster in your Graveyard; Special Summon it, but its effects are negated, also banish it when this card leaves the field."
 	, 'Fairy/Fusion/Effect', 2000, 2200
 );
 
@@ -31,6 +31,17 @@ VALUES (
 	"1 'Shaddoll' monster + 1 LIGHT monster
 Must first be Fusion Summoned. If this card is Special Summoned: You can send 1 'Shaddoll' card from your Deck to the GY. At the start of the Damage Step, if this card battles a Special Summoned monster: Destroy that monster. If this card is sent to the GY: You can target 1 'Shaddoll' Spell/Trap in your GY; add it to your hand."
 	, 'Fairy/Fusion/Effect', 2800, 2500
+);
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'63519819', (select color_id from card_colors where card_color = 'Fusion'), 'Thousand-Eyes Restrict', 'Dark',
+	"'Relinquished' + 'Thousand-Eyes Idol'
+Other monsters on the field cannot change their battle positions or attack. Once per turn: You can target 1 monster your opponent controls; equip that target to this card (max. 1). This card's ATK/DEF become equal to that equipped monster's. If this card would be destroyed by battle, destroy that equipped monster instead."
+	, 'Spellcaster/Fusion/Effect', 0, 0
 );
 
 INSERT INTO cards(

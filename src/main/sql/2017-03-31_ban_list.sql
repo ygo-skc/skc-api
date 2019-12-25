@@ -1,213 +1,124 @@
 USE yugioh_API_DB;
 
 /*
-	Forbidden Effect Monsters
+	Forbidden Effect
 */
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '09929398', 'Forbidden');
-
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '53804307', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '34124316', 'Forbidden');
-
+VALUES ('2017-03-31', '27279764', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '15341821', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '08903700', 'Forbidden');
-
+VALUES ('2017-03-31', '53804307', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '51858306', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '55623480', 'Forbidden');
-
+VALUES ('2017-03-31', '82301904', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '78706415', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '93369354', 'Forbidden');
-
+VALUES ('2017-03-31', '34124316', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '75732622', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '57421866', 'Forbidden');
-
+VALUES ('2017-03-31', '69015963', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '34206604', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '21593977', 'Forbidden');
-
+VALUES ('2017-03-31', '56570271', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '21377582', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '23434538', 'Forbidden');
-
+VALUES ('2017-03-31', '08903700', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '96782886', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '79106360', 'Forbidden');
-
+VALUES ('2017-03-31', '40044918', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '23558733', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '90411554', 'Forbidden');
-
+VALUES ('2017-03-31', '78706415', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '05592689', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '20663556', 'Forbidden');
-
+VALUES ('2017-03-31', '93369354', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '88071625', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '26400609', 'Forbidden');
-
+VALUES ('2017-03-31', '34206604', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '33184167', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '30539496', 'Forbidden');
-
+VALUES ('2017-03-31', '21593977', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '44910027', 'Forbidden');
-
+VALUES ('2017-03-31', '96782886', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '03078576', 'Forbidden');
+VALUES ('2017-03-31', '33508719', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '79106360', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '68819554', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '90411554', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '90307777', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '20663556', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '89399912', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '88071625', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '26400609', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '33184167', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '44910027', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '78010363', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '03078576', 'Forbidden');
 
 
 /*
-	Forbidden Effect Monsters
+	Forbidden Fusion
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '17412721', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '43387895', 'Forbidden');
+VALUES ('2017-03-31', '20366274', 'Forbidden');
 
 
 /*
-	Forbidden Link Monsters
+	Forbidden Link
 */
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '05043010', 'Forbidden');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '59537380', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '39064822', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '03679218', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '61665245', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '26692769', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '22953417', 'Forbidden');
 
 
 /*
-	Forbidden Synchro Monsters
+	Forbidden Synchro
 */
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '25862681', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '65536818', 'Forbidden');
 
 
 /*
-	Forbidden Xyz Monsters
+	Forbidden Xyz
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '34086406', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '04423206', 'Forbidden');
-
+VALUES ('2017-03-31', '46772449', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '54719828', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '10389142', 'Forbidden');
-
+VALUES ('2017-03-31', '34086406', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '63504681', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '58820923', 'Forbidden');
-
+VALUES ('2017-03-31', '54719828', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '18326736', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '81122844', 'Forbidden');
-
+VALUES ('2017-03-31', '18326736', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '85115440', 'Forbidden');
-
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '48905153', 'Forbidden');
+VALUES ('2017-03-31', '81122844', 'Forbidden');
 
 
 /*
@@ -215,22 +126,13 @@ VALUES ('2019-10-14', '48905153', 'Forbidden');
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '76794549', 'Forbidden');
+VALUES ('2017-03-31', '31178212', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '49684352', 'Forbidden');
+VALUES ('2017-03-31', '07563579', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '31178212', 'Forbidden');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '07563579', 'Forbidden');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '17330916', 'Forbidden');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '40318957', 'Forbidden');
+VALUES ('2017-03-31', '17330916', 'Forbidden');
 
 
 /*
@@ -238,88 +140,91 @@ VALUES ('2019-10-14', '40318957', 'Forbidden');
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '69243953', 'Forbidden');
+VALUES ('2017-03-31', '69243953', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '57953380', 'Forbidden');
+VALUES ('2017-03-31', '72892473', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '04031928', 'Forbidden');
+VALUES ('2017-03-31', '57953380', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '67616300', 'Forbidden');
+VALUES ('2017-03-31', '04031928', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '60682203', 'Forbidden');
+VALUES ('2017-03-31', '67616300', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '17375316', 'Forbidden');
+VALUES ('2017-03-31', '60682203', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '44763025', 'Forbidden');
+VALUES ('2017-03-31', '17375316', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '23557835', 'Forbidden');
+VALUES ('2017-03-31', '44763025', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '42703248', 'Forbidden');
+VALUES ('2017-03-31', '23557835', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '79571449', 'Forbidden');
+VALUES ('2017-03-31', '27970830', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '18144506', 'Forbidden');
+VALUES ('2017-03-31', '42703248', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '19613556', 'Forbidden');
+VALUES ('2017-03-31', '79571449', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '35059553', 'Forbidden');
+VALUES ('2017-03-31', '19613556', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '85602018', 'Forbidden');
+VALUES ('2017-03-31', '35059553', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '34906152', 'Forbidden');
+VALUES ('2017-03-31', '85602018', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '46411259', 'Forbidden');
+VALUES ('2017-03-31', '34906152', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '41482598', 'Forbidden');
+VALUES ('2017-03-31', '46411259', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '74191942', 'Forbidden');
+VALUES ('2017-03-31', '41482598', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '67169062', 'Forbidden');
+VALUES ('2017-03-31', '83764718', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '55144522', 'Forbidden');
+VALUES ('2017-03-31', '74191942', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '70828912', 'Forbidden');
+VALUES ('2017-03-31', '67169062', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '94220427', 'Forbidden');
+VALUES ('2017-03-31', '55144522', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '45986603', 'Forbidden');
+VALUES ('2017-03-31', '70828912', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '54447022', 'Forbidden');
+VALUES ('2017-03-31', '45986603', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '46448938', 'Forbidden');
+VALUES ('2017-03-31', '46448938', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '11110587', 'Forbidden');
+VALUES ('2017-03-31', '48130397', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '42829885', 'Forbidden');
+VALUES ('2017-03-31', '27770341', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '03298689', 'Forbidden');
+VALUES ('2017-03-31', '42829885', 'Forbidden');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '31222701', 'Forbidden');
 
 
 /*
@@ -327,305 +232,202 @@ VALUES ('2019-10-14', '03298689', 'Forbidden');
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '28566710', 'Forbidden');
+VALUES ('2017-03-31', '28566710', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '27174286', 'Forbidden');
+VALUES ('2017-03-31', '27174286', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '93016201', 'Forbidden');
+VALUES ('2017-03-31', '93016201', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '57585212', 'Forbidden');
+VALUES ('2017-03-31', '57585212', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '03280747', 'Forbidden');
+VALUES ('2017-03-31', '03280747', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '35316708', 'Forbidden');
+VALUES ('2017-03-31', '41420027', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '64697231', 'Forbidden');
+VALUES ('2017-03-31', '35316708', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '80604091', 'Forbidden');
+VALUES ('2017-03-31', '64697231', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '05851097', 'Forbidden');
-
-
-
-/*
-	Limited
-	Normal Monsters
-*/
+VALUES ('2017-03-31', '80604091', 'Forbidden');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '07902349', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '44519536', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '70903634', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '08124921', 'Limited');
+VALUES ('2017-03-31', '05851097', 'Forbidden');
 
 
 /*
-	Limited
-	Effect Monsters
+	Limited Normal Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '42790071', 'Limited');
+VALUES ('2017-03-31', '07902349', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '28985331', 'Limited');
+VALUES ('2017-03-31', '44519536', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '61901281', 'Limited');
+VALUES ('2017-03-31', '70903634', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '57143342', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '69015963', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '14536035', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '78868119', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '58984738', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '33396948', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '64034255', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '20758643', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '99177923', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '16188701', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '33508719', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '16226786', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '12958919', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '88264978', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '26889158', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '81275020', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '04474060', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '78080961', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '89399912', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '10802915', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '99234526', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '78872731', 'Limited');
-
+VALUES ('2017-03-31', '08124921', 'Limited');
 
 
 /*
-	Limited
-	Ritual Monsters
+	Limited Effect Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '45222299', 'Limited');
+VALUES ('2017-03-31', '85103922', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '11877465', 'Limited');
+VALUES ('2017-03-31', '72989439', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '89463537', 'Limited');
+VALUES ('2017-03-31', '57143342', 'Limited');
 
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '15341821', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '65192027', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '78868119', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '96570609', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '33396948', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '64034255', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '20758643', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '99177923', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '68184115', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '69207766', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '55885348', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '41386308', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '23434538', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '80344569', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '16226786', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '88264978', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '14878871', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '85138716', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '10802915', 'Limited');
 
 
 /*
-	Limited
-	Fusion Monsters
+	Limited Ritual Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '39512984', 'Limited');
+VALUES ('2017-03-31', '45222299', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '48063985', 'Limited');
+VALUES ('2017-03-31', '11877465', 'Limited');
 
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '26674724', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '89463537', 'Limited');
 
 
 /*
-	Limited
-	Syncrho Monsters
+	Limited Fusion Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '70583986', 'Limited');
+VALUES ('2017-03-31', '17412721', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '18239909', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '74586817', 'Limited');
-
+VALUES ('2017-03-31', '48063985', 'Limited');
 
 
 /*
-	Limited
-	Link Monsters
+	Limited Syncrho Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '24094258', 'Limited');
+VALUES ('2017-03-31', '50321796', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '63288573', 'Limited');
+VALUES ('2017-03-31', '70583986', 'Limited');
 
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '18239909', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '90953320', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '52687916', 'Limited');
 
 
 /*
-	Limited
-	Xyz Monsters
+	Limited Pendulum Normal Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '27552504', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '00581014', 'Limited');
-
+VALUES ('2017-03-31', '65518099', 'Limited');
 
 
 /*
-	Limited
-	Spells
+	Limited Pendulum Effect Monsters
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '08949584', 'Limited');
+VALUES ('2017-03-31', '92746535', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '14087893', 'Limited');
+VALUES ('2017-03-31', '40318957', 'Limited');
+
+
+/*
+	Limited Link Monsters
+*/
+
+
+/*
+	Limited Xyz Monsters
+*/
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '07394770', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '72892473', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '91623717', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '81674782', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '15854426', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '14733538', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '67723438', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '95308449', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '81439173', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '27970830', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '75500286', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '66957584', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '71650854', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '83764718', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '33782437', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '02295440', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '22842126', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '12580477', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '58577036', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '32807846', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '52155219', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '73915051', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '73468603', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '52340444', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '98338152', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '24010609', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '71344451', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '54631665', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '45305419', 'Limited');
-
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '70368879', 'Limited');
+VALUES ('2017-03-31', '27552504', 'Limited');
 
 
 /*
@@ -633,58 +435,220 @@ VALUES ('2019-10-14', '70368879', 'Limited');
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '61740673', 'Limited');
+VALUES ('2017-03-31', '14087893', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '30241314', 'Limited');
+VALUES ('2017-03-31', '87910978', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '32723153', 'Limited');
+VALUES ('2017-03-31', '48976825', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '89208725', 'Limited');
+VALUES ('2017-03-31', '81674782', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '82732705', 'Limited');
+VALUES ('2017-03-31', '15854426', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '84749824', 'Limited');
+VALUES ('2017-03-31', '14733538', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '73599290', 'Limited');
+VALUES ('2017-03-31', '06417578', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '73628505', 'Limited');
+VALUES ('2017-03-31', '67723438', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '35371948', 'Limited');
+VALUES ('2017-03-31', '95308449', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '35125879', 'Limited');
+VALUES ('2017-03-31', '81439173', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '17078030', 'Limited');
+VALUES ('2017-03-31', '77565204', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '18144506', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '66957584', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '23171610', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '37520316', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '43040603', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '33782437', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '02295440', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '22842126', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '53208660', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '96729612', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '12580477', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '58577036', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '32807846', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '74845897', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '72405967', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '17639150', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '54447022', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '45305419', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '79844764', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '70368879', 'Limited');
 
 
 /*
-	Semi-Limited
-	Effect Monsters
+	Limited Traps
 */
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '70711847', 'Semi-Limited');
+VALUES ('2017-03-31', '29401950', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '43694650', 'Semi-Limited');
+VALUES ('2017-03-31', '94192409', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '99745551', 'Semi-Limited');
+VALUES ('2017-03-31', '54974237', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '65192027', 'Semi-Limited');
+VALUES ('2017-03-31', '61740673', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '28297833', 'Semi-Limited');
+VALUES ('2017-03-31', '09059700', 'Limited');
 
 INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-VALUES ('2019-10-14', '68819554', 'Semi-Limited');
+VALUES ('2017-03-31', '30241314', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '32723153', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '83555666', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '82732705', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '84749824', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '73599290', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '53582587', 'Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '17078030', 'Limited');
+
+
+/*
+	Semi-Limited Effect Monsters
+*/
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '74311226', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '85087012', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '14943837', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '37742478', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '28297833', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '00423585', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '71564252', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '59297550', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '78872731', 'Semi-Limited');
+
+
+/*
+	Semi-Limited Synchro Monsters
+*/
+
+
+/*
+	Semi-Limited Pendulum Effect Monsters
+*/
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '72714461', 'Semi-Limited');
+
+
+/*
+	Semi-Limited Spells
+*/
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '91623717', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '94886282', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '53129443', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '62265044', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '99330325', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '54031490', 'Semi-Limited');
+
+
+/*
+	Semi-Limited Traps
+*/
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '97077563', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '70342110', 'Semi-Limited');
+
+INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
+VALUES ('2017-03-31', '15800838', 'Semi-Limited');

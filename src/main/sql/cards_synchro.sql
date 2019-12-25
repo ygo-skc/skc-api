@@ -7,8 +7,20 @@ INSERT INTO cards(
 VALUES (
 	'25862681', (select color_id from card_colors where card_color = 'Synchro'), 'Ancient Fairy Dragon', 'Light',
 	"1 Tuner + 1+ non-Tuner monsters
-	Once per turn: You can Special Summon 1 Level 4 or lower monster from your hand. You cannot conduct your Battle Phase the turn you activate this effect. Once per turn: You can destroy as many Field Spells on the field as possible, and if you do, gain 1000 LP, then you can add 1 Field Spell from your Deck to your hand."
+Once per turn: You can Special Summon 1 Level 4 or lower monster from your hand. You cannot conduct your Battle Phase the turn you activate this effect. Once per turn: You can destroy as many Field Spells on the field as possible, and if you do, gain 1000 LP, then you can add 1 Field Spell from your Deck to your hand."
 	, 'Dragon/Synchro/Effect', 2100, 3000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'50321796', (select color_id from card_colors where card_color = 'Synchro'), 'Brionac, Dragon of the Ice Barrier', 'Water',
+	"1 Tuner + 1 or more non-Tuner monsters
+You can discard any number of cards to the Graveyard, then target the same number of cards your opponent controls; return those cards to the hand. You can only use this effect of 'Brionac, Dragon of the Ice Barrier' once per turn."
+	, 'Sea-Serpent/Synchro/Effect', 2300, 1400
 );
 
 
@@ -69,4 +81,16 @@ VALUES (
 	"1 Tuner + 2+ non-Tuner monsters
 When this card is Synchro Summoned: You can banish up to 1 card each from your opponent's hand, field, and GY. (The card in the hand is chosen at random.)"
 	, 'Dragon/Synchro/Effect', 2700, 2000
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'90953320', (select color_id from card_colors where card_color = 'Synchro'), 'T.G. Hyper Librarian', 'Dark',
+	"1 Tuner + 1 or more non-Tuner monsters
+If a monster is Synchro Summoned: Draw 1 card. This card must be face-up on the field to activate and to resolve this effect."
+	, 'Spellcaster/Synchro/Effect', 2400, 1800
 );

@@ -1,7 +1,7 @@
-package com.rtomyj.yugiohAPI.service;
+package com.rtomyj.yugiohAPI.service.banlist;
 
-import com.rtomyj.yugiohAPI.dao.Dao;
-import com.rtomyj.yugiohAPI.dao.Dao.Status;
+import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.model.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +13,7 @@ import java.util.List;
  * Service class that allows interfacing with the contents of a ban list.
  */
 @Service
-public class BannedCardsService
+public class CardsService
 {
 	/**
 	 * Dao for DB;
