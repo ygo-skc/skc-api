@@ -48,4 +48,11 @@ public class Cache
 	@Bean(name = "banListNewCardsCache")
 	public Map<String, Map<String, Object>> getBanListNewCardsCache()	{ return new HashMap<String, Map<String, Object>>(); }
 
+	/**
+	 * Creates a bean for caching new cards added to a ban list.
+	 * @return The cache.
+	 */
+	@Bean(name = "banListRemovedCardsCache")
+	public Map<String, Map<String, Object>> getBanListRemovedCardsCache()	{ return new HashMap<String, Map<String, Object>>(); }
+
 }
