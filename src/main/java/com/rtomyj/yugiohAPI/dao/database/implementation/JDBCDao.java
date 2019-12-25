@@ -171,7 +171,7 @@ public class JDBCDao implements Dao
 	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == null)	return new ArrayList<Map<String, String>>();
+		if (oldBanList == "")	return new ArrayList<Map<String, String>>();
 
 		String query = new StringBuilder()
 			.append("select old_list.card_number, old_list.ban_status")
