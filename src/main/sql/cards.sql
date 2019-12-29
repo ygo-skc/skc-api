@@ -37,16 +37,16 @@ CREATE TABLE ban_lists
 	INDEX(ban_status(1))
 );
 
-INSERT INTO card_colors(card_color) VALUES('Normal');
-INSERT INTO card_colors(card_color) VALUES('Effect');
-INSERT INTO card_colors(card_color) VALUES('Fusion');
-INSERT INTO card_colors(card_color) VALUES('Ritual');
-INSERT INTO card_colors(card_color) VALUES('Synchro');
-INSERT INTO card_colors(card_color) VALUES('XYZ');
-INSERT INTO card_colors(card_color) VALUES('Pendulum-Normal');
-INSERT INTO card_colors(card_color) VALUES('Pendulum-Effect');
-INSERT INTO card_colors(card_color) VALUES('Link');
-
-INSERT INTO card_colors(card_color) VALUES('Spell');
-INSERT INTO card_colors(card_color) VALUES('Trap');
+INSERT INTO card_colors(card_color)
+	VALUES	('Normal')
+				, ('Effect')
+				, ('Fusion')
+				, ('Ritual')
+				, ('Synchro')
+				, ('XYZ')
+				, ('Pendulum-Normal')
+				, ('Pendulum-Effect')
+				, ('Link')
+				, ('Spell')
+				, ('Trap');
 
