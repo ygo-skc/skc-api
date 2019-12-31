@@ -249,8 +249,8 @@ INSERT INTO cards(
 VALUES (
 	'35125879', (select color_id from card_colors where card_color = 'Trap'), "True King's Return", 'Trap',
 	"f this card is sent from the Spell & Trap Zone to the Graveyard: You can target 1 monster on the field; destroy it. You cannot activate the following effects of 'True King's Return' in the same Chain.
-● You can target 1 'True Draco' or 'True King' monster in your Graveyard; Special Summon it in Defense Position, also for the rest of this turn, you cannot Special Summon.
-● During your opponent's Main Phase, you can: Immediately after this effect resolves, Tribute Summon 1 'True Draco' or 'True King' monster face-up.
+&bull; You can target 1 'True Draco' or 'True King' monster in your Graveyard; Special Summon it in Defense Position, also for the rest of this turn, you cannot Special Summon.
+&bull; During your opponent's Main Phase, you can: Immediately after this effect resolves, Tribute Summon 1 'True Draco' or 'True King' monster face-up.
 You can only use each effect of 'True King's Return' once per turn."
 	, null, null, null
 );

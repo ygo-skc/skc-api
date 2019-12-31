@@ -106,9 +106,9 @@ INSERT INTO cards(
 VALUES (
 	'67616300', (select color_id from card_colors where card_color = 'Spell'), 'Chicken Game', 'Spell',
 	"The player with the lowest LP takes no damage. Once per turn, during the Main Phase: The turn player can pay 1000 LP, then activate 1 of these effects;
-● Draw 1 card.
-● Destroy this card.
-● Your opponent gains 1000 LP.
+&bull; Draw 1 card.
+&bull; Destroy this card.
+&bull; Your opponent gains 1000 LP.
 Neither player can activate cards or effects in response to this effect's activation."
 	, null, null, null
 );
@@ -165,8 +165,8 @@ INSERT INTO cards(
 VALUES (
 	'62265044', (select color_id from card_colors where card_color = 'Spell'), 'Dragon Ravine', 'Spell',
 	"Once per turn: You can discard 1 card, then activate 1 of these effects;
-● Add 1 Level 4 or lower 'Dragunity' monster from your Deck to your hand.
-● Send 1 Dragon monster from your Deck to the GY."
+&bull; Add 1 Level 4 or lower 'Dragunity' monster from your Deck to your hand.
+&bull; Send 1 Dragon monster from your Deck to the GY."
 	, null, null, null
 );
 
@@ -475,10 +475,10 @@ INSERT INTO cards(
 VALUES (
 	'31222701', (select color_id from card_colors where card_color = 'Spell'), "Wavering Eyes' Rank-Up-Magic Launch", 'Spell',
 	"Destroy as many cards in each player's Pendulum Zones as possible, then apply these effects, in sequence, depending on the number of cards destroyed by this effect.
-● 1 or more: Inflict 500 damage to your opponent.
-● 2 or more: You can add 1 Pendulum Monster from your Main Deck to your hand.
-● 3 or more: You can banish 1 card on the field.
-● 4: You can add 1 'Wavering Eyes' from your Deck to your hand."
+&bull; 1 or more: Inflict 500 damage to your opponent.
+&bull; 2 or more: You can add 1 Pendulum Monster from your Main Deck to your hand.
+&bull; 3 or more: You can banish 1 card on the field.
+&bull; 4: You can add 1 'Wavering Eyes' from your Deck to your hand."
 	, null, null, null
 );
 
@@ -644,9 +644,9 @@ INSERT INTO cards(
 VALUES (
 	'27970830', (select color_id from card_colors where card_color = 'Spell'), "Gateway of the Six", 'Spell',
 	"Each time a 'Six Samurai' monster(s) is Normal or Special Summoned, place 2 Bushido Counters on this card. You can remove Bushido Counters from your field to activate these effects.
-● 2 Counters: Target 1 'Six Samurai' or 'Shien' Effect Monster; that target gains 500 ATK until the end of this turn.
-● 4 Counters: Add 1 'Six Samurai' monster from your Deck or GY to your hand.
-● 6 Counters: Target 1 'Shien' Effect Monster in your GY; Special Summon that target."
+&bull; 2 Counters: Target 1 'Six Samurai' or 'Shien' Effect Monster; that target gains 500 ATK until the end of this turn.
+&bull; 4 Counters: Add 1 'Six Samurai' monster from your Deck or GY to your hand.
+&bull; 6 Counters: Target 1 'Shien' Effect Monster in your GY; Special Summon that target."
 	, null, null, null
 );
 
@@ -901,9 +901,9 @@ INSERT INTO cards(
 VALUES (
 	'52155219', (select color_id from card_colors where card_color = 'Spell'), "Salamangreat Circle", 'Spell',
 	"Activate 1 of these effects:
-● Add 1 “Salamangreat” monster from your Deck to your hand.
-●Target 1 'Salamangreat' Link Monster you control that was Link Summoned using a monster with its same name as material; that Link Monster is unaffected by monster effects this turn, except its own.
-You can only activate 1 “Salamangreat Circle” per turn."
+&bull; Add 1 'Salamangreat' monster from your Deck to your hand.
+&bull;Target 1 'Salamangreat' Link Monster you control that was Link Summoned using a monster with its same name as material; that Link Monster is unaffected by monster effects this turn, except its own.
+You can only activate 1 'Salamangreat Circle' per turn."
 	, null, null, null
 );
 

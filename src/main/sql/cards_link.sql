@@ -91,7 +91,7 @@ INSERT INTO cards(
 VALUES (
 	'59537380', (select color_id from card_colors where card_color = 'Link'), 'Guardragon Agarpain', 'Dark',
 	"2 Dragon monsters
-You cannot Special Summon monsters, except Dragon monsters. During your Main Phase: You can Special Summon 1 Dragon monster from your Extra Deck, to an Extra Monster Zone or Main Monster Zone you can Summon to, that 2 or more Link Monsters point to. You can only use this effect of “Guardragon Agarpain” once per turn. You can only Special Summon “Guardragon Agarpain(s)” once per turn."
+You cannot Special Summon monsters, except Dragon monsters. During your Main Phase: You can Special Summon 1 Dragon monster from your Extra Deck, to an Extra Monster Zone or Main Monster Zone you can Summon to, that 2 or more Link Monsters point to. You can only use this effect of 'Guardragon Agarpain' once per turn. You can only Special Summon 'Guardragon Agarpain(s)' once per turn."
 	, 'Dragon/Link/Effect', 1500, null
 );
 

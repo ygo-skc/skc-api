@@ -27,8 +27,8 @@ INSERT INTO cards(
 	, (
 		'72989439', (select color_id from card_colors where card_color = 'Effect'), 'Black Luster Soldier - Envoy of the Beginning', 'Light',
 		"Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) by banishing 1 LIGHT and 1 DARK monster from your Graveyard. Once per turn, you can activate 1 of these effects.
-	● Target 1 monster on the field; banish that target face-up. This card cannot attack the turn this effect is activated.
-	● If this attacking card destroys an opponent's monster by battle, after damage calculation: It can make a second attack in a row.",
+	&bull; Target 1 monster on the field; banish that target face-up. This card cannot attack the turn this effect is activated.
+	&bull; If this attacking card destroys an opponent's monster by battle, after damage calculation: It can make a second attack in a row.",
 		'Warrior/Effect', 3000, 2500
 	)
 	, (
@@ -279,8 +279,8 @@ INSERT INTO cards(
 	, (
 		'57143342', (select color_id from card_colors where card_color = 'Effect'), 'Cir, Malebranche of the Burning Abyss', 'Dark',
 		"If you control a monster that is not a 'Burning Abyss' monster, destroy this card. You can only use 1 of these effects of 'Cir, Malebranche of the Burning Abyss' per turn, and only once that turn.
-	● If you control no Spell/Trap Cards: You can Special Summon this card from your hand.
-	● If this card is sent to the Graveyard: You can target 1 'Burning Abyss' monster in your Graveyard, except 'Cir, Malebranche of the Burning Abyss'; Special Summon it.",
+	&bull; If you control no Spell/Trap Cards: You can Special Summon this card from your hand.
+	&bull; If this card is sent to the Graveyard: You can target 1 'Burning Abyss' monster in your Graveyard, except 'Cir, Malebranche of the Burning Abyss'; Special Summon it.",
 		'Fiend/Effect', 1600, 1200
 	)
 	, (
@@ -316,8 +316,8 @@ INSERT INTO cards(
 	, (
 		'40044918', (select color_id from card_colors where card_color = 'Effect'), 'Elemental HERO Stratos', 'Wind',
 		"When this card is Normal or Special Summoned: You can activate 1 of these effects.
-	● You can destroy Spell/Trap Cards on the field, up to the number of 'HERO' monsters you control, except this card.
-	● Add 1 'HERO' monster from your Deck to your hand.",
+	&bull; You can destroy Spell/Trap Cards on the field, up to the number of 'HERO' monsters you control, except this card.
+	&bull; Add 1 'HERO' monster from your Deck to your hand.",
 		'Warrior/Effect', 1800, 300
 	)
 	, (
@@ -333,8 +333,8 @@ INSERT INTO cards(
 	, (
 		'20758643', (select color_id from card_colors where card_color = 'Effect'), 'Graff, Malebranche of the Burning Abyss', 'Dark',
 		"If you control a monster that is not a 'Burning Abyss' monster, destroy this card. You can only use 1 of these effects of 'Graff, Malebranche of the Burning Abyss' per turn, and only once that turn.
-	● If you control no Spell/Trap Cards: You can Special Summon this card from your hand.
-	● If this card is sent to the Graveyard: You can Special Summon 1 'Burning Abyss' monster from your Deck, except 'Graff, Malebranche of the Burning Abyss'.",
+	&bull; If you control no Spell/Trap Cards: You can Special Summon this card from your hand.
+	&bull; If this card is sent to the Graveyard: You can Special Summon 1 'Burning Abyss' monster from your Deck, except 'Graff, Malebranche of the Burning Abyss'.",
 		'Fiend/Effect', 1000, 1500
 	)
 	, (
@@ -349,7 +349,7 @@ INSERT INTO cards(
 	)
 	, (
 		'16188701', (select color_id from card_colors where card_color = 'Effect'), 'Lady Debug', 'Light',
-		"If this card is Normal or Special Summoned: You can add 1 Level 3 or lower Cyberse monster from your Deck to your hand. You can only use this effect of “Lady Debug” once per turn.",
+		"If this card is Normal or Special Summoned: You can add 1 Level 3 or lower Cyberse monster from your Deck to your hand. You can only use this effect of 'Lady Debug' once per turn.",
 		'Cyberse/Effect', 1700, 1400
 	)
 	, (
@@ -411,7 +411,7 @@ INSERT INTO cards(
 	, (
 		'78872731', (select color_id from card_colors where card_color = 'Effect'), 'Zoodiac Ratpier', 'Earth',
 		"If this card is Normal Summoned: You can send 1 'Zoodiac' card from your Deck to the Graveyard. An Xyz Monster whose original Type is Beast-Warrior and has this card as Xyz Material gains this effect.
-	● Once per turn: You can detach 1 Xyz Material from this card; Special Summon 1 'Zoodiac Ratpier' from your hand or Deck.",
+	&bull; Once per turn: You can detach 1 Xyz Material from this card; Special Summon 1 'Zoodiac Ratpier' from your hand or Deck.",
 		'Beast-Warrior/Effect', 0, 0
 	)
 	, (

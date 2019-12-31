@@ -9,9 +9,9 @@ VALUES (
 	"2 Level 4 monsters
 	Once per turn: You can detach 1 Xyz Material from this card, then activate 1 of these effects.
 
-	● Target 3 monsters in your Graveyard; shuffle all 3 into the Deck, then draw 1 card.
+	&bull; Target 3 monsters in your Graveyard; shuffle all 3 into the Deck, then draw 1 card.
 
-	● Target 1 non-Effect Monster in your Graveyard; Special Summon that target."
+	&bull; Target 1 non-Effect Monster in your Graveyard; Special Summon that target."
 	, 'Rock/Xyz/Effect', 1800, 800
 );
 
@@ -24,8 +24,8 @@ VALUES (
 	'34086406', (select color_id from card_colors where card_color = 'Xyz'), 'Lavalval Chain', 'Fire',
 	"2 Level 4 monsters
 Once per turn: You can detach 1 Xyz Material from this card to activate 1 of these effects;
-● Send 1 card from your Deck to the Graveyard.
-● Choose 1 monster from your Deck and place it on top of your Deck."
+&bull; Send 1 card from your Deck to the Graveyard.
+&bull; Choose 1 monster from your Deck and place it on top of your Deck."
 	, 'Sea Serpent/Xyz/Effect', 1800, 1000
 );
 
@@ -73,7 +73,7 @@ INSERT INTO cards(
 VALUES (
 	'63504681', (select color_id from card_colors where card_color = 'Xyz'), 'Number 86: Heroic Champion - Rhongomyniad', 'Dark',
 	"2 or more (max. 5) Level 4 Warrior-Type monsters
-During each of your opponent's End Phases: Detach 1 Xyz Material from this card. This card gains effects based on the number of Xyz Materials attached to it. ● 1 or more: Cannot be destroyed by battle. ● 2 or more: Gains 1500 ATK and DEF. ● 3 or more: Unaffected by other card effects. ● 4 or more: Your opponent cannot Normal or Special Summon monsters. ● 5: Once per turn: You can destroy all cards your opponent controls."
+During each of your opponent's End Phases: Detach 1 Xyz Material from this card. This card gains effects based on the number of Xyz Materials attached to it. &bull; 1 or more: Cannot be destroyed by battle. &bull; 2 or more: Gains 1500 ATK and DEF. &bull; 3 or more: Unaffected by other card effects. &bull; 4 or more: Your opponent cannot Normal or Special Summon monsters. &bull; 5: Once per turn: You can destroy all cards your opponent controls."
 	, 'Warrior/Xyz/Effect', 1500, 1500
 );
 
