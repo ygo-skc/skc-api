@@ -1,6 +1,6 @@
 package com.rtomyj.yugiohAPI.dao.database;
 
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import java.util.List;
@@ -49,9 +49,9 @@ public interface Dao
 
 	/**
 	 * Get the list of dates of all the ban lists stored in the database.
-	 * @return A list of BanLists
+	 * @return A list of BanList
 	 */
-	public List<BanLists> getBanListStartDates();
+	public List<BanList> getBanListStartDates();
 
 	/**
 	 * Retrieve the information about a Card given the ID.

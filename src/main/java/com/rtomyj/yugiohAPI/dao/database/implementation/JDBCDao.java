@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public List<BanLists> getBanListStartDates()
+	public List<BanList> getBanListStartDates()
 	{
 		return null;
 	}

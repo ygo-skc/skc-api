@@ -9,7 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.hibernate.Session;
@@ -29,15 +29,15 @@ public class HibernateDao implements Dao
 
 
 	@Override
-	public List<BanLists> getBanListStartDates() {
+	public List<BanList> getBanListStartDates() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
-		CriteriaQuery<BanLists> criteriaQuery = criteriaBuilder.createQuery(BanLists.class);
-		Root<BanLists> root = criteriaQuery.from(BanLists.class);
+		CriteriaQuery<BanList> criteriaQuery = criteriaBuilder.createQuery(BanList.class);
+		Root<BanList> root = criteriaQuery.from(BanList.class);
 		criteriaQuery.select(root.get("banListDate")).distinct(true);
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
-		List<BanLists> results = session.createQuery(criteriaQuery).getResultList();
+		List<BanList> results = session.createQuery(criteriaQuery).getResultList();
 
 		session.close();
 		return results;

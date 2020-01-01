@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.context.annotation.Bean;
@@ -27,11 +27,18 @@ public class Cache
 	public Map<String, Map<String, Map<String, List<Card>>>> geBanListCardsCache()	{ return new HashMap<String, Map<String, Map<String, List<Card>>>>(); }
 
 	/**
+	 * Creates a bean for caching cards in ban lists with some trimmed text (in card effect for example) to prevent using a lot of bandwidth
+	 * @return The cache.
+	 */
+	@Bean(name = "banListCardsCacheLowBandwidth")
+	public Map<String, Map<String, Map<String, List<Card>>>> geBanListCardsLowBandwidthCache()	{ return new HashMap<String, Map<String, Map<String, List<Card>>>>(); }
+
+	/**
 	 *	Creates a bean for caching dates of ban lists.
 	 * @return The cache.
 	 */
 	@Bean(name = "banListStartDatesCache")
-	public Map<String, List<BanLists>> getBanListStartDatesCache()	{ return new HashMap<String, List<BanLists>>(); }
+	public Map<String, List<BanList>> getBanListStartDatesCache()	{ return new HashMap<String, List<BanList>>(); }
 	//private static final Map<String, Card> CARD_CACHE = new HashMap<>();
 
 	/**
