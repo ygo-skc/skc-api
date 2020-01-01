@@ -365,7 +365,7 @@ INSERT INTO cards(
 	, (
 		'16226786', (select color_id from card_colors where card_color = 'Effect'), 'Night Assailant', 'Dark',
 		"FLIP: Target 1 monster your opponent controls; destroy that target.
-	When this card is sent from the hand to the Graveyard: Target 1 Flip Effect Monster in your Graveyard, except this card; return that target to the hand.",
+When this card is sent from the hand to the Graveyard: Target 1 Flip Effect Monster in your Graveyard, except this card; return that target to the hand.",
 		'Fiend/Flip/Effect', 200, 500
 	)
 	, (

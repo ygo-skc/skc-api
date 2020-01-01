@@ -7,10 +7,8 @@ INSERT INTO cards(
 VALUES (
 	'00581014', (select color_id from card_colors where card_color = 'Xyz'), 'Daigusto Emeral', 'Wind',
 	"2 Level 4 monsters
-	Once per turn: You can detach 1 Xyz Material from this card, then activate 1 of these effects.
-
+Once per turn: You can detach 1 Xyz Material from this card, then activate 1 of these effects.
 &bull; Target 3 monsters in your Graveyard; shuffle all 3 into the Deck, then draw 1 card.
-
 &bull; Target 1 non-Effect Monster in your Graveyard; Special Summon that target."
 	, 'Rock/Xyz/Effect', 1800, 800
 );
