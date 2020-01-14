@@ -142,9 +142,11 @@ public class JDBCDao implements Dao
 		if (oldBanList == "")	return new ArrayList<Map<String, String>>();
 
 		String query = new StringBuilder()
-			.append("select new_list.card_number from (select card_number from ban_lists where ban_list_date = '%2$s' and ban_status = '%1$s')")
-			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = '%3$s' and ban_status = '%1$s')")
-			.append(" as old_list on new_list.card_number = old_list.card_number where old_list.card_number is NULL")
+			.append("select new_cards.card_number, cards.card_name from (select new_list.card_number")
+			.append(" from (select card_number from ban_lists where ban_list_date = '%2$s' and ban_status = '%1$s')")
+			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = '%3$s'")
+			.append(" and ban_status = '%1$s') as old_list on new_list.card_number = old_list.card_number")
+			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number;")
 			.toString();
 		query = String.format(query, status, newBanList, oldBanList);
 
@@ -155,9 +157,13 @@ public class JDBCDao implements Dao
 			{
 				final Map<String, String> newCard = new HashMap<>();
 				final String cardID = row.getString(1);
+				String previousStatus = this.getCardBanListStatusByDate(cardID, oldBanList);
+				previousStatus = ( previousStatus == null ) ? "Unlimited" : previousStatus;
+
 
 				newCard.put("id", cardID);
-				newCard.put("previousStatus", this.getCardBanListStatusByDate(cardID, oldBanList));
+				newCard.put("previousStatus", previousStatus);
+				newCard.put("name", row.getString(2));
 
 				newCards.add(newCard);
 			}
@@ -182,6 +188,7 @@ public class JDBCDao implements Dao
 			.toString();
 
 		query = String.format(query, newBanList, oldBanList);
+		System.out.println(query);
 
 		return jdbcConn.query(query, (ResultSet row) -> {
 			final List<Map<String, String>> REMOVED_CARDS = new ArrayList<>();
