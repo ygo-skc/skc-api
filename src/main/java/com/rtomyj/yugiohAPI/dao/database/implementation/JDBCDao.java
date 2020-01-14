@@ -188,7 +188,6 @@ public class JDBCDao implements Dao
 			.toString();
 
 		query = String.format(query, newBanList, oldBanList);
-		System.out.println(query);
 
 		return jdbcConn.query(query, (ResultSet row) -> {
 			final List<Map<String, String>> REMOVED_CARDS = new ArrayList<>();
