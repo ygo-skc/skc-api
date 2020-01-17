@@ -3,7 +3,7 @@ package com.rtomyj.yugiohAPI.configuration.cache;
 import java.util.List;
 import java.util.Map;
 
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,11 +27,18 @@ public class PurgeCache
 	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE;
 
 	/**
+	 * Cache for cards of specific ban lists with trimmed date to prevent using bandwidth.
+	 */
+	@Autowired
+	@Qualifier("banListCardsCacheLowBandwidth")
+	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
+
+	/**
 	 * Cache for dates of ban lists
 	 */
 	@Autowired
 	@Qualifier("banListStartDatesCache")
-	private Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE;
+	private Map<String, List<BanList>> BAN_LISTS_START_DATES_CACHE;
 
 	/**
 	 * Cache for the information of specific cards.
@@ -69,6 +76,7 @@ public class PurgeCache
 	{
 		LOG.info("Purging caches");
 		BAN_LIST_CARDS_CACHE.clear();
+		BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE.clear();
 		BAN_LISTS_START_DATES_CACHE.clear();
 		CARD_CACHE.clear();
 		BAN_LISTS_NEW_CARDS_CACHE.clear();

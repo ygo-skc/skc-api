@@ -19,7 +19,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "ban_lists", schema = "yugioh_API_DB")
-public class BanLists implements Serializable {
+public class BanList implements Serializable {
 
 	private static final long serialVersionUID = 3890245600312215281L;
 

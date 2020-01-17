@@ -53,6 +53,20 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'94677445', (select color_id from card_colors where card_color = 'Synchro'), 'Ib the World Chalice Justiciar', 'Water',
+	"1 Tuner + 1+ non-Tuner monsters
+For this card’s Synchro Summon, you can treat 1 'World Chalice' Normal Monster you control as a Tuner. You can only use each of the following effects of 'Ib the World Chalice Justiciar' once per turn.
+&bull; If this card is Synchro Summoned: You can add 1 'World Legacy' card from your Deck to your hand.
+&bull; If this Synchro Summoned card is sent from the field to the GY: You can Special Summon 1 'World Chalice' monster from your Deck or GY, except 'Ib the World Chalice Justiciar'."
+	, 'Spellcaster/Synchro/Tuner/Effect', 1800, 2100
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'18239909', (select color_id from card_colors where card_color = 'Synchro'), 'Ignister Prominence, the Blasting Dracoslayer', 'Fire',
 	"1 Tuner + 1 or more non-Tuner Pendulum Monsters
 Once per turn: You can target 1 Pendulum Monster on the field or 1 card in the Pendulum Zone; destroy it, and if you do, shuffle 1 card on the field into the Deck. Once per turn: You can Special Summon 1 'Dracoslayer' monster from your Deck in Defense Position, but it cannot be used as a Synchro Material for a Summon."
@@ -69,6 +83,19 @@ VALUES (
 	"1 Tuner + 1+ non-Tuner monsters
 Once per turn, during the Main Phase (Quick Effect): You can banish both this face-up card from the field and 1 random card from your opponent's hand, face-up, until your next Standby Phase. Once per turn, during your opponent's Standby Phase: You can target 1 banished card; return it to the GY. If this card is in your GY: You can target 1 other card in the GY; shuffle both that card and this card from the GY into the Deck."
 	, 'Psychic/Synchro/Effect', 2800, 2200
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'63101919', (select color_id from card_colors where card_color = 'Synchro'), 'Tempest Magician
+', 'Dark',
+	"1 Tuner + 1 or more non-Tuner Spellcaster-Type monsters
+When this card is Synchro Summoned, place 1 Spell Counter on it. Once per turn, you can discard any number of cards to place 1 Spell Counter on a monster(s) you control for each card you discarded. You can remove all Spell Counters on the field to inflict 500 damage to your opponent for each removed Spell Counter."
+	, 'Spellcaster/Synchro/Effect', 2200, 1400
 );
 
 

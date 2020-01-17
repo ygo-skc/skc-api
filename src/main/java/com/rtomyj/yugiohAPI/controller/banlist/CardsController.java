@@ -66,6 +66,15 @@ public class CardsController {
 	@Qualifier("banListCardsCache")
 	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE;
 
+	/**
+	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
+	 * Each type has cards with that status.
+	 * The difference between this and the above cache is that this cache has trimmed text to prevent using too much bandwidth
+	 */
+	@Autowired
+	@Qualifier("banListCardsCacheLowBandwidth")
+	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
+
 
 
 	/**
@@ -86,7 +95,7 @@ public class CardsController {
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String banListStartDate)
+	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String banListStartDate, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
 	{
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
@@ -98,16 +107,20 @@ public class CardsController {
 			return new ResponseEntity<>(status);
 		}
 
+		Map<String, Map<String, Map<String, List<Card>>>> cache;
+		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
+		else	cache = BAN_LIST_CARDS_CACHE;
+
 
 		/*
 			If the requested ban list is cached, access the cache and return the contents of the ban list.
 		*/
-		if (BAN_LIST_CARDS_CACHE.get(banListStartDate) != null)
+		if (cache.get(banListStartDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
 			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
 
-			return new ResponseEntity<>(BAN_LIST_CARDS_CACHE.get(banListStartDate), status);
+			return new ResponseEntity<>(cache.get(banListStartDate), status);
 		}
 		/*
 			If not in cache, try to retrieve ban list contents from DB
@@ -120,9 +133,9 @@ public class CardsController {
 			/*
 				Retrieves ban lists from DB by status
 			*/
-			banListSections.put("forbidden", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN));
-			banListSections.put("limited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED));
-			banListSections.put("semiLimited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED));
+			banListSections.put("forbidden", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN, saveBandwidth));
+			banListSections.put("limited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED, saveBandwidth));
+			banListSections.put("semiLimited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED, saveBandwidth));
 
 			/*
 				If DB doesn't return at least one card for at least one status, the users ban list isn't in the DB
@@ -143,7 +156,7 @@ public class CardsController {
 				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
 				banList.put("bannedCards", banListSections);
 
-				BAN_LIST_CARDS_CACHE.put(banListStartDate, banList);
+				cache.put(banListStartDate, banList);
 				return new ResponseEntity<>(banList, status);
 			}
 		}

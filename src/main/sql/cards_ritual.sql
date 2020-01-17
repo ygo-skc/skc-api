@@ -40,7 +40,7 @@ INSERT INTO cards(
 VALUES (
 	'26674724', (select color_id from card_colors where card_color = 'Ritual'), 'Nekroz of Brionac', 'Water',
 	"You can Ritual Summon this card with any 'Nekroz' Ritual Spell. Must be Ritual Summoned, without using 'Nekroz of Brionac'. You can only use each of these effects of 'Nekroz of Brionac' once per turn.
-● You can discard this card; add 1 'Nekroz' monster from your Deck to your hand, except 'Nekroz of Brionac'.
-● You can target up to 2 face-up monsters on the field that were Special Summoned from the Extra Deck; shuffle them into the Deck."
+&bull; You can discard this card; add 1 'Nekroz' monster from your Deck to your hand, except 'Nekroz of Brionac'.
+&bull; You can target up to 2 face-up monsters on the field that were Special Summoned from the Extra Deck; shuffle them into the Deck."
 	, 'Warrior/Ritual/Effect', 2300, 1400
 );

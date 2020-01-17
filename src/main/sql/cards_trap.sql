@@ -49,6 +49,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'23002292', (select color_id from card_colors where card_color = 'Trap'), 'Red Reboot', 'Trap',
+	"When your opponent activates a Trap Card: Negate the activation, and if you do, Set that card face-down, then they can Set 1 Trap directly from their Deck. For the rest of this turn after this card resolves, your opponent cannot activate Trap Cards. You can activate this card from your hand by paying half your LP."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'27174286', (select color_id from card_colors where card_color = 'Trap'), 'Return from the Different Dimension', 'Trap',
 	"Pay half your Life Points; Special Summon as many of your banished monsters as possible. During the End Phase, banish all monsters that were Special Summoned by this effect."
 	, null, null, null
@@ -249,8 +260,8 @@ INSERT INTO cards(
 VALUES (
 	'35125879', (select color_id from card_colors where card_color = 'Trap'), "True King's Return", 'Trap',
 	"f this card is sent from the Spell & Trap Zone to the Graveyard: You can target 1 monster on the field; destroy it. You cannot activate the following effects of 'True King's Return' in the same Chain.
-● You can target 1 'True Draco' or 'True King' monster in your Graveyard; Special Summon it in Defense Position, also for the rest of this turn, you cannot Special Summon.
-● During your opponent's Main Phase, you can: Immediately after this effect resolves, Tribute Summon 1 'True Draco' or 'True King' monster face-up.
+&bull; You can target 1 'True Draco' or 'True King' monster in your Graveyard; Special Summon it in Defense Position, also for the rest of this turn, you cannot Special Summon.
+&bull; During your opponent's Main Phase, you can: Immediately after this effect resolves, Tribute Summon 1 'True Draco' or 'True King' monster face-up.
 You can only use each effect of 'True King's Return' once per turn."
 	, null, null, null
 );

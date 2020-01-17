@@ -79,4 +79,18 @@ public class Card
 
 		return cardInfo;
 	}
+
+
+
+	/**
+	 * Modifies a list of cards to trim card effects to save on bandwidth
+	 * @param cards A list of Card objects whose effects have to be trimmed.
+	 */
+	public static void trimEffects(List<Card> cards)
+	{
+		for ( Card card: cards )
+		{
+			if ( card.getCardEffect().length() > 160 )	card.setCardEffect(card.getCardEffect().substring(0, 160) + "...");
+		}
+	}
 }

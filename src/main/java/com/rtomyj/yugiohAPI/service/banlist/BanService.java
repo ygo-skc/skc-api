@@ -3,7 +3,7 @@ package com.rtomyj.yugiohAPI.service.banlist;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,9 +25,9 @@ public class BanService
 
 
 	/**
-	 * @return List of BanLists objects
+	 * @return List of BanList objects
 	 */
-	public List<BanLists> getBanListStartDates()
+	public List<BanList> getBanListStartDates()
 	{
 		return dao.getBanListStartDates();
 	}

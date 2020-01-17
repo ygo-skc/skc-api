@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.model.BanLists;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +63,7 @@ public class DatesController
 	 */
 	@Autowired
 	@Qualifier("banListStartDatesCache")
-	private Map<String, List<BanLists>> BAN_LISTS_START_DATES_CACHE;
+	private Map<String, List<BanList>> BAN_LISTS_START_DATES_CACHE;
 
 
 	/**
@@ -75,14 +75,14 @@ public class DatesController
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK")
 	})
-	public ResponseEntity<Map<String, List<BanLists>>> startDatesOfBanLists()
+	public ResponseEntity<Map<String, List<BanList>>> startDatesOfBanLists()
 	{
 		/**
 		 * If cache is empty, querying the DB is required. DB results are then cached.
 		 */
 		if (BAN_LISTS_START_DATES_CACHE.size() == 0)
 		{
-			List<BanLists> banStartDates = (ArrayList<BanLists>) banListService.getBanListStartDates();
+			List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
 			BAN_LISTS_START_DATES_CACHE.put("banListStartDates", banStartDates);
 		}
 

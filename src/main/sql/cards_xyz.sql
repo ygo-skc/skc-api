@@ -7,11 +7,9 @@ INSERT INTO cards(
 VALUES (
 	'00581014', (select color_id from card_colors where card_color = 'Xyz'), 'Daigusto Emeral', 'Wind',
 	"2 Level 4 monsters
-	Once per turn: You can detach 1 Xyz Material from this card, then activate 1 of these effects.
-
-	● Target 3 monsters in your Graveyard; shuffle all 3 into the Deck, then draw 1 card.
-
-	● Target 1 non-Effect Monster in your Graveyard; Special Summon that target."
+Once per turn: You can detach 1 Xyz Material from this card, then activate 1 of these effects.
+&bull; Target 3 monsters in your Graveyard; shuffle all 3 into the Deck, then draw 1 card.
+&bull; Target 1 non-Effect Monster in your Graveyard; Special Summon that target."
 	, 'Rock/Xyz/Effect', 1800, 800
 );
 
@@ -24,8 +22,8 @@ VALUES (
 	'34086406', (select color_id from card_colors where card_color = 'Xyz'), 'Lavalval Chain', 'Fire',
 	"2 Level 4 monsters
 Once per turn: You can detach 1 Xyz Material from this card to activate 1 of these effects;
-● Send 1 card from your Deck to the Graveyard.
-● Choose 1 monster from your Deck and place it on top of your Deck."
+&bull; Send 1 card from your Deck to the Graveyard.
+&bull; Choose 1 monster from your Deck and place it on top of your Deck."
 	, 'Sea Serpent/Xyz/Effect', 1800, 1000
 );
 
@@ -73,7 +71,12 @@ INSERT INTO cards(
 VALUES (
 	'63504681', (select color_id from card_colors where card_color = 'Xyz'), 'Number 86: Heroic Champion - Rhongomyniad', 'Dark',
 	"2 or more (max. 5) Level 4 Warrior-Type monsters
-During each of your opponent's End Phases: Detach 1 Xyz Material from this card. This card gains effects based on the number of Xyz Materials attached to it. ● 1 or more: Cannot be destroyed by battle. ● 2 or more: Gains 1500 ATK and DEF. ● 3 or more: Unaffected by other card effects. ● 4 or more: Your opponent cannot Normal or Special Summon monsters. ● 5: Once per turn: You can destroy all cards your opponent controls."
+During each of your opponent's End Phases: Detach 1 Xyz Material from this card. This card gains effects based on the number of Xyz Materials attached to it.
+&bull; 1 or more: Cannot be destroyed by battle.
+&bull; 2 or more: Gains 1500 ATK and DEF.
+&bull; 3 or more: Unaffected by other card effects.
+&bull; 4 or more: Your opponent cannot Normal or Special Summon monsters.
+&bull; 5: Once per turn: You can destroy all cards your opponent controls."
 	, 'Warrior/Xyz/Effect', 1500, 1500
 );
 
@@ -87,6 +90,30 @@ VALUES (
 	"3 Level 9 monsters
 You can also Xyz Summon this card by using a 'Galaxy-Eyes' Xyz Monster you control as the Xyz Material. (Xyz Materials attached to that monster also become Xyz Materials on this card.) Cannot be used as an Xyz Material for an Xyz Summon. When this card is Xyz Summoned: You can send 3 Dragon-Type monsters with different names from your Deck to the Graveyard; your opponent banishes 3 monsters from their Deck. You can detach 1 Xyz Material from this card; this card can make up to 2 attacks on monsters during each Battle Phase this turn."
 	, 'Dragon/Xyz/Effect', 4000, 0
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'34945480', (select color_id from card_colors where card_color = 'Xyz'), 'Outer Entity Azathot', 'Dark',
+	"3 Level 5 monsters
+You can also Xyz Summon this card by using an 'Outer Entity' Xyz Monster you control as material. (Transfer its materials to this card.) Cannot be used as material for an Xyz Summon. After this card was Xyz Summoned, your opponent cannot activate monster effects for the rest of that turn. If this card has at least 3 Xyz Materials (1 Fusion, 1 Synchro, and 1 Xyz Monster): You can detach 1 material from this card; destroy all cards your opponent controls."
+	, 'Fiend/Xyz/Effect', 2400, 0
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'87327776', (select color_id from card_colors where card_color = 'Xyz'), 'Salamangreat Miragestallio', 'Fire',
+	"2 Level 3 monsters
+You can detach 1 material from this card; Special Summon 1 'Salamangreat' monster from your Deck in Defense Position, also you cannot activate monster effects for the rest of this turn, except FIRE monsters. If this Xyz Summoned card is sent to the GY as material for the Link Summon of a 'Salamangreat' monster: You can target 1 monster on the field; return it to the hand. You can only use each effect of 'Salamangreat Miragestallio' once per turn."
+	, 'Cyberse/Xyz/Effect', 2000, 900
 );
 
 

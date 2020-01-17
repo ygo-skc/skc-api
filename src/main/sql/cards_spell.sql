@@ -106,9 +106,9 @@ INSERT INTO cards(
 VALUES (
 	'67616300', (select color_id from card_colors where card_color = 'Spell'), 'Chicken Game', 'Spell',
 	"The player with the lowest LP takes no damage. Once per turn, during the Main Phase: The turn player can pay 1000 LP, then activate 1 of these effects;
-● Draw 1 card.
-● Destroy this card.
-● Your opponent gains 1000 LP.
+&bull; Draw 1 card.
+&bull; Destroy this card.
+&bull; Your opponent gains 1000 LP.
 Neither player can activate cards or effects in response to this effect's activation."
 	, null, null, null
 );
@@ -165,8 +165,8 @@ INSERT INTO cards(
 VALUES (
 	'62265044', (select color_id from card_colors where card_color = 'Spell'), 'Dragon Ravine', 'Spell',
 	"Once per turn: You can discard 1 card, then activate 1 of these effects;
-● Add 1 Level 4 or lower 'Dragunity' monster from your Deck to your hand.
-● Send 1 Dragon monster from your Deck to the GY."
+&bull; Add 1 Level 4 or lower 'Dragunity' monster from your Deck to your hand.
+&bull; Send 1 Dragon monster from your Deck to the GY."
 	, null, null, null
 );
 
@@ -396,6 +396,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'63166095', (select color_id from card_colors where card_color = 'Spell'), 'Sky Striker Mobilize - Engage!', 'Spell',
+	"If you control no monsters in your Main Monster Zones: Add 1 'Sky Striker' card from your Deck to your hand, except 'Sky Striker Mobilize - Engage!', then, if you have 3 or more Spells in your GY, you can draw 1 card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'45986603', (select color_id from card_colors where card_color = 'Spell'), 'Snatch Steal', 'Spell',
 	"Equip only to a monster your opponent controls. Take control of the equipped monster. During each of your opponent's Standby Phases: They gain 1000 Life Points."
 	, null, null, null
@@ -475,10 +486,10 @@ INSERT INTO cards(
 VALUES (
 	'31222701', (select color_id from card_colors where card_color = 'Spell'), "Wavering Eyes' Rank-Up-Magic Launch", 'Spell',
 	"Destroy as many cards in each player's Pendulum Zones as possible, then apply these effects, in sequence, depending on the number of cards destroyed by this effect.
-● 1 or more: Inflict 500 damage to your opponent.
-● 2 or more: You can add 1 Pendulum Monster from your Main Deck to your hand.
-● 3 or more: You can banish 1 card on the field.
-● 4: You can add 1 'Wavering Eyes' from your Deck to your hand."
+&bull; 1 or more: Inflict 500 damage to your opponent.
+&bull; 2 or more: You can add 1 Pendulum Monster from your Main Deck to your hand.
+&bull; 3 or more: You can banish 1 card on the field.
+&bull; 4: You can add 1 'Wavering Eyes' from your Deck to your hand."
 	, null, null, null
 );
 
@@ -554,6 +565,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'59750328', (select color_id from card_colors where card_color = 'Spell'), "Card of Demise", 'Spell',
+	"Draw until you have 3 cards in your hand, also for the rest of this turn after this card resolves, your opponent takes no damage. During the End Phase of this turn, send your entire hand to the GY. You can only activate 1 'Card of Demise' per turn. You cannot Special Summon during the turn you activate this card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'91623717', (select color_id from card_colors where card_color = 'Spell'), "Chain Strike", 'Spell',
 	"Activate only as Chain Link 2 or higher; inflict 400 damage to your opponent times the Chain Link number of this card. You cannot activate this card if multiple cards/effects with the same name are in that Chain."
 	, null, null, null
@@ -609,6 +631,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'13035077', (select color_id from card_colors where card_color = 'Spell'), "Dragonic Diagram", 'Spell',
+	"All 'True Draco' and 'True King' monsters on the field gain 300 ATK/DEF. The first time each Tribute Summoned 'True Draco' or 'True King' monster would be destroyed by battle each turn, it is not destroyed. Once per turn: You can destroy 1 other card you control or in your hand, and if you do, add 1 'True Draco' or 'True King' card from your Deck to your hand."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'67723438', (select color_id from card_colors where card_color = 'Spell'), "Emergency Teleport", 'Spell',
 	"Special Summon 1 Level 3 or lower Psychic-Type monster from your hand or Deck, but banish it during the End Phase of this turn."
 	, null, null, null
@@ -644,9 +677,9 @@ INSERT INTO cards(
 VALUES (
 	'27970830', (select color_id from card_colors where card_color = 'Spell'), "Gateway of the Six", 'Spell',
 	"Each time a 'Six Samurai' monster(s) is Normal or Special Summoned, place 2 Bushido Counters on this card. You can remove Bushido Counters from your field to activate these effects.
-● 2 Counters: Target 1 'Six Samurai' or 'Shien' Effect Monster; that target gains 500 ATK until the end of this turn.
-● 4 Counters: Add 1 'Six Samurai' monster from your Deck or GY to your hand.
-● 6 Counters: Target 1 'Shien' Effect Monster in your GY; Special Summon that target."
+&bull; 2 Counters: Target 1 'Six Samurai' or 'Shien' Effect Monster; that target gains 500 ATK until the end of this turn.
+&bull; 4 Counters: Add 1 'Six Samurai' monster from your Deck or GY to your hand.
+&bull; 6 Counters: Target 1 'Shien' Effect Monster in your GY; Special Summon that target."
 	, null, null, null
 );
 
@@ -658,6 +691,17 @@ INSERT INTO cards(
 VALUES (
 	'66957584', (select color_id from card_colors where card_color = 'Spell'), "Infernity Launcher", 'Spell',
 	"Once per turn: You can send 1 'Infernity' monster from your hand to the Graveyard. You can send this card to the Graveyard, then target up to 2 'Infernity' monsters in your Graveyard; Special Summon them. You must have no cards in your hand to activate and to resolve this effect."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'93946239', (select color_id from card_colors where card_color = 'Spell'), "Into the Void", 'Spell',
+	"If you have 3 or more cards in your hand: Draw 1 card, and if you do, during the End Phase of this turn, discard your entire hand."
 	, null, null, null
 );
 
@@ -821,6 +865,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'24940422', (select color_id from card_colors where card_color = 'Spell'), "Sekka's Light", 'Spell',
+	"If you have no Spells/Traps in your GY: Draw 2 cards, also, for the rest of this Duel after you activate this card, you cannot activate Spell/Trap Cards or effects, except 'Sekka's Light'. You can banish this card from your GY; reveal 1 monster in your hand, shuffle it into the Deck, then, draw 1 card. You can only use each effect of 'Sekka's Light' once per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'73468603', (select color_id from card_colors where card_color = 'Spell'), "Set Rotation", 'Spell',
 	"Set 2 Field Spells with different names from your Deck on the field (1 on your field, and 1 on your opponent's field). While either of those cards remain Set on the field, neither player can activate or Set other Field Spells."
 	, null, null, null
@@ -901,9 +956,9 @@ INSERT INTO cards(
 VALUES (
 	'52155219', (select color_id from card_colors where card_color = 'Spell'), "Salamangreat Circle", 'Spell',
 	"Activate 1 of these effects:
-● Add 1 “Salamangreat” monster from your Deck to your hand.
-●Target 1 'Salamangreat' Link Monster you control that was Link Summoned using a monster with its same name as material; that Link Monster is unaffected by monster effects this turn, except its own.
-You can only activate 1 “Salamangreat Circle” per turn."
+&bull; Add 1 'Salamangreat' monster from your Deck to your hand.
+&bull;Target 1 'Salamangreat' Link Monster you control that was Link Summoned using a monster with its same name as material; that Link Monster is unaffected by monster effects this turn, except its own.
+You can only activate 1 'Salamangreat Circle' per turn."
 	, null, null, null
 );
 

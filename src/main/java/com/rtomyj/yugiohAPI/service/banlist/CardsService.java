@@ -30,8 +30,11 @@ public class CardsService
 	 * @param status Restriction on what kind of ban list cards to retrieve from DB (forbidden, limited, semi-limited)
 	 * @return List of Cards that satisfy the wanted criteria.
 	 */
-	public List<Card> getBanListByBanStatus(String date, Status status)
+	public List<Card> getBanListByBanStatus(String date, Status status, boolean saveBandwidth)
 	{
-		return dao.getBanListByBanStatus(date, status);
+		List<Card> bannedCards = dao.getBanListByBanStatus(date, status);
+
+		if (saveBandwidth)	Card.trimEffects(bannedCards);
+		return bannedCards;
 	}
 }
