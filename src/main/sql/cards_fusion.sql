@@ -49,6 +49,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'15291624', (select color_id from card_colors where card_color = 'Fusion'), 'Thunder Dragon Colossus', 'Dark',
+	"'Thunder Dragon' + 1 Thunder monster
+Must be either Fusion Summoned, or Special Summoned during the turn a Thunder monster's effect was activated in the hand, by Tributing 1 Thunder Effect non-Fusion Monster (in which case you do not use 'Polymerization'). Cards cannot be added from the Main Deck to your opponent's hand except by drawing them. If this card would be destroyed by battle or card effect, you can banish 1 Thunder monster from your GY instead."
+	, 'Thunder/Fusion/Effect', 2600, 2400
+);
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'39512984', (select color_id from card_colors where card_color = 'Fusion'), 'Gem-Knight Master Diamond', 'Earth',
 	"3 'Gem-Knight' monsters
 Must first be Fusion Summoned. This card gains 100 ATK for each 'Gem-' monster in your Graveyard. Once per turn: You can banish 1 Level 7 or lower 'Gem-Knight' Fusion Monster from your Graveyard; until the End Phase, this card's name becomes that monster's, and replace this effect with that monster's original effects."

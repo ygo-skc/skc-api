@@ -98,6 +98,30 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'34945480', (select color_id from card_colors where card_color = 'Xyz'), 'Outer Entity Azathot', 'Dark',
+	"3 Level 5 monsters
+You can also Xyz Summon this card by using an 'Outer Entity' Xyz Monster you control as material. (Transfer its materials to this card.) Cannot be used as material for an Xyz Summon. After this card was Xyz Summoned, your opponent cannot activate monster effects for the rest of that turn. If this card has at least 3 Xyz Materials (1 Fusion, 1 Synchro, and 1 Xyz Monster): You can detach 1 material from this card; destroy all cards your opponent controls."
+	, 'Fiend/Xyz/Effect', 2400, 0
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'87327776', (select color_id from card_colors where card_color = 'Xyz'), 'Salamangreat Miragestallio', 'Fire',
+	"2 Level 3 monsters
+You can detach 1 material from this card; Special Summon 1 'Salamangreat' monster from your Deck in Defense Position, also you cannot activate monster effects for the rest of this turn, except FIRE monsters. If this Xyz Summoned card is sent to the GY as material for the Link Summon of a 'Salamangreat' monster: You can target 1 monster on the field; return it to the hand. You can only use each effect of 'Salamangreat Miragestallio' once per turn."
+	, 'Cyberse/Xyz/Effect', 2000, 900
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'18326736', (select color_id from card_colors where card_color = 'Xyz'), 'Tellarknight Ptolemaeus', 'Light',
 	"2 or more Level 4 monsters
 Once per Chain, during either player's turn: You can detach 3 Xyz Materials from this card; Special Summon from your Extra Deck, 1 monster that is 1 Rank higher than this card, except a 'Number' monster, by using this face-up card you control as the Xyz Material. (This is treated as an Xyz Summon. Xyz Materials attached to this card also become Xyz Materials on the Summoned monster.) You can detach 7 Xyz Materials from this card; skip your opponent's next turn. During each player's End Phase: You can attach 1 'Stellarknight' card from your Extra Deck to this card as a face-up Xyz Material.."

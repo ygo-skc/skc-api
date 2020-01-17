@@ -396,6 +396,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'63166095', (select color_id from card_colors where card_color = 'Spell'), 'Sky Striker Mobilize - Engage!', 'Spell',
+	"If you control no monsters in your Main Monster Zones: Add 1 'Sky Striker' card from your Deck to your hand, except 'Sky Striker Mobilize - Engage!', then, if you have 3 or more Spells in your GY, you can draw 1 card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'45986603', (select color_id from card_colors where card_color = 'Spell'), 'Snatch Steal', 'Spell',
 	"Equip only to a monster your opponent controls. Take control of the equipped monster. During each of your opponent's Standby Phases: They gain 1000 Life Points."
 	, null, null, null
@@ -554,6 +565,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'59750328', (select color_id from card_colors where card_color = 'Spell'), "Card of Demise", 'Spell',
+	"Draw until you have 3 cards in your hand, also for the rest of this turn after this card resolves, your opponent takes no damage. During the End Phase of this turn, send your entire hand to the GY. You can only activate 1 'Card of Demise' per turn. You cannot Special Summon during the turn you activate this card."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'91623717', (select color_id from card_colors where card_color = 'Spell'), "Chain Strike", 'Spell',
 	"Activate only as Chain Link 2 or higher; inflict 400 damage to your opponent times the Chain Link number of this card. You cannot activate this card if multiple cards/effects with the same name are in that Chain."
 	, null, null, null
@@ -600,6 +622,17 @@ INSERT INTO cards(
 VALUES (
 	'14733538', (select color_id from card_colors where card_color = 'Spell'), "Draco Face-Off", 'Spell',
 	"Reveal 1 'Dracoslayer' Pendulum Monster and 1 'Dracoverlord' Pendulum Monster from your Deck, your opponent randomly picks 1 of them for you to place in your Pendulum Zone or Special Summon (your choice), and you add the other card to your Extra Deck face-up. You can only activate 1 'Draco Face-Off' per turn."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'13035077', (select color_id from card_colors where card_color = 'Spell'), "Dragonic Diagram", 'Spell',
+	"All 'True Draco' and 'True King' monsters on the field gain 300 ATK/DEF. The first time each Tribute Summoned 'True Draco' or 'True King' monster would be destroyed by battle each turn, it is not destroyed. Once per turn: You can destroy 1 other card you control or in your hand, and if you do, add 1 'True Draco' or 'True King' card from your Deck to your hand."
 	, null, null, null
 );
 
@@ -658,6 +691,17 @@ INSERT INTO cards(
 VALUES (
 	'66957584', (select color_id from card_colors where card_color = 'Spell'), "Infernity Launcher", 'Spell',
 	"Once per turn: You can send 1 'Infernity' monster from your hand to the Graveyard. You can send this card to the Graveyard, then target up to 2 'Infernity' monsters in your Graveyard; Special Summon them. You must have no cards in your hand to activate and to resolve this effect."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'93946239', (select color_id from card_colors where card_color = 'Spell'), "Into the Void", 'Spell',
+	"If you have 3 or more cards in your hand: Draw 1 card, and if you do, during the End Phase of this turn, discard your entire hand."
 	, null, null, null
 );
 
@@ -812,6 +856,17 @@ INSERT INTO cards(
 VALUES (
 	'73915051', (select color_id from card_colors where card_color = 'Spell'), "Scapegoat", 'Spell',
 	"Special Summon 4 'Sheep Tokens' (Beast/EARTH/Level 1/ATK 0/DEF 0) in Defense Position. They cannot be Tributed for a Tribute Summon. You cannot Summon other monsters the turn you activate this card (but you can Normal Set)."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name, card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
+	'24940422', (select color_id from card_colors where card_color = 'Spell'), "Sekka's Light", 'Spell',
+	"If you have no Spells/Traps in your GY: Draw 2 cards, also, for the rest of this Duel after you activate this card, you cannot activate Spell/Trap Cards or effects, except 'Sekka's Light'. You can banish this card from your GY; reveal 1 monster in your hand, shuffle it into the Deck, then, draw 1 card. You can only use each effect of 'Sekka's Light' once per turn."
 	, null, null, null
 );
 

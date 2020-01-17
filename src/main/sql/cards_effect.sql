@@ -162,6 +162,11 @@ INSERT INTO cards(
 		'Rock/Effect', 900, 300
 	)
 	, (
+		'57835716', (select color_id from card_colors where card_color = 'Effect'), 'Orcust Harp Horror', 'Dark',
+		"You can banish this card from your GY; Special Summon 1 'Orcust' monster from your Deck, except 'Orcust Harp Horror', also you cannot Special Summon monsters for the rest of this turn, except DARK monsters. You can only use this effect of 'Orcust Harp Horror' once per turn.",
+		'Machine/Effect', 1700, 1400
+	)
+	, (
 		'23558733', (select color_id from card_colors where card_color = 'Effect'), 'Phoenixian Cluster Amaryllis', 'Fire',
 		"This card cannot be Special Summoned except with its own effect or with 'Phoenixian Seed'. If this card attacks, it is destroyed after damage calculation. If this card you control is destroyed and sent to the Graveyard, inflict 800 damage to your opponent. During your End Phase, you can remove from play 1 Plant-Type monster from your Graveyard to Special Summon this card from your Graveyard in Defense Position.",
 		'Rock/Effect', 2300, 0
@@ -307,6 +312,11 @@ INSERT INTO cards(
 		'58984738', (select color_id from card_colors where card_color = 'Effect'), 'Dinomight Knight, the True Dracofighter', 'Water',
 		"To Tribute Summon this card face-up, you can Tribute a Continuous Spell/Trap Card you control, instead of a monster. Once per turn, during either player's turn, when your opponent activates a card or effect while you control this Tribute Summoned monster: You can take 1 'True Draco' or 'True King' Continuous Trap Card from your Deck, and either activate it or add it to your hand.",
 		'Wyrm/Effect', 2500, 1200
+	)
+	, (
+		'82385847', (select color_id from card_colors where card_color = 'Effect'), 'Dinowrestler Pankratops', 'Earth',
+		"If your opponent controls more monsters than you do, you can Special Summon this card (from your hand). You can only Special Summon 'Dinowrestler Pankratops' once per turn this way. (Quick Effect): You can Tribute 1 'Dinowrestler' monster, then target 1 card your opponent controls; destroy it. You can only use this effect of 'Dinowrestler Pankratops' once per turn.",
+		'Dinosaur/Effect', 2600, 0
 	)
 	, (
 		'96570609', (select color_id from card_colors where card_color = 'Effect'), 'Ehther the Heavenly Monarch', 'Light',

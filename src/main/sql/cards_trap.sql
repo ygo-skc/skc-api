@@ -49,6 +49,17 @@ INSERT INTO cards(
 	card_effect,
 	monster_type, monster_attack, monster_defense)
 VALUES (
+	'23002292', (select color_id from card_colors where card_color = 'Trap'), 'Red Reboot', 'Trap',
+	"When your opponent activates a Trap Card: Negate the activation, and if you do, Set that card face-down, then they can Set 1 Trap directly from their Deck. For the rest of this turn after this card resolves, your opponent cannot activate Trap Cards. You can activate this card from your hand by paying half your LP."
+	, null, null, null
+);
+
+
+INSERT INTO cards(
+	card_number, color_id, card_name,card_attribute,
+	card_effect,
+	monster_type, monster_attack, monster_defense)
+VALUES (
 	'27174286', (select color_id from card_colors where card_color = 'Trap'), 'Return from the Different Dimension', 'Trap',
 	"Pay half your Life Points; Special Summon as many of your banished monsters as possible. During the End Phase, banish all monsters that were Special Summoned by this effect."
 	, null, null, null

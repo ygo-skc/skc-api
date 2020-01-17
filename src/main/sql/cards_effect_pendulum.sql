@@ -63,6 +63,17 @@ When this card is Normal Summoned: You can add 1 'Performapal' monster, 'Magicia
 	)
 
 	, (
+		'92559258', (select color_id from card_colors where card_color = 'Pendulum-Effect'), 'Servant of Endymion', 'Wind',
+	"Pendulum Effect
+Each time a Spell Card is activated, place 1 Spell Counter on this card when that Spell resolves. You can remove 3
+Spell Counters from this card; Special Summon both this card from your Pendulum Zone and 1 monster from your Deck with 1000 or more ATK that you can place a Spell Counter on, and if you do, place 1 Spell Counter on each.
+
+Monster Effect
+You can only Special Summon 'Servant(s) of Endymion' once per turn. This card with a Spell Counter can attack directly. Once per opponent's turn (Quick Effect): You can discard 1 card; place 1 Spell Counter on each card you control that you can place a Spell Counter on. If this card in the Monster Zone is destroyed: You can place this card in your Pendulum Zone, then place the same number of Spell Counters on it that it had as a monster."
+		, 'Spellcaster/Pendulum/Effect', 900, 1500
+	)
+
+	, (
 		'92746535', (select color_id from card_colors where card_color = 'Pendulum-Effect'), 'Luster Pendulum, the Dracoslayer', 'Light',
 "Pendulum Effect
 Once per turn, if you have a card in your other Pendulum Zone: You can destroy that card, and if you do, add 1 card from your Deck to your hand, with the same name as that card.
