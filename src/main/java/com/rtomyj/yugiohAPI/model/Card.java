@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ import lombok.Data;
  */
 @Data
 @Builder
+@ApiModel(description = "Describes attributes of a YGO card.")
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 public class Card
 {
