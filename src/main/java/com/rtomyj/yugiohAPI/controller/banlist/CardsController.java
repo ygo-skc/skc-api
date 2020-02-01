@@ -1,9 +1,13 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.helper.ResourceValidator;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,19 +17,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
@@ -64,7 +67,7 @@ public class CardsController {
 	 */
 	@Autowired
 	@Qualifier("banListCardsCache")
-	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_CACHE;
+	private Map<String, BanListInstance>  BAN_LIST_CARDS_CACHE;
 
 	/**
 	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
@@ -73,7 +76,7 @@ public class CardsController {
 	 */
 	@Autowired
 	@Qualifier("banListCardsCacheLowBandwidth")
-	private Map<String, Map<String, Map<String, List<Card>>>> BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
+	private Map<String, BanListInstance>  BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 
 
 
@@ -89,13 +92,16 @@ public class CardsController {
 	 */
 	@ResponseBody
 	@GetMapping(path = "{banListStartDate}")
-	@ApiOperation(value = "Retrieve the full ban list of a given valid date a ban list started (use /api/v1/ban/dates to see a valid list)", response = ResponseEntity.class, tags = "Ban List")
+	@ApiOperation(value = "Retrieve the full ban list of a given valid date a ban list started (use /api/v1/ban/dates to see a valid list)"
+		, response = BanListInstance.class
+		, responseContainer = "Object"
+		, tags = "Ban List")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<Map<String, Map<String, List<Card>>>> getBannedCards(@PathVariable String banListStartDate, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
+	public ResponseEntity<BanListInstance> getBannedCards(@PathVariable String banListStartDate, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
 	{
 		/*
 			If regex doesn't find users query date valid, return nothing to the user.
@@ -107,7 +113,7 @@ public class CardsController {
 			return new ResponseEntity<>(status);
 		}
 
-		Map<String, Map<String, Map<String, List<Card>>>> cache;
+		Map<String, BanListInstance> cache;
 		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 		else	cache = BAN_LIST_CARDS_CACHE;
 
@@ -127,21 +133,21 @@ public class CardsController {
 		*/
 		else
 		{
-			Map<String, Map<String, List<Card>>> banList = new HashMap<>();
-			Map<String, List<Card>> banListSections = new LinkedHashMap<>();
+			BanListInstance banListInstance = new BanListInstance();
 
 			/*
 				Retrieves ban lists from DB by status
 			*/
-			banListSections.put("forbidden", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN, saveBandwidth));
-			banListSections.put("limited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED, saveBandwidth));
-			banListSections.put("semiLimited", bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED, saveBandwidth));
+			banListInstance.setForbidden(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN, saveBandwidth));
+			banListInstance.setLimited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED, saveBandwidth));
+			banListInstance.setSemiLimited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED, saveBandwidth));
+			banListInstance.setStartDate(banListStartDate);
 
 			/*
 				If DB doesn't return at least one card for at least one status, the users ban list isn't in the DB
 			*/
-			if (banListSections.get("forbidden").size() == 0 && banListSections.get("limited").size() == 0
-					&& banListSections.get("semiLimited").size() == 0)
+			if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
+					&& banListInstance.getSemiLimited().size() == 0)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
 				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
@@ -154,10 +160,9 @@ public class CardsController {
 			{
 				HttpStatus status = HttpStatus.OK;
 				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
-				banList.put("bannedCards", banListSections);
 
-				cache.put(banListStartDate, banList);
-				return new ResponseEntity<>(banList, status);
+				cache.put(banListStartDate, banListInstance);
+				return new ResponseEntity<>(banListInstance, status);
 			}
 		}
 	}

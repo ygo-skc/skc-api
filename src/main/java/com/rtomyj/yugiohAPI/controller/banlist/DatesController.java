@@ -2,12 +2,12 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +32,8 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=utf-8")
 @CrossOrigin(origins = "*")
-@Api(description = "Request information about current and past ban lists", tags = "Ban List")
+@Api(description = "Request information about current and past ban lists"
+	, tags = "Ban List")
 public class DatesController
 {
 	/**
@@ -63,7 +64,7 @@ public class DatesController
 	 */
 	@Autowired
 	@Qualifier("banListStartDatesCache")
-	private Map<String, List<BanList>> BAN_LISTS_START_DATES_CACHE;
+	private BanListStartDates BAN_LISTS_START_DATES_CACHE;
 
 
 	/**
@@ -71,19 +72,21 @@ public class DatesController
 	 * @return Map that contains a list of all dates of the ban lists in database.
 	 */
 	@GetMapping()
-	@ApiOperation(value = "Retrieve dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints.", response = ResponseEntity.class, tags = "Ban List")
+	@ApiOperation(value = "Retrieve dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints."
+		, response = BanListStartDates.class
+		, tags = "Ban List")
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK")
 	})
-	public ResponseEntity<Map<String, List<BanList>>> startDatesOfBanLists()
+	public ResponseEntity<BanListStartDates> startDatesOfBanLists()
 	{
 		/**
 		 * If cache is empty, querying the DB is required. DB results are then cached.
 		 */
-		if (BAN_LISTS_START_DATES_CACHE.size() == 0)
+		if (BAN_LISTS_START_DATES_CACHE.getBanListStartDates().size() == 0)
 		{
 			List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
-			BAN_LISTS_START_DATES_CACHE.put("banListStartDates", banStartDates);
+			BAN_LISTS_START_DATES_CACHE.setBanListStartDates(banStartDates);
 		}
 
 

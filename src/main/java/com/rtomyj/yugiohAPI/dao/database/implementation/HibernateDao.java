@@ -10,6 +10,7 @@ import javax.persistence.criteria.Root;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.hibernate.Session;
@@ -70,11 +71,11 @@ public class HibernateDao implements Dao
 		return "";
 	}
 
-	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status){
+	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, String status){
 		return null;
 	}
 
-	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
+	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
 	{
 		return null;
 	}

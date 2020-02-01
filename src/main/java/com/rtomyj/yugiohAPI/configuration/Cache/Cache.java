@@ -1,10 +1,13 @@
 package com.rtomyj.yugiohAPI.configuration.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.model.BanListInstance;
+import com.rtomyj.yugiohAPI.model.BanListNewContent;
+import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.context.annotation.Bean;
@@ -24,21 +27,26 @@ public class Cache
 	 * @return The cache.
 	 */
 	@Bean(name = "banListCardsCache")
-	public Map<String, Map<String, Map<String, List<Card>>>> geBanListCardsCache()	{ return new HashMap<String, Map<String, Map<String, List<Card>>>>(); }
+	public Map<String, BanListInstance>  geBanListCardsCache()	{ return new HashMap<String, BanListInstance> (); }
 
 	/**
 	 * Creates a bean for caching cards in ban lists with some trimmed text (in card effect for example) to prevent using a lot of bandwidth
 	 * @return The cache.
 	 */
 	@Bean(name = "banListCardsCacheLowBandwidth")
-	public Map<String, Map<String, Map<String, List<Card>>>> geBanListCardsLowBandwidthCache()	{ return new HashMap<String, Map<String, Map<String, List<Card>>>>(); }
+	public Map<String, BanListInstance>  geBanListCardsLowBandwidthCache()	{ return new HashMap<String, BanListInstance> (); }
 
 	/**
 	 *	Creates a bean for caching dates of ban lists.
 	 * @return The cache.
 	 */
 	@Bean(name = "banListStartDatesCache")
-	public Map<String, List<BanList>> getBanListStartDatesCache()	{ return new HashMap<String, List<BanList>>(); }
+	public BanListStartDates getBanListStartDatesCache()
+	{
+		BanListStartDates banListStartDates = new BanListStartDates();
+		banListStartDates.setBanListStartDates(new ArrayList());
+		return banListStartDates;
+	}
 	//private static final Map<String, Card> CARD_CACHE = new HashMap<>();
 
 	/**
@@ -53,13 +61,13 @@ public class Cache
 	 * @return The cache.
 	 */
 	@Bean(name = "banListNewCardsCache")
-	public Map<String, Map<String, Object>> getBanListNewCardsCache()	{ return new HashMap<String, Map<String, Object>>(); }
+	public Map<String, BanListNewContent> getBanListNewCardsCache()	{ return new HashMap<String, BanListNewContent>(); }
 
 	/**
 	 * Creates a bean for caching new cards added to a ban list.
 	 * @return The cache.
 	 */
 	@Bean(name = "banListRemovedCardsCache")
-	public Map<String, Map<String, Object>> getBanListRemovedCardsCache()	{ return new HashMap<String, Map<String, Object>>(); }
+	public Map<String, BanListRemovedContent> getBanListRemovedCardsCache()	{ return new HashMap<String,BanListRemovedContent>(); }
 
 }

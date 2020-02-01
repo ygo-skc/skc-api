@@ -1,13 +1,12 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
-import java.util.List;
-import java.util.Map;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,10 +135,10 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Map<String, String>> getNewContentOfBanList(String newBanList, String status)
+	public List<BanListComparisonResults> getNewContentOfBanList(String newBanList, String status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<Map<String, String>>();
+		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
 
 		String query = new StringBuilder()
 			.append("select new_cards.card_number, cards.card_name from (select new_list.card_number")
@@ -151,21 +150,21 @@ public class JDBCDao implements Dao
 		query = String.format(query, status, newBanList, oldBanList);
 
 		return jdbcConn.query(query, (ResultSet row) -> {
-			final List<Map<String, String>> newCards = new ArrayList<>();
+			final List<BanListComparisonResults> newCards = new ArrayList<>();
 
 			while (row.next())
 			{
-				final Map<String, String> newCard = new HashMap<>();
+				BanListComparisonResults banListComparisonResults = new BanListComparisonResults();
 				final String cardID = row.getString(1);
 				String previousStatus = this.getCardBanListStatusByDate(cardID, oldBanList);
 				previousStatus = ( previousStatus == null ) ? "Unlimited" : previousStatus;
 
 
-				newCard.put("id", cardID);
-				newCard.put("previousStatus", previousStatus);
-				newCard.put("name", row.getString(2));
+				banListComparisonResults.setId(cardID);
+				banListComparisonResults.setPreviousState(previousStatus);
+				banListComparisonResults.setName(row.getString(2));
 
-				newCards.add(newCard);
+				newCards.add(banListComparisonResults);
 			}
 
 			return newCards;
@@ -174,10 +173,10 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
+	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<Map<String, String>>();
+		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
 
 		String query = new StringBuilder()
 			.append("select removed_cards.card_number, removed_cards.ban_status, cards.card_name")
@@ -190,15 +189,15 @@ public class JDBCDao implements Dao
 		query = String.format(query, newBanList, oldBanList);
 
 		return jdbcConn.query(query, (ResultSet row) -> {
-			final List<Map<String, String>> REMOVED_CARDS = new ArrayList<>();
+			final List<BanListComparisonResults> REMOVED_CARDS = new ArrayList<>();
 
 			while(row.next())
 			{
-				final Map<String, String> REMOVED_CARD = new HashMap<>();
+				final BanListComparisonResults REMOVED_CARD = new BanListComparisonResults();
 
-				REMOVED_CARD.put("id", row.getString(1));
-				REMOVED_CARD.put("previousStatus", row.getString(2));
-				REMOVED_CARD.put("name", row.getString(3));
+				REMOVED_CARD.setId(row.getString(1));
+				REMOVED_CARD.setPreviousState(row.getString(2));
+				REMOVED_CARD.setName(row.getString(3));
 
 				REMOVED_CARDS.add(REMOVED_CARD);
 			}

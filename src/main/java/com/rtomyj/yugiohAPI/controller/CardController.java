@@ -79,9 +79,12 @@ public class CardController
 	 * @param cardId The unique identification of the card desired.
 	 * @return Card object as a response.
 	 */
-	@GetMapping("{cardId}")
+	@GetMapping("/{cardId}")
 	@ResponseBody
-	@ApiOperation(value = "Get information about a specific card", response = ResponseEntity.class, tags = "Card")
+	@ApiOperation(value = "Get information about a specific card"
+		, response = Card.class
+		, responseContainer = "Object"
+		, tags = "Card")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 204, message = "Request yielded no content"),

@@ -1,6 +1,5 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.helper.ResourceValidator;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,23 +51,26 @@ public class RemovedController {
 
 	@Autowired
 	@Qualifier("banListRemovedCardsCache")
-	private Map<String, Map<String, Object>> cache;
+	private Map<String, BanListRemovedContent> cache;
 
 
 
 	@GetMapping(path = "/{banListStartDate}")
-	@ApiOperation(value = "Retrieve removed cards of a specific ban list given valid date a ban list started (use /api/v1/ban/dates to see a valid list)", response = ResponseEntity.class, tags = "Ban List")
+	@ApiOperation(value = "Retrieve removed cards of a specific ban list given valid date a ban list started (use /api/v1/ban/dates to see a valid list)"
+		, response = BanListRemovedContent.class
+		, responseContainer = "Object"
+		, tags = "Ban List")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<Map<String, Object>> getRemovedContent(@PathVariable(name = "banListStartDate") String banListStartDate)
+	public ResponseEntity<BanListRemovedContent> getRemovedContent(@PathVariable(name = "banListStartDate") String banListStartDate)
 	{
 		// The values of the below variables will be changed in the if statements accordingly
 		HttpStatus requestStatus = null;	// the status code for request
 		// the metadata object for removed cards - to contain; ban list requested, ban list compared to (previous list) and a list of removed cards
-		Map<String, Object> removedCardsMeta = cache.get(banListStartDate);
+		BanListRemovedContent removedCardsMeta = cache.get(banListStartDate);
 		boolean isInCache = false, isContentReturned = false;	// for logging helper method
 
 
@@ -77,16 +81,16 @@ public class RemovedController {
 		{
 			// retrieving removed cards by ban list status
 
-			List<Map<String, String>> removedCards = banListDiffService.getRemovedContentOfBanList(banListStartDate);
+			List<BanListComparisonResults> removedCards = banListDiffService.getRemovedContentOfBanList(banListStartDate);
 
 			// There are changes for requested date - ie, requested date found in DB
 			if ( removedCards.size() != 0 )
 			{
 				// builds meta data object for removed cards request
-				removedCardsMeta = new HashMap<>();
-				removedCardsMeta.put("listRequested", banListStartDate);
-				removedCardsMeta.put("comparedTo", banListDiffService.getPreviousBanListDate(banListStartDate));
-				removedCardsMeta.put("removedCards", removedCards);
+				removedCardsMeta = new BanListRemovedContent();
+				removedCardsMeta.setListRequested(banListStartDate);
+				removedCardsMeta.setComparedTo(banListDiffService.getPreviousBanListDate(banListStartDate));
+				removedCardsMeta.setRemovedCards(removedCards);
 
 
 				cache.put(banListStartDate, removedCardsMeta);

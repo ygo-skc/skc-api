@@ -1,10 +1,10 @@
 package com.rtomyj.yugiohAPI.dao.database;
 
-import com.rtomyj.yugiohAPI.model.BanList;
-import com.rtomyj.yugiohAPI.model.Card;
-
 import java.util.List;
-import java.util.Map;
+
+import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.Card;
 
 /**
  * Contract for database operations.
@@ -100,14 +100,14 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status);
+	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, String status);
 
 	/**
 	 *
 	 * @param newBanList
 	 * @return
 	 */
-	public List<Map<String, String>>  getRemovedContentOfBanList(String newBanList);
+	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList);
 
 	/**
 	 *

@@ -1,8 +1,5 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.helper.ResourceValidator;
+import com.rtomyj.yugiohAPI.model.BanListNewContent;
+import com.rtomyj.yugiohAPI.model.NewCards;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list
@@ -63,7 +62,7 @@ public class NewController
 	 */
 	@Autowired
 	@Qualifier("banListNewCardsCache")
-	private Map<String, Map<String, Object>> cache;
+	private Map<String, BanListNewContent> cache;
 
 	/**
 	 * Logging object.
@@ -78,18 +77,21 @@ public class NewController
 	 * @return Information about the new cards for the specified ban list date.
 	 */
 	@GetMapping(path = "/{banListStartDate}")
-	@ApiOperation(value = "Retrieve cards that are either newly added to a ban list or cards that have switched statuses (ie: from forbidden to limited) given valid date a ban list started (use /api/v1/ban/dates to see a valid list).", response = ResponseEntity.class, tags = "Ban List")
+	@ApiOperation(value = "Retrieve cards that are either newly added to a ban list or cards that have switched statuses (ie: from forbidden to limited) given valid date a ban list started (use /api/v1/ban/dates to see a valid list)."
+		, response = BanListNewContent.class
+		, responseContainer = "Object"
+		, tags = "Ban List")
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK"),
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure startDate is valid")
 	})
-	public ResponseEntity<Map<String, Object>> getNewContent(@PathVariable final String banListStartDate)
+	public ResponseEntity<BanListNewContent> getNewContent(@PathVariable final String banListStartDate)
 	{
 		// The values of the below variables will be changed in the if statements accordingly
 		HttpStatus requestStatus = null;	// the status code for request
 		// the metadata object for new cards - to contain; ban list requested, ban list compared to (previous list) and a list of new cards
-		Map<String, Object> newCardsMeta = cache.get(banListStartDate);
+		BanListNewContent newCardsMeta = cache.get(banListStartDate);
 		boolean isInCache = false, isContentReturned = false;	// for logging helper method
 
 
@@ -99,19 +101,19 @@ public class NewController
 		else if ( newCardsMeta == null && ResourceValidator.isValidBanListDate(banListStartDate) )
 		{
 			// retrieving new cards by ban list status
-			final Map<String, List<Map<String, String>>> newCards = new LinkedHashMap<>();
-			newCards.put("forbidden", banListDiffService.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN.toString()));
-			newCards.put("limited", banListDiffService.getNewContentOfBanList(banListStartDate, Status.LIMITED.toString()));
-			newCards.put("semiLimited", banListDiffService.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED.toString()));
+			NewCards newCards = new NewCards();
+			newCards.setForbidden(banListDiffService.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN.toString()));
+			newCards.setLimited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.LIMITED.toString()));
+			newCards.setSemiLimited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED.toString()));
 
 			// There are changes for requested date - ie, requested date found in DB
-			if ( newCards.get("forbidden").size() != 0 || newCards.get("limited").size() != 0 || newCards.get("semiLimited").size() != 0 )
+			if ( newCards.getForbidden().size() != 0 || newCards.getLimited().size() != 0 || newCards.getSemiLimited().size() != 0 )
 			{
 				// builds meta data object for new cards request
-				newCardsMeta = new HashMap<>();
-				newCardsMeta.put("listRequested", banListStartDate);
-				newCardsMeta.put("comparedTo", banListDiffService.getPreviousBanListDate(banListStartDate));
-				newCardsMeta.put("newCards", newCards);
+				newCardsMeta = new BanListNewContent();
+				newCardsMeta.setListRequested(banListStartDate);
+				newCardsMeta.setComparedTo(banListDiffService.getPreviousBanListDate(banListStartDate));
+				newCardsMeta.setNewCards(newCards);
 
 
 				cache.put(banListStartDate, newCardsMeta);
