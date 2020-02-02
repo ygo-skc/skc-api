@@ -3,9 +3,10 @@ package com.rtomyj.yugiohAPI.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Pattern;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ResourceValidator;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
@@ -16,11 +17,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -33,6 +34,7 @@ import io.swagger.annotations.ApiResponses;
  */
 @RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @RestController
+@Validated
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about card data stored in database.", tags = "Card")
 public class CardController
@@ -80,7 +82,6 @@ public class CardController
 	 * @return Card object as a response.
 	 */
 	@GetMapping("/{cardId}")
-	@ResponseBody
 	@ApiOperation(value = "Get information about a specific card"
 		, response = Card.class
 		, responseContainer = "Object"
@@ -90,52 +91,23 @@ public class CardController
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure cardId is valid")
 	})
-	public ResponseEntity<Card> getCard(@PathVariable("cardId") String cardId)
+	public ResponseEntity<Card> getCard(
+		@PathVariable("cardId") @Pattern(regexp = "[0-9]{8}", message = "Card ID doesn't have correct format.") String cardId)
+		throws YgoException
 	{
 		String requestIP = httpRequest.getRemoteHost();	// IP address of the client accessing endpoint
 
-		/*
-			Checks user provided cardId with regex.
-			If cardId fails, HTTP status code with no content is sent.
-		 */
-		if ( !ResourceValidator.isValidCardId(cardId))
+		Card requestedCard = CARD_CACHE.get(cardId);
+		/* If requested card was not found in cache - use DB */
+		if (requestedCard == null)
 		{
-			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status));
-			return new ResponseEntity<>(status);
+			requestedCard = cardService.getCardInfo(cardId);
+			CARD_CACHE.put(cardId, requestedCard);	// puts card into cache
 		}
 
 
-		/*
-			Checks the cache.
-			If requested card is in cache, return it.
-		*/
-		Card cachedCard = CARD_CACHE.get(cardId);
-		if (cachedCard != null)
-		{
-			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, true, true));
-			return new ResponseEntity<>(cachedCard, status);
-		}
-		/*
-			If requested card isn't in cache, attempt to retrieve from DB.
-			If DB returns a result, save result in cache and return the Card object.
-		*/
-		else
-		{
-			Card foundCard = cardService.getCardInfo(cardId);
-			if (foundCard == null)
-			{
-				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status));
-				return new ResponseEntity<>(status);
-			}
-
-			CARD_CACHE.put(cardId, foundCard);	// puts card into cache
-
-			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
-			return new ResponseEntity<>(foundCard, status);
-		}
+		HttpStatus status = HttpStatus.OK;
+		LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
+		return new ResponseEntity<>(requestedCard, status);
 	}
 }

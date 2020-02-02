@@ -30,6 +30,17 @@ public class LogHelper
 
 
 
+	public static String exceptionLog(String ip, String exception, String endpoint, HttpStatus status)
+	{
+		final String log = new StringBuilder()
+			.append(String.format("%s got an exception {{ %s }} when hitting %s. ", ip, exception, endpoint))
+			.append(String.format("- Responding with {{ %s }}", status))
+			.toString();
+		return log;
+	}
+
+
+
 	/**
 	 * Builds a String to be used in a logger to record the status of the request from the user along with the users IP
 	 * 	and the endpoint they requested.

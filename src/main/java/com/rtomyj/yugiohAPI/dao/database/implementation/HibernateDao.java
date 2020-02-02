@@ -1,13 +1,13 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
@@ -45,7 +45,7 @@ public class HibernateDao implements Dao
 	}
 
 	@Override
-	public Card getCardInfo(String cardID)
+	public Card getCardInfo(String cardID) throws YgoException
 	{
 		return null;
 	}

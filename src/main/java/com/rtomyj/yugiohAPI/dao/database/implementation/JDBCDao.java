@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rtomyj.yugiohAPI.configuration.YgoConstants;
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
@@ -35,14 +37,14 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public Card getCardInfo(String cardID)
+	public Card getCardInfo(final String cardID) throws YgoException
 	{
 		String query = new StringBuilder().append("SELECT card_name, cards.monster_type, card_colors.card_color, cards.card_effect, cards.card_attribute")
 			.append(", cards.monster_attack, cards.monster_defense FROM cards, card_colors WHERE cards.card_number = '%s' AND card_colors.color_id = cards.color_id")
 			.toString();
 		query = String.format(query, cardID);
 
-		return jdbcConn.query(query, (ResultSet row) ->
+		final Card card = jdbcConn.query(query, (ResultSet row) ->
 		{
 			if (row.next())
 			{
@@ -58,6 +60,10 @@ public class JDBCDao implements Dao
 
 			return null;
 		});
+
+		if (card == null)	throw new YgoException(YgoConstants.DAO_NOT_FOUND_ERR, String.format("%s was not found in DB.", cardID));
+
+		return card;
 	}
 
 

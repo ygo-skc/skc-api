@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.dao.database;
 
 import java.util.List;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -58,7 +59,7 @@ public interface Dao
 	 * @param cardID The ID of a Yugioh card.
 	 * @return The Card requested.
 	 */
-	public Card getCardInfo(String cardID);
+	public Card getCardInfo(String cardID) throws YgoException;
 
 	/**
 	 * Checks the databases and returns a list of cards in a specified ban list (date) that has the specified status (forbidden, limited, semi-limited)

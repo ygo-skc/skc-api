@@ -1,5 +1,6 @@
 package com.rtomyj.yugiohAPI.service;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.Card;
 
@@ -23,7 +24,7 @@ public class CardService
 	 * @param cardID The unique identifier of the card desired. Must be an 8 digit String.
 	 * @return Card object containing the information of the card desired.
 	 */
-	public Card getCardInfo(String cardID)
+	public Card getCardInfo(String cardID) throws YgoException
 	{
 		return dao.getCardInfo(cardID);
 	}
