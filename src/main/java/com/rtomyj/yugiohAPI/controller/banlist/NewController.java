@@ -28,11 +28,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list
  * or cards that switched statuses (Forbidden -&gt; limited, limited -&gt; semi-limited, etc) compared with the previous ban list.
  */
+@Slf4j
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
@@ -63,11 +65,6 @@ public class NewController
 	@Autowired
 	@Qualifier("banListNewCardsCache")
 	private Map<String, BanListNewContent> cache;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 
 
@@ -132,7 +129,7 @@ public class NewController
 			isContentReturned = true;
 		}
 
-		LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
 		return new ResponseEntity<>(newCardsMeta, requestStatus);
 	}
 }

@@ -19,10 +19,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configures endpoint(s) for testing the health of the API.
  */
+@Slf4j
 @RequestMapping(path = "${ygo.endpoints.v1.test-call}")
 @RestController
 @CrossOrigin(origins = "*")
@@ -34,11 +36,6 @@ public class TestCallController
 	 */
 	@Autowired
 	private HttpServletRequest httpRequest;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * Base endpoint for this class.
@@ -59,7 +56,7 @@ public class TestCallController
 	})
 	public ResponseEntity<String> testCall()
 	{
-		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "status", endPoint, HttpStatus.OK));
+		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "status", endPoint, HttpStatus.OK));
 		return new ResponseEntity<>("API is online.", HttpStatus.OK);
 	}
 }

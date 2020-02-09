@@ -26,9 +26,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
+@Slf4j
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=utf-8")
 @CrossOrigin(origins = "*")
@@ -53,11 +55,6 @@ public class DatesController
 	 */
 	@Autowired
 	private HttpServletRequest httpRequest;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * Cache for storing previous queries
@@ -94,7 +91,7 @@ public class DatesController
 		 * Configures the ResponseEntity to return,
 		 */
 		HttpStatus status = HttpStatus.OK;
-		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "ban list dates", endPoint, status));
+		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "ban list dates", endPoint, status));
 		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
 	}
 }

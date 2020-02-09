@@ -28,10 +28,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  */
+@Slf4j
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.ban-list-removed-cards}")
 @CrossOrigin(origins = "*")
@@ -46,8 +48,6 @@ public class RemovedController {
 
 	@Autowired
 	HttpServletRequest request;
-
-	private static final Logger LOG = LogManager.getLogger();
 
 	@Autowired
 	@Qualifier("banListRemovedCardsCache")
@@ -109,7 +109,7 @@ public class RemovedController {
 			isContentReturned = true;
 		}
 
-		LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
 		return new ResponseEntity<>(removedCardsMeta, requestStatus);
 	}
 }

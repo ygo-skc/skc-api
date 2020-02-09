@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Class used to remove content of cache in hopes of freeing memory when needed.
  */
+@Slf4j
 @Configuration
 public class PurgeCache
 {
@@ -64,12 +67,6 @@ public class PurgeCache
 	private Map<String, BanListRemovedContent> BAN_LISTS_REMOVED_CARDS_CACHE;
 
 
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
-
-
 
 	/**
 	 * Clears caches on interval or when called.
@@ -77,7 +74,7 @@ public class PurgeCache
 	@Scheduled(fixedRate = 1000 * 60 * 60 * 24 * 7)
 	public void invalidateCache()
 	{
-		LOG.info("Purging caches");
+		log.info("Purging caches");
 		BAN_LIST_CARDS_CACHE.clear();
 		BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE.clear();
 		BAN_LISTS_START_DATES_CACHE.getBanListStartDates().clear();;

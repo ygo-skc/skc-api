@@ -29,10 +29,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
+@Slf4j
 @RestController
 @RequestMapping(path = "${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=utf-8")
 @CrossOrigin(origins = "*")
@@ -55,11 +57,6 @@ public class CardsController {
 	 */
 	@Autowired
 	private HttpServletRequest request;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
@@ -109,7 +106,7 @@ public class CardsController {
 		if ( !ResourceValidator.isValidBanListDate(banListStartDate) )
 		{
 			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
+			log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
 			return new ResponseEntity<>(status);
 		}
 
@@ -124,7 +121,7 @@ public class CardsController {
 		if (cache.get(banListStartDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
+			log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
 
 			return new ResponseEntity<>(cache.get(banListStartDate), status);
 		}
@@ -150,7 +147,7 @@ public class CardsController {
 					&& banListInstance.getSemiLimited().size() == 0)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
+				log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
 				return new ResponseEntity<>(status);
 			}
 			/*
@@ -159,7 +156,7 @@ public class CardsController {
 			else
 			{
 				HttpStatus status = HttpStatus.OK;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
+				log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
 
 				cache.put(banListStartDate, banListInstance);
 				return new ResponseEntity<>(banListInstance, status);
