@@ -10,8 +10,6 @@ import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,14 +26,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
  */
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @RestController
-@Validated
+@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
+@Validated
 @Api(description = "Request information about card data stored in database.", tags = "Card")
 public class CardController
 {
@@ -56,11 +56,6 @@ public class CardController
 	 */
 	@Value("${ygo.endpoints.v1.card}")
 	private String endPoint;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * Cache used to store card data to prevent querying DB.
@@ -107,7 +102,7 @@ public class CardController
 
 
 		HttpStatus status = HttpStatus.OK;
-		LOG.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
+		log.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
 		return new ResponseEntity<>(requestedCard, status);
 	}
 }

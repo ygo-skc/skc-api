@@ -3,20 +3,20 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Pattern;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ResourceValidator;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,13 +29,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
 @RestController
-@RequestMapping(path = "${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=utf-8")
+@RequestMapping(path="${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
+@Validated
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class CardsController {
 	/**
@@ -55,11 +58,6 @@ public class CardsController {
 	 */
 	@Autowired
 	private HttpServletRequest request;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
@@ -101,18 +99,11 @@ public class CardsController {
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<BanListInstance> getBannedCards(@PathVariable String banListStartDate, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
+	public ResponseEntity<BanListInstance> getBannedCards(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable String banListStartDate
+		, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
+		throws YgoException
 	{
-		/*
-			If regex doesn't find users query date valid, return nothing to the user.
-		*/
-		if ( !ResourceValidator.isValidBanListDate(banListStartDate) )
-		{
-			HttpStatus status = HttpStatus.BAD_REQUEST;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
-			return new ResponseEntity<>(status);
-		}
-
+		/* Determines which cache to use depending on user bandwidth preferences */
 		Map<String, BanListInstance> cache;
 		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 		else	cache = BAN_LIST_CARDS_CACHE;
@@ -124,7 +115,7 @@ public class CardsController {
 		if (cache.get(banListStartDate) != null)
 		{
 			HttpStatus status = HttpStatus.OK;
-			LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
+			log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
 
 			return new ResponseEntity<>(cache.get(banListStartDate), status);
 		}
@@ -150,7 +141,7 @@ public class CardsController {
 					&& banListInstance.getSemiLimited().size() == 0)
 			{
 				HttpStatus status = HttpStatus.NO_CONTENT;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
+				log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
 				return new ResponseEntity<>(status);
 			}
 			/*
@@ -159,7 +150,7 @@ public class CardsController {
 			else
 			{
 				HttpStatus status = HttpStatus.OK;
-				LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
+				log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
 
 				cache.put(banListStartDate, banListInstance);
 				return new ResponseEntity<>(banListInstance, status);

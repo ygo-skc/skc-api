@@ -3,7 +3,9 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Pattern;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.helper.ResourceValidator;
@@ -11,13 +13,12 @@ import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,14 +29,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list
  * or cards that switched statuses (Forbidden -&gt; limited, limited -&gt; semi-limited, etc) compared with the previous ban list.
  */
 @RestController
-@RequestMapping(path = "${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
+@Validated
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class NewController
 {
@@ -64,11 +68,6 @@ public class NewController
 	@Qualifier("banListNewCardsCache")
 	private Map<String, BanListNewContent> cache;
 
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
-
 
 
 	/**
@@ -86,7 +85,7 @@ public class NewController
 		@ApiResponse(code = 204, message = "Request yielded no content"),
 		@ApiResponse(code = 400, message = "Malformed request, make sure startDate is valid")
 	})
-	public ResponseEntity<BanListNewContent> getNewContent(@PathVariable final String banListStartDate)
+	public ResponseEntity<BanListNewContent> getNewContent(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable final String banListStartDate) throws YgoException
 	{
 		// The values of the below variables will be changed in the if statements accordingly
 		HttpStatus requestStatus = null;	// the status code for request
@@ -95,10 +94,8 @@ public class NewController
 		boolean isInCache = false, isContentReturned = false;	// for logging helper method
 
 
-		// Invalid ban list date requested - ie not in xxxx-xx-xx format
-		if ( !ResourceValidator.isValidBanListDate(banListStartDate) )	requestStatus = HttpStatus.BAD_REQUEST;
 		// Resource isn't in cache and ban list date passed validation
-		else if ( newCardsMeta == null && ResourceValidator.isValidBanListDate(banListStartDate) )
+		if ( newCardsMeta == null && ResourceValidator.isValidBanListDate(banListStartDate) )
 		{
 			// retrieving new cards by ban list status
 			NewCards newCards = new NewCards();
@@ -132,7 +129,7 @@ public class NewController
 			isContentReturned = true;
 		}
 
-		LOG.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
 		return new ResponseEntity<>(newCardsMeta, requestStatus);
 	}
 }
