@@ -28,4 +28,11 @@ public class CardService
 	{
 		return dao.getCardInfo(cardID);
 	}
+
+	public Card getCardSearchResults(final String cardName) throws YgoException
+	{
+		final Card searchResult = new Card();
+
+		return null;
+	}
 }

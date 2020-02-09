@@ -14,6 +14,7 @@ import com.rtomyj.yugiohAPI.model.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -223,5 +224,15 @@ public class JDBCDao implements Dao
 			if (row.next())	return row.getString(1);
 			return null;
 		});
+	}
+
+
+
+	public String getCardInfoByCardNameSearch(String cardName)
+	{
+		String query = "SELECT DISTINCT * FROM cards WHERE card_name LIKE '%:cardName%'";
+
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		return null;
 	}
 }
