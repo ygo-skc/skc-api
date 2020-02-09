@@ -10,8 +10,6 @@ import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

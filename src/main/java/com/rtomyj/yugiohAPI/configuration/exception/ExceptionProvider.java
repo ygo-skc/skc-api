@@ -39,12 +39,12 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 
 
 	@ResponseBody
-	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(ConstraintViolationException.class)
-	public YgoError onValidationFail(ConstraintViolationException exception)
+	public YgoError onValidationFail(final ConstraintViolationException exception, final HttpServletRequest request)
 	{
-		System.out.println(exception);
-		YgoError ygoException = new YgoError(Error.D001.toString(), Error.D001.name());
+		log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), HttpStatus.BAD_REQUEST));
+		YgoError ygoException = new YgoError(Error.D101.toString(), Error.D101.name());
 		return ygoException;
 	}
 

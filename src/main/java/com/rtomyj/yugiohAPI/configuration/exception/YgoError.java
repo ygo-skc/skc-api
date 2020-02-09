@@ -20,7 +20,7 @@ public class YgoError
 
 	public static enum Error
 	{
-		D001("Input data does not conform to the expected spec.")
+		D101("URL requested doesn't have proper syntax.")
 		, D002("No content found for request.");
 
 		private final String error;

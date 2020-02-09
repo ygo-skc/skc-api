@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
