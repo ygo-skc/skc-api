@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 
 import com.rtomyj.yugiohAPI.configuration.YgoConstants;
+import com.rtomyj.yugiohAPI.configuration.exception.YgoError.Error;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,12 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	@ExceptionHandler(YgoException.class)
 	public final ResponseEntity<YgoError> test(final YgoException exception, final HttpServletRequest request)
 	{
-		log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), HttpStatus.NOT_FOUND));
 
 		if (exception.getCode() == YgoConstants.DAO_NOT_FOUND_ERR)
-			return new ResponseEntity<>(new YgoError("Requested resource was not found in database.", HttpStatus.NOT_FOUND.toString()), HttpStatus.NOT_FOUND);
+		{
+			log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), HttpStatus.NO_CONTENT));
+			return new ResponseEntity<>(new YgoError(Error.D002.toString(), Error.D002.name()), HttpStatus.NO_CONTENT);
+		}
 
 		return null;
 	}
@@ -36,12 +39,12 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 
 
 	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler(ConstraintViolationException.class)
 	public YgoError onValidationFail(ConstraintViolationException exception)
 	{
 		System.out.println(exception);
-		YgoError ygoException = new YgoError("Request was not formed correctly or did not follow expected pattern.", "400");
+		YgoError ygoException = new YgoError(Error.D001.toString(), Error.D001.name());
 		return ygoException;
 	}
 

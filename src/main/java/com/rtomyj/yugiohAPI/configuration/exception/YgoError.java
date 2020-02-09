@@ -16,4 +16,18 @@ public class YgoError
 
 	String message;
 	String status;
+
+
+	public static enum Error
+	{
+		D001("Input data does not conform to the expected spec.")
+		, D002("No content found for request.");
+
+		private final String error;
+
+		Error(String error) { this.error = error; }
+
+		@Override
+		public String toString() { return this.error; }
+	}
 }
