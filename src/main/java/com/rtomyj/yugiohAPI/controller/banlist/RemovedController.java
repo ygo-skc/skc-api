@@ -34,11 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 /**
  *
  */
-@Slf4j
 @RestController
-@RequestMapping(path = "${ygo.endpoints.v1.ban-list-removed-cards}")
-@Validated
+@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
+@Validated
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class RemovedController {
 

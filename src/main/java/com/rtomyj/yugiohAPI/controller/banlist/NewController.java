@@ -35,11 +35,11 @@ import lombok.extern.slf4j.Slf4j;
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list
  * or cards that switched statuses (Forbidden -&gt; limited, limited -&gt; semi-limited, etc) compared with the previous ban list.
  */
-@Slf4j
 @RestController
-@RequestMapping(path = "${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
-@Validated
+@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
+@Validated
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
 public class NewController
 {

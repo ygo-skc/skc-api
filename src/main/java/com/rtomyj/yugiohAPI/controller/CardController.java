@@ -31,11 +31,11 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
  */
-@Slf4j
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @RestController
-@Validated
+@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
+@Validated
 @Api(description = "Request information about card data stored in database.", tags = "Card")
 public class CardController
 {
