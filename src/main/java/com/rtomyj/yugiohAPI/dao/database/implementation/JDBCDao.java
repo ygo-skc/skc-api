@@ -257,11 +257,34 @@ public class JDBCDao implements Dao
 
 
 
-	public String getCardInfoByCardNameSearch(String cardName)
+	public List<Card> getCardInfoByCardNameSearch(String cardName)
 	{
-		String query = "SELECT DISTINCT * FROM cards WHERE card_name LIKE '%:cardName%'";
+		cardName = new StringBuilder().append('%').append(cardName).append('%').toString();
+		String query = "SELECT DISTINCT card_number, color_id, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense FROM cards WHERE card_name LIKE :cardName";
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		return null;
+		sqlParams.addValue("cardName", cardName);
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			final List<Card> cardSearchResults = new ArrayList<>();
+
+			while (row.next())
+			{
+				cardSearchResults.add(
+					new Card()
+						.builder()
+						.cardID(row.getString(1))
+						.cardColor("TBC")
+						.cardName(row.getString(3))
+						.cardAttribute(row.getString(4))
+						.cardEffect(row.getString(5))
+						.monsterType(row.getString(6))
+						.monsterAttack(row.getInt(7))
+						.monsterDefense(row.getInt(8))
+						.build());
+			}
+
+			return cardSearchResults;
+		});
 	}
 }

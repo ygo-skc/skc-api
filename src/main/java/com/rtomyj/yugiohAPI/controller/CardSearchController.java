@@ -1,5 +1,7 @@
 package com.rtomyj.yugiohAPI.controller;
 
+import java.util.List;
+
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.CardSearch;
@@ -25,8 +27,8 @@ public class CardSearchController
 	private CardService cardService;
 
 	@PostMapping()
-	public ResponseEntity<Card> postMethodName(@RequestBody CardSearch searchQuery) throws YgoException {
-		final Card searchResult = cardService.getCardInfo(searchQuery.getCardName());
+	public ResponseEntity<List<Card>> postMethodName(@RequestBody CardSearch searchQuery) throws YgoException {
+		final List<Card> searchResult = cardService.getCardSearchResults(searchQuery.getCardName());
 
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
 	}

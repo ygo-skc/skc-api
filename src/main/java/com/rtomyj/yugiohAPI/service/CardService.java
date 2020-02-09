@@ -1,5 +1,7 @@
 package com.rtomyj.yugiohAPI.service;
 
+import java.util.List;
+
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -29,10 +31,9 @@ public class CardService
 		return dao.getCardInfo(cardID);
 	}
 
-	public Card getCardSearchResults(final String cardName) throws YgoException
+	public List<Card> getCardSearchResults(final String cardName) throws YgoException
 	{
-		final Card searchResult = new Card();
 
-		return null;
+		return dao.getCardInfoByCardNameSearch(cardName);
 	}
 }

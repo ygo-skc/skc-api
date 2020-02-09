@@ -118,5 +118,5 @@ public interface Dao
 	 */
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
 
-	public String getCardInfoByCardNameSearch(String cardName);
+	public List<Card> getCardInfoByCardNameSearch(String cardName);
 }
