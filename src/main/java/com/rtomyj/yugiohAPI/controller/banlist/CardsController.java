@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="${ygo.endpoints.v1.banned-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated

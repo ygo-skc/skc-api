@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) for testing the health of the API.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="${ygo.endpoints.v1.test-call}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Api(description = "Endpoint to check if API is online.", tags = "Testcall")

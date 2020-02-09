@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Api(description = "Request information about current and past ban lists"

@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  * or cards that switched statuses (Forbidden -&gt; limited, limited -&gt; semi-limited, etc) compared with the previous ban list.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="${ygo.endpoints.v1.ban-list-new-cards}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
