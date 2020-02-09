@@ -254,4 +254,14 @@ public class JDBCDao implements Dao
 			return null;
 		});
 	}
+
+
+
+	public String getCardInfoByCardNameSearch(String cardName)
+	{
+		String query = "SELECT DISTINCT * FROM cards WHERE card_name LIKE '%:cardName%'";
+
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		return null;
+	}
 }

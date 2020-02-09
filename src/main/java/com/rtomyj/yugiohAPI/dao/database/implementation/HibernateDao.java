@@ -84,4 +84,10 @@ public class HibernateDao implements Dao
 	public String getCardBanListStatusByDate(String cardId, String banListDate) {
 		return null;
 	}
+
+	@Override
+	public String getCardInfoByCardNameSearch(String cardName)
+	{
+		return null;
+	}
 }

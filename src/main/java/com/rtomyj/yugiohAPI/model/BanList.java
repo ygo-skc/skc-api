@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.Builder;
 import lombok.Data;
 
 
@@ -17,6 +18,7 @@ import lombok.Data;
  * Entity describing the ban_lists table in mysql DB.
  */
 @Data
+@Builder
 @Entity
 @Table(name = "ban_lists", schema = "yugioh_API_DB")
 public class BanList implements Serializable {
