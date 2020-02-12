@@ -10,6 +10,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -257,10 +258,12 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Card> getCardInfoByCardNameSearch(String cardName)
+	public List<Card> getCardNameByCriteria(final CardSearchCriteria cardSearchCriteria)
 	{
-		cardName = new StringBuilder().append('%').append(cardName).append('%').toString();
-		String query = "SELECT DISTINCT card_number, color_id, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense FROM cards WHERE card_name LIKE :cardName";
+		final String cardName = new StringBuilder().append('%').append(cardSearchCriteria.getCardName()).append('%').toString();
+
+		final String query = "SELECT DISTINCT card_number, color_id, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense FROM cards WHERE card_name LIKE :cardName" +
+		" AND card_attribute like :cardAttribute ";
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardName", cardName);
@@ -271,7 +274,7 @@ public class JDBCDao implements Dao
 			while (row.next())
 			{
 				cardSearchResults.add(
-					new Card()
+					Card
 						.builder()
 						.cardID(row.getString(1))
 						.cardColor("TBC")

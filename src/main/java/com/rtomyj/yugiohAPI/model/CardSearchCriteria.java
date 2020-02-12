@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardSearch
+public class CardSearchCriteria
 {
+	private String cardId;
 	private String cardName;
+	private String cardColor;
+	private String cardAttribute;
 }

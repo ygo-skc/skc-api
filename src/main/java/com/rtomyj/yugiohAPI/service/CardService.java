@@ -5,6 +5,7 @@ import java.util.List;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,9 +32,9 @@ public class CardService
 		return dao.getCardInfo(cardID);
 	}
 
-	public List<Card> getCardSearchResults(final String cardName) throws YgoException
+	public List<Card> getCardSearchResults(final CardSearchCriteria cardSearchCriteria) throws YgoException
 	{
 
-		return dao.getCardInfoByCardNameSearch(cardName);
+		return dao.getCardNameByCriteria(cardSearchCriteria);
 	}
 }

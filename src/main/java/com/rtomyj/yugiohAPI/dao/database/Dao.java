@@ -6,6 +6,7 @@ import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 /**
  * Contract for database operations.
@@ -118,5 +119,5 @@ public interface Dao
 	 */
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
 
-	public List<Card> getCardInfoByCardNameSearch(String cardName);
+	public List<Card> getCardNameByCriteria(final CardSearchCriteria cardSearchCriteria);
 }

@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class YgoError
 {
-
-	private static final long serialVersionUID = 1L;
-
 	String message;
 	String status;
 
