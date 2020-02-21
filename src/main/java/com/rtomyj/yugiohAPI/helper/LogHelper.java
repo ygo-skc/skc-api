@@ -1,5 +1,7 @@
 package com.rtomyj.yugiohAPI.helper;
 
+import com.rtomyj.yugiohAPI.helper.constants.LogConstants;
+
 import org.springframework.http.HttpStatus;
 
 /**
@@ -20,9 +22,8 @@ public class LogHelper
 	{
 		return new StringBuilder().append(ip)
 			.append(" requested ")
-			.append(String.format("(( %s ))", resourceRequested))
-			.append(" from ")
-			.append(endPoint)
+			.append(String.format("{{ %s }}", resourceRequested))
+			.append(String.format(" from {{ %s }}", endPoint))
 			.append(" - ")
 			.append(String.format("Responding with {{ %s }}", status))
 			.toString();
@@ -55,8 +56,9 @@ public class LogHelper
 	public static String requestStatusLogString(String ip, String resourceRequested, String endPoint, HttpStatus status
 		, boolean retrievedFromCache, boolean isResourceReturned)
 	{
-		String locationOfResource = (retrievedFromCache) ? ": {{ From CACHE }}": ": {{ From DATABASE }}";
-		locationOfResource = (isResourceReturned)? locationOfResource: "";
+		String locationOfResource = " - ";
+		locationOfResource += (retrievedFromCache) ? LogConstants.FROM_CACHE: LogConstants.FROM_DB;
+		locationOfResource += (isResourceReturned)? "": new StringBuilder(" : ").append(LogConstants.RESOURCE_NOT_FOUNT).toString();
 
 		return new StringBuilder()
 			.append(LogHelper.requestStatusLogString(ip, resourceRequested, endPoint, status))
