@@ -52,7 +52,7 @@ public class DatesController
 	 * Object containing info about the request.
 	 */
 	@Autowired
-	private HttpServletRequest httpRequest;
+	private HttpServletRequest request;
 
 	/**
 	 * Cache for storing previous queries
@@ -75,9 +75,7 @@ public class DatesController
 	})
 	public ResponseEntity<BanListStartDates> startDatesOfBanLists()
 	{
-		/**
-		 * If cache is empty, querying the DB is required. DB results are then cached.
-		 */
+		/* If cache is empty, querying the DB is required. DB results are then cached. */
 		if (BAN_LISTS_START_DATES_CACHE.getBanListStartDates().size() == 0)
 		{
 			final List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
@@ -85,11 +83,9 @@ public class DatesController
 		}
 
 
-		/**
-		 * Configures the ResponseEntity to return,
-		 */
+		/* Configures the ResponseEntity to return, */
 		final HttpStatus status = HttpStatus.OK;
-		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "ban list dates", endPoint, status));
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), "Retrieve all ban lists from DB", endPoint, status));
 		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
 	}
 }

@@ -88,10 +88,11 @@ public class RemovedController {
 			if ( removedCards.size() != 0 )
 			{
 				// builds meta data object for removed cards request
-				removedCardsMeta = new BanListRemovedContent();
-				removedCardsMeta.setListRequested(banListStartDate);
-				removedCardsMeta.setComparedTo(banListDiffService.getPreviousBanListDate(banListStartDate));
-				removedCardsMeta.setRemovedCards(removedCards);
+				removedCardsMeta = BanListRemovedContent.builder()
+					.listRequested(banListStartDate)
+					.comparedTo(banListDiffService.getPreviousBanListDate(banListStartDate))
+					.removedCards(removedCards)
+					.build();
 
 
 				cache.put(banListStartDate, removedCardsMeta);
@@ -109,6 +110,7 @@ public class RemovedController {
 			isInCache = true;
 			isContentReturned = true;
 		}
+
 
 		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
 		return new ResponseEntity<>(removedCardsMeta, requestStatus);

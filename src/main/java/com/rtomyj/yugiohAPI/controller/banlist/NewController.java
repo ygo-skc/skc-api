@@ -101,19 +101,21 @@ public class NewController
 		if ( newCardsMeta == null )
 		{
 			// retrieving new cards by ban list status
-			NewCards newCards = new NewCards();
-			newCards.setForbidden(banListDiffService.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN.toString()));
-			newCards.setLimited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.LIMITED.toString()));
-			newCards.setSemiLimited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED.toString()));
+			NewCards newCards = NewCards.builder()
+				.forbidden(banListDiffService.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN.toString()))
+				.limited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.LIMITED.toString()))
+				.semiLimited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED.toString()))
+				.build();
 
 			// There are changes for requested date - ie, requested date found in DB
 			if ( newCards.getForbidden().size() != 0 || newCards.getLimited().size() != 0 || newCards.getSemiLimited().size() != 0 )
 			{
 				// builds meta data object for new cards request
-				newCardsMeta = new BanListNewContent();
-				newCardsMeta.setListRequested(banListStartDate);
-				newCardsMeta.setComparedTo(banListDiffService.getPreviousBanListDate(banListStartDate));
-				newCardsMeta.setNewCards(newCards);
+				newCardsMeta = BanListNewContent.builder()
+					.listRequested(banListStartDate)
+					.comparedTo(banListDiffService.getPreviousBanListDate(banListStartDate))
+					.newCards(newCards)
+					.build();
 
 
 				cache.put(banListStartDate, newCardsMeta);
@@ -131,6 +133,7 @@ public class NewController
 			isInCache = true;
 			isContentReturned = true;
 		}
+
 
 		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
 		return new ResponseEntity<>(newCardsMeta, requestStatus);

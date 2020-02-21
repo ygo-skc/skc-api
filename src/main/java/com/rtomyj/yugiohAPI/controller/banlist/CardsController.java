@@ -110,53 +110,47 @@ public class CardsController {
 		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 		else	cache = BAN_LIST_CARDS_CACHE;
 
+		HttpStatus status;
+		BanListInstance banListInstance = cache.get(banListStartDate);
+		boolean isInCache = false, isContentReturned = false;	// for logging helper method
 
-		/*
-			If the requested ban list is cached, access the cache and return the contents of the ban list.
-		*/
-		if (cache.get(banListStartDate) != null)
+
+		/* If the requested ban list is cached, access the cache and return the contents of the ban list. */
+		if ( banListInstance != null)
 		{
-			HttpStatus status = HttpStatus.OK;
-			log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, true, true));
-
-			return new ResponseEntity<>(cache.get(banListStartDate), status);
+			status = HttpStatus.OK;
+			isInCache = true;
+			isContentReturned = true;
 		}
-		/*
-			If not in cache, try to retrieve ban list contents from DB
-		*/
+		/* If not in cache, try to retrieve ban list contents from DB */
 		else
 		{
-			BanListInstance banListInstance = new BanListInstance();
+			/* Retrieves ban lists from DB by status */
+			banListInstance = BanListInstance.builder()
+				.forbidden(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN, saveBandwidth))
+				.limited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED, saveBandwidth))
+				.semiLimited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED, saveBandwidth))
+				.startDate(banListStartDate)
+				.build();
 
-			/*
-				Retrieves ban lists from DB by status
-			*/
-			banListInstance.setForbidden(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN, saveBandwidth));
-			banListInstance.setLimited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED, saveBandwidth));
-			banListInstance.setSemiLimited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED, saveBandwidth));
-			banListInstance.setStartDate(banListStartDate);
-
-			/*
-				If DB doesn't return at least one card for at least one status, the users ban list isn't in the DB
-			*/
+			/* If DB doesn't return at least one card for at least one status, the users ban list isn't in the DB */
 			if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
 					&& banListInstance.getSemiLimited().size() == 0)
-			{
-				HttpStatus status = HttpStatus.NO_CONTENT;
-				log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status));
-				return new ResponseEntity<>(status);
-			}
-			/*
-				If ban list is in DB, put ban list in cache and return the contents of ban list o the user.
-			*/
+					{
+						status = HttpStatus.NO_CONTENT;
+					}
+			/* If ban list is in DB, put ban list in cache and return the contents of ban list o the user. */
 			else
 			{
-				HttpStatus status = HttpStatus.OK;
-				log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, false, true));
+				status = HttpStatus.OK;
+				isContentReturned = true;
 
 				cache.put(banListStartDate, banListInstance);
-				return new ResponseEntity<>(banListInstance, status);
 			}
 		}
+
+
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, isInCache, isContentReturned));
+		return new ResponseEntity<>(banListInstance, status);
 	}
 }
