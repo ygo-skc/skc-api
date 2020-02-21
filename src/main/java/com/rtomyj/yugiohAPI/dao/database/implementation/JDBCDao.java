@@ -315,14 +315,14 @@ public class JDBCDao implements Dao
 						.monsterType(row.getString(6))
 						.monsterAttack(row.getInt(7))
 						.monsterDefense(row.getInt(8))
-						.banListsFoundIn(new ArrayList<>())
+						.restrictedIn(new ArrayList<>())
 						.build();
 						cardInfoTracker.put(card.getCardID(), card);
 				}
 
 				try
 				{
-					card.getBanListsFoundIn()
+					card.getRestrictedIn()
 						.add(BanList
 							.builder()
 							.banListDate(dateFormat.parse(row.getString(9)))

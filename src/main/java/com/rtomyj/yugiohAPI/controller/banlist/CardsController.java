@@ -100,7 +100,7 @@ public class CardsController {
 		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
 	public ResponseEntity<BanListInstance> getBannedCards(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable String banListStartDate
-		, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
+		, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth)
 		throws YgoException
 	{
 		/* Determines which cache to use depending on user bandwidth preferences */
