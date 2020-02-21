@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
@@ -82,15 +83,15 @@ public class CardController
 		, responseContainer = "Object"
 		, tags = "Card")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "OK"),
-		@ApiResponse(code = 204, message = "Request yielded no content"),
-		@ApiResponse(code = 400, message = "Malformed request, make sure cardId is valid")
+		@ApiResponse(code = 200, message = "OK")
+		, @ApiResponse(code = 204, message = "Request yielded no content")
+		, @ApiResponse(code = 400, message = "Malformed request, make sure cardId is valid")
 	})
 	public ResponseEntity<Card> getCard(
-		@PathVariable("cardId") @Pattern(regexp = "[0-9]{8}", message = "Card ID doesn't have correct format.") String cardId)
+		@PathVariable("cardId") @Pattern(regexp = RegexConstants.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId)
 		throws YgoException
 	{
-		String requestIP = httpRequest.getRemoteHost();	// IP address of the client accessing endpoint
+		final String requestIP = httpRequest.getRemoteHost();	// IP address of the client accessing endpoint
 
 		Card requestedCard = CARD_CACHE.get(cardId);
 		/* If requested card was not found in cache - use DB */
@@ -101,7 +102,7 @@ public class CardController
 		}
 
 
-		HttpStatus status = HttpStatus.OK;
+		final HttpStatus status = HttpStatus.OK;
 		log.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
 		return new ResponseEntity<>(requestedCard, status);
 	}

@@ -8,6 +8,7 @@ import javax.validation.constraints.Pattern;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
@@ -95,12 +96,13 @@ public class CardsController {
 		, responseContainer = "Object"
 		, tags = "Ban List")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "OK"),
-		@ApiResponse(code = 204, message = "Request yielded no content"),
-		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
+		@ApiResponse(code = 200, message = "OK")
+		, @ApiResponse(code = 204, message = "Request yielded no content")
+		, @ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<BanListInstance> getBannedCards(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable String banListStartDate
-		, @RequestParam(name = "saveBandwidth", required = false) boolean saveBandwidth)
+	public ResponseEntity<BanListInstance> getBannedCards(
+		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate
+		, @RequestParam(name = "saveBandwidth", required = false) final boolean saveBandwidth)
 		throws YgoException
 	{
 		/* Determines which cache to use depending on user bandwidth preferences */

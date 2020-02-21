@@ -80,7 +80,7 @@ public class DatesController
 		 */
 		if (BAN_LISTS_START_DATES_CACHE.getBanListStartDates().size() == 0)
 		{
-			List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
+			final List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
 			BAN_LISTS_START_DATES_CACHE.setBanListStartDates(banStartDates);
 		}
 
@@ -88,7 +88,7 @@ public class DatesController
 		/**
 		 * Configures the ResponseEntity to return,
 		 */
-		HttpStatus status = HttpStatus.OK;
+		final HttpStatus status = HttpStatus.OK;
 		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "ban list dates", endPoint, status));
 		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
 	}

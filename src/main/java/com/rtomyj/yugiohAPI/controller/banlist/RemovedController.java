@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ResourceValidator;
+import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
@@ -63,11 +63,12 @@ public class RemovedController {
 		, responseContainer = "Object"
 		, tags = "Ban List")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "OK"),
-		@ApiResponse(code = 204, message = "Request yielded no content"),
-		@ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
+		@ApiResponse(code = 200, message = "OK")
+		, @ApiResponse(code = 204, message = "Request yielded no content")
+		, @ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
 	})
-	public ResponseEntity<BanListRemovedContent> getRemovedContent(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") String banListStartDate)
+	public ResponseEntity<BanListRemovedContent> getRemovedContent(
+		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
 		throws YgoException
 	{
 		// The values of the below variables will be changed in the if statements accordingly
@@ -77,7 +78,7 @@ public class RemovedController {
 		boolean isInCache = false, isContentReturned = false;	// for logging helper method
 
 
-		if ( removedCardsMeta == null && ResourceValidator.isValidBanListDate(banListStartDate) )
+		if ( removedCardsMeta == null )
 		{
 			// retrieving removed cards by ban list status
 
@@ -102,7 +103,7 @@ public class RemovedController {
 			else	requestStatus = HttpStatus.NO_CONTENT;
 		}
 		// Resource in cache and ban list date passed validation
-		else if (  removedCardsMeta != null && ResourceValidator.isValidBanListDate(banListStartDate) )
+		else if (  removedCardsMeta != null )
 		{
 			requestStatus = HttpStatus.OK;
 			isInCache = true;

@@ -4,9 +4,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.rtomyj.yugiohAPI.configuration.YgoConstants;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -65,7 +65,7 @@ public class JDBCDao implements Dao
 			return null;
 		});
 
-		if (card == null)	throw new YgoException(YgoConstants.DAO_NOT_FOUND_ERR, String.format("%s was not found in DB.", cardID));
+		if (card == null)	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format("%s was not found in DB.", cardID));
 
 		return card;
 	}
