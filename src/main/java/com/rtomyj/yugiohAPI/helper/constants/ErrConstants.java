@@ -3,7 +3,11 @@ package com.rtomyj.yugiohAPI.helper.constants;
 
 public class ErrConstants
 {
-	public static String TEST_CALL_RESPONSE = "API is online.";
+	public static final String TEST_CALL_RESPONSE = "API is online.";
 
-	public static String NOT_FOUND_DAO_ERR = "DB-404";
+	public static final String NOT_FOUND_DAO_ERR = "DB-404";
+
+	public static final String BAN_LIST_NOT_FOUND_FOR_START_DATE = "There is no ban list in DB with date: %s";
+	public static final String NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE = "There was no new content for ban list starting on date: %s";
+	public static final String NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE = "There was no removed content for ban list starting on date: %s";
 }

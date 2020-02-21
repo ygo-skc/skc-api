@@ -8,6 +8,7 @@ import javax.validation.constraints.Pattern;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
@@ -97,8 +98,8 @@ public class CardsController {
 		, tags = "Ban List")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK")
-		, @ApiResponse(code = 204, message = "Request yielded no content")
 		, @ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
+		, @ApiResponse(code = 404, message = "No resource for requested ban list start date")
 	})
 	public ResponseEntity<BanListInstance> getBannedCards(
 		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate
@@ -137,7 +138,7 @@ public class CardsController {
 			if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
 					&& banListInstance.getSemiLimited().size() == 0)
 					{
-						status = HttpStatus.NO_CONTENT;
+						throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
 					}
 			/* If ban list is in DB, put ban list in cache and return the contents of ban list o the user. */
 			else

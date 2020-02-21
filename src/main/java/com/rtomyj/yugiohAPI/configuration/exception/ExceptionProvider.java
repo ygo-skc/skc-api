@@ -29,8 +29,10 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 
 		if (exception.getCode() == ErrConstants.NOT_FOUND_DAO_ERR)
 		{
-			log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), HttpStatus.NO_CONTENT));
-			return new ResponseEntity<>(new YgoError(Error.D002.toString(), Error.D002.name()), HttpStatus.NO_CONTENT);
+			final HttpStatus status = HttpStatus.NOT_FOUND;
+
+			log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), status));
+			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
 		}
 
 		return null;

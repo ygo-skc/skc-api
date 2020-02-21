@@ -8,6 +8,7 @@ import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
@@ -64,8 +65,8 @@ public class RemovedController {
 		, tags = "Ban List")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK")
-		, @ApiResponse(code = 204, message = "Request yielded no content")
 		, @ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
+		, @ApiResponse(code = 404, message = "No resource for requested ban list start date")
 	})
 	public ResponseEntity<BanListRemovedContent> getRemovedContent(
 		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
@@ -101,7 +102,7 @@ public class RemovedController {
 				isContentReturned = true;
 			}
 			// There are no changes for requested date - ie, requested date not found in DB.
-			else	requestStatus = HttpStatus.NO_CONTENT;
+			else	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
 		}
 		// Resource in cache and ban list date passed validation
 		else if (  removedCardsMeta != null )

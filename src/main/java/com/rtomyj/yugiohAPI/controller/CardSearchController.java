@@ -26,7 +26,7 @@ public class CardSearchController
 
 	@PostMapping()
 	public ResponseEntity<Card> postMethodName(@RequestBody CardSearch searchQuery) throws YgoException {
-		final Card searchResult = cardService.getCardInfo(searchQuery.getCardName());
+		final Card searchResult = (Card) cardService.getCardInfo(searchQuery.getCardName()).getRequestedResource();
 
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
 	}

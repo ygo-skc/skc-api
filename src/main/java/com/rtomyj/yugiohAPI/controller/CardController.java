@@ -1,20 +1,17 @@
 package com.rtomyj.yugiohAPI.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -58,13 +55,6 @@ public class CardController
 	@Value("${ygo.endpoints.v1.card}")
 	private String endPoint;
 
-	/**
-	 * Cache used to store card data to prevent querying DB.
-	 */
-	@Autowired
-	@Qualifier("cardsCache")
-	private Map<String, Card> CARD_CACHE;
-
 
 
 	/**
@@ -84,26 +74,17 @@ public class CardController
 		, tags = "Card")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "OK")
-		, @ApiResponse(code = 204, message = "Request yielded no content")
 		, @ApiResponse(code = 400, message = "Malformed request, make sure cardId is valid")
+		, @ApiResponse(code = 404, message = "No resource for requested card ID")
 	})
 	public ResponseEntity<Card> getCard(
 		@PathVariable("cardId") @Pattern(regexp = RegexConstants.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId)
 		throws YgoException
 	{
-		final String requestIP = httpRequest.getRemoteHost();	// IP address of the client accessing endpoint
+		ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(cardId);
 
-		Card requestedCard = CARD_CACHE.get(cardId);
-		/* If requested card was not found in cache - use DB */
-		if (requestedCard == null)
-		{
-			requestedCard = cardService.getCardInfo(cardId);
-			CARD_CACHE.put(cardId, requestedCard);	// puts card into cache
-		}
-
-
-		final HttpStatus status = HttpStatus.OK;
-		log.info(LogHelper.requestStatusLogString(requestIP, cardId, endPoint, status, false, true));
-		return new ResponseEntity<>(requestedCard, status);
+		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), cardId, endPoint, serviceLayerHelper.getStatus()
+			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
+		return new ResponseEntity<>( (Card) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
 	}
 }
