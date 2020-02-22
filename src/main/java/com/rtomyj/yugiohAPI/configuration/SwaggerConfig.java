@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -42,6 +41,6 @@ public class SwaggerConfig {
 	private ApiInfo infoSection()
 	{
 		return new ApiInfo("Yugioh API", "Desc", "v1.0", "Terms", new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com")
-		, "Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>());
+		, "Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0", new ArrayList<>());
 	}
 }

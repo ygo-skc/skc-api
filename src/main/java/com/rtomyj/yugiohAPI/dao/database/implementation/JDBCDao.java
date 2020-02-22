@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.rtomyj.yugiohAPI.configuration.YgoConstants;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
@@ -39,7 +39,7 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public List<BanList> getBanListStartDates()
+	public BanListStartDates getBanListStartDates()
 	{
 		return null;
 	}
@@ -74,7 +74,7 @@ public class JDBCDao implements Dao
 			return null;
 		});
 
-		if (card == null)	throw new YgoException(YgoConstants.DAO_NOT_FOUND_ERR, String.format("%s was not found in DB.", cardID));
+		if (card == null)	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format("%s was not found in DB.", cardID));
 
 		return card;
 	}
@@ -168,7 +168,7 @@ public class JDBCDao implements Dao
 
 
 
-	public List<BanListComparisonResults> getNewContentOfBanList(String newBanList, String status)
+	public List<BanListComparisonResults> getNewContentOfBanList(final String newBanList, final Status status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
 		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
@@ -181,8 +181,8 @@ public class JDBCDao implements Dao
 			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number;")
 			.toString();
 
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("status", status);
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("status", status.toString());
 		sqlParams.addValue("newBanList", newBanList);
 		sqlParams.addValue("oldBanList", oldBanList);
 

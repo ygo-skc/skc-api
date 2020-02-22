@@ -1,13 +1,11 @@
 package com.rtomyj.yugiohAPI.configuration.cache;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.context.annotation.Bean;
@@ -35,19 +33,6 @@ public class Cache
 	 */
 	@Bean(name = "banListCardsCacheLowBandwidth")
 	public Map<String, BanListInstance>  geBanListCardsLowBandwidthCache()	{ return new HashMap<String, BanListInstance> (); }
-
-	/**
-	 *	Creates a bean for caching dates of ban lists.
-	 * @return The cache.
-	 */
-	@Bean(name = "banListStartDatesCache")
-	public BanListStartDates getBanListStartDatesCache()
-	{
-		BanListStartDates banListStartDates = new BanListStartDates();
-		banListStartDates.setBanListStartDates(new ArrayList());
-		return banListStartDates;
-	}
-	//private static final Map<String, Card> CARD_CACHE = new HashMap<>();
 
 	/**
 	 * Creates a bean for caching card information.

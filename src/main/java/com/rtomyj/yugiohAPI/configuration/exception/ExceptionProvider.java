@@ -3,9 +3,9 @@ package com.rtomyj.yugiohAPI.configuration.exception;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 
-import com.rtomyj.yugiohAPI.configuration.YgoConstants;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoError.Error;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +27,12 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	public final ResponseEntity<YgoError> test(final YgoException exception, final HttpServletRequest request)
 	{
 
-		if (exception.getCode() == YgoConstants.DAO_NOT_FOUND_ERR)
+		if (exception.getCode() == ErrConstants.NOT_FOUND_DAO_ERR)
 		{
-			log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), HttpStatus.NO_CONTENT));
-			return new ResponseEntity<>(new YgoError(Error.D002.toString(), Error.D002.name()), HttpStatus.NO_CONTENT);
+			final HttpStatus status = HttpStatus.NOT_FOUND;
+
+			log.info(LogHelper.exceptionLog(request.getRemoteHost(), exception.toString(), request.getRequestURI(), status));
+			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
 		}
 
 		return null;

@@ -3,10 +3,12 @@ package com.rtomyj.yugiohAPI.configuration.exception;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

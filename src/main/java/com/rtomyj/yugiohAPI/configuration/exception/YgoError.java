@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class YgoError
 	public static enum Error
 	{
 		D101("URL requested doesn't have proper syntax.")
-		, D002("No content found for request.");
+		, D001("Requested resource was not found.");
 
 		private final String error;
 
