@@ -1,11 +1,12 @@
 package com.rtomyj.yugiohAPI.service;
 
-import java.util.Map;
+import java.util.List;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,7 +58,8 @@ public class CardService
 			CARD_CACHE.put(cardId, requestedCard);	// puts card into cache
 		}
 
-
-		return serviceLayerHelper;
+	public List<Card> getCardSearchResults(final CardSearchCriteria cardSearchCriteria) throws YgoException
+	{
+		return dao.getCardNameByCriteria(cardSearchCriteria);
 	}
 }

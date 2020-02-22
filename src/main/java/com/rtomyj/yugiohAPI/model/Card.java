@@ -35,7 +35,7 @@ public class Card
 	private Integer monsterAttack;
 	private Integer monsterDefense;
 
-	private List<BanList> banListsFoundIn;
+	private List<BanList> restrictedIn;
 
 
 	/**
