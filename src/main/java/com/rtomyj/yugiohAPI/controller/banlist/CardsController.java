@@ -1,22 +1,17 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -61,23 +56,6 @@ public class CardsController {
 	@Autowired
 	private HttpServletRequest request;
 
-	/**
-	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
-	 * Each type has cards with that status.
-	 */
-	@Autowired
-	@Qualifier("banListCardsCache")
-	private Map<String, BanListInstance>  BAN_LIST_CARDS_CACHE;
-
-	/**
-	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
-	 * Each type has cards with that status.
-	 * The difference between this and the above cache is that this cache has trimmed text to prevent using too much bandwidth
-	 */
-	@Autowired
-	@Qualifier("banListCardsCacheLowBandwidth")
-	private Map<String, BanListInstance>  BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
-
 
 
 	/**
@@ -106,52 +84,10 @@ public class CardsController {
 		, @RequestParam(name = "saveBandwidth", required = false) final boolean saveBandwidth)
 		throws YgoException
 	{
-		/* Determines which cache to use depending on user bandwidth preferences */
-		Map<String, BanListInstance> cache;
-		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
-		else	cache = BAN_LIST_CARDS_CACHE;
+		ServiceLayerHelper serviceLayerHelper = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth);
 
-		HttpStatus status;
-		BanListInstance banListInstance = cache.get(banListStartDate);
-		boolean isInCache = false, isContentReturned = false;	// for logging helper method
-
-
-		/* If the requested ban list is cached, access the cache and return the contents of the ban list. */
-		if ( banListInstance != null)
-		{
-			status = HttpStatus.OK;
-			isInCache = true;
-			isContentReturned = true;
-		}
-		/* If not in cache, try to retrieve ban list contents from DB */
-		else
-		{
-			/* Retrieves ban lists from DB by status */
-			banListInstance = BanListInstance.builder()
-				.forbidden(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN, saveBandwidth))
-				.limited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.LIMITED, saveBandwidth))
-				.semiLimited(bannedCardsService.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED, saveBandwidth))
-				.startDate(banListStartDate)
-				.build();
-
-			/* If DB doesn't return at least one card for at least one status, the users ban list isn't in the DB */
-			if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
-					&& banListInstance.getSemiLimited().size() == 0)
-					{
-						throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
-					}
-			/* If ban list is in DB, put ban list in cache and return the contents of ban list o the user. */
-			else
-			{
-				status = HttpStatus.OK;
-				isContentReturned = true;
-
-				cache.put(banListStartDate, banListInstance);
-			}
-		}
-
-
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, status, isInCache, isContentReturned));
-		return new ResponseEntity<>(banListInstance, status);
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, serviceLayerHelper.getStatus()
+			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
+		return new ResponseEntity<>( (BanListInstance)serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
 	}
 }

@@ -1,19 +1,14 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,13 +49,6 @@ public class DatesController
 	@Autowired
 	private HttpServletRequest request;
 
-	/**
-	 * Cache for storing previous queries
-	 */
-	@Autowired
-	@Qualifier("banListStartDatesCache")
-	private BanListStartDates BAN_LISTS_START_DATES_CACHE;
-
 
 	/**
 	 * Looks in the database or cache for the start dates of all ban lists stored in database.
@@ -75,17 +63,9 @@ public class DatesController
 	})
 	public ResponseEntity<BanListStartDates> startDatesOfBanLists()
 	{
-		/* If cache is empty, querying the DB is required. DB results are then cached. */
-		if (BAN_LISTS_START_DATES_CACHE.getBanListStartDates().size() == 0)
-		{
-			final List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
-			BAN_LISTS_START_DATES_CACHE.setBanListStartDates(banStartDates);
-		}
+		final ServiceLayerHelper serviceLayerHelper = banListService.getBanListStartDates();
 
-
-		/* Configures the ResponseEntity to return, */
-		final HttpStatus status = HttpStatus.OK;
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), "Retrieve all ban lists from DB", endPoint, status));
-		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), "Retrieve all ban lists from DB.", endPoint, serviceLayerHelper.getStatus()));
+		return new ResponseEntity<>( (BanListStartDates) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
 	}
 }

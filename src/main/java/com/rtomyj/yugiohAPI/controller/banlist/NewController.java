@@ -1,23 +1,17 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
-import com.rtomyj.yugiohAPI.model.NewCards;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -62,13 +56,6 @@ public class NewController
 	@Autowired
 	private HttpServletRequest request;
 
-	/**
-	 * Cache for requests/data produced by requests.
-	 */
-	@Autowired
-	@Qualifier("banListNewCardsCache")
-	private Map<String, BanListNewContent> cache;
-
 
 
 	/**
@@ -91,52 +78,10 @@ public class NewController
 		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate)
 		throws YgoException
 	{
-		// The values of the below variables will be changed in the if statements accordingly
-		HttpStatus requestStatus = null;	// the status code for request
-		// the metadata object for new cards - to contain; ban list requested, ban list compared to (previous list) and a list of new cards
-		BanListNewContent newCardsMeta = cache.get(banListStartDate);
-		boolean isInCache = false, isContentReturned = false;	// for logging helper method
+		final ServiceLayerHelper serviceLayerHelper = banListDiffService.getNewContentOfBanList(banListStartDate);
 
-
-		// Resource isn't in cache and ban list date passed validation
-		if ( newCardsMeta == null )
-		{
-			// retrieving new cards by ban list status
-			NewCards newCards = NewCards.builder()
-				.forbidden(banListDiffService.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN.toString()))
-				.limited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.LIMITED.toString()))
-				.semiLimited(banListDiffService.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED.toString()))
-				.build();
-
-			// There are changes for requested date - ie, requested date found in DB
-			if ( newCards.getForbidden().size() != 0 || newCards.getLimited().size() != 0 || newCards.getSemiLimited().size() != 0 )
-			{
-				// builds meta data object for new cards request
-				newCardsMeta = BanListNewContent.builder()
-					.listRequested(banListStartDate)
-					.comparedTo(banListDiffService.getPreviousBanListDate(banListStartDate))
-					.newCards(newCards)
-					.build();
-
-
-				cache.put(banListStartDate, newCardsMeta);
-
-				requestStatus = HttpStatus.OK;
-				isContentReturned = true;
-			}
-			// There are no changes for requested date - ie, requested date not found in DB.
-			else	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
-		}
-		// Resource in cache and ban list date passed validation
-		else
-		{
-			requestStatus = HttpStatus.OK;
-			isInCache = true;
-			isContentReturned = true;
-		}
-
-
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, requestStatus, isInCache, isContentReturned));
-		return new ResponseEntity<>(newCardsMeta, requestStatus);
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, serviceLayerHelper.getStatus()
+			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
+		return new ResponseEntity<>( (BanListNewContent) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
 	}
 }

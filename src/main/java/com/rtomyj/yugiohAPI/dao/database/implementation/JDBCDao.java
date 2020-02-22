@@ -7,8 +7,8 @@ import java.util.List;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
-import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public List<BanList> getBanListStartDates()
+	public BanListStartDates getBanListStartDates()
 	{
 		return null;
 	}
@@ -159,7 +159,7 @@ public class JDBCDao implements Dao
 
 
 
-	public List<BanListComparisonResults> getNewContentOfBanList(String newBanList, String status)
+	public List<BanListComparisonResults> getNewContentOfBanList(final String newBanList, final Status status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
 		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
@@ -172,8 +172,8 @@ public class JDBCDao implements Dao
 			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number;")
 			.toString();
 
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("status", status);
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("status", status.toString());
 		sqlParams.addValue("newBanList", newBanList);
 		sqlParams.addValue("oldBanList", oldBanList);
 

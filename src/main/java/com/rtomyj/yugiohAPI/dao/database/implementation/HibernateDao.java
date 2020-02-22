@@ -11,6 +11,7 @@ import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.hibernate.Session;
@@ -30,7 +31,7 @@ public class HibernateDao implements Dao
 
 
 	@Override
-	public List<BanList> getBanListStartDates() {
+	public BanListStartDates getBanListStartDates() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
@@ -38,10 +39,14 @@ public class HibernateDao implements Dao
 		Root<BanList> root = criteriaQuery.from(BanList.class);
 		criteriaQuery.select(root.get("banListDate")).distinct(true);
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
-		List<BanList> results = session.createQuery(criteriaQuery).getResultList();
+
+		final BanListStartDates banListStartDates = BanListStartDates
+			.builder()
+			.banListStartDates(session.createQuery(criteriaQuery).getResultList())
+			.build();
 
 		session.close();
-		return results;
+		return banListStartDates;
 	}
 
 	@Override
@@ -71,7 +76,7 @@ public class HibernateDao implements Dao
 		return "";
 	}
 
-	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, String status){
+	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status){
 		return null;
 	}
 

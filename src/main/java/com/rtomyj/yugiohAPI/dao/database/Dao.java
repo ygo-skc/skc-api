@@ -3,8 +3,8 @@ package com.rtomyj.yugiohAPI.dao.database;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 /**
@@ -52,7 +52,7 @@ public interface Dao
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-	public List<BanList> getBanListStartDates();
+	public BanListStartDates getBanListStartDates();
 
 	/**
 	 * Retrieve the information about a Card given the ID.
@@ -101,7 +101,7 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, String status);
+	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status);
 
 	/**
 	 *

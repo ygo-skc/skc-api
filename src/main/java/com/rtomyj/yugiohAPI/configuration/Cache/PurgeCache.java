@@ -5,7 +5,6 @@ import java.util.Map;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +34,6 @@ public class PurgeCache
 	@Autowired
 	@Qualifier("banListCardsCacheLowBandwidth")
 	private Map<String, BanListInstance>  BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
-
-	/**
-	 * Cache for dates of ban lists
-	 */
-	@Autowired
-	@Qualifier("banListStartDatesCache")
-	private BanListStartDates BAN_LISTS_START_DATES_CACHE;
 
 	/**
 	 * Cache for the information of specific cards.
@@ -75,7 +67,6 @@ public class PurgeCache
 		log.info("Purging caches");
 		BAN_LIST_CARDS_CACHE.clear();
 		BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE.clear();
-		BAN_LISTS_START_DATES_CACHE.getBanListStartDates().clear();;
 		CARD_CACHE.clear();
 		BAN_LISTS_NEW_CARDS_CACHE.clear();
 		BAN_LISTS_REMOVED_CARDS_CACHE.clear();
