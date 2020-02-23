@@ -48,7 +48,8 @@ public class CardService
 			serviceLayerHelper.setIsContentReturned(true);
 			serviceLayerHelper.setStatus(HttpStatus.OK);
 			serviceLayerHelper.setRequestedResource(requestedCard);
-		} else {
+		} else
+		{
 			requestedCard = dao.getCardInfo(cardId);
 
 			serviceLayerHelper.setIsContentReturned(true);
