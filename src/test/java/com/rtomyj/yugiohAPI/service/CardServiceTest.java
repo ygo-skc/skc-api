@@ -13,6 +13,7 @@ import java.util.Map;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
+import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.junit.Before;
@@ -68,9 +69,9 @@ public class CardServiceTest
 		final ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(testCardId);
 		final Card card = (Card) serviceLayerHelper.getRequestedResource();
 
-		assertEquals("Incorrect cardId", testCardId, card.getCardID());
-		assertEquals("Incorrect cardName", testCardName, card.getCardName());
-		assertEquals("Incorrect HTTP Code", HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
+		assertEquals(TestConstants.WRONG_CARD_ID_MESSAGE, testCardId, card.getCardID());
+		assertEquals(TestConstants.WRONG_CARD_NAME_MESSAGE, testCardName, card.getCardName());
+		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
 		assertFalse(serviceLayerHelper.getInCache());
 		assertTrue(serviceLayerHelper.getIsContentReturned());
 
@@ -91,9 +92,9 @@ public class CardServiceTest
 		final ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(testCardId);
 		final Card card = (Card) serviceLayerHelper.getRequestedResource();
 
-		assertEquals("Incorrect cardId", testCardId, card.getCardID());
-		assertEquals("Incorrect cardName", testCardName, card.getCardName());
-		assertEquals("Incorrect HTTP Code", HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
+		assertEquals(TestConstants.WRONG_CARD_ID_MESSAGE, testCardId, card.getCardID());
+		assertEquals(TestConstants.WRONG_CARD_NAME_MESSAGE, testCardName, card.getCardName());
+		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
 		assertTrue(serviceLayerHelper.getInCache());
 		assertTrue(serviceLayerHelper.getIsContentReturned());
 
