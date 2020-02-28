@@ -10,12 +10,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 
 /**
  * Class defines properties a Yugioh card can contain.
  */
 @Data
 @Builder
+@With
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Describes attributes of a YGO card.")

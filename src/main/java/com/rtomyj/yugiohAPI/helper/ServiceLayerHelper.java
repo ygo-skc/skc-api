@@ -16,6 +16,8 @@ public class ServiceLayerHelper
 {
 	private Object requestedResource;
 	private HttpStatus status;
+	@Builder.Default
 	private Boolean inCache = false;
+	@Builder.Default
 	private Boolean isContentReturned = false;
 }

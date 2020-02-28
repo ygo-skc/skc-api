@@ -11,11 +11,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.With;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@With
 @ApiModel(description = "Describes and contains information about a specific ban list.")
 @JsonTypeName("bannedCards")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)

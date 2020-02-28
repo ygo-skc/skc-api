@@ -1,0 +1,29 @@
+{
+   "bannedCards": {
+      "forbidden": [
+			{
+				"cardName": "Blackwing - Gofu the Vague Shadow",
+				"monsterType": "Winged-Beast/Tuner/Effect",
+				"cardColor": "Effect",
+				"cardEffect": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) while you control no monsters. When this card is Special Summoned from the hand: ...",
+				"cardID": "40044918"
+			}
+		], "limited": {
+			{
+				"cardName": "Blackwing - Gofu the Vague Shadow",
+				"monsterType": "Winged-Beast/Tuner/Effect",
+				"cardColor": "Effect",
+				"cardEffect": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) while you control no monsters. When this card is Special Summoned from the hand: ...",
+				"cardID": "09929398"
+			}
+		}, "semiLimited": [
+			{
+				"cardName": "Blackwing - Gofu the Vague Shadow",
+				"monsterType": "Winged-Beast/Tuner/Effect",
+				"cardColor": "Effect",
+				"cardEffect": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) while you control no monsters. When this card is Special Summoned from the hand: ...",
+				"cardID": "09929398"
+			}
+		]
+		}
+	}

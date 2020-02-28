@@ -28,7 +28,8 @@ public class BanService
 	 */
 	public ServiceLayerHelper getBanListStartDates()
 	{
-		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper.builder()
+		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper
+			.builder()
 			.requestedResource(dao.getBanListStartDates())
 			.status(HttpStatus.OK)
 			.build();
