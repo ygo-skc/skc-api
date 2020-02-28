@@ -39,7 +39,7 @@ public class CardServiceTest
 	@Mock
 	private Map<String, Card> cardCache;
 
-	private Card successfulCardReceived ;
+	private Card successfulCardReceived;
 	private final String testCardId = "12345678";
 	private final String testCardName = "E-HERO Stratos";
 
@@ -58,7 +58,7 @@ public class CardServiceTest
 
 
 	@Test
-	public void testFetchingCardFromDB_Success() throws YgoException
+	public void testFetchingCard_FromDB_Success() throws YgoException
 	{
 		when(dao.getCardInfo(eq(testCardId)))
 			.thenReturn(successfulCardReceived);
@@ -83,7 +83,7 @@ public class CardServiceTest
 
 
 	@Test
-	public void testFetchingCardFromCache_Success() throws YgoException
+	public void testFetchingCard_FromCache_Success() throws YgoException
 	{
 		when(cardCache.get(eq(testCardId)))
 			.thenReturn(successfulCardReceived);
