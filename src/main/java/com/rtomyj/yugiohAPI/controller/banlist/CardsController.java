@@ -6,7 +6,6 @@ import javax.validation.constraints.Pattern;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
-import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 

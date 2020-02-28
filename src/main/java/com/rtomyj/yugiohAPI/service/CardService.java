@@ -60,6 +60,11 @@ public class CardService
 			CARD_CACHE.put(cardId, requestedCard);	// puts card into cache
 		}
 
+		return serviceLayerHelper;
+	}
+
+
+
 	public List<Card> getCardSearchResults(final CardSearchCriteria cardSearchCriteria) throws YgoException
 	{
 		return dao.getCardNameByCriteria(cardSearchCriteria);
