@@ -30,11 +30,11 @@ public class DiffService
 	 */
 	@Autowired
 	@Qualifier("banListNewCardsCache")
-	private Map<String, BanListNewContent> newCardsCache;
+	private Map<String, BanListNewContent> NEW_CARDS_CACHE;
 
 	@Autowired
 	@Qualifier("banListRemovedCardsCache")
-	private Map<String, BanListRemovedContent> removedCardsCache;
+	private Map<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
 
 
 	public ServiceLayerHelper getNewContentOfBanList(final String banListStartDate) throws YgoException
@@ -42,7 +42,7 @@ public class DiffService
 		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper.builder()
 			.inCache(false)
 			.isContentReturned(false)
-			.requestedResource(newCardsCache.get(banListStartDate))
+			.requestedResource(NEW_CARDS_CACHE.get(banListStartDate))
 			.status(HttpStatus.OK)
 			.build();
 
@@ -67,7 +67,7 @@ public class DiffService
 					.newCards(newCards)
 					.build();
 
-				newCardsCache.put(banListStartDate, newCardsMeta);
+				NEW_CARDS_CACHE.put(banListStartDate, newCardsMeta);
 
 				serviceLayerHelper.setRequestedResource(newCardsMeta);
 				serviceLayerHelper.setIsContentReturned(true);
@@ -92,7 +92,7 @@ public class DiffService
 		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper.builder()
 			.inCache(false)
 			.isContentReturned(false)
-			.requestedResource(removedCardsCache.get(banListStartDate))
+			.requestedResource(REMOVED_CARDS_CACHE.get(banListStartDate))
 			.status(HttpStatus.OK)
 			.build();
 
@@ -114,7 +114,7 @@ public class DiffService
 					.build();
 
 
-				removedCardsCache.put(banListStartDate, removedCardsMeta);
+				REMOVED_CARDS_CACHE.put(banListStartDate, removedCardsMeta);
 
 				serviceLayerHelper.setRequestedResource(removedCardsMeta);
 				serviceLayerHelper.setIsContentReturned(true);

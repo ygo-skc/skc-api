@@ -9,6 +9,7 @@ public class TestConstants
 
 	public static final String BAN_LIST_INSTANCE_JSON_FILE = "src/test/resources/BanListInstanceTestResponse.json";
 	public static final String BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE = "src/test/resources/BanListInstanceLowBandwdithTestResponse.json";
+	public static final String BAN_LIST_NEW_CONTENT = "src/test/resources/BanListNewContent.json";
 
 
 	public static final String STRATOS_ID = "40044918";

@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.service.banlist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -91,11 +92,11 @@ public class CardsServiceTest {
 		final List<Card> limited = banListInstance.getLimited();
 		final List<Card> semiLimited = banListInstance.getSemiLimited();
 
-		assertNotEquals(null, serviceLayerHelper);
-		assertNotEquals(null, banListInstance);
-		assertNotEquals(null, forbidden);
-		assertNotEquals(null, limited);
-		assertNotEquals(null, semiLimited);
+		assertNotNull(serviceLayerHelper);
+		assertNotNull(banListInstance);
+		assertNotNull(forbidden);
+		assertNotNull(limited);
+		assertNotNull(semiLimited);
 
 		assertEquals(1, forbidden.size());
 		assertEquals(1, limited.size());
@@ -141,11 +142,11 @@ public class CardsServiceTest {
 		final List<Card> limited = banListInstance.getLimited();
 		final List<Card> semiLimited = banListInstance.getSemiLimited();
 
-		assertNotEquals(null, serviceLayerHelper);
-		assertNotEquals(null, banListInstance);
-		assertNotEquals(null, forbidden);
-		assertNotEquals(null, limited);
-		assertNotEquals(null, semiLimited);
+		assertNotNull(serviceLayerHelper);
+		assertNotNull(banListInstance);
+		assertNotNull(forbidden);
+		assertNotNull(limited);
+		assertNotNull(semiLimited);
 
 		assertEquals(1, forbidden.size());
 		assertEquals(1, limited.size());
@@ -197,11 +198,11 @@ public class CardsServiceTest {
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
 		final List<Card> semiLimitedTrimmed = banListInstance.getSemiLimited();
 
-		assertNotEquals(null, serviceLayerHelper);
-		assertNotEquals(null, banListInstance);
-		assertNotEquals(null, forbiddenTrimmed);
-		assertNotEquals(null, limitedTrimmed);
-		assertNotEquals(null, semiLimitedTrimmed);
+		assertNotNull(serviceLayerHelper);
+		assertNotNull(banListInstance);
+		assertNotNull(forbiddenTrimmed);
+		assertNotNull(limitedTrimmed);
+		assertNotNull(semiLimitedTrimmed);
 
 		assertEquals(1, forbiddenTrimmed.size());
 		assertEquals(1, limitedTrimmed.size());
@@ -247,11 +248,11 @@ public class CardsServiceTest {
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
 		final List<Card> semiLimitedTrimmed = banListInstance.getSemiLimited();
 
-		assertNotEquals(null, serviceLayerHelper);
-		assertNotEquals(null, banListInstance);
-		assertNotEquals(null, forbiddenTrimmed);
-		assertNotEquals(null, limitedTrimmed);
-		assertNotEquals(null, semiLimitedTrimmed);
+		assertNotNull(serviceLayerHelper);
+		assertNotNull(banListInstance);
+		assertNotNull(forbiddenTrimmed);
+		assertNotNull(limitedTrimmed);
+		assertNotNull(semiLimitedTrimmed);
 
 		assertEquals(1, forbiddenTrimmed.size());
 		assertEquals(1, limitedTrimmed.size());
