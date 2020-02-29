@@ -1,7 +1,7 @@
 
 plugins {
-	id 'io.spring.dependency-management' version '1.0.6.RELEASE'
-	id 'org.springframework.boot' version '2.2.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'org.springframework.boot' version '2.2.5.RELEASE'
 	id 'java'
 }
 
@@ -10,7 +10,7 @@ plugins {
 ext {
 	baseName = 'Yugioh_API'
 
-	springVersion = '2.2.0.RELEASE'
+	springVersion = '2.2.5.RELEASE'
 	swagger2Version = '2.9.2'
 }
 
@@ -88,4 +88,10 @@ task createJavadocs(type: Javadoc) {
 	description 'Creates custom Javadocs for project'
 
 	source 'sourceSets.main.allJava'
+}
+
+
+
+tasks.withType(Test) {
+   maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
 }
