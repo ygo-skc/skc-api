@@ -70,7 +70,7 @@ public class BanServiceTest
 		final ServiceLayerHelper serviceLayerHelper = banService.getBanListStartDates();
 		final BanListStartDates banListStartDates = (BanListStartDates) serviceLayerHelper.getRequestedResource();
 
-		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
+		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK, serviceLayerHelper.getStatus());
 		assertEquals(1, banListStartDates.getBanListStartDates().size());
 	}
 }

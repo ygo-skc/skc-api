@@ -69,9 +69,12 @@ public class CardServiceTest
 		final ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(testCardId);
 		final Card card = (Card) serviceLayerHelper.getRequestedResource();
 
+		assertEquals(false, serviceLayerHelper.getInCache());
+		assertEquals(true, serviceLayerHelper.getIsContentReturned());
+		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
+
 		assertEquals(TestConstants.WRONG_CARD_ID_MESSAGE, testCardId, card.getCardID());
 		assertEquals(TestConstants.WRONG_CARD_NAME_MESSAGE, testCardName, card.getCardName());
-		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
 		assertFalse(serviceLayerHelper.getInCache());
 		assertTrue(serviceLayerHelper.getIsContentReturned());
 
@@ -91,6 +94,10 @@ public class CardServiceTest
 
 		final ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(testCardId);
 		final Card card = (Card) serviceLayerHelper.getRequestedResource();
+
+		assertEquals(true, serviceLayerHelper.getInCache());
+		assertEquals(true, serviceLayerHelper.getIsContentReturned());
+		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
 		assertEquals(TestConstants.WRONG_CARD_ID_MESSAGE, testCardId, card.getCardID());
 		assertEquals(TestConstants.WRONG_CARD_NAME_MESSAGE, testCardName, card.getCardName());
