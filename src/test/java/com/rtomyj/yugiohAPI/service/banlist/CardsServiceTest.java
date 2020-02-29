@@ -36,6 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CardsServiceTest {
@@ -61,7 +62,7 @@ public class CardsServiceTest {
 	@Before
 	public void before() throws JsonParseException, JsonMappingException, IOException
 	{
-		ObjectMapper mapper = new ObjectMapper();
+		final ObjectMapper mapper = new ObjectMapper();
 		this.banListInstanceFullText = mapper.readValue(
 			new File(TestConstants.BAN_LIST_INSTANCE_JSON_FILE), BanListInstance.class);
 		this.banListInstanceTrimmedText = mapper.readValue(
@@ -73,23 +74,22 @@ public class CardsServiceTest {
 	@Test
 	public void testFetchingBanListInstance_FromDB_WithFullText_Successfully() throws YgoException
 	{
-		final List<Card> forbidden = banListInstanceFullText.getForbidden();
-		final List<Card> limited = banListInstanceFullText.getLimited();
-		final List<Card> semiLimited = banListInstanceFullText.getSemiLimited();
-
-
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN)))
-			.thenReturn(forbidden);
+			.thenReturn(banListInstanceFullText.getForbidden());
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED)))
-			.thenReturn(limited);
+			.thenReturn(banListInstanceFullText.getLimited());
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED)))
-			.thenReturn(semiLimited);
+			.thenReturn(banListInstanceFullText.getSemiLimited());
 		when(BAN_LIST_CARDS_CACHE.get(eq(banListStartDate)))
 			.thenReturn(null);
 
 
 		final ServiceLayerHelper serviceLayerHelper = cardsService.getBanListByBanStatus(banListStartDate, false);
 		final BanListInstance banListInstance = (BanListInstance) serviceLayerHelper.getRequestedResource();
+
+		final List<Card> forbidden = banListInstance.getForbidden();
+		final List<Card> limited = banListInstance.getLimited();
+		final List<Card> semiLimited = banListInstance.getSemiLimited();
 
 		assertNotEquals(null, serviceLayerHelper);
 		assertNotEquals(null, banListInstance);
@@ -130,17 +130,16 @@ public class CardsServiceTest {
 	@Test
 	public void testFetchingBanListInstance_FromCache_WithFullText_Successfully() throws YgoException
 	{
-		final List<Card> forbidden = banListInstanceFullText.getForbidden();
-		final List<Card> limited = banListInstanceFullText.getLimited();
-		final List<Card> semiLimited = banListInstanceFullText.getSemiLimited();
-
-
 		when(BAN_LIST_CARDS_CACHE.get(eq(banListStartDate)))
 			.thenReturn(banListInstanceFullText);
 
 
 		final ServiceLayerHelper serviceLayerHelper = cardsService.getBanListByBanStatus(banListStartDate, false);
 		final BanListInstance banListInstance = (BanListInstance) serviceLayerHelper.getRequestedResource();
+
+		final List<Card> forbidden = banListInstance.getForbidden();
+		final List<Card> limited = banListInstance.getLimited();
+		final List<Card> semiLimited = banListInstance.getSemiLimited();
 
 		assertNotEquals(null, serviceLayerHelper);
 		assertNotEquals(null, banListInstance);
@@ -181,17 +180,12 @@ public class CardsServiceTest {
 	@Test
 	public void testFetchingBanListInstance_FromDB_WithTrimmedText_Successfully() throws YgoException
 	{
-		final List<Card> forbiddenFull = banListInstanceFullText.getForbidden();
-		final List<Card> limitedFull = banListInstanceFullText.getLimited();
-		final List<Card> semiLimitedFull = banListInstanceFullText.getSemiLimited();
-
-
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN)))
-			.thenReturn(forbiddenFull);
+			.thenReturn(banListInstanceFullText.getForbidden());
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED)))
-			.thenReturn(limitedFull);
+			.thenReturn(banListInstanceFullText.getLimited());
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED)))
-			.thenReturn(semiLimitedFull);
+			.thenReturn(banListInstanceFullText.getSemiLimited());
 		when(BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE.get(eq(banListStartDate)))
 			.thenReturn(null);
 
@@ -199,9 +193,9 @@ public class CardsServiceTest {
 		final ServiceLayerHelper serviceLayerHelper = cardsService.getBanListByBanStatus(banListStartDate, true);
 		final BanListInstance banListInstance = (BanListInstance) serviceLayerHelper.getRequestedResource();
 
-		final List<Card> forbiddenTrimmed = banListInstanceTrimmedText.getForbidden();
-		final List<Card> limitedTrimmed = banListInstanceTrimmedText.getLimited();
-		final List<Card> semiLimitedTrimmed = banListInstanceTrimmedText.getSemiLimited();
+		final List<Card> forbiddenTrimmed = banListInstance.getForbidden();
+		final List<Card> limitedTrimmed = banListInstance.getLimited();
+		final List<Card> semiLimitedTrimmed = banListInstance.getSemiLimited();
 
 		assertNotEquals(null, serviceLayerHelper);
 		assertNotEquals(null, banListInstance);
@@ -249,9 +243,9 @@ public class CardsServiceTest {
 		final ServiceLayerHelper serviceLayerHelper = cardsService.getBanListByBanStatus(banListStartDate, true);
 		final BanListInstance banListInstance = (BanListInstance) serviceLayerHelper.getRequestedResource();
 
-		final List<Card> forbiddenTrimmed = banListInstanceTrimmedText.getForbidden();
-		final List<Card> limitedTrimmed = banListInstanceTrimmedText.getLimited();
-		final List<Card> semiLimitedTrimmed = banListInstanceTrimmedText.getSemiLimited();
+		final List<Card> forbiddenTrimmed = banListInstance.getForbidden();
+		final List<Card> limitedTrimmed = banListInstance.getLimited();
+		final List<Card> semiLimitedTrimmed = banListInstance.getSemiLimited();
 
 		assertNotEquals(null, serviceLayerHelper);
 		assertNotEquals(null, banListInstance);
@@ -308,8 +302,8 @@ public class CardsServiceTest {
 
 
 		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));
-		verify(dao, times(0)).getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED));
-		verify(dao, times(0)).getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED));
 		verify(BAN_LIST_CARDS_CACHE, times(1)).get(eq(banListStartDate));
 		verify(BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE, times(0)).get(any(String.class));
 	}
