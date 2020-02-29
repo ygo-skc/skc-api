@@ -2,7 +2,6 @@ package com.rtomyj.yugiohAPI.service.banlist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -92,6 +91,10 @@ public class CardsServiceTest {
 		final List<Card> limited = banListInstance.getLimited();
 		final List<Card> semiLimited = banListInstance.getSemiLimited();
 
+		assertEquals(false, serviceLayerHelper.getInCache());
+		assertEquals(true, serviceLayerHelper.getIsContentReturned());
+		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
+
 		assertNotNull(serviceLayerHelper);
 		assertNotNull(banListInstance);
 		assertNotNull(forbidden);
@@ -141,6 +144,10 @@ public class CardsServiceTest {
 		final List<Card> forbidden = banListInstance.getForbidden();
 		final List<Card> limited = banListInstance.getLimited();
 		final List<Card> semiLimited = banListInstance.getSemiLimited();
+
+		assertEquals(true, serviceLayerHelper.getInCache());
+		assertEquals(true, serviceLayerHelper.getIsContentReturned());
+		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
 		assertNotNull(serviceLayerHelper);
 		assertNotNull(banListInstance);
@@ -198,6 +205,10 @@ public class CardsServiceTest {
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
 		final List<Card> semiLimitedTrimmed = banListInstance.getSemiLimited();
 
+		assertEquals(false, serviceLayerHelper.getInCache());
+		assertEquals(true, serviceLayerHelper.getIsContentReturned());
+		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
+
 		assertNotNull(serviceLayerHelper);
 		assertNotNull(banListInstance);
 		assertNotNull(forbiddenTrimmed);
@@ -247,6 +258,10 @@ public class CardsServiceTest {
 		final List<Card> forbiddenTrimmed = banListInstance.getForbidden();
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
 		final List<Card> semiLimitedTrimmed = banListInstance.getSemiLimited();
+
+		assertEquals(true, serviceLayerHelper.getInCache());
+		assertEquals(true, serviceLayerHelper.getIsContentReturned());
+		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
 		assertNotNull(serviceLayerHelper);
 		assertNotNull(banListInstance);
