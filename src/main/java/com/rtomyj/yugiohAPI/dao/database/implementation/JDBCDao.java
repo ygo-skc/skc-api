@@ -271,14 +271,16 @@ public class JDBCDao implements Dao
 	{
 		final String cardId = new StringBuilder().append('%').append(cardSearchCriteria.getCardId()).append('%').toString();
 		final String cardName = new StringBuilder().append('%').append(cardSearchCriteria.getCardName()).append('%').toString();
-		final String cardAttribute = new StringBuilder().append('%').append(cardSearchCriteria.getCardAttribute()).append('%').toString();
-		final String cardColor = new StringBuilder().append('%').append(cardSearchCriteria.getCardColor()).append('%').toString();
+
+		final String cardAttribute = (cardSearchCriteria.getCardAttribute() == "")? ".*" : cardSearchCriteria.getCardAttribute();
+		final String cardColor = (cardSearchCriteria.getCardColor() == "")? ".*" : cardSearchCriteria.getCardColor();
+		final String monsterType = (cardSearchCriteria.getMonsterType() == "")? ".*" : cardSearchCriteria.getMonsterType();
 
 		final String query = new StringBuilder()
 			.append("SELECT DISTINCT cards.card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, cards.color_id")
 			.append(" FROM cards, card_colors, ban_lists")
 			.append(" WHERE cards.color_id = card_colors.color_id AND cards.card_number = ban_lists.card_number AND cards.card_number LIKE :cardId AND card_name LIKE :cardName")
-			.append(" AND card_attribute LIKE :cardAttribute AND card_color LIKE :cardColor ORDER BY color_id, card_name, ban_list_date DESC")
+			.append(" AND card_attribute REGEXP :cardAttribute AND card_color REGEXP :cardColor AND monster_type REGEXP :monsterType ORDER BY color_id, card_name, ban_list_date DESC")
 			.toString();
 
 
@@ -287,6 +289,7 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardName", cardName);
 		sqlParams.addValue("cardAttribute", cardAttribute);
 		sqlParams.addValue("cardColor", cardColor);
+		sqlParams.addValue("monsterType", monsterType);
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			/*
