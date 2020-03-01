@@ -179,7 +179,8 @@ public class JDBCDao implements Dao
 			.append(" from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)")
 			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList")
 			.append(" and ban_status = :status) as old_list on new_list.card_number = old_list.card_number")
-			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number;")
+			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number")
+			.append(" ORDER BY cards.card_name")
 			.toString();
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
@@ -222,7 +223,8 @@ public class JDBCDao implements Dao
 			.append(" from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists")
 			.append(" where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status")
 			.append(" from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number")
-			.append(" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number;")
+			.append(" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number")
+			.append(" ORDER BY cards.card_name")
 			.toString();
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
