@@ -50,6 +50,9 @@ dependencies {
 
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
+	implementation group: 'org.cache2k', name: 'cache2k-api', version: '1.2.4.Final'
+	implementation group: 'org.cache2k', name: 'cache2k-core', version: '1.2.4.Final'
+
    annotationProcessor "org.projectlombok:lombok"	// needed to compile via gradle CLI
 	implementation 'org.projectlombok:lombok'	// plug in required to work in VSCode, might be the same for other IDE's
 

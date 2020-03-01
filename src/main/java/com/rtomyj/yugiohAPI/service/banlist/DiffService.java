@@ -1,7 +1,6 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
 import java.util.List;
-import java.util.Map;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
@@ -13,6 +12,7 @@ import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 
+import org.cache2k.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -30,11 +30,11 @@ public class DiffService
 	 */
 	@Autowired
 	@Qualifier("banListNewCardsCache")
-	private Map<String, BanListNewContent> NEW_CARDS_CACHE;
+	private Cache<String, BanListNewContent> NEW_CARDS_CACHE;
 
 	@Autowired
 	@Qualifier("banListRemovedCardsCache")
-	private Map<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
+	private Cache<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
 
 
 	public ServiceLayerHelper getNewContentOfBanList(final String banListStartDate) throws YgoException

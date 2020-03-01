@@ -8,14 +8,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Map;
-
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 
+import org.cache2k.Cache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +36,7 @@ public class CardServiceTest
 	private Dao dao;
 
 	@Mock
-	private Map<String, Card> cardCache;
+	private Cache<String, Card> cardCache;
 
 	private Card successfulCardReceived;
 	private final String testCardId = "12345678";

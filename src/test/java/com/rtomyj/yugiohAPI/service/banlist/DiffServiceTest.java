@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -27,6 +26,7 @@ import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 
+import org.cache2k.Cache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,10 +47,10 @@ public class DiffServiceTest {
 	private Dao dao;
 
 	@Mock
-	private Map<String, BanListNewContent> NEW_CARDS_CACHE;
+	private Cache<String, BanListNewContent> NEW_CARDS_CACHE;
 
 	@Mock
-	private Map<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
+	private Cache<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
 
 	private final static String BAN_LIST_START_DATE = "2018-12-03";
 	private final static String PREVIOUS_BAN_LIST_START_DATE = "2018-09-17";

@@ -1,7 +1,6 @@
 package com.rtomyj.yugiohAPI.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
@@ -9,6 +8,7 @@ import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
+import org.cache2k.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class CardService
 	 */
 	@Autowired
 	@Qualifier("cardsCache")
-	private Map<String, Card> CARD_CACHE;
+	private Cache<String, Card> CARD_CACHE;
 
 
 
