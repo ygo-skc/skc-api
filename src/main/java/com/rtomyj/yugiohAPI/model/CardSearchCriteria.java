@@ -18,4 +18,5 @@ public class CardSearchCriteria
 	private String cardName;
 	private String cardColor;
 	private String cardAttribute;
+	private String monsterType;
 }
