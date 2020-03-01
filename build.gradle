@@ -1,9 +1,9 @@
 
 plugins {
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'org.springframework.boot' version '2.2.5.RELEASE'
-	id 'jacoco'
-	id 'java'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply true
+	id 'org.springframework.boot' version '2.2.5.RELEASE' apply true
+	id 'jacoco' apply true
+	id 'java' apply true
 }
 
 
@@ -13,6 +13,10 @@ ext {
 
 	springVersion = '2.2.5.RELEASE'
 	swagger2Version = '2.9.2'
+	javadocVersion = '3.1.1'
+	cache2kVersion = '1.2.4.Final'
+	lombokVersion = '1.18.12'
+	mysqlVersion = '8.0.19'
 }
 
 
@@ -38,25 +42,25 @@ sourceSets {
 
 
 dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springVersion
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: springVersion
+	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
 
-	implementation 'org.apache.maven.plugins:maven-javadoc-plugin:3.1.1'
-	implementation "io.springfox:springfox-swagger2:$swagger2Version"
-	implementation "io.springfox:springfox-swagger-ui:$swagger2Version"
+	implementation group: 'org.apache.maven.plugins', name: 'maven-javadoc-plugin', version: javadocVersion
 
-	runtimeOnly 'mysql:mysql-connector-java'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: swagger2Version
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: swagger2Version
 
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	runtimeOnly group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
 
-	implementation group: 'org.cache2k', name: 'cache2k-api', version: '1.2.4.Final'
-	implementation group: 'org.cache2k', name: 'cache2k-core', version: '1.2.4.Final'
+	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
 
-   annotationProcessor "org.projectlombok:lombok"	// needed to compile via gradle CLI
-	implementation 'org.projectlombok:lombok'	// plug in required to work in VSCode, might be the same for other IDE's
+	implementation group: 'org.cache2k', name: 'cache2k-api', version: cache2kVersion
+	implementation group: 'org.cache2k', name: 'cache2k-core', version: cache2kVersion
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion	// needed to compile via gradle CLI
+	implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion	// plug in required to work in VSCode, might be the same for other IDE's
 }
 
 
