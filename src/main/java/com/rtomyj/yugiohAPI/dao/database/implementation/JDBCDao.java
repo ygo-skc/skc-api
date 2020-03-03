@@ -16,7 +16,6 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -269,14 +268,14 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Card> getCardNameByCriteria(final CardSearchCriteria cardSearchCriteria)
+	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType)
 	{
-		final String cardId = new StringBuilder().append('%').append(cardSearchCriteria.getCardId()).append('%').toString();
-		final String cardName = new StringBuilder().append('%').append(cardSearchCriteria.getCardName()).append('%').toString();
+		cardId = new StringBuilder().append('%').append(cardId).append('%').toString();
+		cardName = new StringBuilder().append('%').append(cardName).append('%').toString();
 
-		final String cardAttribute = (cardSearchCriteria.getCardAttribute() == "")? ".*" : cardSearchCriteria.getCardAttribute();
-		final String cardColor = (cardSearchCriteria.getCardColor() == "")? ".*" : cardSearchCriteria.getCardColor();
-		final String monsterType = (cardSearchCriteria.getMonsterType() == "")? ".*" : cardSearchCriteria.getMonsterType();
+		cardAttribute = (cardAttribute.isEmpty())? ".*" : cardAttribute;
+		cardColor = (cardColor.isEmpty())? ".*" : cardColor;
+		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
 
 		final String query = new StringBuilder()
 			.append("SELECT DISTINCT cards.card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, cards.color_id")
@@ -292,6 +291,7 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardAttribute", cardAttribute);
 		sqlParams.addValue("cardColor", cardColor);
 		sqlParams.addValue("monsterType", monsterType);
+		System.out.println(sqlParams);
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			/*

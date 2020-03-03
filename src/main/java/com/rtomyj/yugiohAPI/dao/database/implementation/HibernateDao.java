@@ -13,7 +13,6 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -92,7 +91,7 @@ public class HibernateDao implements Dao
 	}
 
 	@Override
-	public List<Card> getCardNameByCriteria(final CardSearchCriteria cardSearchCriteria)
+	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType)
 	{
 		return null;
 	}

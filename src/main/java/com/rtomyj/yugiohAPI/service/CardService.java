@@ -6,7 +6,6 @@ import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.CardSearchCriteria;
 
 import org.cache2k.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +64,8 @@ public class CardService
 
 
 
-	public List<Card> getCardSearchResults(final CardSearchCriteria cardSearchCriteria) throws YgoException
+	public List<Card> getCardSearchResults(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType) throws YgoException
 	{
-		return dao.getCardNameByCriteria(cardSearchCriteria);
+		return dao.getCardNameByCriteria(cardId, cardName, cardAttribute, cardColor, monsterType);
 	}
 }
