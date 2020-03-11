@@ -1,24 +1,30 @@
 
 plugins {
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'org.springframework.boot' version '2.2.5.RELEASE'
-	id 'jacoco'
-	id 'java'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply true
+	id 'org.springframework.boot' version '2.2.5.RELEASE' apply true
+	id 'jacoco' apply true
+	id 'java' apply true
 }
+
+sourceSets.main.java.srcDirs = ["src/main/java"]
 
 
 
 ext {
-	baseName = 'Yugioh_API'
+	baseName = 'YGO-API'
 
 	springVersion = '2.2.5.RELEASE'
 	swagger2Version = '2.9.2'
+	javadocVersion = '3.1.1'
+	cache2kVersion = '1.2.4.Final'
+	lombokVersion = '1.18.12'
+	mysqlVersion = '8.0.19'
 }
 
 
 
-group 'com.rtomyj'
-version '1.1.2'
+group = 'com.rtomyj'
+version = '1.1.2'
 sourceCompatibility = '1.8'
 
 
@@ -41,19 +47,22 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
+	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
 
-	implementation 'org.apache.maven.plugins:maven-javadoc-plugin:3.1.1'
+	implementation "org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion"
+
 	implementation "io.springfox:springfox-swagger2:$swagger2Version"
 	implementation "io.springfox:springfox-swagger-ui:$swagger2Version"
 
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
-   annotationProcessor "org.projectlombok:lombok"	// needed to compile via gradle CLI
-	implementation 'org.projectlombok:lombok'	// plug in required to work in VSCode, might be the same for other IDE's
+	implementation "org.cache2k:cache2k-api:$cache2kVersion"
+	implementation "org.cache2k:cache2k-core:$cache2kVersion"
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
+	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
 }
 
 
@@ -78,21 +87,29 @@ bootJar {
 
 
 
-task bootJarName {
-	print project.baseName + '-' + version + '.jar'
+task bootJarPath {
+	doFirst {
+		println "${buildDir}/libs/${project.baseName}_${project.version}.jar"
+	}
 }
 
 
 
-task createJavadocs(type: Javadoc) {
-	group 'Documentation'
-	description 'Creates custom Javadocs for project'
-
-	source 'sourceSets.main.allJava'
+javadoc {
+	source = sourceSets.main.allJava
 }
 
 
 
 tasks.withType(Test) {
    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}
+
+
+
+test {
+	useJUnitPlatform()
+
+	minHeapSize = "256m"
+	maxHeapSize = "512m"
 }
