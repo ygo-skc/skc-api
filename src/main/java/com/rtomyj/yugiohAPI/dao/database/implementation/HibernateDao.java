@@ -95,4 +95,8 @@ public class HibernateDao implements Dao
 	{
 		return null;
 	}
+	public boolean isValidBanList(final String banListDate)
+	{
+		return false;
+	}
 }

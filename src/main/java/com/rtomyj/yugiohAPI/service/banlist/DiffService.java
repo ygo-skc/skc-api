@@ -1,6 +1,5 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
-import java.util.List;
 import java.util.Map;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
@@ -8,7 +7,6 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
-import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
@@ -50,21 +48,20 @@ public class DiffService
 		// Resource isn't in cache and ban list date passed validation
 		if ( serviceLayerHelper.getRequestedResource() == null )
 		{
-			// retrieving new cards by ban list status
-			final NewCards newCards = NewCards.builder()
-				.forbidden(dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN))
-				.limited(dao.getNewContentOfBanList(banListStartDate, Status.LIMITED))
-				.semiLimited(dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED))
-				.build();
 
 			// There are changes for requested date - ie, requested date found in DB
-			if ( newCards.getForbidden().size() != 0 || newCards.getLimited().size() != 0 || newCards.getSemiLimited().size() != 0 )
+			if ( dao.isValidBanList(banListStartDate) )
 			{
 				// builds meta data object for new cards request
 				final BanListNewContent newCardsMeta = BanListNewContent.builder()
 					.listRequested(banListStartDate)
 					.comparedTo(this.getPreviousBanListDate(banListStartDate))
-					.newCards(newCards)
+					.newCards(NewCards
+						.builder()
+						.forbidden(dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN))
+						.limited(dao.getNewContentOfBanList(banListStartDate, Status.LIMITED))
+						.semiLimited(dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED))
+						.build())
 					.build();
 
 				NEW_CARDS_CACHE.put(banListStartDate, newCardsMeta);
@@ -99,18 +96,15 @@ public class DiffService
 
 		if ( serviceLayerHelper.getRequestedResource() == null )
 		{
-			// retrieving removed cards by ban list status
-
-			List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
 
 			// There are changes for requested date - ie, requested date found in DB
-			if ( removedCards.size() != 0 )
+			if ( dao.isValidBanList(banListStartDate) )
 			{
 				// builds meta data object for removed cards request
 				final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
 					.listRequested(banListStartDate)
 					.comparedTo(this.getPreviousBanListDate(banListStartDate))
-					.removedCards(removedCards)
+					.removedCards(dao.getRemovedContentOfBanList(banListStartDate))
 					.build();
 
 

@@ -159,6 +159,7 @@ public class JDBCDao implements Dao
 
 
 
+	// TODO: make sure you write a test for the instance where the last ban list is selected
 	public List<BanListComparisonResults> getNewContentOfBanList(final String newBanList, final Status status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
@@ -202,6 +203,7 @@ public class JDBCDao implements Dao
 
 
 
+	// TODO: make sure you write a test for the instance where the last ban list is selected
 	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
@@ -263,5 +265,20 @@ public class JDBCDao implements Dao
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		return null;
+	}
+
+
+
+	public boolean isValidBanList(final String banListDate)
+	{
+		final String query = "select distinct ban_list_date from ban_lists where ban_list_date = :banListDate";
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("banListDate", banListDate);
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			if (row.next())	return true;
+			else	return false;
+		});
 	}
 }
