@@ -17,3 +17,9 @@ spring:
 
 server:
   port: 9999
+  compression:
+    enabled: true
+    mime-types: application/json
+    min-response-size: 4096
+  http2:
+    enabled: true
