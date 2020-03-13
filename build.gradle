@@ -119,3 +119,13 @@ test {
 	minHeapSize = "256m"
 	maxHeapSize = "512m"
 }
+//com.rtomyj.yugiohAPI.dao/**'])
+
+
+jacocoTestReport {
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: 'com/rtomyj/yugiohAPI/dao/**')
+		}))
+	}
+}
