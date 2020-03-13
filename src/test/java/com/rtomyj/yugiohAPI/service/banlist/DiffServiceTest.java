@@ -196,6 +196,8 @@ public class DiffServiceTest {
 			.thenReturn(new ArrayList<>());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(new ArrayList<>());
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(false);
 		when(this.NEW_CARDS_CACHE.get(eq(BAN_LIST_START_DATE)))
 			.thenReturn(null);
 
@@ -209,6 +211,8 @@ public class DiffServiceTest {
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.LIMITED));
 		verify(this.dao, times(1))
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
+		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(0))
 			.getPreviousBanListDate(any(String.class));
 		verify(this.NEW_CARDS_CACHE, times(1))
@@ -312,8 +316,10 @@ public class DiffServiceTest {
 
 
 	@Test(expected = YgoException.class)
-	public void testFetchingBanListRemovedContent_FromDB_Successfully44() throws YgoException
+	public void testFetchingBanListRemovedContent_FromDB_Failure() throws YgoException
 	{
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(false);
 		when(this.dao.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE)))
 			.thenReturn(new ArrayList<>());
 		when(this.REMOVED_CARDS_CACHE.get(BAN_LIST_START_DATE))
@@ -326,6 +332,8 @@ public class DiffServiceTest {
 		banListRemovedContentInstance.getRemovedCards();
 
 
+		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(1))
 			.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(0))
