@@ -82,7 +82,7 @@ bootJar {
 	group 'Build'
 	description 'Creates a JAR file that can be executed to launch YGO service'
 
-	baseName 'Yugioh_API'
+	baseName project.baseName
 	manifest {
 			attributes 'Implementation-Title': baseName
 	}
