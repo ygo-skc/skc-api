@@ -45,7 +45,7 @@ sourceSets {
 
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-undertow:$springVersion"
+	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
