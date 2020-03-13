@@ -51,7 +51,7 @@ dependencies {
 
 	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
-	implementation "org.eclipse.jetty:http2-server"
+	implementation "org.eclipse.jetty.http2:http2-server"
 
 	implementation "org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion"
 
