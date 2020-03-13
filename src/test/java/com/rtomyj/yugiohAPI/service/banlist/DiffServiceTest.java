@@ -80,6 +80,8 @@ public class DiffServiceTest {
 			.thenReturn(this.banListNewContent.getNewCards().getLimited());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(this.banListNewContent.getNewCards().getSemiLimited());
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(true);
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
 			.thenReturn(PREVIOUS_BAN_LIST_START_DATE);
 		when(this.NEW_CARDS_CACHE.get(eq(BAN_LIST_START_DATE)))
@@ -123,6 +125,8 @@ public class DiffServiceTest {
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.LIMITED));
 		verify(this.dao, times(1))
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
+		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(1))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
 		verify(this.NEW_CARDS_CACHE, times(1))
@@ -220,6 +224,8 @@ public class DiffServiceTest {
 			.thenReturn(this.banListRemovedContent.getRemovedCards());
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
 			.thenReturn(PREVIOUS_BAN_LIST_START_DATE);
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(true);
 		when(this.REMOVED_CARDS_CACHE.get(BAN_LIST_START_DATE))
 			.thenReturn(null);
 
@@ -254,6 +260,8 @@ public class DiffServiceTest {
 			.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(1))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
+		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
 		verify(this.REMOVED_CARDS_CACHE, times(1))
 			.get(eq(BAN_LIST_START_DATE));
 	}
