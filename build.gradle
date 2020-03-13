@@ -92,7 +92,7 @@ bootJar {
 
 task bootJarPath {
 	doFirst {
-		println "${buildDir}/libs/${project.baseName}_${project.version}.jar"
+		println "${buildDir}/libs/${project.baseName}-${project.version}.jar"
 	}
 }
 
