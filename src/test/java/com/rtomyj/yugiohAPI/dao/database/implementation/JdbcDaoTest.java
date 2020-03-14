@@ -14,12 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
+@TestPropertySource("classpath:application-test.yml")
 public class JdbcDaoTest
 {
 	@Autowired
@@ -43,6 +44,7 @@ public class JdbcDaoTest
 			.monsterDefense(TestConstants.STRATOS_DEF)
 			.cardEffect(TestConstants.STRATOS_TRIMMED_EFFECT)
 			.build();
+
 	}
 
 
@@ -53,6 +55,7 @@ public class JdbcDaoTest
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardId", stratos.getCardID());
 
+		System.out.println("LOOK AT ME");
 
 		System.out.println(dao.getCardInfo(stratos.getCardID()));
 	}

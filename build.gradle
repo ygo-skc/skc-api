@@ -70,9 +70,7 @@ dependencies {
 
 	/* Test level dependencies */
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
-	testImplementation "com.h2database:h2"
-
-	testRuntimeOnly "mysql:mysql-connector-java:$mysqlVersion"
+	testRuntimeOnly "com.h2database:h2"
 
 	testImplementation "org.junit.jupiter:junit-jupiter-api"
 	testImplementation "org.junit.jupiter:junit-jupiter-engine"
@@ -118,7 +116,7 @@ javadoc {
 
 
 tasks.withType(Test) {
-   maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+   maxParallelForks = Runtime.runtime.availableProcessors() / 3 ?: 1
 }
 
 
@@ -126,15 +124,6 @@ tasks.withType(Test) {
 test {
 	useJUnitPlatform()
 
-	minHeapSize = "256m"
-	maxHeapSize = "512m"
-}
-
-
-jacocoTestReport {
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: 'com/rtomyj/yugiohAPI/dao/**')
-		}))
-	}
+	minHeapSize = "512m"
+	maxHeapSize = "768m"
 }
