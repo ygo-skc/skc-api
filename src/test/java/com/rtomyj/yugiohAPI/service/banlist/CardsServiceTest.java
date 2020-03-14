@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -27,6 +26,7 @@ import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.model.Card;
 
+import org.cache2k.Cache;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,10 +47,10 @@ public class CardsServiceTest {
 	private Dao dao;
 
 	@Mock
-	private Map<String, BanListInstance> BAN_LIST_CARDS_CACHE;
+	private Cache<String, BanListInstance> BAN_LIST_CARDS_CACHE;
 
 	@Mock
-	private Map<String, BanListInstance> BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
+	private Cache<String, BanListInstance> BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 
 	private BanListInstance banListInstanceFullText;
 	private BanListInstance banListInstanceTrimmedText;

@@ -1,7 +1,5 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
-import java.util.Map;
-
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
@@ -10,6 +8,7 @@ import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.model.Card;
 
+import org.cache2k.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,7 @@ public class CardsService
 	 */
 	@Autowired
 	@Qualifier("banListCardsCache")
-	private Map<String, BanListInstance>  BAN_LIST_CARDS_CACHE;
+	private Cache<String, BanListInstance> BAN_LIST_CARDS_CACHE;
 
 	/**
 	 * In memory cache for contents of previously queried ban lists. Each start date of a ban list has its own ban list. Each ban list has 3 type of banned cards.
@@ -43,7 +42,7 @@ public class CardsService
 	 */
 	@Autowired
 	@Qualifier("banListCardsCacheLowBandwidth")
-	private Map<String, BanListInstance>  BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
+	private Cache<String, BanListInstance>  BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 
 
 
@@ -56,7 +55,7 @@ public class CardsService
 	public ServiceLayerHelper getBanListByBanStatus(String banListStartDate, boolean saveBandwidth) throws YgoException
 	{
 		/* Determines which cache to use depending on user bandwidth preferences */
-		Map<String, BanListInstance> cache;
+		Cache<String, BanListInstance> cache;
 		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 		else	cache = BAN_LIST_CARDS_CACHE;
 

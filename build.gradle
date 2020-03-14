@@ -23,9 +23,9 @@ ext {
 
 
 
-group = 'com.rtomyj'
-version = '1.1.2'
-sourceCompatibility = '1.8'
+
+group 'com.rtomyj'
+version '1.2.0'
 
 
 
@@ -44,9 +44,10 @@ sourceSets {
 
 
 dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springVersion
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: springVersion
+	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
 
 	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
@@ -59,7 +60,7 @@ dependencies {
 
 	runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	runtimeOnly group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
 
 	implementation "org.cache2k:cache2k-api:$cache2kVersion"
 	implementation "org.cache2k:cache2k-core:$cache2kVersion"
