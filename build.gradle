@@ -6,10 +6,12 @@ plugins {
 	id 'java' apply true
 }
 
+sourceSets.main.java.srcDirs = ["src/main/java"]
+
 
 
 ext {
-	baseName = 'Yugioh_API'
+	baseName = 'YGO-API'
 
 	springVersion = '2.2.5.RELEASE'
 	swagger2Version = '2.9.2'
@@ -21,8 +23,8 @@ ext {
 
 
 
-group 'com.rtomyj'
-version '1.2.0'
+group = 'com.rtomyj'
+version = '1.2.0'
 sourceCompatibility = '1.8'
 
 
@@ -42,25 +44,33 @@ sourceSets {
 
 
 dependencies {
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springVersion
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: springVersion
-	testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springVersion
+	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
+	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
 
-	implementation group: 'org.apache.maven.plugins', name: 'maven-javadoc-plugin', version: javadocVersion
+	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
+	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
+	implementation "org.eclipse.jetty.http2:http2-server"
 
-	implementation group: 'io.springfox', name: 'springfox-swagger2', version: swagger2Version
-	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: swagger2Version
+	implementation "org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion"
 
-	runtimeOnly group: 'mysql', name: 'mysql-connector-java', version: mysqlVersion
+	implementation "io.springfox:springfox-swagger2:$swagger2Version"
+	implementation "io.springfox:springfox-swagger-ui:$swagger2Version"
 
-	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+	runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 
-	implementation group: 'org.cache2k', name: 'cache2k-api', version: cache2kVersion
-	implementation group: 'org.cache2k', name: 'cache2k-core', version: cache2kVersion
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
-	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion	// needed to compile via gradle CLI
-	implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion	// plug in required to work in VSCode, might be the same for other IDE's
+	implementation "org.cache2k:cache2k-api:$cache2kVersion"
+	implementation "org.cache2k:cache2k-core:$cache2kVersion"
+
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
+	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
+
+
+	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+	testImplementation "com.h2database:h2"
+	testRuntimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 }
 
 
@@ -68,6 +78,8 @@ dependencies {
 configurations {
 	implementation {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+		exclude module: 'spring-boot-starter-tomcat'
+		exclude group: 'org.apache.tomcat'
 	}
 }
 
@@ -77,7 +89,7 @@ bootJar {
 	group 'Build'
 	description 'Creates a JAR file that can be executed to launch YGO service'
 
-	baseName 'Yugioh_API'
+	baseName project.baseName
 	manifest {
 			attributes 'Implementation-Title': baseName
 	}
@@ -85,21 +97,38 @@ bootJar {
 
 
 
-task bootJarName {
-	print project.baseName + '-' + version + '.jar'
+task bootJarPath {
+	doFirst {
+		println "${buildDir}/libs/${project.baseName}-${project.version}.jar"
+	}
 }
 
 
 
-task createJavadocs(type: Javadoc) {
-	group 'Documentation'
-	description 'Creates custom Javadocs for project'
-
-	source 'sourceSets.main.allJava'
+javadoc {
+	source = sourceSets.main.allJava
 }
 
 
 
 tasks.withType(Test) {
    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}
+
+
+
+test {
+	useJUnitPlatform()
+
+	minHeapSize = "256m"
+	maxHeapSize = "512m"
+}
+
+
+jacocoTestReport {
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: 'com/rtomyj/yugiohAPI/dao/**')
+		}))
+	}
 }
