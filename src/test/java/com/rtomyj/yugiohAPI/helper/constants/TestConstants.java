@@ -14,11 +14,15 @@ public class TestConstants
 	public static final String BAN_LIST_REMOVED_CONTENT = "src/test/resources/BanListRemovedContent.json";
 
 
-
 	public static final String STRATOS_ID = "40044918";
 	public static final String STRATOS_NAME = "Elemental HERO Stratos";
+	public static final String STRATOS_TYPE = "Warrior/Effect";
+	public static final String STRATOS_COLOR = "Effect";
+	public static final String STRATOS_ATTRIBUTE = "Wind";
 	public static final String STRATOS_FULL_EFFECT = "When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; You can destroy Spell/Trap Cards on the field, up to the number of 'HERO' monsters you control, except this card.\n&bull; Add 1 'HERO' monster from your Deck to your hand.";
 	public static final String STRATOS_TRIMMED_EFFECT = "When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; You can destroy Spell/Trap Cards on the field, up to the number of 'HE...";
+	public static final int STRATOS_ATK = 1800;
+	public static final int STRATOS_DEF = 300;
 
 	public static final String A_HERO_LIVES_ID = "08949584";
 	public static final String A_HERO_LIVES_NAME = "A Hero Lives";
