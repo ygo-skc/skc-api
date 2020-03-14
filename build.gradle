@@ -47,7 +47,6 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
-	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
 
 	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
@@ -67,6 +66,10 @@ dependencies {
 
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
 	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
+
+
+	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+	testImplementation "com.h2database:h2"
 }
 
 
@@ -119,7 +122,6 @@ test {
 	minHeapSize = "256m"
 	maxHeapSize = "512m"
 }
-//com.rtomyj.yugiohAPI.dao/**'])
 
 
 jacocoTestReport {
