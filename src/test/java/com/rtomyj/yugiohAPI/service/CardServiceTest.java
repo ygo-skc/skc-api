@@ -1,8 +1,9 @@
 package com.rtomyj.yugiohAPI.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,20 +14,19 @@ import java.util.Map;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
-import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CardServiceTest
 {
@@ -39,16 +39,13 @@ public class CardServiceTest
 	@Mock
 	private Map<String, Card> cardCache;
 
-	private Card successfulCardReceived;
-	private final String testCardId = "12345678";
-	private final String testCardName = "E-HERO Stratos";
+	private static Card successfulCardReceived;
+	private final static String testCardId = "12345678";
+	private final static String testCardName = "E-HERO Stratos";
 
-
-
-	@Before
-	public void before()
-	{
-		this.successfulCardReceived = Card
+	@BeforeAll
+	public static void before() {
+		successfulCardReceived = Card
 			.builder()
 			.cardID(testCardId)
 			.cardName(testCardName)
@@ -73,8 +70,8 @@ public class CardServiceTest
 		assertEquals(true, serviceLayerHelper.getIsContentReturned());
 		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
-		assertEquals(TestConstants.WRONG_CARD_ID_MESSAGE, testCardId, card.getCardID());
-		assertEquals(TestConstants.WRONG_CARD_NAME_MESSAGE, testCardName, card.getCardName());
+		assertEquals(testCardId, card.getCardID());
+		assertEquals(testCardName, card.getCardName());
 		assertFalse(serviceLayerHelper.getInCache());
 		assertTrue(serviceLayerHelper.getIsContentReturned());
 
@@ -99,9 +96,9 @@ public class CardServiceTest
 		assertEquals(true, serviceLayerHelper.getIsContentReturned());
 		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
-		assertEquals(TestConstants.WRONG_CARD_ID_MESSAGE, testCardId, card.getCardID());
-		assertEquals(TestConstants.WRONG_CARD_NAME_MESSAGE, testCardName, card.getCardName());
-		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
+		assertEquals(testCardId, card.getCardID());
+		assertEquals(testCardName, card.getCardName());
+		assertEquals(HttpStatus.OK.toString(), serviceLayerHelper.getStatus().toString());
 		assertTrue(serviceLayerHelper.getInCache());
 		assertTrue(serviceLayerHelper.getIsContentReturned());
 
@@ -112,7 +109,7 @@ public class CardServiceTest
 
 
 
-	@Test(expected = YgoException.class)
+	@Test
 	public void testFetchingCardFromDB_Failure() throws YgoException
 	{
 		when(dao.getCardInfo(eq(testCardId)))
@@ -121,9 +118,7 @@ public class CardServiceTest
 			.thenReturn(null);
 
 
-		final ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(testCardId);
-
-		assertEquals(null, serviceLayerHelper);
+		assertThrows(YgoException.class, () -> cardService.getCardInfo(testCardId));
 
 
 		verify(dao, times(1)).getCardInfo(eq(testCardId));

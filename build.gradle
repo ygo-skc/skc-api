@@ -68,9 +68,14 @@ dependencies {
 	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
 
 
+	/* Test level dependencies */
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
 	testImplementation "com.h2database:h2"
+
 	testRuntimeOnly "mysql:mysql-connector-java:$mysqlVersion"
+
+	testImplementation "org.junit.jupiter:junit-jupiter-api"
+	testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }
 
 
@@ -80,6 +85,7 @@ configurations {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 		exclude module: 'spring-boot-starter-tomcat'
 		exclude group: 'org.apache.tomcat'
+		exclude group: 'junit'
 	}
 }
 

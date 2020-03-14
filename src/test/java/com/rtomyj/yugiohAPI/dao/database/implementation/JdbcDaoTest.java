@@ -7,28 +7,30 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class JdbcDaoTest
 {
 	@Autowired
 	@Qualifier("jdbc")
 	private Dao dao;
 
-	private Card stratos;
+	private static Card stratos;
 
 
-	@Before
-	public void before()
+	@BeforeAll
+	public static void before()
 	{
 		stratos = Card
 			.builder()
