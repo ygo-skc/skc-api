@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
+import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
@@ -17,10 +18,12 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import lombok.NonNull;
+
 /**
  * JDBC implementation of DB DAO interface.
  */
-@Repository()
+@Repository
 @Qualifier("jdbc")
 public class JDBCDao implements Dao
 {
@@ -38,13 +41,11 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public Card getCardInfo(final String cardID) throws YgoException
+	public Card getCardInfo(@NonNull String cardID) throws YgoException
 	{
-		String query = new StringBuilder().append("SELECT card_name, cards.monster_type, card_colors.card_color, cards.card_effect, cards.card_attribute")
-			.append(", cards.monster_attack, cards.monster_defense FROM cards, card_colors WHERE cards.card_number = :cardId AND card_colors.color_id = cards.color_id")
-			.toString();
+		final String query = DbQueryConstants.GET_CARD_BY_ID;
 
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardId", cardID);
 
 
@@ -52,14 +53,17 @@ public class JDBCDao implements Dao
 		{
 			if (row.next())
 			{
-				return Card.builder().cardName(row.getString(1))
-					.monsterType(row.getString(2))
-					.cardColor(row.getString(3))
-					.cardEffect(row.getString(4))
+				return Card
+					.builder()
 					.cardID(cardID)
-					.cardAttribute(row.getString(5))
+					.cardColor(row.getString(1))
+					.cardName(row.getString(2))
+					.cardAttribute(row.getString(3))
+					.cardEffect(row.getString(4))
+					.monsterType(row.getString(5))
 					.monsterAttack(row.getInt(6))
-					.monsterDefense(row.getInt(7)).build();
+					.monsterDefense(row.getInt(7))
+					.build();
 			}
 
 			return null;
@@ -73,21 +77,17 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public List<Card> getBanListByBanStatus(String date, Status status)
+	public List<Card> getBanListByBanStatus(@NonNull final String date, @NonNull final Status status)
 	{
-		String query = new StringBuilder()
-			.append("SELECT card_name, monster_type, card_colors.card_color, card_effect, cards.card_number FROM card_colors, cards, ban_lists")
-			.append(" WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number")
-			.append(" AND ban_lists.ban_status = :status AND ban_list_date = :date ORDER BY card_colors.card_color, card_name")
-			.toString();
+		final String query = DbQueryConstants.GET_BAN_LIST_BY_STATUS;
 
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("date", date);
 		sqlParams.addValue("status", status.toString());
 
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			List<Card> cardList = new ArrayList<>();
+			final List<Card> cardList = new ArrayList<>();
 			while (row.next()) {
 				cardList.add(
 					Card.builder().cardName(row.getString(1))
