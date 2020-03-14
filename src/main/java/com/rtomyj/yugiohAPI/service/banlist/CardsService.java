@@ -79,12 +79,16 @@ public class CardsService
 		{
 			/* Retrieves ban lists from DB by status */
 
-			final BanListInstance banListInstance = BanListInstance.builder()
-				.forbidden(dao.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN))
-				.limited(dao.getBanListByBanStatus(banListStartDate, Status.LIMITED))
-				.semiLimited(dao.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED))
-				.startDate(banListStartDate)
-				.build();
+			BanListInstance banListInstance = BanListInstance.builder()
+					.forbidden(dao.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN))
+					.limited(dao.getBanListByBanStatus(banListStartDate, Status.LIMITED))
+					.semiLimited(dao.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED))
+					.startDate(banListStartDate).build();
+
+			banListInstance = banListInstance
+				.withNumForbidden(banListInstance.getForbidden().size())
+				.withNumLimited(banListInstance.getLimited().size())
+				.withNumSemiLimited(banListInstance.getSemiLimited().size());
 
 			if (saveBandwidth)	Card.trimEffects(banListInstance);
 
