@@ -11,8 +11,6 @@ sourceSets.main.java.srcDirs = ["src/main/java"]
 
 
 ext {
-	baseName = 'YGO-API'
-
 	springVersion = '2.2.5.RELEASE'
 	swagger2Version = '2.9.2'
 	javadocVersion = '3.1.1'
@@ -24,6 +22,7 @@ ext {
 
 
 group = 'com.rtomyj'
+archivesBaseName = 'YGO-API'
 version = '1.1.2'
 sourceCompatibility = '1.8'
 
@@ -93,9 +92,8 @@ bootJar {
 	group 'Build'
 	description 'Creates a JAR file that can be executed to launch YGO service'
 
-	baseName project.baseName
 	manifest {
-			attributes 'Implementation-Title': baseName
+			attributes 'Implementation-Title': archivesBaseName
 	}
 }
 
@@ -103,7 +101,7 @@ bootJar {
 
 task bootJarPath {
 	doFirst {
-		println "${buildDir}/libs/${project.baseName}-${project.version}.jar"
+		println "${buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"
 	}
 }
 
