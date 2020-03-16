@@ -1,0 +1,8 @@
+DROP VIEW IF EXISTS ban_list_info;
+DROP VIEW IF EXISTS card_info;
+
+DROP TABLE IF EXISTS pack_details;
+DROP TABLE IF EXISTS packs;
+DROP TABLE IF EXISTS ban_lists;
+DROP TABLE IF EXISTS cards;
+DROP TABLE IF EXISTS card_colors;

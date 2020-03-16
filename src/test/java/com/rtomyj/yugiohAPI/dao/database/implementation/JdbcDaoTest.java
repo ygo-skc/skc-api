@@ -20,7 +20,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@TestPropertySource("classpath:application-test.yml")
+@ActiveProfiles("test")	// Loading test props with H2 in memory DB configurations
+@SqlGroup({
+	@Sql("classpath:drop.sql")
+	, @Sql("classpath:schema.sql")
+	, @Sql("classpath:data.sql")
+	, @Sql("classpath:views.sql")
+})
 public class JdbcDaoTest
 {
 	@Autowired
