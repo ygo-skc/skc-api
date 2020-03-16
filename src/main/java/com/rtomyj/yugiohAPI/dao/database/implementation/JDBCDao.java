@@ -61,8 +61,8 @@ public class JDBCDao implements Dao
 					.cardAttribute(row.getString(3))
 					.cardEffect(row.getString(4))
 					.monsterType(row.getString(5))
-					.monsterAttack(row.getInt(6))
-					.monsterDefense(row.getInt(7))
+					.monsterAttack(row.getObject(6, Integer.class))
+					.monsterDefense(row.getObject(7, Integer.class))
 					.build();
 			}
 
@@ -88,13 +88,17 @@ public class JDBCDao implements Dao
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			final List<Card> cardList = new ArrayList<>();
-			while (row.next()) {
+			while (row.next())
+			{
 				cardList.add(
-					Card.builder().cardName(row.getString(1))
+					Card
+						.builder()
+						.cardName(row.getString(1))
 						.monsterType(row.getString(2))
 						.cardColor(row.getString(3))
 						.cardEffect(row.getString(4))
-						.cardID(row.getString(5)).build()
+						.cardID(row.getString(5))
+						.build()
 					);
 			}
 			return cardList;
@@ -107,7 +111,7 @@ public class JDBCDao implements Dao
 
 		String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
 		return jdbcNamedTemplate.query(query, (ResultSet row) ->  {
-			if (row.next())	return Integer.parseInt(row.getString(1));
+			if (row.next())	return row.getInt(1);
 
 			return null;
 		});
