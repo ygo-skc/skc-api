@@ -24,7 +24,7 @@ import lombok.Data;
 @Data
 @Builder
 @Entity
-@Table(name = "ban_lists", schema = "yugioh_API_DB")
+@Table(name = "ban_lists")
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 public class BanList implements Serializable {
 

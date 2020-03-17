@@ -1,5 +1,11 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
@@ -22,6 +28,14 @@ import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.model.Card;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.cache2k.integration.CacheLoaderException;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +46,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CardsServiceTest {
 	@InjectMocks
@@ -48,13 +62,13 @@ public class CardsServiceTest {
 
 
 
-	@Before
-	public void before() throws JsonParseException, JsonMappingException, IOException
+	@BeforeAll
+	public static void before() throws JsonParseException, JsonMappingException, IOException
 	{
 		final ObjectMapper mapper = new ObjectMapper();
-		this.banListInstanceFullText = mapper.readValue(
+		banListInstanceFullText = mapper.readValue(
 			new File(TestConstants.BAN_LIST_INSTANCE_JSON_FILE), BanListInstance.class);
-		this.banListInstanceTrimmedText = mapper.readValue(
+		banListInstanceTrimmedText = mapper.readValue(
 			new File(TestConstants.BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE), BanListInstance.class);
 	}
 
@@ -153,9 +167,8 @@ public class CardsServiceTest {
 
 
 
-	@Test(expected = CacheLoaderException.class)
-	public void testFetchingBanListInstance_FromDB_WithFullText_Failure()
-		throws YgoException
+	@Test
+	public void testFetchingBanListInstance_FromDB_WithFullText_Failure() throws YgoException
 	{
 		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN)))
 			.thenReturn(new ArrayList<>());
@@ -165,9 +178,7 @@ public class CardsServiceTest {
 			.thenReturn(new ArrayList<>());
 
 
-		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, false);
-
-		assertEquals(null, banListInstance);
+		assertThrows(YgoException.class, () -> cardsService.getBanListByBanStatus(banListStartDate, false));
 
 
 		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));

@@ -21,15 +21,15 @@ public interface Dao
 		/**
 		 * Card cannot be used in advanced format
 		 */
-		FORBIDDEN("forbidden"),
+		FORBIDDEN("Forbidden"),
 		/**
 		 * Only one instance of the card can be used.
 		 */
-		LIMITED("limited"),
+		LIMITED("Limited"),
 		/**
 		 * Only two instance of the card can be used.
 		 */
-		SEMI_LIMITED("semi-limited");
+		SEMI_LIMITED("Semi-Limited");
 
 		private final String status;
 
@@ -118,5 +118,7 @@ public interface Dao
 	 */
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
 
+	public boolean isValidBanList(final String banListDate);
+  
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 }

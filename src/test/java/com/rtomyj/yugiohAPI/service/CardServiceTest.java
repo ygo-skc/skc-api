@@ -1,5 +1,9 @@
 package com.rtomyj.yugiohAPI.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -8,6 +12,17 @@ import static org.mockito.Mockito.when;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
+import com.rtomyj.yugiohAPI.model.Card;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 
@@ -21,7 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CardServiceTest
 {
@@ -35,12 +50,9 @@ public class CardServiceTest
 	private final String testCardId = "12345678";
 	private final String testCardName = "E-HERO Stratos";
 
-
-
-	@Before
-	public void before()
-	{
-		this.successfulCardReceived = Card
+	@BeforeAll
+	public static void before() {
+		successfulCardReceived = Card
 			.builder()
 			.cardID(testCardId)
 			.cardName(testCardName)
@@ -68,17 +80,14 @@ public class CardServiceTest
 
 
 
-	@Test(expected = CacheLoaderException.class)
-	public void testFetchingCardFromDB_Failure()
-		throws YgoException
+	@Test
+	public void testFetchingCardFromDB_Failure() throws YgoException
 	{
 		when(dao.getCardInfo(eq(testCardId)))
 			.thenThrow(new YgoException());
 
 
-		final Card card = cardService.getCardInfo(testCardId);
-
-		assertEquals(null, card);
+		assertThrows(YgoException.class, () -> cardService.getCardInfo(testCardId));
 
 
 		verify(dao, times(1)).getCardInfo(eq(testCardId));

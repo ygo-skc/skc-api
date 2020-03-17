@@ -21,10 +21,13 @@ import lombok.With;
 @ApiModel(description = "Describes and contains information about a specific ban list.")
 @JsonTypeName("bannedCards")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
-@JsonPropertyOrder({ "date", "forbidden", "limited", "semiLimited" })
+@JsonPropertyOrder({ "startDate", "numForbidden", "numLimited", "numSemiLimited", "forbidden", "limited", "semiLimited" })
 public class BanListInstance
 {
 	private String startDate;
+	private int numForbidden;
+	private int numLimited;
+	private int numSemiLimited;
 	private List<Card> forbidden;
 	private List<Card> limited;
 	private List<Card> semiLimited;

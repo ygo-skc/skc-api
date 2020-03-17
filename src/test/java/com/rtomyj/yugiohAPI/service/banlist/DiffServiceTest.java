@@ -1,7 +1,8 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -25,6 +26,14 @@ import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.cache2k.integration.CacheLoaderException;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +44,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class DiffServiceTest {
 	@InjectMocks
@@ -47,18 +56,16 @@ public class DiffServiceTest {
 	private final static String BAN_LIST_START_DATE = "2018-12-03";
 	private final static String PREVIOUS_BAN_LIST_START_DATE = "2018-09-17";
 
-	private BanListNewContent banListNewContent;
-	private BanListRemovedContent banListRemovedContent;
+	private static BanListNewContent banListNewContent;
+	private static BanListRemovedContent banListRemovedContent;
 
-
-
-	@Before
-	public void before() throws JsonParseException, JsonMappingException, IOException
-	{
+	@BeforeAll
+	public static void before() throws JsonParseException, JsonMappingException, IOException {
 		final ObjectMapper mapper = new ObjectMapper();
 
-		this.banListNewContent = mapper.readValue(new File(TestConstants.BAN_LIST_NEW_CONTENT), BanListNewContent.class);
-		this.banListRemovedContent = mapper .readValue(new File(TestConstants.BAN_LIST_REMOVED_CONTENT), BanListRemovedContent.class);
+		banListNewContent = mapper.readValue(new File(TestConstants.BAN_LIST_NEW_CONTENT), BanListNewContent.class);
+		banListRemovedContent = mapper.readValue(new File(TestConstants.BAN_LIST_REMOVED_CONTENT),
+				BanListRemovedContent.class);
 	}
 
 
@@ -73,6 +80,8 @@ public class DiffServiceTest {
 			.thenReturn(this.banListNewContent.getNewCards().getLimited());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(this.banListNewContent.getNewCards().getSemiLimited());
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(true);
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
 			.thenReturn(PREVIOUS_BAN_LIST_START_DATE);
 
@@ -110,6 +119,8 @@ public class DiffServiceTest {
 		verify(this.dao, times(1))
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
 		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
+		verify(this.dao, times(1))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
 	}
 
@@ -127,15 +138,17 @@ public class DiffServiceTest {
 			.thenReturn(new ArrayList<>());
 
 
-		this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
+		assertThrows(YgoException.class, () -> this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE));
 
 
-		verify(this.dao, times(1))
+		verify(this.dao, times(0))
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN));
-		verify(this.dao, times(1))
+		verify(this.dao, times(0))
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.LIMITED));
-		verify(this.dao, times(1))
+		verify(this.dao, times(0))
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
+		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(0))
 			.getPreviousBanListDate(any(String.class));
 	}
@@ -181,20 +194,22 @@ public class DiffServiceTest {
 
 
 
-	@Test(expected = CacheLoaderException.class)
-	public void testFetchingBanListRemovedContent_FromDB_Failure()
-		throws YgoException
+	@Test
+	public void testFetchingBanListRemovedContent_FromDB_Failure() throws YgoException
+
 	{
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(false);
 		when(this.dao.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE)))
 			.thenReturn(new ArrayList<>());
 
 
-		final BanListRemovedContent banListRemovedContentInstance = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
-
-		banListRemovedContentInstance.getRemovedCards();
+		assertThrows(YgoException.class, () -> this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE));
 
 
 		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
+		verify(this.dao, times(0))
 			.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(0))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));

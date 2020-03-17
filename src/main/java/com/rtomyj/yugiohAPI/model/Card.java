@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
@@ -18,6 +19,7 @@ import lombok.With;
 @Data
 @Builder
 @With
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Describes attributes of a YGO card.")

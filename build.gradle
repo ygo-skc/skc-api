@@ -8,11 +8,8 @@ plugins {
 
 sourceSets.main.java.srcDirs = ["src/main/java"]
 
-
-
 ext {
 	baseName = 'YGO-API'
-
 	springVersion = '2.2.5.RELEASE'
 	swagger2Version = '2.9.2'
 	javadocVersion = '3.1.1'
@@ -24,6 +21,7 @@ ext {
 
 
 group = 'com.rtomyj'
+archivesBaseName = 'YGO-API'
 version = '1.2.0'
 sourceCompatibility = '1.8'
 
@@ -66,11 +64,14 @@ dependencies {
 
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
 	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
-
-
+  
+  
+  /* Test level dependencies */
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
-	testImplementation "com.h2database:h2"
-	testRuntimeOnly "mysql:mysql-connector-java:$mysqlVersion"
+	testRuntimeOnly "com.h2database:h2"
+
+	testImplementation "org.junit.jupiter:junit-jupiter-api"
+	testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }
 
 
@@ -80,6 +81,7 @@ configurations {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 		exclude module: 'spring-boot-starter-tomcat'
 		exclude group: 'org.apache.tomcat'
+		exclude group: 'junit'
 	}
 }
 
@@ -88,10 +90,9 @@ configurations {
 bootJar {
 	group 'Build'
 	description 'Creates a JAR file that can be executed to launch YGO service'
-
-	baseName project.baseName
+  
 	manifest {
-			attributes 'Implementation-Title': baseName
+			attributes 'Implementation-Title': archivesBaseName
 	}
 }
 
@@ -99,7 +100,7 @@ bootJar {
 
 task bootJarPath {
 	doFirst {
-		println "${buildDir}/libs/${project.baseName}-${project.version}.jar"
+		println "${buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"
 	}
 }
 
@@ -112,7 +113,7 @@ javadoc {
 
 
 tasks.withType(Test) {
-   maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+   maxParallelForks = Runtime.runtime.availableProcessors() / 3 ?: 1
 }
 
 
@@ -122,13 +123,4 @@ test {
 
 	minHeapSize = "256m"
 	maxHeapSize = "512m"
-}
-
-
-jacocoTestReport {
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: 'com/rtomyj/yugiohAPI/dao/**')
-		}))
-	}
 }
