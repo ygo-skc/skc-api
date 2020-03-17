@@ -1,139 +1,124 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
-import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 
 import org.cache2k.Cache;
+import org.cache2k.Cache2kBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class DiffService
 {
-	@Autowired
-	@Qualifier("jdbc")
-	private Dao dao;
+
+	private final Dao dao;
 
 	/**
 	 * Cache for requests/data produced by requests.
 	 */
-	@Autowired
-	@Qualifier("banListNewCardsCache")
-	private Cache<String, BanListNewContent> NEW_CARDS_CACHE;
+
+	private final Cache<String, BanListNewContent> NEW_CARDS_CACHE;
+
+	private final Cache<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
+
+
 
 	@Autowired
-	@Qualifier("banListRemovedCardsCache")
-	private Cache<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
-
-
-	public ServiceLayerHelper getNewContentOfBanList(final String banListStartDate) throws YgoException
+	public DiffService(@Qualifier("jdbc") final Dao dao)
 	{
-		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper.builder()
-			.inCache(false)
-			.isContentReturned(false)
-			.requestedResource(NEW_CARDS_CACHE.get(banListStartDate))
-			.status(HttpStatus.OK)
+		this.dao = dao;
+		this.NEW_CARDS_CACHE = new Cache2kBuilder<String, BanListNewContent>() {}
+			.expireAfterWrite(7, TimeUnit.DAYS)
+			.entryCapacity(1000)
+			.permitNullValues(false)
+			.loader(this::onNewContentCacheMiss)
 			.build();
+		this.REMOVED_CARDS_CACHE = new Cache2kBuilder<String, BanListRemovedContent>() {}
+			.expireAfterWrite(7, TimeUnit.DAYS)
+			.entryCapacity(1000)
+			.permitNullValues(false)
+			.loader(this::onRemovedContentCacheMiss)
+			.build();
+	}
 
 
-		// Resource isn't in cache and ban list date passed validation
-		if ( serviceLayerHelper.getRequestedResource() == null )
-		{
-			// retrieving new cards by ban list status
-			final NewCards newCards = NewCards.builder()
+
+	public BanListNewContent getNewContentOfBanList(final String banListStartDate)
+		throws YgoException
+	{
+
+		return NEW_CARDS_CACHE.get(banListStartDate);
+
+	}
+
+
+
+	private BanListNewContent onNewContentCacheMiss(final String banListStartDate)
+		throws YgoException
+	{
+
+		log.info("Ban list new content w/ start date: ( {} ) not found in cache. Using DB.", banListStartDate);
+		final NewCards newCards = NewCards.builder()
 				.forbidden(dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN))
 				.limited(dao.getNewContentOfBanList(banListStartDate, Status.LIMITED))
 				.semiLimited(dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED))
 				.build();
 
-			// There are changes for requested date - ie, requested date found in DB
-			if ( newCards.getForbidden().size() != 0 || newCards.getLimited().size() != 0 || newCards.getSemiLimited().size() != 0 )
-			{
-				// builds meta data object for new cards request
-				final BanListNewContent newCardsMeta = BanListNewContent.builder()
-					.listRequested(banListStartDate)
-					.comparedTo(this.getPreviousBanListDate(banListStartDate))
-					.newCards(newCards)
-					.build();
-
-				NEW_CARDS_CACHE.put(banListStartDate, newCardsMeta);
-
-				serviceLayerHelper.setRequestedResource(newCardsMeta);
-				serviceLayerHelper.setIsContentReturned(true);
-			}
-			// There are no changes for requested date - ie, requested date not found in DB.
-			else	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
-		}
-		// Resource in cache and ban list date passed validation
-		else
-		{
-			serviceLayerHelper.setInCache(true);
-			serviceLayerHelper.setIsContentReturned(true);
-		}
-
-		return serviceLayerHelper;
-	}
+		if ( newCards.getForbidden().isEmpty()|| newCards.getLimited().isEmpty() || newCards.getSemiLimited().isEmpty() )
+			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
 
 
-
-	public ServiceLayerHelper getRemovedContentOfBanList(final String banListStartDate) throws YgoException
-	{
-		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper.builder()
-			.inCache(false)
-			.isContentReturned(false)
-			.requestedResource(REMOVED_CARDS_CACHE.get(banListStartDate))
-			.status(HttpStatus.OK)
+		return BanListNewContent.builder()
+			.listRequested(banListStartDate)
+			.comparedTo(this.getPreviousBanListDate(banListStartDate))
+			.newCards(newCards)
 			.build();
 
-
-		if ( serviceLayerHelper.getRequestedResource() == null )
-		{
-			// retrieving removed cards by ban list status
-
-			List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
-
-			// There are changes for requested date - ie, requested date found in DB
-			if ( removedCards.size() != 0 )
-			{
-				// builds meta data object for removed cards request
-				final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
-					.listRequested(banListStartDate)
-					.comparedTo(this.getPreviousBanListDate(banListStartDate))
-					.removedCards(removedCards)
-					.build();
-
-
-				REMOVED_CARDS_CACHE.put(banListStartDate, removedCardsMeta);
-
-				serviceLayerHelper.setRequestedResource(removedCardsMeta);
-				serviceLayerHelper.setIsContentReturned(true);
-			}
-			// There are no changes for requested date - ie, requested date not found in DB.
-			else	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
-		}
-		// Resource in cache and ban list date passed validation
-		else
-		{
-			serviceLayerHelper.setInCache(true);
-			serviceLayerHelper.setIsContentReturned(true);
-		}
-
-
-		return serviceLayerHelper;
 	}
 
 
 
-	public String getPreviousBanListDate(String banList)	{ return dao.getPreviousBanListDate(banList); }
+	public BanListRemovedContent getRemovedContentOfBanList(final String banListStartDate) throws YgoException
+	{
+
+		return REMOVED_CARDS_CACHE.get(banListStartDate);
+
+	}
+
+
+
+	private BanListRemovedContent onRemovedContentCacheMiss(final String banListStartDate)
+		throws YgoException
+	{
+
+		log.info("Ban list removed content w/ start date: ( {} ) not found in cache. Using DB.", banListStartDate);
+		final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
+			.listRequested(banListStartDate)
+			.comparedTo(this.getPreviousBanListDate(banListStartDate))
+			.removedCards(dao.getRemovedContentOfBanList(banListStartDate))
+			.build();
+
+		if (removedCardsMeta.getRemovedCards().isEmpty())
+			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
+
+
+		return removedCardsMeta;
+
+	}
+
+
+
+	private String getPreviousBanListDate(final String banList)	{ return dao.getPreviousBanListDate(banList); }
 }
