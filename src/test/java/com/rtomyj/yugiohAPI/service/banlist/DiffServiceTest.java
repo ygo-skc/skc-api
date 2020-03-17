@@ -19,21 +19,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 
-import org.cache2k.Cache;
+import org.cache2k.integration.CacheLoaderException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -45,12 +43,6 @@ public class DiffServiceTest {
 
 	@Mock
 	private Dao dao;
-
-	@Mock
-	private Cache<String, BanListNewContent> NEW_CARDS_CACHE;
-
-	@Mock
-	private Cache<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
 
 	private final static String BAN_LIST_START_DATE = "2018-12-03";
 	private final static String PREVIOUS_BAN_LIST_START_DATE = "2018-09-17";
@@ -72,7 +64,8 @@ public class DiffServiceTest {
 
 
 	@Test
-	public void testFetchingBanListNewContent_FromDB_Successfully() throws YgoException
+	public void testFetchingBanListNewContent_FromDB_Success()
+		throws YgoException
 	{
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
 			.thenReturn(this.banListNewContent.getNewCards().getForbidden());
@@ -82,20 +75,13 @@ public class DiffServiceTest {
 			.thenReturn(this.banListNewContent.getNewCards().getSemiLimited());
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
 			.thenReturn(PREVIOUS_BAN_LIST_START_DATE);
-		when(this.NEW_CARDS_CACHE.get(eq(BAN_LIST_START_DATE)))
-			.thenReturn(null);
 
 
-		final ServiceLayerHelper serviceLayerHelper = this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
-		final BanListNewContent banListNewContentInstance = (BanListNewContent) serviceLayerHelper.getRequestedResource();
+		final BanListNewContent banListNewContentInstance = this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
 		final NewCards newCards = banListNewContentInstance.getNewCards();
 		final List<BanListComparisonResults> newForbiddenCards = newCards.getForbidden();
 		final List<BanListComparisonResults> newLimitedCards = newCards.getLimited();
 		final List<BanListComparisonResults> newSemiLimitedCards = newCards.getSemiLimited();
-
-		assertEquals(false, serviceLayerHelper.getInCache());
-		assertEquals(true, serviceLayerHelper.getIsContentReturned());
-		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
 		assertEquals(BAN_LIST_START_DATE, banListNewContentInstance.getListRequested());
 		assertEquals(PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.getComparedTo());
@@ -125,66 +111,13 @@ public class DiffServiceTest {
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
 		verify(this.dao, times(1))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
-		verify(this.NEW_CARDS_CACHE, times(1))
-			.get(eq(BAN_LIST_START_DATE));
 	}
 
 
 
-	@Test
-	public void testFetchingBanListNewContent_FromCache_Successfully() throws YgoException
-	{
-		when(this.NEW_CARDS_CACHE.get(eq(BAN_LIST_START_DATE)))
-			.thenReturn(this.banListNewContent);
-
-
-		final ServiceLayerHelper serviceLayerHelper = this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
-		final BanListNewContent banListNewContentInstance = (BanListNewContent) serviceLayerHelper.getRequestedResource();
-		final NewCards newCards = banListNewContentInstance.getNewCards();
-		final List<BanListComparisonResults> newForbiddenCards = newCards.getForbidden();
-		final List<BanListComparisonResults> newLimitedCards = newCards.getLimited();
-		final List<BanListComparisonResults> newSemiLimitedCards = newCards.getSemiLimited();
-
-		assertEquals(true, serviceLayerHelper.getInCache());
-		assertEquals(true, serviceLayerHelper.getIsContentReturned());
-		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
-
-		assertEquals(BAN_LIST_START_DATE, banListNewContentInstance.getListRequested());
-		assertEquals(PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.getComparedTo());
-
-		assertNotNull(newForbiddenCards);
-		assertNotNull(newLimitedCards);
-		assertNotNull(newSemiLimitedCards);
-		assertEquals(1, newForbiddenCards.size());
-		assertEquals(1, newLimitedCards.size());
-		assertEquals(1, newSemiLimitedCards.size());
-
-		assertEquals(TestConstants.STRATOS_ID, newForbiddenCards.get(0).getId());
-		assertEquals("Limited", newForbiddenCards.get(0).getPreviousState());
-
-		assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards.get(0).getId());
-		assertEquals("Unlimited", newLimitedCards.get(0).getPreviousState());
-
-		assertEquals(TestConstants.D_MALICIOUS_ID, newSemiLimitedCards.get(0).getId());
-		assertEquals("Forbidden", newSemiLimitedCards.get(0).getPreviousState());
-
-
-		verify(this.dao, times(0))
-			.getNewContentOfBanList(any(String.class), eq(Status.FORBIDDEN));
-		verify(this.dao, times(0))
-			.getNewContentOfBanList(any(String.class), eq(Status.LIMITED));
-		verify(this.dao, times(0))
-			.getNewContentOfBanList(any(String.class), eq(Status.SEMI_LIMITED));
-		verify(this.dao, times(0))
-			.getPreviousBanListDate(any(String.class));
-		verify(this.NEW_CARDS_CACHE, times(1))
-			.get(eq(BAN_LIST_START_DATE));
-	}
-
-
-
-	@Test(expected = YgoException.class)
-	public void testFetchingBanListNewContent_FromDB_Failure() throws YgoException
+	@Test(expected = CacheLoaderException.class)
+	public void testFetchingBanListNewContent_FromDB_Failure()
+		throws YgoException
 	{
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
 			.thenReturn(new ArrayList<>());
@@ -192,8 +125,6 @@ public class DiffServiceTest {
 			.thenReturn(new ArrayList<>());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(new ArrayList<>());
-		when(this.NEW_CARDS_CACHE.get(eq(BAN_LIST_START_DATE)))
-			.thenReturn(null);
 
 
 		this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
@@ -207,31 +138,23 @@ public class DiffServiceTest {
 			.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
 		verify(this.dao, times(0))
 			.getPreviousBanListDate(any(String.class));
-		verify(this.NEW_CARDS_CACHE, times(1))
-			.get(eq(BAN_LIST_START_DATE));
 	}
 
 
 
 	@Test
-	public void testFetchingBanListRemovedContent_FromDB_Successfully() throws YgoException
+	public void testFetchingBanListRemovedContent_FromDB_Success()
+		throws YgoException
 	{
 		when(this.dao.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE)))
 			.thenReturn(this.banListRemovedContent.getRemovedCards());
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
 			.thenReturn(PREVIOUS_BAN_LIST_START_DATE);
-		when(this.REMOVED_CARDS_CACHE.get(BAN_LIST_START_DATE))
-			.thenReturn(null);
 
 
-		final ServiceLayerHelper serviceLayerHelper = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
-		final BanListRemovedContent banListRemovedContentInstance = (BanListRemovedContent) serviceLayerHelper.getRequestedResource();
+		final BanListRemovedContent banListRemovedContentInstance = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
 
 		final List<BanListComparisonResults> removedCards = banListRemovedContentInstance.getRemovedCards();
-
-		assertEquals(false, serviceLayerHelper.getInCache());
-		assertEquals(true, serviceLayerHelper.getIsContentReturned());
-		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 
 		assertNotNull(removedCards);
 
@@ -254,66 +177,19 @@ public class DiffServiceTest {
 			.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(1))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
-		verify(this.REMOVED_CARDS_CACHE, times(1))
-			.get(eq(BAN_LIST_START_DATE));
 	}
 
 
 
-	@Test
-	public void testFetchingBanListRemovedContent_FromCache_Successfully() throws YgoException
-	{
-		when(this.REMOVED_CARDS_CACHE.get(BAN_LIST_START_DATE))
-			.thenReturn(this.banListRemovedContent);
-
-
-		final ServiceLayerHelper serviceLayerHelper = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
-		final BanListRemovedContent banListRemovedContentInstance = (BanListRemovedContent) serviceLayerHelper.getRequestedResource();
-
-		final List<BanListComparisonResults> removedCards = banListRemovedContentInstance.getRemovedCards();
-
-		assertEquals(true, serviceLayerHelper.getInCache());
-		assertEquals(true, serviceLayerHelper.getIsContentReturned());
-		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
-
-		assertNotNull(removedCards);
-
-		assertEquals(BAN_LIST_START_DATE, banListRemovedContentInstance.getListRequested());
-		assertEquals(PREVIOUS_BAN_LIST_START_DATE, banListRemovedContentInstance.getComparedTo());
-
-		assertEquals(3, removedCards.size());
-
-		assertEquals(TestConstants.STRATOS_ID, removedCards.get(0).getId());
-		assertEquals("Forbidden", removedCards.get(0).getPreviousState());
-
-		assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards.get(1).getId());
-		assertEquals("Limited", removedCards.get(1).getPreviousState());
-
-		assertEquals(TestConstants.D_MALICIOUS_ID, removedCards.get(2).getId());
-		assertEquals("Semi-Limited", removedCards.get(2).getPreviousState());
-
-
-		verify(this.dao, times(0))
-			.getRemovedContentOfBanList(any(String.class));
-		verify(this.dao, times(0))
-			.getPreviousBanListDate(any(String.class));
-		verify(this.REMOVED_CARDS_CACHE, times(1))
-			.get(eq(BAN_LIST_START_DATE));
-	}
-
-
-
-	@Test(expected = YgoException.class)
-	public void testFetchingBanListRemovedContent_FromDB_Successfully44() throws YgoException
+	@Test(expected = CacheLoaderException.class)
+	public void testFetchingBanListRemovedContent_FromDB_Failure()
+		throws YgoException
 	{
 		when(this.dao.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE)))
 			.thenReturn(new ArrayList<>());
-		when(this.REMOVED_CARDS_CACHE.get(BAN_LIST_START_DATE))
-			.thenReturn(null);
 
 
-		final ServiceLayerHelper serviceLayerHelper = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
-		final BanListRemovedContent banListRemovedContentInstance = (BanListRemovedContent) serviceLayerHelper.getRequestedResource();
+		final BanListRemovedContent banListRemovedContentInstance = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
 
 		banListRemovedContentInstance.getRemovedCards();
 
@@ -322,7 +198,5 @@ public class DiffServiceTest {
 			.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(0))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
-		verify(this.REMOVED_CARDS_CACHE, times(1))
-			.get(eq(BAN_LIST_START_DATE));
 	}
 }

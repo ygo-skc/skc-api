@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
-import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 
@@ -20,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
@@ -67,10 +64,8 @@ public class BanServiceTest
 		when(dao.getBanListStartDates())
 			.thenReturn(banListStartDates);
 
-		final ServiceLayerHelper serviceLayerHelper = banService.getBanListStartDates();
-		final BanListStartDates banListStartDates = (BanListStartDates) serviceLayerHelper.getRequestedResource();
+		final BanListStartDates banListStartDates = banService.getBanListStartDates();
 
-		assertEquals(TestConstants.WRONG_HTTP_CODE_MESSAGE, HttpStatus.OK, serviceLayerHelper.getStatus());
 		assertEquals(1, banListStartDates.getBanListStartDates().size());
 	}
 }
