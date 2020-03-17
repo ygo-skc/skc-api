@@ -1,6 +1,5 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
@@ -72,22 +71,22 @@ public class DiffService
 	{
 
 		log.info("Ban list new content w/ start date: ( {} ) not found in cache. Using DB.", banListStartDate);
+
+		if ( !dao.isValidBanList(banListStartDate) )
+			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
+
+
 		final NewCards newCards = NewCards.builder()
 				.forbidden(dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN))
 				.limited(dao.getNewContentOfBanList(banListStartDate, Status.LIMITED))
 				.semiLimited(dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED))
 				.build();
 
-		if ( newCards.getForbidden().isEmpty()|| newCards.getLimited().isEmpty() || newCards.getSemiLimited().isEmpty() )
-			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
-
-
 		return BanListNewContent.builder()
 			.listRequested(banListStartDate)
 			.comparedTo(this.getPreviousBanListDate(banListStartDate))
 			.newCards(newCards)
 			.build();
-
 	}
 
 
@@ -106,14 +105,16 @@ public class DiffService
 	{
 
 		log.info("Ban list removed content w/ start date: ( {} ) not found in cache. Using DB.", banListStartDate);
+
+		if ( !dao.isValidBanList(banListStartDate) )
+			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
+
+
 		final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
 			.listRequested(banListStartDate)
 			.comparedTo(this.getPreviousBanListDate(banListStartDate))
 			.removedCards(dao.getRemovedContentOfBanList(banListStartDate))
 			.build();
-
-		if (removedCardsMeta.getRemovedCards().isEmpty())
-			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
 
 
 		return removedCardsMeta;

@@ -26,22 +26,14 @@ import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
 
+import org.cache2k.integration.CacheLoaderException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.cache2k.integration.CacheLoaderException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 
 @ExtendWith(SpringExtension.class)
@@ -126,7 +118,7 @@ public class DiffServiceTest {
 
 
 
-	@Test(expected = CacheLoaderException.class)
+	@Test
 	public void testFetchingBanListNewContent_FromDB_Failure()
 		throws YgoException
 	{
@@ -138,7 +130,7 @@ public class DiffServiceTest {
 			.thenReturn(new ArrayList<>());
 
 
-		assertThrows(YgoException.class, () -> this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE));
+		assertThrows(CacheLoaderException.class, () -> this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE));
 
 
 		verify(this.dao, times(0))
@@ -160,9 +152,11 @@ public class DiffServiceTest {
 		throws YgoException
 	{
 		when(this.dao.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE)))
-			.thenReturn(this.banListRemovedContent.getRemovedCards());
+			.thenReturn(banListRemovedContent.getRemovedCards());
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
 			.thenReturn(PREVIOUS_BAN_LIST_START_DATE);
+		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
+			.thenReturn(true);
 
 
 		final BanListRemovedContent banListRemovedContentInstance = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
@@ -190,6 +184,8 @@ public class DiffServiceTest {
 			.getRemovedContentOfBanList(eq(BAN_LIST_START_DATE));
 		verify(this.dao, times(1))
 			.getPreviousBanListDate(eq(BAN_LIST_START_DATE));
+		verify(this.dao, times(1))
+			.isValidBanList(eq(BAN_LIST_START_DATE));
 	}
 
 
@@ -204,7 +200,7 @@ public class DiffServiceTest {
 			.thenReturn(new ArrayList<>());
 
 
-		assertThrows(YgoException.class, () -> this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE));
+		assertThrows(CacheLoaderException.class, () -> this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE));
 
 
 		verify(this.dao, times(1))

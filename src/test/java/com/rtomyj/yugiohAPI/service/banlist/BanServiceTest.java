@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 
@@ -19,9 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 
 @ExtendWith(SpringExtension.class)
@@ -69,8 +66,6 @@ public class BanServiceTest
 
 		final BanListStartDates banListStartDates = banService.getBanListStartDates();
 
-    
-		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 		assertEquals(1, banListStartDates.getBanListStartDates().size());
 	}
 }
