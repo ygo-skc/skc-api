@@ -4,12 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -40,20 +39,27 @@ public class CardController
 	/**
 	 * Service object used to interface with DB DAO.
 	 */
-	@Autowired
-	private CardService cardService;
+	private final CardService cardService;
 
 	/**
 	 * Object with information about http request.
 	 */
-	@Autowired
-	private HttpServletRequest httpRequest;
+	private final HttpServletRequest httpRequest;
 
 	/**
 	 * Base url for this endpoint.
 	 */
 	@Value("${ygo.endpoints.v1.card}")
 	private String endPoint;
+
+
+
+	@Autowired
+	public CardController(final CardService cardService, final HttpServletRequest httpRequest)
+	{
+		this.cardService = cardService;
+		this.httpRequest = httpRequest;
+	}
 
 
 
@@ -81,10 +87,13 @@ public class CardController
 		@PathVariable("cardId") @Pattern(regexp = RegexConstants.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId)
 		throws YgoException
 	{
-		ServiceLayerHelper serviceLayerHelper = cardService.getCardInfo(cardId);
+		MDC.put("reqIp", httpRequest.getRemoteHost());
+		MDC.put("reqRes", endPoint);
 
-		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), cardId, endPoint, serviceLayerHelper.getStatus()
-			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
-		return new ResponseEntity<>( (Card) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
+		final Card foundCard = cardService.getCardInfo(cardId);
+		log.info("Successfully retrieved resource: ( {} ).", cardId);
+
+		MDC.clear();
+		return ResponseEntity.ok(foundCard);
 	}
 }

@@ -4,11 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +39,12 @@ public class CardsController {
 	/**
 	 * Service object used to get information about banned cards from the database.
 	 */
-	@Autowired
-	private CardsService bannedCardsService;
+	private final CardsService bannedCardsService;
+
+	/**
+	 * Updated on every request with info about request.
+	 */
+	private final HttpServletRequest request;
 
 	/**
 	 * The base endpoint for this controller.
@@ -49,11 +52,14 @@ public class CardsController {
 	@Value("${ygo.endpoints.v1.banned-cards}")
 	private String endPoint;
 
-	/**
-	 * Updated on every request with info about request.
-	 */
+
+
 	@Autowired
-	private HttpServletRequest request;
+	public CardsController(final CardsService bannedCardsService, final HttpServletRequest request)
+	{
+		this.bannedCardsService = bannedCardsService;
+		this.request = request;
+	}
 
 
 
@@ -82,10 +88,13 @@ public class CardsController {
 		, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth)
 		throws YgoException
 	{
-		ServiceLayerHelper serviceLayerHelper = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth);
+		MDC.put("reqIp", request.getRemoteHost());
+		MDC.put("reqRes", endPoint);
 
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, serviceLayerHelper.getStatus()
-			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
-		return new ResponseEntity<>( (BanListInstance)serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
+		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth);
+		log.info("Successfully retrieved banlist: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
+
+		MDC.clear();
+		return ResponseEntity.ok(reqBanListInstance);
 	}
 }
