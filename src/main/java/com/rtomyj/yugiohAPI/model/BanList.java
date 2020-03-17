@@ -10,6 +10,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,6 +25,7 @@ import lombok.Data;
 @Builder
 @Entity
 @Table(name = "ban_lists")
+@JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 public class BanList implements Serializable {
 
 	private static final long serialVersionUID = 3890245600312215281L;
@@ -31,6 +36,7 @@ public class BanList implements Serializable {
 	@Id
 	@Temporal(TemporalType.DATE)
 	@Column(name = "ban_list_date")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date banListDate;
 
 	/**

@@ -2,11 +2,10 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -63,9 +62,12 @@ public class DatesController
 	})
 	public ResponseEntity<BanListStartDates> startDatesOfBanLists()
 	{
-		final ServiceLayerHelper serviceLayerHelper = banListService.getBanListStartDates();
+		MDC.put("reqIp", request.getRemoteHost());
+		MDC.put("reqRes", endPoint);
 
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), "Retrieve all ban lists from DB.", endPoint, serviceLayerHelper.getStatus()));
-		return new ResponseEntity<>( (BanListStartDates) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
+		final BanListStartDates banListStartDates = banListService.getBanListStartDates();
+
+		MDC.clear();
+		return ResponseEntity.ok(banListStartDates);
 	}
 }

@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 
 @ExtendWith(SpringExtension.class)
@@ -66,9 +67,9 @@ public class BanServiceTest
 		when(dao.getBanListStartDates())
 			.thenReturn(banListStartDates);
 
-		final ServiceLayerHelper serviceLayerHelper = banService.getBanListStartDates();
-		final BanListStartDates banListStartDates = (BanListStartDates) serviceLayerHelper.getRequestedResource();
+		final BanListStartDates banListStartDates = banService.getBanListStartDates();
 
+    
 		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
 		assertEquals(1, banListStartDates.getBanListStartDates().size());
 	}
