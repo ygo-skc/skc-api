@@ -92,7 +92,7 @@ public class CardsController {
 		MDC.put("reqRes", endPoint);
 
 		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth);
-		log.info("Successfully retrieved banlist: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
+		log.info("Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
 
 		MDC.clear();
 		return ResponseEntity.ok(reqBanListInstance);

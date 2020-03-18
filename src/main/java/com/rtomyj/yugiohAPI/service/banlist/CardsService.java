@@ -94,8 +94,12 @@ public class CardsService
 			.startDate(banListStartDate)
 			.build();
 
-		if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
-				&& banListInstance.getSemiLimited().size() == 0)
+		banListInstance.setNumForbidden(banListInstance.getForbidden().size());
+		banListInstance.setNumLimited(banListInstance.getLimited().size());
+		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
+
+		if (banListInstance.getNumForbidden() == 0 && banListInstance.getNumLimited() == 0
+				&& banListInstance.getNumSemiLimited() == 0)
 		{
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
 		}
