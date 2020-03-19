@@ -120,6 +120,10 @@ public class CardsService
 			.startDate(banListStartDate)
 			.build();
 
+		banListInstance.setNumForbidden(banListInstance.getForbidden().size());
+		banListInstance.setNumLimited(banListInstance.getLimited().size());
+		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
+
 		if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
 				&& banListInstance.getSemiLimited().size() == 0)
 		{
