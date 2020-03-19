@@ -15,10 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Information about a ban list (listRequested) obtained by comparing to a previous ban list (comparedTo). The information retrieved will be the removedCards.")
-@JsonPropertyOrder({ "listRequested", "comparedTo", "removedCards" })
+@JsonPropertyOrder({ "listRequested", "comparedTo", "numRemoved", "removedCards" })
 public class BanListRemovedContent
 {
 	private String listRequested;
 	private String comparedTo;
+	private int numRemoved;
 	private List<BanListComparisonResults> removedCards;
 }

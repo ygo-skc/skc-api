@@ -1,5 +1,6 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
+import java.util.List;
 import java.util.Map;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
@@ -7,6 +8,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.NewCards;
@@ -53,14 +55,21 @@ public class DiffService
 			if ( dao.isValidBanList(banListStartDate) )
 			{
 				// builds meta data object for new cards request
+				final List<BanListComparisonResults> forbidden = dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN);
+				final List<BanListComparisonResults> limited = dao.getNewContentOfBanList(banListStartDate, Status.LIMITED);
+				final List<BanListComparisonResults> semiLimited = dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED);
+
 				final BanListNewContent newCardsMeta = BanListNewContent.builder()
 					.listRequested(banListStartDate)
 					.comparedTo(this.getPreviousBanListDate(banListStartDate))
 					.newCards(NewCards
 						.builder()
-						.forbidden(dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN))
-						.limited(dao.getNewContentOfBanList(banListStartDate, Status.LIMITED))
-						.semiLimited(dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED))
+						.forbidden(forbidden)
+						.limited(limited)
+						.semiLimited(semiLimited)
+						.numForbidden(forbidden.size())
+						.numLimited(limited.size())
+						.numSemiLimited(semiLimited.size())
 						.build())
 					.build();
 
@@ -100,11 +109,13 @@ public class DiffService
 			// There are changes for requested date - ie, requested date found in DB
 			if ( dao.isValidBanList(banListStartDate) )
 			{
+				final List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
 				// builds meta data object for removed cards request
 				final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
 					.listRequested(banListStartDate)
 					.comparedTo(this.getPreviousBanListDate(banListStartDate))
-					.removedCards(dao.getRemovedContentOfBanList(banListStartDate))
+					.removedCards(removedCards)
+					.numRemoved(removedCards.size())
 					.build();
 
 

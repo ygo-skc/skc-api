@@ -15,9 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "All new cards separated by status.")
-@JsonPropertyOrder({ "forbidden", "limited", "semiLimited" })
+@JsonPropertyOrder({ "numForbidden", "numLimited", "numSemiLimited", "forbidden", "limited", "semiLimited" })
 public class NewCards
 {
+	private int numForbidden;
+	private int numLimited;
+	private int numSemiLimited;
+
 	private List<BanListComparisonResults> forbidden;
 	private List<BanListComparisonResults> limited;
 	private List<BanListComparisonResults> semiLimited;
