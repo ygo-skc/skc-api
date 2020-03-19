@@ -1,7 +1,6 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
@@ -64,7 +63,7 @@ public class DiffService
 	{
 
 		return NEW_CARDS_CACHE.get(banListStartDate);
-  
+
 	}
 
 
@@ -79,26 +78,26 @@ public class DiffService
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
 
 
-    // builds meta data object for new cards request
-    final List<BanListComparisonResults> forbidden = dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN);
-    final List<BanListComparisonResults> limited = dao.getNewContentOfBanList(banListStartDate, Status.LIMITED);
-    final List<BanListComparisonResults> semiLimited = dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED);
+		// builds meta data object for new cards request
+		final List<BanListComparisonResults> forbidden = dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN);
+		final List<BanListComparisonResults> limited = dao.getNewContentOfBanList(banListStartDate, Status.LIMITED);
+		final List<BanListComparisonResults> semiLimited = dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED);
 
-    final BanListNewContent newCardsMeta = BanListNewContent.builder()
-      .listRequested(banListStartDate)
-      .comparedTo(this.getPreviousBanListDate(banListStartDate))
-      .newCards(NewCards
-        .builder()
-        .forbidden(forbidden)
-        .limited(limited)
-        .semiLimited(semiLimited)
-        .numForbidden(forbidden.size())
-        .numLimited(limited.size())
-        .numSemiLimited(semiLimited.size())
-        .build())
-      .build();
-    
-    return newCardsMeta;
+		final BanListNewContent newCardsMeta = BanListNewContent.builder()
+			.listRequested(banListStartDate)
+			.comparedTo(this.getPreviousBanListDate(banListStartDate))
+			.newCards(NewCards
+				.builder()
+				.forbidden(forbidden)
+				.limited(limited)
+				.semiLimited(semiLimited)
+				.numForbidden(forbidden.size())
+				.numLimited(limited.size())
+				.numSemiLimited(semiLimited.size())
+				.build())
+			.build();
+
+		return newCardsMeta;
 	}
 
 
@@ -124,14 +123,14 @@ public class DiffService
 
 
 
-    final List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
+		final List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
     // builds meta data object for removed cards request
-    final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
-      .listRequested(banListStartDate)
-      .comparedTo(this.getPreviousBanListDate(banListStartDate))
-      .removedCards(removedCards)
-      .numRemoved(removedCards.size())
-      .build();
+		final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
+			.listRequested(banListStartDate)
+			.comparedTo(this.getPreviousBanListDate(banListStartDate))
+			.removedCards(removedCards)
+			.numRemoved(removedCards.size())
+			.build();
 
 
 		return removedCardsMeta;
