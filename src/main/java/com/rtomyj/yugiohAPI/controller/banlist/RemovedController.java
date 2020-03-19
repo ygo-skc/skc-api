@@ -4,12 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
+import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -62,10 +61,13 @@ public class RemovedController {
 		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
 		throws YgoException
 	{
-		ServiceLayerHelper serviceLayerHelper = banListDiffService.getRemovedContentOfBanList(banListStartDate);
+		MDC.put("reqIp", request.getRemoteHost());
+		MDC.put("reqRes", endPoint);
 
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, serviceLayerHelper.getStatus()
-			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
-		return new ResponseEntity<>( (BanListRemovedContent) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
+		final BanListRemovedContent banListRemovedContent = banListDiffService.getRemovedContentOfBanList(banListStartDate);
+		log.info("Successfully retrieved removed content for banlist: ( {} ).", banListStartDate);
+
+		MDC.clear();
+		return ResponseEntity.ok(banListRemovedContent);
 	}
 }

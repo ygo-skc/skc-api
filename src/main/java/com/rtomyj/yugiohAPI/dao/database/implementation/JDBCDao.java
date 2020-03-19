@@ -1,13 +1,19 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -19,12 +25,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * JDBC implementation of DB DAO interface.
  */
 @Repository
 @Qualifier("jdbc")
+@Slf4j
 public class JDBCDao implements Dao
 {
 	@Autowired
@@ -174,7 +182,8 @@ public class JDBCDao implements Dao
 			.append(" from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)")
 			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList")
 			.append(" and ban_status = :status) as old_list on new_list.card_number = old_list.card_number")
-			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number;")
+			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number")
+			.append(" ORDER BY cards.card_name")
 			.toString();
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
@@ -218,7 +227,8 @@ public class JDBCDao implements Dao
 			.append(" from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists")
 			.append(" where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status")
 			.append(" from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number")
-			.append(" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number;")
+			.append(" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number")
+			.append(" ORDER BY cards.card_name")
 			.toString();
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
@@ -263,12 +273,80 @@ public class JDBCDao implements Dao
 
 
 
-	public String getCardInfoByCardNameSearch(String cardName)
+	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType)
 	{
-		String query = "SELECT DISTINCT * FROM cards WHERE card_name LIKE '%:cardName%'";
+		cardId = new StringBuilder().append('%').append(cardId).append('%').toString();
+		cardName = new StringBuilder().append('%').append(cardName).append('%').toString();
+
+		cardAttribute = (cardAttribute.isEmpty())? ".*" : cardAttribute;
+		cardColor = (cardColor.isEmpty())? ".*" : cardColor;
+		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
+
+		final String query = new StringBuilder()
+			.append("SELECT DISTINCT cards.card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, cards.color_id")
+			.append(" FROM cards, card_colors, ban_lists")
+			.append(" WHERE cards.color_id = card_colors.color_id AND cards.card_number = ban_lists.card_number AND cards.card_number LIKE :cardId AND card_name LIKE :cardName")
+			.append(" AND card_attribute REGEXP :cardAttribute AND card_color REGEXP :cardColor AND monster_type REGEXP :monsterType ORDER BY color_id, card_name, ban_list_date DESC")
+			.toString();
+
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		return null;
+		sqlParams.addValue("cardId", cardId);
+		sqlParams.addValue("cardName", cardName);
+		sqlParams.addValue("cardAttribute", cardAttribute);
+		sqlParams.addValue("cardColor", cardColor);
+		sqlParams.addValue("monsterType", monsterType);
+		System.out.println(sqlParams);
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			/*
+				Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
+				ie:	ID		Name		BanList
+						1234	Stratos	2019-07-15
+						1234	Stratos	2019-04-29
+				To prevent this, the map will use the cardId (unique) to map to a Card object containing info already gathered from previous rows.
+				An array within the Card object will then be used to keep track of all the ban lists the card was a part of. The array will be updated
+				 every time a new row has new ban list info of a card already in the map.
+			*/
+			final Map<String, Card> cardInfoTracker = new HashMap<>();
+			final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+			while (row.next())
+			{
+				Card card = cardInfoTracker.get(row.getString(1));
+
+				if (card == null)
+				{
+					card = Card.builder()
+						.cardID(row.getString(1))
+						.cardColor(row.getString(2))
+						.cardName(row.getString(3))
+						.cardAttribute(row.getString(4))
+						.cardEffect(row.getString(5))
+						.monsterType(row.getString(6))
+						.monsterAttack(row.getInt(7))
+						.monsterDefense(row.getInt(8))
+						.restrictedIn(new ArrayList<>())
+						.build();
+						cardInfoTracker.put(card.getCardID(), card);
+				}
+
+				try
+				{
+					card.getRestrictedIn()
+						.add(BanList
+							.builder()
+							.banListDate(dateFormat.parse(row.getString(9)))
+							.banStatus(row.getString(10))
+							.build());
+				} catch (ParseException e)
+				{
+					log.error("Error occurred while parsing date for ban list, date: {}", row.getString(9));
+				}
+			}
+
+			return cardInfoTracker.values();
+		}).stream().collect(Collectors.toList());
 	}
 
 

@@ -2,8 +2,7 @@ package com.rtomyj.yugiohAPI.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -54,7 +53,12 @@ public class TestCallController
 	})
 	public ResponseEntity<String> testCall()
 	{
-		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "status", endPoint, HttpStatus.OK));
+		MDC.put("reqIp", httpRequest.getRemoteHost());
+		MDC.put("reqRes", endPoint);
+
+		log.info("User requested API status");
+
+		MDC.clear();
 		return new ResponseEntity<>("API is online.", HttpStatus.OK);
 	}
 }
