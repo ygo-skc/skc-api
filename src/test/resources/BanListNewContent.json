@@ -1,0 +1,27 @@
+{
+	"listRequested": "2018-12-03",
+	"comparedTo": "2018-09-17",
+	"newCards": {
+		"forbidden": [
+			{
+				"id": "40044918",
+				"name": "Elemental HERO Stratos",
+				"previousState": "Limited"
+			}
+		],
+		"limited": [
+			{
+				"id": "08949584",
+				"name": "A Hero Lives",
+				"previousState": "Unlimited"
+			}
+		],
+		"semiLimited": [
+			{
+				"id": "09411399",
+				"name": "Destiny HERO - Malicious",
+				"previousState": "Forbidden"
+			}
+		]
+	}
+}

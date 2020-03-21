@@ -1,15 +1,17 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.hibernate.Session;
@@ -29,7 +31,7 @@ public class HibernateDao implements Dao
 
 
 	@Override
-	public List<BanList> getBanListStartDates() {
+	public BanListStartDates getBanListStartDates() {
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
@@ -37,14 +39,18 @@ public class HibernateDao implements Dao
 		Root<BanList> root = criteriaQuery.from(BanList.class);
 		criteriaQuery.select(root.get("banListDate")).distinct(true);
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
-		List<BanList> results = session.createQuery(criteriaQuery).getResultList();
+
+		final BanListStartDates banListStartDates = BanListStartDates
+			.builder()
+			.banListStartDates(session.createQuery(criteriaQuery).getResultList())
+			.build();
 
 		session.close();
-		return results;
+		return banListStartDates;
 	}
 
 	@Override
-	public Card getCardInfo(String cardID)
+	public Card getCardInfo(String cardID) throws YgoException
 	{
 		return null;
 	}
@@ -70,11 +76,11 @@ public class HibernateDao implements Dao
 		return "";
 	}
 
-	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status){
+	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status){
 		return null;
 	}
 
-	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
+	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
 	{
 		return null;
 	}
@@ -82,5 +88,15 @@ public class HibernateDao implements Dao
 	@Override
 	public String getCardBanListStatusByDate(String cardId, String banListDate) {
 		return null;
+	}
+
+	@Override
+	public String getCardInfoByCardNameSearch(String cardName)
+	{
+		return null;
+	}
+	public boolean isValidBanList(final String banListDate)
+	{
+		return false;
 	}
 }

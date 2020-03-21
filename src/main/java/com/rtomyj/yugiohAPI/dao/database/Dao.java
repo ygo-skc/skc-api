@@ -1,10 +1,11 @@
 package com.rtomyj.yugiohAPI.dao.database;
 
-import com.rtomyj.yugiohAPI.model.BanList;
-import com.rtomyj.yugiohAPI.model.Card;
-
 import java.util.List;
-import java.util.Map;
+
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.Card;
 
 /**
  * Contract for database operations.
@@ -20,15 +21,15 @@ public interface Dao
 		/**
 		 * Card cannot be used in advanced format
 		 */
-		FORBIDDEN("forbidden"),
+		FORBIDDEN("Forbidden"),
 		/**
 		 * Only one instance of the card can be used.
 		 */
-		LIMITED("limited"),
+		LIMITED("Limited"),
 		/**
 		 * Only two instance of the card can be used.
 		 */
-		SEMI_LIMITED("semi-limited");
+		SEMI_LIMITED("Semi-Limited");
 
 		private final String status;
 
@@ -51,14 +52,14 @@ public interface Dao
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-	public List<BanList> getBanListStartDates();
+	public BanListStartDates getBanListStartDates();
 
 	/**
 	 * Retrieve the information about a Card given the ID.
 	 * @param cardID The ID of a Yugioh card.
 	 * @return The Card requested.
 	 */
-	public Card getCardInfo(String cardID);
+	public Card getCardInfo(String cardID) throws YgoException;
 
 	/**
 	 * Checks the databases and returns a list of cards in a specified ban list (date) that has the specified status (forbidden, limited, semi-limited)
@@ -100,14 +101,14 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<Map<String, String>> getNewContentOfBanList(String banListDate, String status);
+	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status);
 
 	/**
 	 *
 	 * @param newBanList
 	 * @return
 	 */
-	public List<Map<String, String>>  getRemovedContentOfBanList(String newBanList);
+	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList);
 
 	/**
 	 *
@@ -116,4 +117,8 @@ public interface Dao
 	 * @return
 	 */
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
+
+	public String getCardInfoByCardNameSearch(String cardName);
+
+	public boolean isValidBanList(final String banListDate);
 }

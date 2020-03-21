@@ -1,21 +1,14 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +19,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
 @RestController
-@RequestMapping(path = "${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=utf-8")
+@RequestMapping(path="${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
-@Api(description = "Request information about current and past ban lists", tags = "Ban List")
+@Slf4j
+@Api(description = "Request information about current and past ban lists"
+	, tags = "Ban List")
 public class DatesController
 {
 	/**
@@ -51,19 +47,7 @@ public class DatesController
 	 * Object containing info about the request.
 	 */
 	@Autowired
-	private HttpServletRequest httpRequest;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
-
-	/**
-	 * Cache for storing previous queries
-	 */
-	@Autowired
-	@Qualifier("banListStartDatesCache")
-	private Map<String, List<BanList>> BAN_LISTS_START_DATES_CACHE;
+	private HttpServletRequest request;
 
 
 	/**
@@ -71,27 +55,17 @@ public class DatesController
 	 * @return Map that contains a list of all dates of the ban lists in database.
 	 */
 	@GetMapping()
-	@ApiOperation(value = "Retrieve dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints.", response = ResponseEntity.class, tags = "Ban List")
+	@ApiOperation(value = "Retrieve dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints."
+		, response = BanListStartDates.class
+		, tags = "Ban List")
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK")
 	})
-	public ResponseEntity<Map<String, List<BanList>>> startDatesOfBanLists()
+	public ResponseEntity<BanListStartDates> startDatesOfBanLists()
 	{
-		/**
-		 * If cache is empty, querying the DB is required. DB results are then cached.
-		 */
-		if (BAN_LISTS_START_DATES_CACHE.size() == 0)
-		{
-			List<BanList> banStartDates = (ArrayList<BanList>) banListService.getBanListStartDates();
-			BAN_LISTS_START_DATES_CACHE.put("banListStartDates", banStartDates);
-		}
+		final ServiceLayerHelper serviceLayerHelper = banListService.getBanListStartDates();
 
-
-		/**
-		 * Configures the ResponseEntity to return,
-		 */
-		HttpStatus status = HttpStatus.OK;
-		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "ban list dates", endPoint, status));
-		return new ResponseEntity<>(BAN_LISTS_START_DATES_CACHE, status);
+		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), "Retrieve all ban lists from DB.", endPoint, serviceLayerHelper.getStatus()));
+		return new ResponseEntity<>( (BanListStartDates) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
 	}
 }

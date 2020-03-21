@@ -1,34 +1,39 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
-import java.util.List;
-import java.util.Map;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
+import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
+import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BanList;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import lombok.NonNull;
 
 /**
  * JDBC implementation of DB DAO interface.
  */
-@Repository()
+@Repository
 @Qualifier("jdbc")
 public class JDBCDao implements Dao
 {
 	@Autowired
-	JdbcTemplate jdbcConn;
+	NamedParameterJdbcTemplate jdbcNamedTemplate;
 
 
 
 	@Override
-	public List<BanList> getBanListStartDates()
+	public BanListStartDates getBanListStartDates()
 	{
 		return null;
 	}
@@ -36,48 +41,64 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public Card getCardInfo(String cardID)
+	public Card getCardInfo(@NonNull String cardID) throws YgoException
 	{
-		String query = new StringBuilder().append("SELECT card_name, cards.monster_type, card_colors.card_color, cards.card_effect, cards.card_attribute")
-			.append(", cards.monster_attack, cards.monster_defense FROM cards, card_colors WHERE cards.card_number = '%s' AND card_colors.color_id = cards.color_id")
-			.toString();
-		query = String.format(query, cardID);
+		final String query = DbQueryConstants.GET_CARD_BY_ID;
 
-		return jdbcConn.query(query, (ResultSet row) ->
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("cardId", cardID);
+
+
+		final Card card = jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) ->
 		{
 			if (row.next())
 			{
-				return Card.builder().cardName(row.getString(1))
-					.monsterType(row.getString(2))
-					.cardColor(row.getString(3))
-					.cardEffect(row.getString(4))
+				return Card
+					.builder()
 					.cardID(cardID)
-					.cardAttribute(row.getString(5))
-					.monsterAttack(row.getInt(6))
-					.monsterDefense(row.getInt(7)).build();
+					.cardColor(row.getString(1))
+					.cardName(row.getString(2))
+					.cardAttribute(row.getString(3))
+					.cardEffect(row.getString(4))
+					.monsterType(row.getString(5))
+					.monsterAttack(row.getObject(6, Integer.class))
+					.monsterDefense(row.getObject(7, Integer.class))
+					.build();
 			}
 
 			return null;
 		});
+
+		if (card == null)	throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format("%s was not found in DB.", cardID));
+
+		return card;
 	}
 
 
 
 	@Override
-	public List<Card> getBanListByBanStatus(String date, Status status)
+	public List<Card> getBanListByBanStatus(@NonNull final String date, @NonNull final Status status)
 	{
-		String query = "SELECT card_name, monster_type, card_colors.card_color, card_effect, cards.card_number FROM card_colors, cards, ban_lists WHERE card_colors.color_id = cards.color_id AND cards.card_number = ban_lists.card_number AND ban_lists.ban_status = '"
-		+ status.toString() + "' AND ban_list_date = '" + date + "' ORDER BY card_colors.card_color, card_name";
+		final String query = DbQueryConstants.GET_BAN_LIST_BY_STATUS;
 
-		return jdbcConn.query(query, (ResultSet row) -> {
-			List<Card> cardList = new ArrayList<>();
-			while (row.next()) {
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("date", date);
+		sqlParams.addValue("status", status.toString());
+
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			final List<Card> cardList = new ArrayList<>();
+			while (row.next())
+			{
 				cardList.add(
-					Card.builder().cardName(row.getString(1))
+					Card
+						.builder()
+						.cardName(row.getString(1))
 						.monsterType(row.getString(2))
 						.cardColor(row.getString(3))
 						.cardEffect(row.getString(4))
-						.cardID(row.getString(5)).build()
+						.cardID(row.getString(5))
+						.build()
 					);
 			}
 			return cardList;
@@ -89,8 +110,8 @@ public class JDBCDao implements Dao
 	public int getNumberOfBanLists() {
 
 		String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
-		return jdbcConn.query(query, (ResultSet row) ->  {
-			if (row.next())	return Integer.parseInt(row.getString(1));
+		return jdbcNamedTemplate.query(query, (ResultSet row) ->  {
+			if (row.next())	return row.getInt(1);
 
 			return null;
 		});
@@ -102,11 +123,14 @@ public class JDBCDao implements Dao
 	{
 		String query = new StringBuilder().append("SELECT row_num FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date")
 			.append(" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter)")
-			.append(" AS sorted WHERE ban_list_date = '%1$s'")
+			.append(" AS sorted WHERE ban_list_date = :banListDate")
 			.toString();
-		query = String.format(query, banListDate);
 
-		return jdbcConn.query(query, (ResultSet row) -> {
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("banListDate", banListDate);
+
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			if (row.next())	return (int) Float.parseFloat(row.getString(1));	// somehow row_num is treated as a float
 
 			return -1;
@@ -124,11 +148,14 @@ public class JDBCDao implements Dao
 		String query = new StringBuilder()
 			.append("SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date")
 			.append(" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC)")
-			.append(" AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = %1$d")
+			.append(" AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = :previousBanListPosition")
 			.toString();
-		query = String.format(query, previousBanListPosition);
 
-		return jdbcConn.query(query, (ResultSet row) -> {
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("previousBanListPosition", previousBanListPosition);
+
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			if (row.next())	return row.getString(1);
 			return null;
 		});
@@ -136,36 +163,42 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Map<String, String>> getNewContentOfBanList(String newBanList, String status)
+	// TODO: make sure you write a test for the instance where the last ban list is selected
+	public List<BanListComparisonResults> getNewContentOfBanList(final String newBanList, final Status status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<Map<String, String>>();
+		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
 
 		String query = new StringBuilder()
 			.append("select new_cards.card_number, cards.card_name from (select new_list.card_number")
-			.append(" from (select card_number from ban_lists where ban_list_date = '%2$s' and ban_status = '%1$s')")
-			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = '%3$s'")
-			.append(" and ban_status = '%1$s') as old_list on new_list.card_number = old_list.card_number")
+			.append(" from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)")
+			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList")
+			.append(" and ban_status = :status) as old_list on new_list.card_number = old_list.card_number")
 			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number;")
 			.toString();
-		query = String.format(query, status, newBanList, oldBanList);
 
-		return jdbcConn.query(query, (ResultSet row) -> {
-			final List<Map<String, String>> newCards = new ArrayList<>();
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("status", status.toString());
+		sqlParams.addValue("newBanList", newBanList);
+		sqlParams.addValue("oldBanList", oldBanList);
+
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			final List<BanListComparisonResults> newCards = new ArrayList<>();
 
 			while (row.next())
 			{
-				final Map<String, String> newCard = new HashMap<>();
+				BanListComparisonResults banListComparisonResults = new BanListComparisonResults();
 				final String cardID = row.getString(1);
 				String previousStatus = this.getCardBanListStatusByDate(cardID, oldBanList);
 				previousStatus = ( previousStatus == null ) ? "Unlimited" : previousStatus;
 
 
-				newCard.put("id", cardID);
-				newCard.put("previousStatus", previousStatus);
-				newCard.put("name", row.getString(2));
+				banListComparisonResults.setId(cardID);
+				banListComparisonResults.setPreviousState(previousStatus);
+				banListComparisonResults.setName(row.getString(2));
 
-				newCards.add(newCard);
+				newCards.add(banListComparisonResults);
 			}
 
 			return newCards;
@@ -174,31 +207,35 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Map<String, String>> getRemovedContentOfBanList(String newBanList)
+	// TODO: make sure you write a test for the instance where the last ban list is selected
+	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<Map<String, String>>();
+		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
 
 		String query = new StringBuilder()
 			.append("select removed_cards.card_number, removed_cards.ban_status, cards.card_name")
 			.append(" from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists")
-			.append(" where ban_list_date = '%1$s') as new_list right join (select card_number, ban_status")
-			.append(" from ban_lists where ban_list_date = '%2$s') as old_list on new_list.card_number = old_list.card_number")
+			.append(" where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status")
+			.append(" from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number")
 			.append(" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number;")
 			.toString();
 
-		query = String.format(query, newBanList, oldBanList);
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("newBanList", newBanList);
+		sqlParams.addValue("oldBanList", oldBanList);
 
-		return jdbcConn.query(query, (ResultSet row) -> {
-			final List<Map<String, String>> REMOVED_CARDS = new ArrayList<>();
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			final List<BanListComparisonResults> REMOVED_CARDS = new ArrayList<>();
 
 			while(row.next())
 			{
-				final Map<String, String> REMOVED_CARD = new HashMap<>();
+				final BanListComparisonResults REMOVED_CARD = new BanListComparisonResults();
 
-				REMOVED_CARD.put("id", row.getString(1));
-				REMOVED_CARD.put("previousStatus", row.getString(2));
-				REMOVED_CARD.put("name", row.getString(3));
+				REMOVED_CARD.setId(row.getString(1));
+				REMOVED_CARD.setPreviousState(row.getString(2));
+				REMOVED_CARD.setName(row.getString(3));
 
 				REMOVED_CARDS.add(REMOVED_CARD);
 			}
@@ -211,12 +248,41 @@ public class JDBCDao implements Dao
 
 	public String getCardBanListStatusByDate(String cardId, String banListDate)
 	{
-		String query = "select ban_status from ban_lists where card_number = '%1$s' and ban_list_date = '%2$s';";
-		query = String.format(query, cardId, banListDate);
+		String query = "select ban_status from ban_lists where card_number = :cardId and ban_list_date = :banListDate";
 
-		return jdbcConn.query(query, (ResultSet row) -> {
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("cardId", cardId);
+		sqlParams.addValue("banListDate", banListDate);
+
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			if (row.next())	return row.getString(1);
 			return null;
+		});
+	}
+
+
+
+	public String getCardInfoByCardNameSearch(String cardName)
+	{
+		String query = "SELECT DISTINCT * FROM cards WHERE card_name LIKE '%:cardName%'";
+
+		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		return null;
+	}
+
+
+
+	public boolean isValidBanList(final String banListDate)
+	{
+		final String query = "select distinct ban_list_date from ban_lists where ban_list_date = :banListDate";
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("banListDate", banListDate);
+
+		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			if (row.next())	return true;
+			else	return false;
 		});
 	}
 }

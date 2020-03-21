@@ -3,4 +3,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'YGO API Backend'
+rootProject.name = 'YGO-API'

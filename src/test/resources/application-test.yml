@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:YUGIOH_API_DB;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none	# When using @Entity (Hibernate) don't do anything before setting up bean - default behavior is that on bean creation the table is dropped
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  h2:
+    console:
+      enabled: false

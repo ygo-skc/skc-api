@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.LogHelper;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,13 +17,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configures endpoint(s) for testing the health of the API.
  */
-@RequestMapping(path = "${ygo.endpoints.v1.test-call}")
 @RestController
+@RequestMapping(path="${ygo.endpoints.v1.test-call}", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
+@Slf4j
 @Api(description = "Endpoint to check if API is online.", tags = "Testcall")
 public class TestCallController
 {
@@ -34,11 +34,6 @@ public class TestCallController
 	 */
 	@Autowired
 	private HttpServletRequest httpRequest;
-
-	/**
-	 * Logging object.
-	 */
-	private static final Logger LOG = LogManager.getLogger();
 
 	/**
 	 * Base endpoint for this class.
@@ -59,7 +54,7 @@ public class TestCallController
 	})
 	public ResponseEntity<String> testCall()
 	{
-		LOG.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "status", endPoint, HttpStatus.OK));
+		log.info(LogHelper.requestStatusLogString(httpRequest.getRemoteHost(), "status", endPoint, HttpStatus.OK));
 		return new ResponseEntity<>("API is online.", HttpStatus.OK);
 	}
 }
