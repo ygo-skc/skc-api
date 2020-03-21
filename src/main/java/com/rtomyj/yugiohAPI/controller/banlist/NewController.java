@@ -4,12 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.helper.LogHelper;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
+import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -78,10 +77,13 @@ public class NewController
 		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate)
 		throws YgoException
 	{
-		final ServiceLayerHelper serviceLayerHelper = banListDiffService.getNewContentOfBanList(banListStartDate);
+		MDC.put("reqIp", request.getRemoteHost());
+		MDC.put("reqRes", endPoint);
 
-		log.info(LogHelper.requestStatusLogString(request.getRemoteHost(), banListStartDate, endPoint, serviceLayerHelper.getStatus()
-			, serviceLayerHelper.getInCache(), serviceLayerHelper.getIsContentReturned()));
-		return new ResponseEntity<>( (BanListNewContent) serviceLayerHelper.getRequestedResource(), serviceLayerHelper.getStatus());
+		final BanListNewContent serviceLayerHelper = banListDiffService.getNewContentOfBanList(banListStartDate);
+		log.info("Successfully retrieved new content for banlist: ( {} ).", banListStartDate);
+
+		MDC.clear();
+		return ResponseEntity.ok(serviceLayerHelper);
 	}
 }

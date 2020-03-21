@@ -118,7 +118,7 @@ public interface Dao
 	 */
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
 
-	public String getCardInfoByCardNameSearch(String cardName);
-
 	public boolean isValidBanList(final String banListDate);
+  
+	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 }

@@ -91,7 +91,7 @@ public class HibernateDao implements Dao
 	}
 
 	@Override
-	public String getCardInfoByCardNameSearch(String cardName)
+	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType)
 	{
 		return null;
 	}
