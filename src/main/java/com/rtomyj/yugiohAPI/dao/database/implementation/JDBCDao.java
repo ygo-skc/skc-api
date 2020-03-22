@@ -17,9 +17,9 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.Pack;
-import com.rtomyj.yugiohAPI.model.PackContent;
-import com.rtomyj.yugiohAPI.model.PackDetails;
+import com.rtomyj.yugiohAPI.model.pack.Pack;
+import com.rtomyj.yugiohAPI.model.pack.PackContent;
+import com.rtomyj.yugiohAPI.model.pack.PackDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

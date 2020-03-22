@@ -1,4 +1,6 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.pack;
+
+import com.rtomyj.yugiohAPI.model.Card;
 
 import lombok.Builder;
 import lombok.Data;

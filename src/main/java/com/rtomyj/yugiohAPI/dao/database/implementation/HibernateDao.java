@@ -13,8 +13,8 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.Pack;
-import com.rtomyj.yugiohAPI.model.PackDetails;
+import com.rtomyj.yugiohAPI.model.pack.Pack;
+import com.rtomyj.yugiohAPI.model.pack.PackDetails;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -3,8 +3,8 @@ package com.rtomyj.yugiohAPI.service.packs;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.Pack;
-import com.rtomyj.yugiohAPI.model.PackDetails;
+import com.rtomyj.yugiohAPI.model.pack.Pack;
+import com.rtomyj.yugiohAPI.model.pack.PackDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
