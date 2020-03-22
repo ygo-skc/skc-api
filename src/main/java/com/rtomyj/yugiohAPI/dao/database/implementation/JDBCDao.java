@@ -37,7 +37,11 @@ import lombok.extern.slf4j.Slf4j;
 public class JDBCDao implements Dao
 {
 	@Autowired
-	NamedParameterJdbcTemplate jdbcNamedTemplate;
+	private NamedParameterJdbcTemplate jdbcNamedTemplate;
+
+	@Autowired
+	@Qualifier("dbSimpleDateFormat")
+	private SimpleDateFormat dateFormat;
 
 
 
@@ -310,7 +314,6 @@ public class JDBCDao implements Dao
 				 every time a new row has new ban list info of a card already in the map.
 			*/
 			final Map<String, Card> cardInfoTracker = new HashMap<>();
-			final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 			while (row.next())
 			{
@@ -369,7 +372,6 @@ public class JDBCDao implements Dao
 
 	public List<Pack> getAvailablePacks()
 	{
-		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_AVAILABLE_PACKS, (ResultSet row) -> {
 			List<Pack> availablePacks = new ArrayList<>();
