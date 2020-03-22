@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.configuration.exception;
+package com.rtomyj.yugiohAPI.helper.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

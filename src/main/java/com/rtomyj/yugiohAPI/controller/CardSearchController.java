@@ -2,7 +2,7 @@ package com.rtomyj.yugiohAPI.controller;
 
 import java.util.List;
 
-import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 

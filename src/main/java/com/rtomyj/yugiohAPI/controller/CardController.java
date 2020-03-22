@@ -3,8 +3,8 @@ package com.rtomyj.yugiohAPI.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
-import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 

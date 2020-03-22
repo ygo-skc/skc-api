@@ -1,9 +1,11 @@
-package com.rtomyj.yugiohAPI.configuration.exception;
+package com.rtomyj.yugiohAPI.configuration;
 
 import javax.validation.ConstraintViolationException;
 
-import com.rtomyj.yugiohAPI.configuration.exception.YgoError.Error;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.exceptions.Error;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoError;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

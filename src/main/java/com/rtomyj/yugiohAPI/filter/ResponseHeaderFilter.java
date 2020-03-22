@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.configuration;
+package com.rtomyj.yugiohAPI.filter;
 
 import java.io.IOException;
 

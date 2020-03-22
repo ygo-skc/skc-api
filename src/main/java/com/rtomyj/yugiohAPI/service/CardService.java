@@ -3,8 +3,8 @@ package com.rtomyj.yugiohAPI.service;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 
 import org.cache2k.Cache;

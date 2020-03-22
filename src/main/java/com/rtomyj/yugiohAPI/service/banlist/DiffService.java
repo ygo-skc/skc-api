@@ -3,10 +3,10 @@ package com.rtomyj.yugiohAPI.service.banlist;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
