@@ -17,6 +17,7 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.Pack;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -361,6 +362,33 @@ public class JDBCDao implements Dao
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			if (row.next())	return true;
 			else	return false;
+		});
+	}
+
+
+
+	public List<Pack> getAvailablePacks()
+	{
+		final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_AVAILABLE_PACKS, (ResultSet row) -> {
+			List<Pack> availablePacks = new ArrayList<>();
+
+			while (row.next())
+			{
+				try {
+					availablePacks.add(Pack
+						.builder()
+						.packId(row.getString(1))
+						.packName(row.getString(2))
+						.packReleaseDate(dateFormat.parse(row.getString(3)))
+						.build());
+				} catch (ParseException e) {
+					log.error("Cannot parse date from DB when retrieving all packs: {}", e.toString());
+				}
+			}
+
+			return availablePacks;
 		});
 	}
 }

@@ -6,6 +6,7 @@ import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.Pack;
 
 /**
  * Contract for database operations.
@@ -119,6 +120,8 @@ public interface Dao
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
 
 	public boolean isValidBanList(final String banListDate);
-  
+
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
+
+	public List<Pack> getAvailablePacks();
 }

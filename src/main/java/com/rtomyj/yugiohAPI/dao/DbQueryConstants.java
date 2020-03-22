@@ -11,4 +11,6 @@ public class DbQueryConstants
 		.append("SELECT card_name, monster_type, card_color, card_effect, card_number FROM ban_list_info")
 		.append(" WHERE ban_status = :status AND ban_list_date = :date ORDER BY card_color, card_name")
 		.toString();
+
+	public static final String GET_AVAILABLE_PACKS = "SELECT pack_id, pack_name, pack_release_date FROM packs";
 }

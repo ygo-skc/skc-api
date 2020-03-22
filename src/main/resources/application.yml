@@ -8,6 +8,7 @@ ygo:
       ban-list-removed-cards: /api/v1/ban/removed
       banned-cards: /api/v1/ban/cards
       card: /api/v1/card
+      avaialable-packs: /api/v1/packs
 
 spring:
   datasource:
