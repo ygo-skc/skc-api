@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.Pack;
+import com.rtomyj.yugiohAPI.model.PackDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,5 +21,12 @@ public class AvailablePacksService
 	public List<Pack> getAvailablePacks()
 	{
 		return dao.getAvailablePacks();
+	}
+
+
+
+	public PackDetails getPack(final String packId)
+	{
+		return dao.getPackContents(packId);
 	}
 }

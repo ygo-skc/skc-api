@@ -7,6 +7,7 @@ import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.Pack;
+import com.rtomyj.yugiohAPI.model.PackDetails;
 
 /**
  * Contract for database operations.
@@ -124,4 +125,6 @@ public interface Dao
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 
 	public List<Pack> getAvailablePacks();
+
+	public PackDetails getPackContents(final String packId);
 }

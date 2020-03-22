@@ -18,6 +18,8 @@ import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.Pack;
+import com.rtomyj.yugiohAPI.model.PackContent;
+import com.rtomyj.yugiohAPI.model.PackDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -74,8 +76,8 @@ public class JDBCDao implements Dao
 					.cardAttribute(row.getString(3))
 					.cardEffect(row.getString(4))
 					.monsterType(row.getString(5))
-					.monsterAttack(row.getObject(6, Integer.class))
-					.monsterDefense(row.getObject(7, Integer.class))
+					.monsterAttack(row.getInt(6))
+					.monsterDefense(row.getInt(7))
 					.build();
 			}
 
@@ -386,11 +388,64 @@ public class JDBCDao implements Dao
 						.packReleaseDate(dateFormat.parse(row.getString(3)))
 						.build());
 				} catch (ParseException e) {
-					log.error("Cannot parse date from DB when retrieving all packs: {}", e.toString());
+					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
 				}
 			}
 
 			return availablePacks;
+		});
+	}
+
+
+
+
+
+	public PackDetails getPackContents(final String packId)
+	{
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("packId", packId);
+
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_PACK_DETAILS, sqlParams, (ResultSet row) -> {
+			final List<PackContent> packContents = new ArrayList<>();
+			Pack pack = null;
+
+			while (row.next())
+			{
+				if (pack == null)
+				{
+					try {
+						pack = Pack
+							.builder()
+							.packId(row.getString(1))
+							.packName(row.getString(2))
+							.packReleaseDate(dateFormat.parse(row.getString(3)))
+							.build();
+					} catch (ParseException e) {
+						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
+					}
+				}
+				packContents.add(PackContent
+					.builder()
+					.position(row.getInt(4))
+					.card(Card
+						.builder()
+							.cardID(row.getString(5))
+							.cardColor(row.getString(6))
+							.cardName(row.getString(7))
+							.cardAttribute(row.getString(8))
+							.cardEffect(row.getString(9))
+							.monsterType(row.getString(10))
+							.monsterAttack(row.getInt(11))
+							.monsterDefense(row.getInt(12))
+						.build())
+					.build());
+			}
+
+			return PackDetails
+				.builder()
+				.pack(pack)
+				.contents(packContents)
+				.build();
 		});
 	}
 }

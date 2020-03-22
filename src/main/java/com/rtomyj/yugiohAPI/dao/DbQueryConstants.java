@@ -13,4 +13,6 @@ public class DbQueryConstants
 		.toString();
 
 	public static final String GET_AVAILABLE_PACKS = "SELECT pack_id, pack_name, pack_release_date FROM packs";
+
+	public static final String GET_PACK_DETAILS = "SELECT pack_id, pack_name, pack_release_date, card_pack_position, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense FROM pack_info WHERE pack_id = :packId ORDER BY card_pack_position";
 }
