@@ -76,8 +76,8 @@ public class JDBCDao implements Dao
 					.cardAttribute(row.getString(3))
 					.cardEffect(row.getString(4))
 					.monsterType(row.getString(5))
-					.monsterAttack(row.getInt(6))
-					.monsterDefense(row.getInt(7))
+					.monsterAttack(row.getObject(6, Integer.class))
+					.monsterDefense(row.getObject(7, Integer.class))
 					.build();
 			}
 
@@ -290,10 +290,10 @@ public class JDBCDao implements Dao
 		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
 
 		final String query = new StringBuilder()
-			.append("SELECT DISTINCT cards.card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, cards.color_id")
-			.append(" FROM cards, card_colors, ban_lists")
-			.append(" WHERE cards.color_id = card_colors.color_id AND cards.card_number = ban_lists.card_number AND cards.card_number LIKE :cardId AND card_name LIKE :cardName")
-			.append(" AND card_attribute REGEXP :cardAttribute AND card_color REGEXP :cardColor AND monster_type REGEXP :monsterType ORDER BY color_id, card_name, ban_list_date DESC")
+			.append("SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status")
+			.append(" FROM search")
+			.append(" WHERE card_number LIKE :cardId AND card_name LIKE :cardName")
+			.append(" AND card_attribute REGEXP :cardAttribute AND card_color REGEXP :cardColor AND IFNULL(monster_type, '') REGEXP :monsterType ORDER BY color_id, card_name, ban_list_date DESC")
 			.toString();
 
 
@@ -303,7 +303,6 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardAttribute", cardAttribute);
 		sqlParams.addValue("cardColor", cardColor);
 		sqlParams.addValue("monsterType", monsterType);
-		System.out.println(sqlParams);
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			/*
@@ -330,8 +329,8 @@ public class JDBCDao implements Dao
 						.cardAttribute(row.getString(4))
 						.cardEffect(row.getString(5))
 						.monsterType(row.getString(6))
-						.monsterAttack(row.getInt(7))
-						.monsterDefense(row.getInt(8))
+						.monsterAttack(row.getObject(7, Integer.class))
+						.monsterDefense(row.getObject(8, Integer.class))
 						.restrictedIn(new ArrayList<>())
 						.build();
 						cardInfoTracker.put(card.getCardID(), card);
@@ -339,12 +338,15 @@ public class JDBCDao implements Dao
 
 				try
 				{
-					card.getRestrictedIn()
-						.add(BanList
-							.builder()
-							.banListDate(dateFormat.parse(row.getString(9)))
-							.banStatus(row.getString(10))
-							.build());
+					if (row.getString(9) != null)
+					{
+						card.getRestrictedIn()
+							.add(BanList
+								.builder()
+								.banListDate(dateFormat.parse(row.getString(9)))
+								.banStatus(row.getString(10))
+								.build());
+					}
 				} catch (ParseException e)
 				{
 					log.error("Error occurred while parsing date for ban list, date: {}", row.getString(9));
@@ -436,8 +438,8 @@ public class JDBCDao implements Dao
 							.cardAttribute(row.getString(9))
 							.cardEffect(row.getString(10))
 							.monsterType(row.getString(11))
-							.monsterAttack(row.getInt(12))
-							.monsterDefense(row.getInt(13))
+							.monsterAttack(row.getObject(12, Integer.class))
+							.monsterDefense(row.getObject(13, Integer.class))
 						.build())
 					.build());
 			}
