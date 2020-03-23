@@ -427,16 +427,17 @@ public class JDBCDao implements Dao
 				packContents.add(PackContent
 					.builder()
 					.position(row.getInt(4))
+					.rarity(row.getString(5))
 					.card(Card
 						.builder()
-							.cardID(row.getString(5))
-							.cardColor(row.getString(6))
-							.cardName(row.getString(7))
-							.cardAttribute(row.getString(8))
-							.cardEffect(row.getString(9))
-							.monsterType(row.getString(10))
-							.monsterAttack(row.getInt(11))
-							.monsterDefense(row.getInt(12))
+							.cardID(row.getString(6))
+							.cardColor(row.getString(7))
+							.cardName(row.getString(8))
+							.cardAttribute(row.getString(9))
+							.cardEffect(row.getString(10))
+							.monsterType(row.getString(11))
+							.monsterAttack(row.getInt(12))
+							.monsterDefense(row.getInt(13))
 						.build())
 					.build());
 			}

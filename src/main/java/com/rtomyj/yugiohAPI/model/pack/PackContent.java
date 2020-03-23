@@ -13,4 +13,5 @@ public class PackContent
 {
 	private Card card;
 	private Integer position;
+	private String rarity;
 }
