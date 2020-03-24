@@ -3,7 +3,6 @@ package com.rtomyj.yugiohAPI.controller.packs;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.model.pack.Pack;
-import com.rtomyj.yugiohAPI.model.pack.PackDetails;
 import com.rtomyj.yugiohAPI.service.packs.AvailablePacksService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class AvailablePacksController
 
 
 	@GetMapping("/{packId}")
-	public PackDetails getPack(@PathVariable("packId") final String packId)
+	public Pack getPack(@PathVariable("packId") final String packId)
 	{
 		return availablePacksService.getPack(packId);
 	}

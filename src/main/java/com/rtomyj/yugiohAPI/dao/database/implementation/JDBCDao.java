@@ -19,7 +19,6 @@ import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.pack.Pack;
 import com.rtomyj.yugiohAPI.model.pack.PackContent;
-import com.rtomyj.yugiohAPI.model.pack.PackDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -402,13 +401,12 @@ public class JDBCDao implements Dao
 
 
 
-	public PackDetails getPackContents(final String packId)
+	public Pack getPackContents(final String packId)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("packId", packId);
 
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_PACK_DETAILS, sqlParams, (ResultSet row) -> {
-			final List<PackContent> packContents = new ArrayList<>();
 			Pack pack = null;
 
 			while (row.next())
@@ -421,12 +419,13 @@ public class JDBCDao implements Dao
 							.packId(row.getString(1))
 							.packName(row.getString(2))
 							.packReleaseDate(dateFormat.parse(row.getString(3)))
+							.packContent(new ArrayList())
 							.build();
 					} catch (ParseException e) {
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
 					}
 				}
-				packContents.add(PackContent
+				pack.getPackContent().add(PackContent
 					.builder()
 					.position(row.getInt(4))
 					.rarity(row.getString(5))
@@ -444,11 +443,7 @@ public class JDBCDao implements Dao
 					.build());
 			}
 
-			return PackDetails
-				.builder()
-				.pack(pack)
-				.contents(packContents)
-				.build();
+			return pack;
 		});
 	}
 }
