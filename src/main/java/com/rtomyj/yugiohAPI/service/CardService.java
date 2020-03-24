@@ -67,9 +67,12 @@ public class CardService
 
 
 
-	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType)
+	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final boolean saveBandwidth)
 		throws YgoException
 	{
-		return dao.getCardNameByCriteria(cardId, cardName, cardAttribute, cardColor, monsterType);
+		final List<Card> searchResults = dao.getCardNameByCriteria(cardId, cardName, cardAttribute, cardColor, monsterType);
+
+		if (saveBandwidth)	Card.trimEffects(searchResults);
+		return searchResults;
 	}
 }

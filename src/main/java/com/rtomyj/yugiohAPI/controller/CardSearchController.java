@@ -30,7 +30,7 @@ public class CardSearchController
 		, @RequestParam(name = "mType", required = false, defaultValue="") String monsterType
 		, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth)throws YgoException
 	{
-		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType);
+		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, saveBandwidth);
 
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
 	}
