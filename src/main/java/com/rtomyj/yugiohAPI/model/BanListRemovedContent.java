@@ -20,6 +20,7 @@ public class BanListRemovedContent
 {
 	private String listRequested;
 	private String comparedTo;
+
 	private int numRemoved;
 	private List<BanListComparisonResults> removedCards;
 }

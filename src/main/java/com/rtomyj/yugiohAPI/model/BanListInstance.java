@@ -32,11 +32,4 @@ public class BanListInstance
 	private List<Card> limited;
 	private List<Card> semiLimited;
 
-
-	public void clear()
-	{
-		if (this.forbidden != null)	this.forbidden.clear();
-		if (this.limited != null)	this.semiLimited.clear();
-		if (this.semiLimited != null)	this.semiLimited.clear();
-	}
 }
