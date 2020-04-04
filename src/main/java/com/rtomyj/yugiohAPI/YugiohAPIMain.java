@@ -17,7 +17,7 @@ public class YugiohAPIMain {
 	 * @param args Java arguments
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(YugiohAPIMain.class, args);
+		SpringApplication.run(YugiohAPIMain.class);
 	}
 
 }

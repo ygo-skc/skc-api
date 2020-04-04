@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -41,6 +42,11 @@ public class Card
 
 	private List<BanList> restrictedIn;
 
+	@JsonIgnore
+	private static final int maxCardEffectLength = 120;
+	@JsonIgnore
+	private static final String cardEffectTrimTermination = "...";
+
 
 	/**
 	 * Modifies a list of cards to trim card effects to save on bandwidth
@@ -50,7 +56,8 @@ public class Card
 	{
 		for ( Card card: cards )
 		{
-			if ( card.getCardEffect().length() > 160 )	card.setCardEffect(card.getCardEffect().substring(0, 160) + "...");
+			if ( card.getCardEffect().length() > maxCardEffectLength )
+				card.setCardEffect(card.getCardEffect().substring(0, maxCardEffectLength) + cardEffectTrimTermination);
 		}
 	}
 
