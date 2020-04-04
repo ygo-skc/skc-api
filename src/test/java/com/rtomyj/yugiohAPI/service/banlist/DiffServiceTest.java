@@ -67,11 +67,11 @@ public class DiffServiceTest {
 		throws YgoException
 	{
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
-			.thenReturn(this.banListNewContent.getNewCards().getForbidden());
+			.thenReturn(DiffServiceTest.banListNewContent.getNewCards().getForbidden());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.LIMITED)))
-			.thenReturn(this.banListNewContent.getNewCards().getLimited());
+			.thenReturn(DiffServiceTest.banListNewContent.getNewCards().getLimited());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
-			.thenReturn(this.banListNewContent.getNewCards().getSemiLimited());
+			.thenReturn(DiffServiceTest.banListNewContent.getNewCards().getSemiLimited());
 		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
 			.thenReturn(true);
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))

@@ -43,7 +43,7 @@ public class CardsServiceTest {
 	private Dao dao;
 
 	private static BanListInstance banListInstanceFullText;
-	private static BanListInstance banListInstanceTrimmedText;
+	//private static BanListInstance banListInstanceTrimmedText;
 
 	private final String banListStartDate = "2019-07-15";
 
@@ -55,8 +55,8 @@ public class CardsServiceTest {
 		final ObjectMapper mapper = new ObjectMapper();
 		banListInstanceFullText = mapper.readValue(
 			new File(TestConstants.BAN_LIST_INSTANCE_JSON_FILE), BanListInstance.class);
-		banListInstanceTrimmedText = mapper.readValue(
-			new File(TestConstants.BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE), BanListInstance.class);
+		// banListInstanceTrimmedText = mapper.readValue(
+		// 	new File(TestConstants.BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE), BanListInstance.class);
 	}
 
 

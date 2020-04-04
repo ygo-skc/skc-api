@@ -419,7 +419,7 @@ public class JDBCDao implements Dao
 							.packId(row.getString(1))
 							.packName(row.getString(2))
 							.packReleaseDate(dateFormat.parse(row.getString(3)))
-							.packContent(new ArrayList())
+							.packContent(new ArrayList<PackContent>())
 							.build();
 					} catch (ParseException e) {
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
