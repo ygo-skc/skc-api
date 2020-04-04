@@ -105,6 +105,7 @@ public class CardsService
 		}
 
 		Card.addLinksToCards(banListInstance);
+		BanListInstance.addLinksToBanListInstance(banListInstance, false);
 		return banListInstance;
 	}
 
@@ -133,6 +134,7 @@ public class CardsService
 
 		Card.trimEffects(banListInstance);
 		Card.addLinksToCards(banListInstance);
+		BanListInstance.addLinksToBanListInstance(banListInstance, true);
 		return banListInstance;
 	}
 }

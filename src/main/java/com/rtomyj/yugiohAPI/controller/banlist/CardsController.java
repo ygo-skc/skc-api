@@ -9,7 +9,6 @@ import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.banned-cards}", produces = "application/hal+json; charset=UTF-8")
+@RequestMapping(path="/api/v1/ban/cards", produces = "application/hal+json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
@@ -49,8 +48,7 @@ public class CardsController {
 	/**
 	 * The base endpoint for this controller.
 	 */
-	@Value("${ygo.endpoints.v1.banned-cards}")
-	private String endPoint;
+	private static final String endPoint = "/api/v1/ban/cards";
 
 
 
