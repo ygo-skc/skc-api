@@ -30,7 +30,7 @@ sourceCompatibility = '1.8'
 repositories {
 	mavenCentral()
 	maven {
-		url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'
+		url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'	// used for snapshots
 	}
 }
 
@@ -50,6 +50,8 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
 
+	implementation "org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE"
+
 	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
 	implementation "org.eclipse.jetty.http2:http2-server"
@@ -58,6 +60,8 @@ dependencies {
 
 	implementation "io.springfox:springfox-swagger2:$swagger2Version"
 	implementation "io.springfox:springfox-swagger-ui:$swagger2Version"
+	implementation "io.springfox:springfox-bean-validators:$swagger2Version"
+	implementation "io.springfox:springfox-data-rest:$swagger2Version"
 
 	runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 
