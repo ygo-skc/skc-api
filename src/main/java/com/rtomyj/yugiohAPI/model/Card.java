@@ -1,10 +1,15 @@
 package com.rtomyj.yugiohAPI.model;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.rtomyj.yugiohAPI.controller.CardController;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -90,9 +95,37 @@ public class Card extends RepresentationModel<Card>
 
 
 
-	// public static void addLinksToCard(final Card card)
-	// {
-	// 	card.add(linkTo(methodOn(CardController.class)));
-	// 	Link
-	// }
+	public static void addLinksToCard(final Card card)
+			throws YgoException
+	{
+		card.add(
+			linkTo(methodOn(CardController.class).getCard(card.getCardID())).withSelfRel()
+		);
+	}
+
+
+
+	public static void addLinksToCards(final List<Card> cards)
+		throws YgoException
+	{
+		cards.forEach(t -> {
+			try {
+				addLinksToCard(t);
+			} catch (YgoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+	}
+
+
+
+	public static void addLinksToCards(final BanListInstance banListInstance)
+		throws YgoException
+	{
+		Card.addLinksToCards(banListInstance.getForbidden());
+		Card.addLinksToCards(banListInstance.getLimited());
+		Card.addLinksToCards(banListInstance.getSemiLimited());
+	}
+
 }

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +24,7 @@ import lombok.With;
 @JsonTypeName("bannedCards")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonPropertyOrder({ "startDate", "numForbidden", "numLimited", "numSemiLimited", "forbidden", "limited", "semiLimited" })
-public class BanListInstance
+public class BanListInstance extends RepresentationModel<BanListInstance>
 {
 	private String startDate;
 	private int numForbidden;

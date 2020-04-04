@@ -7,7 +7,6 @@ ygo:
       ban-list-new-cards: /api/v1/ban/new
       ban-list-removed-cards: /api/v1/ban/removed
       banned-cards: /api/v1/ban/cards
-      card: /api/v1/card
       avaialable-packs: /api/v1/packs
 
 spring:

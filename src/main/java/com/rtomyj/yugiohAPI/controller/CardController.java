@@ -10,7 +10,6 @@ import com.rtomyj.yugiohAPI.service.CardService;
 
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.card}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/api/v1/card", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
@@ -49,8 +48,7 @@ public class CardController
 	/**
 	 * Base url for this endpoint.
 	 */
-	@Value("${ygo.endpoints.v1.card}")
-	private String endPoint;
+	private static final String endPoint = "/api/v1/card";
 
 
 

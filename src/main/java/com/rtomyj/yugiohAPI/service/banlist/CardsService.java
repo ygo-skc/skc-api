@@ -104,6 +104,7 @@ public class CardsService
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
 		}
 
+		Card.addLinksToCards(banListInstance);
 		return banListInstance;
 	}
 
@@ -131,6 +132,7 @@ public class CardsService
 		}
 
 		Card.trimEffects(banListInstance);
+		Card.addLinksToCards(banListInstance);
 		return banListInstance;
 	}
 }
