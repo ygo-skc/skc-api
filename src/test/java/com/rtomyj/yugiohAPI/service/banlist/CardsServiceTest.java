@@ -136,15 +136,15 @@ public class CardsServiceTest {
 
 		assertEquals(TestConstants.STRATOS_ID, forbiddenTrimmed.get(0).getCardID());
 		assertEquals(TestConstants.STRATOS_NAME, forbiddenTrimmed.get(0).getCardName());
-		assertEquals(TestConstants.STRATOS_TRIMMED_EFFECT, forbiddenTrimmed.get(0).getCardEffect());
+		assertEquals(Card.trimEffect(TestConstants.STRATOS_FULL_EFFECT), forbiddenTrimmed.get(0).getCardEffect());
 
 		assertEquals(TestConstants.A_HERO_LIVES_ID, limitedTrimmed.get(0).getCardID());
 		assertEquals(TestConstants.A_HERO_LIVES_NAME, limitedTrimmed.get(0).getCardName());
-		assertEquals(TestConstants.A_HERO_LIVES_TRIMMED_EFFECT, limitedTrimmed.get(0).getCardEffect());
+		assertEquals(Card.trimEffect(TestConstants.A_HERO_LIVES_FULL_EFFECT), limitedTrimmed.get(0).getCardEffect());
 
 		assertEquals(TestConstants.D_MALICIOUS_ID, semiLimitedTrimmed.get(0).getCardID());
 		assertEquals(TestConstants.D_MALICIOUS_NAME, semiLimitedTrimmed.get(0).getCardName());
-		assertEquals(TestConstants.D_MALICIOUS_TRIMMED_EFFECT, semiLimitedTrimmed.get(0).getCardEffect());
+		assertEquals(Card.trimEffect(TestConstants.D_MALICIOUS_FULL_EFFECT), semiLimitedTrimmed.get(0).getCardEffect());
 
 
 		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,12 +22,12 @@ import lombok.With;
 @Data
 @Builder
 @With
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Describes attributes of a YGO card.")
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
-public class Card
+public class Card extends RepresentationModel<Card>
 {
 	/** Name of the card */
 	private String cardName;
@@ -48,17 +50,33 @@ public class Card
 	private static final String cardEffectTrimTermination = "...";
 
 
+
+	public static String trimEffect(final String effect)
+	{
+		if (effect.length() > maxCardEffectLength)
+			return effect.substring(0, maxCardEffectLength) + cardEffectTrimTermination;
+
+		return effect;
+	}
+
+
+
+	public static void trimEffect(final Card card)
+	{
+		card.setCardEffect(trimEffect(card.getCardEffect()));
+	}
+
+
+
 	/**
 	 * Modifies a list of cards to trim card effects to save on bandwidth
 	 * @param cards A list of Card objects whose effects have to be trimmed.
 	 */
 	public static void trimEffects(final List<Card> cards)
 	{
-		for ( Card card: cards )
-		{
-			if ( card.getCardEffect().length() > maxCardEffectLength )
-				card.setCardEffect(card.getCardEffect().substring(0, maxCardEffectLength) + cardEffectTrimTermination);
-		}
+		cards
+			.stream()
+			.forEach(Card::trimEffect);
 	}
 
 
@@ -69,4 +87,12 @@ public class Card
 		Card.trimEffects(banListInstance.getLimited());
 		Card.trimEffects(banListInstance.getSemiLimited());
 	}
+
+
+
+	// public static void addLinksToCard(final Card card)
+	// {
+	// 	card.add(linkTo(methodOn(CardController.class)));
+	// 	Link
+	// }
 }
