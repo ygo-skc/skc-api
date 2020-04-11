@@ -62,7 +62,9 @@ public class CardService
 	{
 		log.info("Card w/ id: ( {} ) not found in cache. Using DB.", cardId);
 
-		return dao.getCardInfo(cardId);
+		final Card foundCard = dao.getCardInfo(cardId);
+		Card.addLinksToCard(foundCard);
+		return foundCard;
 	}
 
 

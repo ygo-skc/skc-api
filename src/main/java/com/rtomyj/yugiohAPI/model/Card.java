@@ -101,6 +101,18 @@ public class Card extends RepresentationModel<Card>
 		card.add(
 			linkTo(methodOn(CardController.class).getCard(card.getCardID())).withSelfRel()
 		);
+
+		card.add(
+			linkTo(methodOn(CardsController.class).getBannedCards("2020-04-10", true)).withRel("Banned In")
+		);
+
+		card.add(
+			linkTo(methodOn(CardsController.class).getBannedCards("2020-04-10", true)).withRel("Banned In")
+		);
+
+		card.add(
+			linkTo(methodOn(CardsController.class).getBannedCards("2020-04-10", true)).withRel("Banned In")
+		);
 	}
 
 
