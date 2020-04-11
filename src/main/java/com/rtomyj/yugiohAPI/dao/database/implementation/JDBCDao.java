@@ -439,6 +439,7 @@ public class JDBCDao implements Dao
 							.monsterType(row.getString(11))
 							.monsterAttack(row.getObject(12, Integer.class))
 							.monsterDefense(row.getObject(13, Integer.class))
+							.monsterAssociation(row.getString(14))
 						.build())
 					.build());
 			}
