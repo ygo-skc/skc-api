@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.CardController;
+import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -35,17 +36,23 @@ import lombok.With;
 public class Card extends RepresentationModel<Card>
 {
 	/** Name of the card */
-	private String cardName;
-	private String monsterType;
-	private String cardColor;
-	private String cardEffect;
 	private String cardID;
+	private String cardName;
+	private String cardColor;
 	private String cardAttribute;
+	private String monsterAssociation;
+	private String monsterType;
+	private String cardEffect;
 	/**
 	 * Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
 	 */
 	private Integer monsterAttack;
 	private Integer monsterDefense;
+
+	private String leftScale;
+	private String rightScale;
+
+	private List<String> arrows;
 
 	private List<BanList> restrictedIn;
 
