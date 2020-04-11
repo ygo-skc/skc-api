@@ -81,7 +81,7 @@ public class NewController
 		MDC.put("reqRes", endPoint);
 
 		final BanListNewContent serviceLayerHelper = banListDiffService.getNewContentOfBanList(banListStartDate);
-		log.info("Successfully retrieved new content for banlist: ( {} ).", banListStartDate);
+		log.info("Successfully retrieved new content for ban list: ( {} ).", banListStartDate);
 
 		MDC.clear();
 		return ResponseEntity.ok(serviceLayerHelper);
