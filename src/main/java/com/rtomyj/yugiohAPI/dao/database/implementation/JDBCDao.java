@@ -387,6 +387,8 @@ public class JDBCDao implements Dao
 						.packId(row.getString(1))
 						.packName(row.getString(2))
 						.packReleaseDate(dateFormat.parse(row.getString(3)))
+						.packTotal(row.getInt(4))
+						.packRarityCount(this.getPackRarityCount(row.getString(1)))
 						.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
@@ -398,6 +400,23 @@ public class JDBCDao implements Dao
 	}
 
 
+
+	public Map<String, Integer> getPackRarityCount(final String packId)
+	{
+		final MapSqlParameterSource queryParams = new MapSqlParameterSource();
+		queryParams.addValue("packId", packId);
+
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_PACK_RARITY_INFO, queryParams, (ResultSet row) -> {
+			final Map<String, Integer> rarities = new HashMap<>();
+
+			while (row.next())
+			{
+				rarities.put(row.getString(1), row.getInt(2));
+			}
+
+			return rarities;
+		});
+	}
 
 
 
@@ -419,6 +438,8 @@ public class JDBCDao implements Dao
 							.packId(row.getString(1))
 							.packName(row.getString(2))
 							.packReleaseDate(dateFormat.parse(row.getString(3)))
+							.packTotal(row.getInt(4))
+							.packRarityCount(this.getPackRarityCount(row.getString(1)))
 							.packContent(new ArrayList<PackContent>())
 							.build();
 					} catch (ParseException e) {
@@ -427,19 +448,19 @@ public class JDBCDao implements Dao
 				}
 				pack.getPackContent().add(PackContent
 					.builder()
-					.position(row.getInt(4))
-					.rarity(row.getString(5))
+					.position(row.getInt(5))
+					.rarity(row.getString(6))
 					.card(Card
 						.builder()
-							.cardID(row.getString(6))
-							.cardColor(row.getString(7))
-							.cardName(row.getString(8))
-							.cardAttribute(row.getString(9))
-							.cardEffect(row.getString(10))
-							.monsterType(row.getString(11))
-							.monsterAttack(row.getObject(12, Integer.class))
-							.monsterDefense(row.getObject(13, Integer.class))
-							.monsterAssociation(row.getString(14))
+							.cardID(row.getString(7))
+							.cardColor(row.getString(8))
+							.cardName(row.getString(9))
+							.cardAttribute(row.getString(10))
+							.cardEffect(row.getString(11))
+							.monsterType(row.getString(12))
+							.monsterAttack(row.getObject(13, Integer.class))
+							.monsterDefense(row.getObject(14, Integer.class))
+							.monsterAssociation(row.getString(15))
 						.build())
 					.build());
 			}

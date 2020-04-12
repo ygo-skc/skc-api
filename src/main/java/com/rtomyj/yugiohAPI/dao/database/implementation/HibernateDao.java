@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -102,6 +103,11 @@ public class HibernateDao implements Dao
 	}
 
 	public List<Pack> getAvailablePacks()
+	{
+		return null;
+	}
+
+	public Map<String, Integer> getPackRarityCount(final String packId)
 	{
 		return null;
 	}

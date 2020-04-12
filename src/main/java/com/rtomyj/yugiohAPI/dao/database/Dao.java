@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.dao.database;
 
 import java.util.List;
+import java.util.Map;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
@@ -124,6 +125,8 @@ public interface Dao
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 
 	public List<Pack> getAvailablePacks();
+
+	public Map<String, Integer> getPackRarityCount(final String packId);
 
 	public Pack getPackContents(final String packId);
 }
