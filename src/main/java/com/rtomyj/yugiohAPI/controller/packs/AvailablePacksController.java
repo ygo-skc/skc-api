@@ -37,10 +37,9 @@ public class AvailablePacksController
 
 
 
-	@GetMapping
+	@GetMapping()
 	public ResponseEntity<Packs> getPacks()
 	{
-		log.info("hello world");
 		return ResponseEntity.ok(availablePacksService.getAvailablePacks());
 	}
 

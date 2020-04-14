@@ -60,6 +60,8 @@ public class Card extends RepresentationModel<Card>
 	@JsonIgnore
 	private static final String cardEffectTrimTermination = "...";
 
+	private static final Class<CardController> cardController = CardController.class;
+
 
 
 	public static String trimEffect(final String effect)
@@ -101,37 +103,27 @@ public class Card extends RepresentationModel<Card>
 
 
 
-	public static void addLinksToCard(final Card card)
+	public void setLink()
 			throws YgoException
 	{
-		card.add(
-			linkTo(methodOn(CardController.class).getCard(card.getCardID())).withSelfRel()
+		this.add(
+			linkTo(methodOn(cardController).getCard(cardID)).withSelfRel()
 		);
 	}
 
 
 
-	public static void addLinksToCards(final List<Card> cards)
+	public static void setLinks(final List<Card> cards)
 		throws YgoException
 	{
-		cards.forEach(t -> {
+		cards.forEach(card -> {
 			try {
-				addLinksToCard(t);
+				card.setLink();
 			} catch (YgoException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
-	}
-
-
-
-	public static void addLinksToCards(final BanListInstance banListInstance)
-		throws YgoException
-	{
-		Card.addLinksToCards(banListInstance.getForbidden());
-		Card.addLinksToCards(banListInstance.getLimited());
-		Card.addLinksToCards(banListInstance.getSemiLimited());
 	}
 
 }
