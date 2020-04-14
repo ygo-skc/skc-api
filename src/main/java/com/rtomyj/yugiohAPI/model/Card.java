@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.CardController;
-import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -107,18 +106,6 @@ public class Card extends RepresentationModel<Card>
 	{
 		card.add(
 			linkTo(methodOn(CardController.class).getCard(card.getCardID())).withSelfRel()
-		);
-
-		card.add(
-			linkTo(methodOn(CardsController.class).getBannedCards("2020-04-10", true)).withRel("Banned In")
-		);
-
-		card.add(
-			linkTo(methodOn(CardsController.class).getBannedCards("2020-04-10", true)).withRel("Banned In")
-		);
-
-		card.add(
-			linkTo(methodOn(CardsController.class).getBannedCards("2020-04-10", true)).withRel("Banned In")
 		);
 	}
 

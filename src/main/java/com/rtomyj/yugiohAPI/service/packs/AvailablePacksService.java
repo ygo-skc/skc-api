@@ -1,9 +1,8 @@
 package com.rtomyj.yugiohAPI.service.packs;
 
-import java.util.List;
-
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.pack.Pack;
+import com.rtomyj.yugiohAPI.model.pack.Packs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,15 +16,25 @@ public class AvailablePacksService
 	@Qualifier("jdbc")
 	private Dao dao;
 
-	public List<Pack> getAvailablePacks()
+	public Packs getAvailablePacks()
 	{
-		return dao.getAvailablePacks();
+		final Packs allPacks = Packs
+			.builder()
+			.packs(dao.getAvailablePacks())
+			.build();
+
+		Pack.setLinks(allPacks.getPacks());
+
+		return allPacks;
 	}
 
 
 
 	public Pack getPack(final String packId)
 	{
-		return dao.getPackContents(packId);
+		final Pack pack = dao.getPackContents(packId);
+		pack.setLink();
+
+		return pack;
 	}
 }

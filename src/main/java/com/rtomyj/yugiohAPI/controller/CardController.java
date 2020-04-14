@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
  */
 @RestController
-@RequestMapping(path="/api/v1/card", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "/api/v1/card", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
