@@ -47,7 +47,7 @@ public class Pack extends RepresentationModel<Pack>
 	private static final Class<AvailablePacksController> controllerClass = AvailablePacksController.class;
 
 
-	public void setLink()
+	private void setLink()
 	{
 		this.add(
 			linkTo(methodOn(controllerClass).getPack(packId)).withSelfRel()
@@ -55,12 +55,18 @@ public class Pack extends RepresentationModel<Pack>
 	}
 
 
+	public void setLinks()
+	{
+		this.setLink();
+		if (this.packContent != null)	PackContent.setLinks(this.packContent);	// set links for pack contents
+	}
+
+
 
 	public static void setLinks(final List<Pack> packs)
 	{
-		for (Pack pack: packs)
-		{
-			pack.setLink();
-		}
+		packs
+			.stream()
+			.forEach(pack -> pack.setLinks());
 	}
 }

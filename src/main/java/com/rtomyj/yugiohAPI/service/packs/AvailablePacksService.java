@@ -33,7 +33,7 @@ public class AvailablePacksService
 	public Pack getPack(final String packId)
 	{
 		final Pack pack = dao.getPackContents(packId);
-		pack.setLink();
+		pack.setLinks();
 
 		return pack;
 	}

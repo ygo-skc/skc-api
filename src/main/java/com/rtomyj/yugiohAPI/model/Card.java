@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.With;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class defines properties a Yugioh card can contain.
@@ -32,6 +33,7 @@ import lombok.With;
 @AllArgsConstructor
 @ApiModel(description = "Describes attributes of a YGO card.")
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
+@Slf4j
 public class Card extends RepresentationModel<Card>
 {
 	/** Name of the card */
@@ -103,8 +105,8 @@ public class Card extends RepresentationModel<Card>
 
 
 
-	public void setLink()
-			throws YgoException
+	private void setLink()
+		throws YgoException
 	{
 		this.add(
 			linkTo(methodOn(cardController).getCard(cardID)).withSelfRel()
@@ -113,17 +115,16 @@ public class Card extends RepresentationModel<Card>
 
 
 
-	public static void setLinks(final List<Card> cards)
-		throws YgoException
+	public void setLinks()
 	{
-		cards.forEach(card -> {
-			try {
-				card.setLink();
-			} catch (YgoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+		this.setLink();
+	}
+
+
+
+	public static void setLinks(final List<Card> cards)
+	{
+		cards.forEach(card -> card.setLink());
 	}
 
 }
