@@ -1,7 +1,7 @@
 
 plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply true
-	id 'org.springframework.boot' version '2.2.5.RELEASE' apply true
+	id 'org.springframework.boot' version '2.2.6.RELEASE' apply true
 	id 'jacoco' apply true
 	id 'java' apply true
 }
@@ -10,7 +10,7 @@ sourceSets.main.java.srcDirs = ["src/main/java"]
 
 ext {
 	baseName = 'YGO-API'
-	springVersion = '2.2.5.RELEASE'
+	springVersion = '2.2.6.RELEASE'
 	swagger2Version = '3.0.0-SNAPSHOT'
 	javadocVersion = '3.1.1'
 	cache2kVersion = '1.2.4.Final'
@@ -19,12 +19,11 @@ ext {
 }
 
 
-
 group = 'com.rtomyj'
 archivesBaseName = 'YGO-API'
 version = '1.2.0'
-sourceCompatibility = '1.8'
-
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 
 repositories {
@@ -35,13 +34,11 @@ repositories {
 }
 
 
-
 sourceSets {
 	build {
 		java.srcDir file('src/main/java')
 	}
 }
-
 
 
 dependencies {
@@ -73,7 +70,6 @@ dependencies {
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
 	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
 
-
   /* Test level dependencies */
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
 	testRuntimeOnly "com.h2database:h2"
@@ -83,7 +79,6 @@ dependencies {
 }
 
 
-
 configurations {
 	implementation {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
@@ -91,8 +86,11 @@ configurations {
 		exclude group: 'org.apache.tomcat'
 		exclude group: 'junit'
 	}
-}
 
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
 
 
 bootJar {
@@ -105,7 +103,6 @@ bootJar {
 }
 
 
-
 task bootJarPath {
 	doFirst {
 		println "${buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"
@@ -113,17 +110,14 @@ task bootJarPath {
 }
 
 
-
 javadoc {
 	source = sourceSets.main.allJava
 }
 
 
-
 tasks.withType(Test) {
    maxParallelForks = Runtime.runtime.availableProcessors() / 3 ?: 1
 }
-
 
 
 test {
