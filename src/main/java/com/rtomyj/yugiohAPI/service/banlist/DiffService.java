@@ -96,6 +96,7 @@ public class DiffService
 				.numSemiLimited(semiLimited.size())
 				.build())
 			.build();
+		newCardsMeta.setLinks();
 
 		return newCardsMeta;
 	}
@@ -124,13 +125,15 @@ public class DiffService
 
 
 		final List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
-    // builds meta data object for removed cards request
+
+    	// builds meta data object for removed cards request
 		final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
 			.listRequested(banListStartDate)
 			.comparedTo(this.getPreviousBanListDate(banListStartDate))
 			.removedCards(removedCards)
 			.numRemoved(removedCards.size())
 			.build();
+		removedCardsMeta.setLinks();
 
 
 		return removedCardsMeta;

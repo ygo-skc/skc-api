@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.configuration;
 import javax.validation.ConstraintViolationException;
 
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.constants.LogConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.Error;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoError;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
@@ -31,7 +32,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 		{
 			final HttpStatus status = HttpStatus.NOT_FOUND;
 
-			log.error("Exception occurred: {}, responding with: {}", exception.toString(), status);
+			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.toString(), status);
 			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
 		}
 

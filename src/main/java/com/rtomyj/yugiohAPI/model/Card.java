@@ -124,7 +124,7 @@ public class Card extends RepresentationModel<Card>
 
 	public static void setLinks(final List<Card> cards)
 	{
-		cards.forEach(card -> card.setLink());
+		cards.forEach(card -> card.setLinks());
 	}
 
 }

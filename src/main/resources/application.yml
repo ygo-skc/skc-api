@@ -3,9 +3,6 @@ ygo:
   endpoints:
     v1:
       test-call: /api/v1/testcall
-      ban-list-dates: /api/v1/ban/dates
-      ban-list-new-cards: /api/v1/ban/new
-      ban-list-removed-cards: /api/v1/ban/removed
 
 spring:
   datasource:

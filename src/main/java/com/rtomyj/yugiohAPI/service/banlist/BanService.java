@@ -31,6 +31,9 @@ public class BanService
 	public BanListStartDates getBanListStartDates()
 	{
 		log.info("Sending list of ban list start dates.");
-		return dao.getBanListStartDates();
+		final BanListStartDates banListStartDates = dao.getBanListStartDates();
+		banListStartDates.setLinks();
+
+		return banListStartDates;
 	}
 }

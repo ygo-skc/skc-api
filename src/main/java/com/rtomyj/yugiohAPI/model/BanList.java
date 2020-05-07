@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +14,12 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
+
+import org.springframework.hateoas.RepresentationModel;
 
 import lombok.Builder;
 import lombok.Data;
-
 
 /**
  * Entity describing the ban_lists table in mysql DB.
@@ -25,9 +28,9 @@ import lombok.Data;
 @Builder
 @Entity
 @Table(name = "ban_lists")
-@JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
-public class BanList implements Serializable {
-
+@JsonInclude(Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
+public class BanList extends RepresentationModel<BanList> implements Serializable
+{
 	private static final long serialVersionUID = 3890245600312215281L;
 
 	/**
@@ -51,4 +54,32 @@ public class BanList implements Serializable {
 	 */
 	@Column(name = "ban_status", length=15)
 	private String banStatus;
+
+	private static final Class<CardsController> controllerClass = CardsController.class;
+	//private static final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
+
+
+	private void setLink()
+	{
+		// this.add(
+		// 	linkTo(methodOn(controllerClass).getBannedCards(banListSimpleDateFormat.format(banListDate), false)).withSelfRel()
+		// );
+	}
+
+
+
+	public void setLinks()
+	{
+		this.setLink();
+	}
+
+
+
+	public static void setLinks(final List<BanList> banlists)
+	{
+		System.out.println(banlists);
+		System.out.println(banlists.get(0).getClass());
+		// banlists
+		// 	.forEach(banlist -> banlist.setLinks());
+	}
 }

@@ -10,7 +10,6 @@ import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.ban-list-removed-cards}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/api/v1/ban/removed", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
@@ -39,8 +38,7 @@ public class RemovedController {
 	@Autowired
 	DiffService banListDiffService;
 
-	@Value("${ygo.endpoints.v1.ban-list-removed-cards}")
-	private String endPoint;
+	private static final String endPoint = "/api/v1/ban/removed";
 
 	@Autowired
 	HttpServletRequest request;

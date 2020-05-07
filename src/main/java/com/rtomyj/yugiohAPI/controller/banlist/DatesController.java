@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponses;
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
 @RestController
-@RequestMapping(path="${ygo.endpoints.v1.ban-list-dates}", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/api/v1/ban/dates", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists"
 	, tags = "Ban List")
@@ -37,7 +37,7 @@ public class DatesController
 	/**
 	 * The base endpoint used by this controller.
 	 */
-	@Value("${ygo.endpoints.v1.ban-list-dates}")
+	@Value("/api/v1/ban/dates")
 	private String endPoint;
 
 	/**
@@ -58,7 +58,7 @@ public class DatesController
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = "OK")
 	})
-	public ResponseEntity<BanListStartDates> startDatesOfBanLists()
+	public ResponseEntity<BanListStartDates> getStartDatesOfBanLists()
 	{
 		MDC.put("reqIp", request.getRemoteHost());
 		MDC.put("reqRes", endPoint);

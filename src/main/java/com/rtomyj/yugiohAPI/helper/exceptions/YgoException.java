@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class YgoException extends Exception
+public class YgoException extends RuntimeException
 {
 	private static final long serialVersionUID = 1L;
 

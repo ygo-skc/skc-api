@@ -12,7 +12,7 @@ public class DateConfig
 {
 
 	@Bean("dbSimpleDateFormat")
-	public SimpleDateFormat getDBSimpleDateFormat()
+	public static SimpleDateFormat getDBSimpleDateFormat()
 	{
 		return new SimpleDateFormat("yyyy-MM-dd");
 	}
