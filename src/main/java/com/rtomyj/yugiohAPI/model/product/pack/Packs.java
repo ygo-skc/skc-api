@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model.pack;
+package com.rtomyj.yugiohAPI.model.product.pack;
 
 import java.util.List;
 

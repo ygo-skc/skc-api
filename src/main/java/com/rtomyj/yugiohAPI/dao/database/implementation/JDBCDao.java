@@ -18,8 +18,8 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.pack.Pack;
-import com.rtomyj.yugiohAPI.model.pack.PackContent;
+import com.rtomyj.yugiohAPI.model.product.pack.Pack;
+import com.rtomyj.yugiohAPI.model.product.pack.PackContent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -396,7 +396,7 @@ public class JDBCDao implements Dao
 						.packReleaseDate(dateFormat.parse(row.getString(4)))
 						.packTotal(row.getInt(5))
 						.productType(row.getString(6))
-						.packRarityCount(this.getPackRarityCount(row.getString(1)))
+						.packRarityCount(this.getProductRarityCount(row.getString(1)))
 						.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
@@ -409,10 +409,10 @@ public class JDBCDao implements Dao
 
 
 
-	public Map<String, Integer> getPackRarityCount(final String packId)
+	public Map<String, Integer> getProductRarityCount(final String productId)
 	{
 		final MapSqlParameterSource queryParams = new MapSqlParameterSource();
-		queryParams.addValue("packId", packId);
+		queryParams.addValue("productId", productId);
 
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_product_RARITY_INFO, queryParams, (ResultSet row) -> {
 			final Map<String, Integer> rarities = new HashMap<>();
@@ -450,7 +450,7 @@ public class JDBCDao implements Dao
 							.packReleaseDate(dateFormat.parse(row.getString(4)))
 							.packTotal(row.getInt(5))
 							.productType(row.getString(6))
-							.packRarityCount(this.getPackRarityCount(row.getString(1)))
+							.packRarityCount(this.getProductRarityCount(row.getString(1)))
 							.packContent(new ArrayList<PackContent>())
 							.build();
 					} catch (ParseException e) {

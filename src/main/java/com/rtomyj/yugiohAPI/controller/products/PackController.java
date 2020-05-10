@@ -2,8 +2,8 @@ package com.rtomyj.yugiohAPI.controller.products;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.rtomyj.yugiohAPI.model.pack.Pack;
-import com.rtomyj.yugiohAPI.model.pack.Packs;
+import com.rtomyj.yugiohAPI.model.product.pack.Pack;
+import com.rtomyj.yugiohAPI.model.product.pack.Packs;
 import com.rtomyj.yugiohAPI.service.products.PackService;
 
 import org.springframework.beans.factory.annotation.Autowired;

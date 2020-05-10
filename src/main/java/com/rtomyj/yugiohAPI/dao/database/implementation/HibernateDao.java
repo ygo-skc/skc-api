@@ -14,7 +14,7 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.pack.Pack;
+import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -112,7 +112,7 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-	public Map<String, Integer> getPackRarityCount(final String packId)
+	public Map<String, Integer> getProductRarityCount(final String packId)
 	{
 		return null;
 	}

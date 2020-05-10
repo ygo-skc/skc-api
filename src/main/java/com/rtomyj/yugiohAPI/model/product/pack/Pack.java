@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model.pack;
+package com.rtomyj.yugiohAPI.model.product.pack;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

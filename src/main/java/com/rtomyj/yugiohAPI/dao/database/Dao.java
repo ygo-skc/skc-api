@@ -7,7 +7,7 @@ import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.pack.Pack;
+import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 
 /**
  * Contract for database operations.
@@ -126,7 +126,9 @@ public interface Dao
 
 	public List<Pack> getAllPackDetails();
 
-	public Map<String, Integer> getPackRarityCount(final String packId);
+	public Map<String, Integer> getProductRarityCount(final String packId);
 
 	public Pack getPackContents(final String packId, final String locale);
+
+	//public List<Pack> getStructureDeckDetails();
 }
