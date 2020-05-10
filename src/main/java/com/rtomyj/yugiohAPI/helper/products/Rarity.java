@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.helper.pack;
+package com.rtomyj.yugiohAPI.helper.products;
 
 
 public enum Rarity

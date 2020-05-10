@@ -1,6 +1,5 @@
 package com.rtomyj.yugiohAPI.model.pack;
 
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -11,7 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.rtomyj.yugiohAPI.controller.packs.AvailablePacksController;
+import com.rtomyj.yugiohAPI.controller.products.PackController;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -36,21 +35,24 @@ import lombok.With;
 @JsonInclude(Include.NON_EMPTY)
 public class Pack extends RepresentationModel<Pack>
 {
+
 	private String packId;
+	private String locale;
 	private String packName;
+	private String productType;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date packReleaseDate;
 	private Integer packTotal;
 	private Map<String, Integer> packRarityCount;
 	private List<PackContent> packContent;
 
-	private static final Class<AvailablePacksController> controllerClass = AvailablePacksController.class;
+	private static final Class<PackController> controllerClass = PackController.class;
 
 
 	private void setLink()
 	{
 		this.add(
-			linkTo(methodOn(controllerClass).getPack(packId)).withSelfRel()
+			linkTo(methodOn(controllerClass).getPack(packId, locale)).withSelfRel()
 		);
 	}
 

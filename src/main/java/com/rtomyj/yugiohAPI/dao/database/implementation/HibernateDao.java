@@ -102,7 +102,12 @@ public class HibernateDao implements Dao
 		return false;
 	}
 
-	public List<Pack> getAvailablePacks()
+	public List<Pack> getAllPackDetails()
+	{
+		return null;
+	}
+
+	public Map<String, Integer> getAllPackDetails(final String packId)
 	{
 		return null;
 	}
@@ -112,7 +117,7 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-	public Pack getPackContents(final String packId)
+	public Pack getPackContents(final String packId, final String locale)
 	{
 		return null;
 	}

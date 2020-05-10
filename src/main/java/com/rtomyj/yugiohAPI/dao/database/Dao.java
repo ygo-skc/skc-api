@@ -124,9 +124,9 @@ public interface Dao
 
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 
-	public List<Pack> getAvailablePacks();
+	public List<Pack> getAllPackDetails();
 
 	public Map<String, Integer> getPackRarityCount(final String packId);
 
-	public Pack getPackContents(final String packId);
+	public Pack getPackContents(final String packId, final String locale);
 }

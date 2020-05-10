@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.service.packs;
+package com.rtomyj.yugiohAPI.service.products;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.pack.Pack;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AvailablePacksService
+public class PackService
 {
 
 	@Autowired
@@ -20,7 +20,7 @@ public class AvailablePacksService
 	{
 		final Packs allPacks = Packs
 			.builder()
-			.packs(dao.getAvailablePacks())
+			.packs(dao.getAllPackDetails())
 			.build();
 
 		Pack.setLinks(allPacks.getPacks());
@@ -30,9 +30,9 @@ public class AvailablePacksService
 
 
 
-	public Pack getPack(final String packId)
+	public Pack getPack(final String packId, final String locale)
 	{
-		final Pack pack = dao.getPackContents(packId);
+		final Pack pack = dao.getPackContents(packId, locale);
 		pack.setLinks();
 
 		return pack;

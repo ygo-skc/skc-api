@@ -30,18 +30,18 @@ CREATE TABLE ban_lists
 
 CREATE TABLE packs
 (
-	pack_id VARCHAR(9),
-	pack_name VARCHAR(50) NOT NULL,
-	pack_release_date DATE NOT NULL,
-	PRIMARY KEY(pack_id)
+	product_id VARCHAR(9),
+	product_name VARCHAR(50) NOT NULL,
+	product_release_date DATE NOT NULL,
+	PRIMARY KEY(product_id)
 );
 
-CREATE TABLE pack_details
+CREATE TABLE product_details
 (
-	pack_id VARCHAR(9),
-	card_pack_position varchar(3) NOT NULL,
+	product_id VARCHAR(9),
+	product_position varchar(3) NOT NULL,
 	card_number VARCHAR(8) NOT NULL,
-	PRIMARY KEY(pack_id, card_pack_position),
-	FOREIGN KEY(pack_id) REFERENCES packs(pack_id),
+	PRIMARY KEY(product_id, product_position),
+	FOREIGN KEY(product_id) REFERENCES packs(product_id),
 	FOREIGN KEY(card_number) REFERENCES cards(card_number)
 );

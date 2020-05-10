@@ -1,10 +1,10 @@
-package com.rtomyj.yugiohAPI.controller.packs;
+package com.rtomyj.yugiohAPI.controller.products;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.model.pack.Pack;
 import com.rtomyj.yugiohAPI.model.pack.Packs;
-import com.rtomyj.yugiohAPI.service.packs.AvailablePacksService;
+import com.rtomyj.yugiohAPI.service.products.PackService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
-@RequestMapping(path = "/api/v1/packs", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "/api/v1/products/packs", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
-public class AvailablePacksController
+public class PackController
 {
 
-	private AvailablePacksService availablePacksService;
+	private PackService availablePacksService;
 	private HttpServletRequest request;
 
 
 	@Autowired
-	public AvailablePacksController(final AvailablePacksService availablePacksService, final HttpServletRequest request)
+	public PackController(final PackService availablePacksService, final HttpServletRequest request)
 	{
 		this.availablePacksService = availablePacksService;
 		this.request = request;
@@ -45,9 +45,9 @@ public class AvailablePacksController
 
 
 
-	@GetMapping("/{packId}")
-	public ResponseEntity<Pack> getPack(@PathVariable("packId") final String packId)
+	@GetMapping("/{packId}/{locale}")
+	public ResponseEntity<Pack> getPack(@PathVariable("packId") final String packId, @PathVariable("locale") final String locale)
 	{
-		return ResponseEntity.ok(availablePacksService.getPack(packId));
+		return ResponseEntity.ok(availablePacksService.getPack(packId, locale.toUpperCase()));
 	}
 }

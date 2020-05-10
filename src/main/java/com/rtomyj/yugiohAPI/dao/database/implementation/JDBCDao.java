@@ -13,6 +13,7 @@ import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
+import com.rtomyj.yugiohAPI.helper.products.ProductType;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
@@ -373,10 +374,15 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Pack> getAvailablePacks()
+	public List<Pack> getAllPackDetails()
 	{
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("productType", ProductType.BOOSTER.toString());
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_AVAILABLE_PACKS, (ResultSet row) -> {
+		System.out.println(sqlParams);
+		System.out.println(DbQueryConstants.GET_AVAILABLE_PACKS);
+
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_AVAILABLE_PACKS, sqlParams, (ResultSet row) -> {
 			List<Pack> availablePacks = new ArrayList<>();
 
 			while (row.next())
@@ -385,9 +391,11 @@ public class JDBCDao implements Dao
 					availablePacks.add(Pack
 						.builder()
 						.packId(row.getString(1))
-						.packName(row.getString(2))
-						.packReleaseDate(dateFormat.parse(row.getString(3)))
-						.packTotal(row.getInt(4))
+						.locale(row.getString(2))
+						.packName(row.getString(3))
+						.packReleaseDate(dateFormat.parse(row.getString(4)))
+						.packTotal(row.getInt(5))
+						.productType(row.getString(6))
 						.packRarityCount(this.getPackRarityCount(row.getString(1)))
 						.build());
 				} catch (ParseException e) {
@@ -406,7 +414,7 @@ public class JDBCDao implements Dao
 		final MapSqlParameterSource queryParams = new MapSqlParameterSource();
 		queryParams.addValue("packId", packId);
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_PACK_RARITY_INFO, queryParams, (ResultSet row) -> {
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_product_RARITY_INFO, queryParams, (ResultSet row) -> {
 			final Map<String, Integer> rarities = new HashMap<>();
 
 			while (row.next())
@@ -420,12 +428,13 @@ public class JDBCDao implements Dao
 
 
 
-	public Pack getPackContents(final String packId)
+	public Pack getPackContents(final String packId, final String locale)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("packId", packId);
+		sqlParams.addValue("locale", locale);
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_PACK_DETAILS, sqlParams, (ResultSet row) -> {
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_product_DETAILS, sqlParams, (ResultSet row) -> {
 			Pack pack = null;
 
 			while (row.next())
@@ -436,9 +445,11 @@ public class JDBCDao implements Dao
 						pack = Pack
 							.builder()
 							.packId(row.getString(1))
-							.packName(row.getString(2))
-							.packReleaseDate(dateFormat.parse(row.getString(3)))
-							.packTotal(row.getInt(4))
+							.locale(row.getString(2))
+							.packName(row.getString(3))
+							.packReleaseDate(dateFormat.parse(row.getString(4)))
+							.packTotal(row.getInt(5))
+							.productType(row.getString(6))
 							.packRarityCount(this.getPackRarityCount(row.getString(1)))
 							.packContent(new ArrayList<PackContent>())
 							.build();
@@ -448,19 +459,19 @@ public class JDBCDao implements Dao
 				}
 				pack.getPackContent().add(PackContent
 					.builder()
-					.position(row.getInt(5))
-					.rarity(row.getString(6))
+					.position(row.getInt(7))
+					.rarity(row.getString(8))
 					.card(Card
 						.builder()
-							.cardID(row.getString(7))
-							.cardColor(row.getString(8))
-							.cardName(row.getString(9))
-							.cardAttribute(row.getString(10))
-							.cardEffect(row.getString(11))
-							.monsterType(row.getString(12))
-							.monsterAttack(row.getObject(13, Integer.class))
-							.monsterDefense(row.getObject(14, Integer.class))
-							.monsterAssociation(row.getString(15))
+							.cardID(row.getString(9))
+							.cardColor(row.getString(10))
+							.cardName(row.getString(11))
+							.cardAttribute(row.getString(12))
+							.cardEffect(row.getString(13))
+							.monsterType(row.getString(14))
+							.monsterAttack(row.getObject(15, Integer.class))
+							.monsterDefense(row.getObject(16, Integer.class))
+							.monsterAssociation(row.getString(17))
 						.build())
 					.build());
 			}
