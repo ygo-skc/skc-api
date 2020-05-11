@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
+import com.rtomyj.yugiohAPI.helper.products.ProductType;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 
 /**
@@ -124,7 +126,7 @@ public interface Dao
 
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 
-	public List<Pack> getAllPackDetails();
+	public <T extends Product> List<T> getAllProductsByType(final ProductType productType);
 
 	public Map<String, Integer> getProductRarityCount(final String packId);
 

@@ -18,6 +18,7 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 import com.rtomyj.yugiohAPI.model.product.pack.PackContent;
 
@@ -373,37 +374,38 @@ public class JDBCDao implements Dao
 	}
 
 
-
-	public List<Pack> getAllPackDetails()
+	@SuppressWarnings("unchecked")
+	public <T extends Product> List<T> getAllProductsByType(final ProductType productType)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("productType", ProductType.BOOSTER.toString());
+		sqlParams.addValue("productType", productType.toString());
 
 		System.out.println(sqlParams);
 		System.out.println(DbQueryConstants.GET_AVAILABLE_PACKS);
 
+
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_AVAILABLE_PACKS, sqlParams, (ResultSet row) -> {
-			List<Pack> availablePacks = new ArrayList<>();
+			final List<T> availableProductsList = new ArrayList<>();
 
 			while (row.next())
 			{
 				try {
-					availablePacks.add(Pack
+					availableProductsList.add((T) T
 						.builder()
-						.packId(row.getString(1))
+						.productId(row.getString(1))
 						.locale(row.getString(2))
-						.packName(row.getString(3))
-						.packReleaseDate(dateFormat.parse(row.getString(4)))
-						.packTotal(row.getInt(5))
+						.productName(row.getString(3))
+						.productReleaseDate(dateFormat.parse(row.getString(4)))
+						.productTotal(row.getInt(5))
 						.productType(row.getString(6))
-						.packRarityCount(this.getProductRarityCount(row.getString(1)))
+						.productRarityCount(this.getProductRarityCount(row.getString(1)))
 						.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
 				}
 			}
 
-			return availablePacks;
+			return availableProductsList;
 		});
 	}
 
@@ -444,20 +446,20 @@ public class JDBCDao implements Dao
 					try {
 						pack = Pack
 							.builder()
-							.packId(row.getString(1))
+							.productId(row.getString(1))
 							.locale(row.getString(2))
-							.packName(row.getString(3))
-							.packReleaseDate(dateFormat.parse(row.getString(4)))
-							.packTotal(row.getInt(5))
+							.productName(row.getString(3))
+							.productReleaseDate(dateFormat.parse(row.getString(4)))
+							.productTotal(row.getInt(5))
 							.productType(row.getString(6))
-							.packRarityCount(this.getProductRarityCount(row.getString(1)))
-							.packContent(new ArrayList<PackContent>())
+							.productRarityCount(this.getProductRarityCount(row.getString(1)))
+							.productContent(new ArrayList<PackContent>())
 							.build();
-					} catch (ParseException e) {
+					} catch (Exception e) {
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
 					}
 				}
-				pack.getPackContent().add(PackContent
+				pack.getProductContent().add(PackContent
 					.builder()
 					.position(row.getInt(7))
 					.rarity(row.getString(8))

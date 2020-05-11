@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.service.products;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.helper.products.ProductType;
 import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 import com.rtomyj.yugiohAPI.model.product.pack.Packs;
 
@@ -20,10 +21,10 @@ public class PackService
 	{
 		final Packs allPacks = Packs
 			.builder()
-			.packs(dao.getAllPackDetails())
+			.packs( dao.getAllProductsByType(ProductType.BOOSTER) )
 			.build();
 
-		Pack.setLinks(allPacks.getPacks());
+		//Pack.setLinks(allPacks.getPacks());
 
 		return allPacks;
 	}
@@ -33,7 +34,7 @@ public class PackService
 	public Pack getPack(final String packId, final String locale)
 	{
 		final Pack pack = dao.getPackContents(packId, locale);
-		pack.setLinks();
+		//pack.setLinks();
 
 		return pack;
 	}

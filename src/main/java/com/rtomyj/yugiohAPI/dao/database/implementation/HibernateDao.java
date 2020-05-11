@@ -10,10 +10,12 @@ import javax.persistence.criteria.Root;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
+import com.rtomyj.yugiohAPI.helper.products.ProductType;
 import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 
 import org.hibernate.Session;
@@ -107,7 +109,7 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-	public Map<String, Integer> getAllPackDetails(final String packId)
+	public <T extends Product> List<T> getAllProductsByType(final ProductType productType)
 	{
 		return null;
 	}
