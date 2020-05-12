@@ -20,7 +20,7 @@ public class Product
 {
 
 	private String productId;
-	private String locale;
+	private String productLocale;
 	private String productName;
 	private String productType;
 

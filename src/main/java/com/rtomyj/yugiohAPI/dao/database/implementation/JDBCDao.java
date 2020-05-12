@@ -393,7 +393,7 @@ public class JDBCDao implements Dao
 					availableProductsList.add((T) T
 						.builder()
 						.productId(row.getString(1))
-						.locale(row.getString(2))
+						.productLocale(row.getString(2))
 						.productName(row.getString(3))
 						.productReleaseDate(dateFormat.parse(row.getString(4)))
 						.productTotal(row.getInt(5))
@@ -447,7 +447,7 @@ public class JDBCDao implements Dao
 						pack = Pack
 							.builder()
 							.productId(row.getString(1))
-							.locale(row.getString(2))
+							.productLocale(row.getString(2))
 							.productName(row.getString(3))
 							.productReleaseDate(dateFormat.parse(row.getString(4)))
 							.productTotal(row.getInt(5))
