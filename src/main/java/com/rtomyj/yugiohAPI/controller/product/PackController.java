@@ -1,10 +1,10 @@
-package com.rtomyj.yugiohAPI.controller.products;
+package com.rtomyj.yugiohAPI.controller.product;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.model.product.pack.Pack;
 import com.rtomyj.yugiohAPI.model.product.pack.Packs;
-import com.rtomyj.yugiohAPI.service.products.PackService;
+import com.rtomyj.yugiohAPI.service.product.PackService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

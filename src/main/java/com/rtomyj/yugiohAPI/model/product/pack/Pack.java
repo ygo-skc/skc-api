@@ -2,7 +2,7 @@ package com.rtomyj.yugiohAPI.model.product.pack;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.rtomyj.yugiohAPI.controller.products.PackController;
+import com.rtomyj.yugiohAPI.controller.product.PackController;
 import com.rtomyj.yugiohAPI.model.product.Product;
 
 import io.swagger.annotations.ApiModel;
