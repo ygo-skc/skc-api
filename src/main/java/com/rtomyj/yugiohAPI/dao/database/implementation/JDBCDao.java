@@ -19,8 +19,8 @@ import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.product.Product;
-import com.rtomyj.yugiohAPI.model.product.pack.Pack;
-import com.rtomyj.yugiohAPI.model.product.pack.PackContent;
+import com.rtomyj.yugiohAPI.model.product.ProductContent;
+import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -374,38 +374,40 @@ public class JDBCDao implements Dao
 	}
 
 
-	@SuppressWarnings("unchecked")
-	public <T extends Product> List<T> getAllProductsByType(final ProductType productType)
+	public Products getAllProductsByType(final ProductType productType, final String locale)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("productType", productType.toString());
-
+		sqlParams.addValue("productType", productType.toString().replaceAll("_", " "));
 		System.out.println(sqlParams);
 		System.out.println(DbQueryConstants.GET_AVAILABLE_PACKS);
 
 
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_AVAILABLE_PACKS, sqlParams, (ResultSet row) -> {
-			final List<T> availableProductsList = new ArrayList<>();
+			final List<Product> availableProductsList = new ArrayList<>();
 
 			while (row.next())
 			{
 				try {
-					availableProductsList.add((T) T
+					availableProductsList.add( Product
 						.builder()
-						.productId(row.getString(1))
-						.productLocale(row.getString(2))
-						.productName(row.getString(3))
-						.productReleaseDate(dateFormat.parse(row.getString(4)))
-						.productTotal(row.getInt(5))
+						.packId(row.getString(1))
+						.packLocale(row.getString(2))
+						.packName(row.getString(3))
+						.packReleaseDate(dateFormat.parse(row.getString(4)))
+						.packTotal(row.getInt(5))
 						.productType(row.getString(6))
-						.productRarityCount(this.getProductRarityCount(row.getString(1)))
+						.packRarityCount(this.getProductRarityCount(row.getString(1)))
 						.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
 				}
 			}
 
-			return availableProductsList;
+			final Products products = Products
+					.builder()
+					.packs(availableProductsList)
+					.build();
+			return products;
 		});
 	}
 
@@ -430,36 +432,36 @@ public class JDBCDao implements Dao
 
 
 
-	public Pack getPackContents(final String packId, final String locale)
+	public Product getPackContents(final String packId, final String locale)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("packId", packId);
 		sqlParams.addValue("locale", locale);
 
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_product_DETAILS, sqlParams, (ResultSet row) -> {
-			Pack pack = null;
+			Product pack = null;
 
 			while (row.next())
 			{
 				if (pack == null)
 				{
 					try {
-						pack = Pack
+						pack = Product
 							.builder()
-							.productId(row.getString(1))
-							.productLocale(row.getString(2))
-							.productName(row.getString(3))
-							.productReleaseDate(dateFormat.parse(row.getString(4)))
-							.productTotal(row.getInt(5))
+							.packId(row.getString(1))
+							.packLocale(row.getString(2))
+							.packName(row.getString(3))
+							.packReleaseDate(dateFormat.parse(row.getString(4)))
+							.packTotal(row.getInt(5))
 							.productType(row.getString(6))
-							.productRarityCount(this.getProductRarityCount(row.getString(1)))
-							.productContent(new ArrayList<PackContent>())
+							.packRarityCount(this.getProductRarityCount(row.getString(1)))
+							.packContent(new ArrayList<ProductContent>())
 							.build();
 					} catch (Exception e) {
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
 					}
 				}
-				pack.getProductContent().add(PackContent
+				pack.getPackContent().add(ProductContent
 					.builder()
 					.position(row.getInt(7))
 					.rarity(row.getString(8))

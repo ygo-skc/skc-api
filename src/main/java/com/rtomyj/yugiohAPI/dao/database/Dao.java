@@ -9,7 +9,7 @@ import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.product.Product;
-import com.rtomyj.yugiohAPI.model.product.pack.Pack;
+import com.rtomyj.yugiohAPI.model.product.Products;
 
 /**
  * Contract for database operations.
@@ -126,11 +126,10 @@ public interface Dao
 
 	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType);
 
-	public <T extends Product> List<T> getAllProductsByType(final ProductType productType);
+	public Products getAllProductsByType(final ProductType productType, final String locale);
 
 	public Map<String, Integer> getProductRarityCount(final String packId);
 
-	public Pack getPackContents(final String packId, final String locale);
+	public Product getPackContents(final String packId, final String locale);
 
-	//public List<Pack> getStructureDeckDetails();
 }

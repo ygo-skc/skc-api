@@ -1,5 +1,4 @@
-package com.rtomyj.yugiohAPI.model.product.pack;
-
+package com.rtomyj.yugiohAPI.model.product;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
-public class PackContent extends RepresentationModel<PackContent>
+public class ProductContent extends RepresentationModel<ProductContent>
 {
 	private Card card;
 	private Integer position;
@@ -29,7 +28,7 @@ public class PackContent extends RepresentationModel<PackContent>
 	}
 
 
-	public static void setLinks(@NonNull final List<PackContent> packContents)
+	public static void setLinks(@NonNull final List<ProductContent> packContents)
 	{
 		packContents
 			.stream()

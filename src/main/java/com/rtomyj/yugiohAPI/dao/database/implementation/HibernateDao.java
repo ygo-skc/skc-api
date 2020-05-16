@@ -16,7 +16,7 @@ import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.product.Product;
-import com.rtomyj.yugiohAPI.model.product.pack.Pack;
+import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -104,12 +104,12 @@ public class HibernateDao implements Dao
 		return false;
 	}
 
-	public List<Pack> getAllPackDetails()
+	public List<Product> getAllPackDetails()
 	{
 		return null;
 	}
 
-	public <T extends Product> List<T> getAllProductsByType(final ProductType productType)
+	public Products getAllProductsByType(final ProductType productType, final String locale)
 	{
 		return null;
 	}
@@ -119,7 +119,7 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-	public Pack getPackContents(final String packId, final String locale)
+	public Product getPackContents(final String packId, final String locale)
 	{
 		return null;
 	}
