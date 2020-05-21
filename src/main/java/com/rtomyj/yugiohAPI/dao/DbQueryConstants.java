@@ -16,5 +16,5 @@ public class DbQueryConstants
 
 	public static final String GET_product_RARITY_INFO = "SELECT card_rarity, count(*) FROM product_details WHERE product_id = :productId GROUP BY card_rarity ORDER by card_rarity";
 
-	public static final String GET_product_DETAILS = "SELECT product_id, product_locale, product_name, product_release_date, product_total, product_type, product_position, card_rarity, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association, monster_links, monster_scales FROM product_contents WHERE product_id = :packId ORDER BY product_position AND product_locale = :locale";
+	public static final String GET_product_DETAILS = "SELECT product_id, product_locale, product_name, product_release_date, product_total, product_type, product_position, card_rarity, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association, monster_links, monster_scales FROM product_contents WHERE product_id = :packId AND product_locale = :locale ORDER BY product_position";
 }
