@@ -8,6 +8,7 @@ import com.rtomyj.yugiohAPI.helper.products.ProductType;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
@@ -131,5 +132,7 @@ public interface Dao
 	public Map<String, Integer> getProductRarityCount(final String packId);
 
 	public Product getPackContents(final String packId, final String locale);
+
+	public MonsterType getMonsterTypeStats(final String cardColor);
 
 }

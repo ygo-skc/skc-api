@@ -15,6 +15,7 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
@@ -123,5 +124,7 @@ public class HibernateDao implements Dao
 	{
 		return null;
 	}
+
+	public MonsterType getMonsterTypeStats(final String cardColor){ return null; }
 
 }

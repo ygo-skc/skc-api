@@ -18,12 +18,14 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.namedparam.AbstractSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -483,4 +485,28 @@ public class JDBCDao implements Dao
 			return pack;
 		});
 	}
+
+
+	public MonsterType getMonsterTypeStats(@NonNull final String cardColor)
+	{
+		final String query = "SELECT monster_type, count(*) AS 'Total' FROM card_info WHERE monster_type IS NOT NULL AND card_color = :cardColor GROUP BY monster_type ORDER BY monster_type";
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("cardColor", cardColor);
+
+
+		MonsterType monsterType = MonsterType.builder()
+				.scope(cardColor)
+				.monsterTypes(new HashMap<>())
+				.build();
+
+		jdbcNamedTemplate.query(query, sqlParams, (ResultSet row, int rowNum) -> {
+			monsterType.getMonsterTypes().put(row.getString(1), row.getInt(2));
+
+			return null;
+		});
+
+		return monsterType;
+	}
+
 }
