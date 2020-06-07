@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
 
+import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
 
 import lombok.Builder;
@@ -25,6 +26,7 @@ import lombok.Data;
  * Entity describing the ban_lists table in mysql DB.
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Builder
 @Entity
 @Table(name = "ban_lists")

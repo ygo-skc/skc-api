@@ -8,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.rtomyj.yugiohAPI.controller.CardController;
 
+import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @ApiModel(description = "Contains information about a card. Gets the state of the card in the previous ban list compared to a chosen ban list.")
 @JsonPropertyOrder({ "id", "name", "previousState" })

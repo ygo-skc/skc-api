@@ -10,15 +10,13 @@ import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
 import com.rtomyj.yugiohAPI.controller.banlist.NewController;
 import com.rtomyj.yugiohAPI.controller.banlist.RemovedController;
 
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

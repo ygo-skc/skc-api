@@ -4,14 +4,11 @@ import java.util.List;
 
 import com.rtomyj.yugiohAPI.model.Card;
 
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.ToString;
-
 @Data
+@EqualsAndHashCode(callSuper=false)
 @ToString
 @Builder
 public class ProductContent extends RepresentationModel<ProductContent>

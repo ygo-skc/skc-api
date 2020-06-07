@@ -5,12 +5,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Builder
 @JsonInclude(Include.NON_EMPTY)
 public class Products extends RepresentationModel<Products>
