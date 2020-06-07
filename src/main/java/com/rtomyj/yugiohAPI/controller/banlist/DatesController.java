@@ -18,6 +18,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
@@ -28,6 +30,7 @@ import io.swagger.annotations.ApiResponses;
 	, tags = "Ban List")
 public class DatesController
 {
+
 	/**
 	 * Service object used to interface the database DAO
 	 */
@@ -68,4 +71,5 @@ public class DatesController
 		MDC.clear();
 		return ResponseEntity.ok(banListStartDates);
 	}
+
 }

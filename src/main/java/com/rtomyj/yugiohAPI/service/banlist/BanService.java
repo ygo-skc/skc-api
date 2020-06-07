@@ -16,13 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BanService
 {
+
 	/**
 	 * DB access object.
 	 */
 	@Autowired
 	@Qualifier("hibernate")
 	private Dao dao;
-
 
 
 	/**
@@ -32,8 +32,9 @@ public class BanService
 	{
 		log.info("Sending list of ban list start dates.");
 		final BanListStartDates banListStartDates = dao.getBanListStartDates();
-		banListStartDates.setLinks();
+//		banListStartDates.setLinks();
 
 		return banListStartDates;
 	}
+
 }

@@ -24,19 +24,22 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 /**
  * Hibernate implementation of DB DAO interface.
  */
 @Repository("hibernate")
 public class HibernateDao implements Dao
 {
+
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
 
-
 	@Override
-	public BanListStartDates getBanListStartDates() {
+	public BanListStartDates getBanListStartDates()
+	{
+
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
@@ -52,7 +55,9 @@ public class HibernateDao implements Dao
 
 		session.close();
 		return banListStartDates;
+
 	}
+
 
 	@Override
 	public Card getCardInfo(String cardID) throws YgoException
