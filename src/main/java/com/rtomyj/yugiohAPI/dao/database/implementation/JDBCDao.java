@@ -18,6 +18,7 @@ import com.rtomyj.yugiohAPI.model.BanList;
 import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.AbstractSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import lombok.NonNull;
@@ -507,6 +509,21 @@ public class JDBCDao implements Dao
 		});
 
 		return monsterType;
+	}
+
+
+	public DatabaseStats getDatabaseStats()
+	{
+		final String query = "SELECT * FROM totals";
+
+		return jdbcNamedTemplate.queryForObject(query, (SqlParameterSource) null, (ResultSet row, int rowNum) -> {
+			return DatabaseStats
+					.builder()
+					.productTotal(row.getInt(1))
+					.cardTotal(row.getInt(2))
+					.banListTotal(row.getInt(3))
+					.build();
+		});
 	}
 
 }

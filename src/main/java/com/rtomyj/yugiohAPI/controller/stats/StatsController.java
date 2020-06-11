@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.controller.stats;
 
 import com.google.inject.internal.util.Strings;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1/card/stats")
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class StatsController
@@ -24,10 +25,19 @@ public class StatsController
     private Dao dao;
 
 
-    @GetMapping("/monster_type/{cardColor}")
+    @GetMapping("/card/stats/monster_type/{cardColor}")
     public MonsterType getMonsterTypeByColor(@NonNull @PathVariable("cardColor") final String cardColor)
     {
         return dao.getMonsterTypeStats(Strings.capitalize(cardColor));
+    }
+
+
+    @GetMapping("/stats")
+    public DatabaseStats getDatabaseStats()
+    {
+        // TODO: add loggers
+        log.info("Stat base endpoint hit");
+        return dao.getDatabaseStats();
     }
 
 }

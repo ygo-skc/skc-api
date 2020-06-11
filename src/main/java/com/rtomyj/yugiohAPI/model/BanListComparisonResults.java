@@ -1,20 +1,18 @@
 package com.rtomyj.yugiohAPI.model;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.rtomyj.yugiohAPI.controller.CardController;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.rtomyj.yugiohAPI.controller.CardController;
-
-import lombok.EqualsAndHashCode;
-import org.springframework.hateoas.RepresentationModel;
-
-import io.swagger.annotations.ApiModel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -52,4 +50,5 @@ public class BanListComparisonResults extends RepresentationModel<BanListCompari
 		comparisonResults
 			.forEach(comparisonResult -> comparisonResult.setLinks());
 	}
+
 }
