@@ -26,7 +26,6 @@ import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.namedparam.AbstractSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -422,7 +421,7 @@ public class JDBCDao implements Dao
 		final MapSqlParameterSource queryParams = new MapSqlParameterSource();
 		queryParams.addValue("productId", productId);
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_product_RARITY_INFO, queryParams, (ResultSet row) -> {
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_RARITY_INFO, queryParams, (ResultSet row) -> {
 			final Map<String, Integer> rarities = new HashMap<>();
 
 			while (row.next())
@@ -442,7 +441,7 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("packId", packId);
 		sqlParams.addValue("locale", locale);
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_product_DETAILS, sqlParams, (ResultSet row) -> {
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_DETAILS, sqlParams, (ResultSet row) -> {
 			Product pack = null;
 
 			while (row.next())
@@ -514,9 +513,7 @@ public class JDBCDao implements Dao
 
 	public DatabaseStats getDatabaseStats()
 	{
-		final String query = "SELECT * FROM totals";
-
-		return jdbcNamedTemplate.queryForObject(query, (SqlParameterSource) null, (ResultSet row, int rowNum) -> {
+		return jdbcNamedTemplate.queryForObject(DbQueryConstants.GET_DATABASE_TOTALS, (SqlParameterSource) null, (ResultSet row, int rowNum) -> {
 			return DatabaseStats
 					.builder()
 					.productTotal(row.getInt(1))
