@@ -519,6 +519,7 @@ public class JDBCDao implements Dao
 					.productTotal(row.getInt(1))
 					.cardTotal(row.getInt(2))
 					.banListTotal(row.getInt(3))
+					.yearsOfBanListCoverage(row.getInt(4))
 					.build();
 		});
 	}

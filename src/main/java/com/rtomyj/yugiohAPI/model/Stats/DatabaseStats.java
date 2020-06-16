@@ -12,5 +12,6 @@ public class DatabaseStats
     private int productTotal;
     private int cardTotal;
     private int banListTotal;
+    private int yearsOfBanListCoverage;
 
 }
