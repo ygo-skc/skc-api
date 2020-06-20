@@ -2,8 +2,8 @@ package com.rtomyj.yugiohAPI.helper.products;
 
 public enum ProductType
 {
-	BOOSTER("BOOSTER")
-	, STRUCTURE_DECK("STRUCTURE_DECK");
+	PACK("PACK")
+	, DECK("DECK");
 
 	private final String productType;
 

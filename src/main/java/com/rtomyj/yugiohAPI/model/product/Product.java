@@ -40,6 +40,7 @@ public class Product extends RepresentationModel<Product>
 	private String packLocale;
 	private String packName;
 	private String productType;
+	private String productSubType;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date packReleaseDate;
 	private Integer packTotal;

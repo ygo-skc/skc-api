@@ -411,15 +411,16 @@ public class JDBCDao implements Dao
 			{
 				try {
 					availableProductsList.add( Product
-						.builder()
-						.packId(row.getString(1))
-						.packLocale(row.getString(2))
-						.packName(row.getString(3))
-						.packReleaseDate(dateFormat.parse(row.getString(4)))
-						.packTotal(row.getInt(5))
-						.productType(row.getString(6))
-						.packRarityCount(this.getProductRarityCount(row.getString(1)))
-						.build());
+							.builder()
+							.packId(row.getString(1))
+							.packLocale(row.getString(2))
+							.packName(row.getString(3))
+							.packReleaseDate(dateFormat.parse(row.getString(4)))
+							.packTotal(row.getInt(5))
+							.productType(row.getString(6))
+							.productSubType(row.getString(7))
+							.packRarityCount(this.getProductRarityCount(row.getString(1)))
+							.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
 				}
@@ -427,7 +428,7 @@ public class JDBCDao implements Dao
 
 			final Products products = Products
 					.builder()
-					.packs(availableProductsList)
+					.products(availableProductsList)
 					.build();
 			return products;
 		});
@@ -469,35 +470,36 @@ public class JDBCDao implements Dao
 				{
 					try {
 						pack = Product
-							.builder()
-							.packId(row.getString(1))
-							.packLocale(row.getString(2))
-							.packName(row.getString(3))
-							.packReleaseDate(dateFormat.parse(row.getString(4)))
-							.packTotal(row.getInt(5))
-							.productType(row.getString(6))
-							.packRarityCount(this.getProductRarityCount(row.getString(1)))
-							.packContent(new ArrayList<ProductContent>())
-							.build();
+								.builder()
+								.packId(row.getString(1))
+								.packLocale(row.getString(2))
+								.packName(row.getString(3))
+								.packReleaseDate(dateFormat.parse(row.getString(4)))
+								.packTotal(row.getInt(5))
+								.productType(row.getString(6))
+								.productSubType(row.getString(7))
+								.packRarityCount(this.getProductRarityCount(row.getString(1)))
+								.packContent(new ArrayList<ProductContent>())
+								.build();
 					} catch (Exception e) {
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
 					}
 				}
 				pack.getPackContent().add(ProductContent
 					.builder()
-					.position(row.getInt(7))
-					.rarity(row.getString(8))
+					.position(row.getInt(8))
+					.rarity(row.getString(9))
 					.card(Card
 						.builder()
-							.cardID(row.getString(9))
-							.cardColor(row.getString(10))
-							.cardName(row.getString(11))
-							.cardAttribute(row.getString(12))
-							.cardEffect(row.getString(13))
-							.monsterType(row.getString(14))
-							.monsterAttack(row.getObject(15, Integer.class))
-							.monsterDefense(row.getObject(16, Integer.class))
-							.monsterAssociation(row.getString(17))
+							.cardID(row.getString(10))
+							.cardColor(row.getString(11))
+							.cardName(row.getString(12))
+							.cardAttribute(row.getString(13))
+							.cardEffect(row.getString(14))
+							.monsterType(row.getString(15))
+							.monsterAttack(row.getObject(16, Integer.class))
+							.monsterDefense(row.getObject(17, Integer.class))
+							.monsterAssociation(row.getString(18))
 						.build())
 					.build());
 			}

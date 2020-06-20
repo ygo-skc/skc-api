@@ -17,7 +17,7 @@ import lombok.Data;
 @JsonInclude(Include.NON_EMPTY)
 public class Products extends RepresentationModel<Products>
 {
-	private List<Product> packs;
+	private List<Product> products;
 
 	private Class<Products> controllerClass;
 
@@ -36,7 +36,7 @@ public class Products extends RepresentationModel<Products>
 	public void setLinks()
 	{
 		this.setLink();
-		Product.setLinks(packs);
+		Product.setLinks(products);
 	}
 
 }
