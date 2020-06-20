@@ -102,7 +102,7 @@ public class HibernateDao implements Dao
 	}
 
 	@Override
-	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType)
+	public List<Card> getCardNameByCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit)
 	{
 		return null;
 	}

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class JDBCDao implements Dao
 	@Autowired
 	@Qualifier("dbSimpleDateFormat")
 	private SimpleDateFormat dateFormat;
-
+	private int numUniqueCardsParsed;
 
 
 	@Override
@@ -284,21 +285,34 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Card> getCardNameByCriteria(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType)
+	public List<Card> getCardNameByCriteria(
+			String cardId
+			, String cardName
+			, String cardAttribute
+			, String cardColor
+			, String monsterType
+			, final int limit
+	)
 	{
-		cardId = new StringBuilder().append('%').append(cardId).append('%').toString();
-		cardName = new StringBuilder().append('%').append(cardName).append('%').toString();
+		cardId = '%' + cardId + '%';
+		cardName = '%' + cardName + '%';
 
 		cardAttribute = (cardAttribute.isEmpty())? ".*" : cardAttribute;
 		cardColor = (cardColor.isEmpty())? ".*" : cardColor;
 		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
 
+
 		final String query = new StringBuilder()
-			.append("SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status")
-			.append(" FROM search")
-			.append(" WHERE card_number LIKE :cardId AND card_name LIKE :cardName")
-			.append(" AND card_attribute REGEXP :cardAttribute AND card_color REGEXP :cardColor AND IFNULL(monster_type, '') REGEXP :monsterType ORDER BY color_id, card_name, ban_list_date DESC")
-			.toString();
+				.append("SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status")
+				.append(" FROM search")
+				.append(" WHERE card_number LIKE :cardId")
+				.append(" AND card_name LIKE :cardName")
+				.append(" AND card_attribute REGEXP :cardAttribute")
+				.append(" AND card_color REGEXP :cardColor")
+				.append(" AND IFNULL(monster_type, '') REGEXP :monsterType")
+				.append(" ORDER BY color_id, card_name ASC")
+				.toString();
+		log.info(query);
 
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
@@ -318,7 +332,8 @@ public class JDBCDao implements Dao
 				An array within the Card object will then be used to keep track of all the ban lists the card was a part of. The array will be updated
 				 every time a new row has new ban list info of a card already in the map.
 			*/
-			final Map<String, Card> cardInfoTracker = new HashMap<>();
+			final Map<String, Card> cardInfoTracker = new LinkedHashMap<>();
+			int numUniqueCardsParsed = 0;
 
 			while (row.next())
 			{
@@ -326,6 +341,8 @@ public class JDBCDao implements Dao
 
 				if (card == null)
 				{
+					if (numUniqueCardsParsed == limit)	break;
+
 					card = Card.builder()
 						.cardID(row.getString(1))
 						.cardColor(row.getString(2))
@@ -338,6 +355,8 @@ public class JDBCDao implements Dao
 						.restrictedIn(new ArrayList<>())
 						.build();
 						cardInfoTracker.put(card.getCardID(), card);
+
+						numUniqueCardsParsed++;
 				}
 
 				try

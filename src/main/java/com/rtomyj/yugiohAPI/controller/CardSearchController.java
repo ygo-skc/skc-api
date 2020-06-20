@@ -21,20 +21,25 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = {"*"})
 public class CardSearchController
 {
+
 	@Autowired
 	private CardService cardService;
 
 	@GetMapping
-	public ResponseEntity<List<Card>> postMethodName(@RequestParam(name = "cId", required = false, defaultValue="") String cardId
-		, @RequestParam(name = "cName", required = false, defaultValue="") String cardName
-		, @RequestParam(name = "cAttribute", required = false, defaultValue="") String cardAttribute
-		, @RequestParam(name = "cColor", required = false, defaultValue="") String cardColor
-		, @RequestParam(name = "mType", required = false, defaultValue="") String monsterType
-		, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth)throws YgoException
+	public ResponseEntity<List<Card>> searchByCriteria(
+			@RequestParam(name = "cId", required = false, defaultValue="") final String cardId
+			, @RequestParam(name = "cName", required = false, defaultValue="") final String cardName
+			, @RequestParam(name = "cAttribute", required = false, defaultValue="") final String cardAttribute
+			, @RequestParam(name = "cColor", required = false, defaultValue="") final String cardColor
+			, @RequestParam(name = "mType", required = false, defaultValue="") final String monsterType
+			, @RequestParam(name = "limit", required = false, defaultValue = "-1") final int limit
+			, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth)
+			throws YgoException
 	{
-		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, saveBandwidth);
 
+		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth);
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
+
 	}
 
 }
