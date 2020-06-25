@@ -83,13 +83,14 @@ public class CardsController {
 		, @ApiResponse(code = 404, message = "No resource for requested ban list start date")
 	})
 	public ResponseEntity<BanListInstance> getBannedCards(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable String banListStartDate
-		, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth)
-		throws YgoException
+			, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth
+			, @RequestParam(name = "allInfo", required = false, defaultValue = "false") boolean fetchAllInfo)
+			throws YgoException
 	{
 		MDC.put("reqIp", request.getRemoteHost());
 		MDC.put("reqRes", endPoint);
 
-		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth);
+		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth, fetchAllInfo);
 		log.info("Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
 
 		MDC.clear();

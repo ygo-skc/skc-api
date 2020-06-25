@@ -29,7 +29,7 @@ import lombok.With;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Describes and contains information about a specific ban list.")
-@JsonTypeName("bannedCards")
+@JsonTypeName("banListInstance")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonPropertyOrder({ "startDate", "numForbidden", "numLimited", "numSemiLimited", "forbidden", "limited",
 		"semiLimited" })
@@ -39,9 +39,13 @@ public class BanListInstance extends RepresentationModel<BanListInstance>
 	private int numForbidden;
 	private int numLimited;
 	private int numSemiLimited;
+
 	private List<Card> forbidden;
 	private List<Card> limited;
 	private List<Card> semiLimited;
+
+	private BanListNewContent newContent;
+	private BanListRemovedContent removedContent;
 
 	private static final Class<CardsController> banListController = CardsController.class;
 
@@ -51,7 +55,7 @@ public class BanListInstance extends RepresentationModel<BanListInstance>
 		throws YgoException
 	{
 		this.add(
-			linkTo(methodOn(banListController).getBannedCards(startDate, lowBandwidth))
+			linkTo(methodOn(banListController).getBannedCards(startDate, lowBandwidth, true))
 				.withSelfRel()
 		);
 

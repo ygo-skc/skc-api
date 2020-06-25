@@ -43,7 +43,7 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 		);
 
 		this.add(
-			linkTo(methodOn(banListController).getBannedCards(listRequested, false)).withRel("banlist")
+			linkTo(methodOn(banListController).getBannedCards(listRequested, false, true)).withRel("banlist")
 		);
 
 		this.add(

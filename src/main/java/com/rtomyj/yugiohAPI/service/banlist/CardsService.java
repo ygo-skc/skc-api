@@ -11,6 +11,7 @@ import com.rtomyj.yugiohAPI.model.Card;
 
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
+import org.custommonkey.xmlunit.Diff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -43,17 +44,22 @@ public class CardsService
 	private final Cache<String, BanListInstance>  BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 
 
+	private  final DiffService diffService;
+
 
 	@Autowired
-	public CardsService(@Qualifier("jdbc") final Dao dao)
+	public CardsService(@Qualifier("jdbc") final Dao dao, final DiffService diffService)
 	{
 		this.dao = dao;
+		this.diffService = diffService;
+
 		this.BAN_LIST_CARDS_CACHE = new Cache2kBuilder<String, BanListInstance>() {}
 			.expireAfterWrite(7, TimeUnit.DAYS)
 			.entryCapacity(1000)
 			.permitNullValues(false)
 			.loader(this::onCacheMiss)
 			.build();
+
 		this.BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE = new Cache2kBuilder<String, BanListInstance>() {}
 			.expireAfterWrite(7, TimeUnit.DAYS)
 			.entryCapacity(1000)
@@ -70,7 +76,7 @@ public class CardsService
 	 * @param status Restriction on what kind of ban list cards to retrieve from DB (forbidden, limited, semi-limited)
 	 * @return List of Cards that satisfy the wanted criteria.
 	 */
-	public BanListInstance getBanListByBanStatus(final String banListStartDate, final boolean saveBandwidth)
+	public BanListInstance getBanListByBanStatus(final String banListStartDate, final boolean saveBandwidth, final boolean fetchAllInfo)
 		throws YgoException
 	{
 		/* Determines which cache to use depending on user bandwidth preferences */
@@ -78,7 +84,15 @@ public class CardsService
 		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
 		else	cache = BAN_LIST_CARDS_CACHE;
 
-		return cache.get(banListStartDate);
+		final BanListInstance banListInstance = cache.get(banListStartDate);
+
+		if (fetchAllInfo)
+		{
+			banListInstance.setNewContent(diffService.getNewContentOfBanList(banListStartDate));
+			banListInstance.setRemovedContent(diffService.getRemovedContentOfBanList(banListStartDate));
+		}
+
+		return banListInstance;
 	}
 
 
