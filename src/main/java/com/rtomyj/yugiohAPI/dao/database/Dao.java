@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.products.ProductType;
-import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterType;

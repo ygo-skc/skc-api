@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.banlist;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
+import com.rtomyj.yugiohAPI.model.Card;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;

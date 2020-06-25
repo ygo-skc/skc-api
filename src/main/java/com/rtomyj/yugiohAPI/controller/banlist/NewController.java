@@ -5,7 +5,7 @@ import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.BanListNewContent;
+import com.rtomyj.yugiohAPI.model.banlist.BanListNewContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
 import org.jboss.logging.MDC;

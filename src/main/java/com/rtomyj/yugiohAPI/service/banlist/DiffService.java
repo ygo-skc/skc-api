@@ -7,10 +7,10 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
-import com.rtomyj.yugiohAPI.model.BanListNewContent;
-import com.rtomyj.yugiohAPI.model.BanListRemovedContent;
-import com.rtomyj.yugiohAPI.model.NewCards;
+import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.banlist.BanListNewContent;
+import com.rtomyj.yugiohAPI.model.banlist.BanListRemovedContent;
+import com.rtomyj.yugiohAPI.model.banlist.NewCards;
 
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;

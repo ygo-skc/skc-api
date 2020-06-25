@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BanList;
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.BanList;
+import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

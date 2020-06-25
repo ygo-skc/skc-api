@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.banlist;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.rtomyj.yugiohAPI.controller.CardController;

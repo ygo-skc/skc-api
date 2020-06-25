@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.banlist;
 
 import java.io.Serializable;
 import java.util.Date;

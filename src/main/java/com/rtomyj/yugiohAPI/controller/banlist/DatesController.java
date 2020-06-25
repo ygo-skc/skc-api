@@ -2,7 +2,7 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.slf4j.MDC;

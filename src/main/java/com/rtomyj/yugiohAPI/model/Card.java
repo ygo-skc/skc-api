@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.CardController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
+import com.rtomyj.yugiohAPI.model.banlist.BanList;
+import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
