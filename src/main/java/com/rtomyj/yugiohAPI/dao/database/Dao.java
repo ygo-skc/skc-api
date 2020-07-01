@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.products.ProductType;
+import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -139,5 +140,7 @@ public interface Dao
 	public DatabaseStats getDatabaseStats();
 
 	public List<Product> getProductDetailsForCard(final String cardId);
+
+	public List<BanList> getBanListDetailsForCard(final String cardId);
 
 }

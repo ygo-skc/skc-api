@@ -55,7 +55,11 @@ public class CardService
 		throws YgoException
 	{
 		final Card card = CARD_CACHE.get(cardId);
-		if (fetchAllInfo)	card.setFoundIn(dao.getProductDetailsForCard(cardId));
+		if (fetchAllInfo)
+		{
+			card.setFoundIn(dao.getProductDetailsForCard(cardId));
+			card.setRestrictedIn(dao.getBanListDetailsForCard(cardId));
+		}
 
 		return card;
 	}

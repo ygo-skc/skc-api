@@ -581,4 +581,24 @@ public class JDBCDao implements Dao
 		});
 	}
 
+
+	public List<BanList> getBanListDetailsForCard(final String cardId)
+	{
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("cardId", cardId);
+
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_BAN_LIST_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+			try {
+				return BanList
+						.builder()
+						.banListDate(dateFormat.parse(row.getString(1)))
+						.banStatus(row.getString(2))
+						.build();
+			} catch (ParseException e) {
+				log.error("Cannot parse date from DB when retrieving ban list info for card {} with exception: {}", cardId, e.toString());
+				return null;
+			}
+		});
+	}
+
 }
