@@ -13,6 +13,8 @@ import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
+import com.rtomyj.yugiohAPI.model.product.Product;
+import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
@@ -58,6 +60,8 @@ public class Card extends RepresentationModel<Card>
 	private List<String> arrows;
 
 	private List<BanList> restrictedIn;
+
+	private List<Product> foundIn;
 
 	@JsonIgnore
 	private static final int maxCardEffectLength = 120;
@@ -111,7 +115,7 @@ public class Card extends RepresentationModel<Card>
 		throws YgoException
 	{
 		this.add(
-			linkTo(methodOn(cardController).getCard(cardID)).withSelfRel()
+			linkTo(methodOn(cardController).getCard(cardID, true)).withSelfRel()
 		);
 	}
 

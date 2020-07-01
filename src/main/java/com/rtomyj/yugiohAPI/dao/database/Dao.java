@@ -138,4 +138,6 @@ public interface Dao
 
 	public DatabaseStats getDatabaseStats();
 
+	public List<Product> getProductDetailsForCard(final String cardId);
+
 }

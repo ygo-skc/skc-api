@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -82,14 +83,15 @@ public class CardController
 		, @ApiResponse(code = 404, message = "No resource for requested card ID")
 	})
 	public ResponseEntity<Card> getCard(
-		@PathVariable("cardId") @Pattern(regexp = RegexConstants.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId)
+			@PathVariable("cardId") @Pattern(regexp = RegexConstants.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
+			, @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
 		throws YgoException
 	{
 		MDC.put("reqIp", httpRequest.getRemoteHost());
 		MDC.put("reqRes", endPoint);
 
-		final Card foundCard = cardService.getCardInfo(cardId);
-		log.info("Successfully retrieved resource: ( {} ).", cardId);
+		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
+		log.info("Successfully retrieved resource: ( {}, fetching all info {}.", cardId, fetchAllInfo);
 
 		MDC.clear();
 		return ResponseEntity.ok(foundCard);

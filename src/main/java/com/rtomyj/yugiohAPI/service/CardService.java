@@ -46,13 +46,18 @@ public class CardService
 
 
 	/**
-	 * @param cardID The unique identifier of the card desired. Must be an 8 digit String.
+	 * @param cardId The unique identifier of the card desired. Must be an 8 digit String.
+	 * @param fetchAllInfo Whether all info about a card should be fetched and returned.
+	 *                        "All Info" includes information about the packs the card is in, the ban lists the card is in, etc.
 	 * @return Card object containing the information of the card desired.
 	 */
-	public Card getCardInfo(final String cardId)
+	public Card getCardInfo(final String cardId, final boolean fetchAllInfo)
 		throws YgoException
 	{
-		return CARD_CACHE.get(cardId);
+		final Card card = CARD_CACHE.get(cardId);
+		if (fetchAllInfo)	card.setFoundIn(dao.getProductDetailsForCard(cardId));
+
+		return card;
 	}
 
 

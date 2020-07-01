@@ -72,7 +72,7 @@ public class CardsServiceTest {
 			.thenReturn(banListInstanceFullText.getSemiLimited());
 
 
-		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, false);
+		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, false, false);
 
 		final List<Card> forbidden = banListInstance.getForbidden();
 		final List<Card> limited = banListInstance.getLimited();
@@ -119,7 +119,7 @@ public class CardsServiceTest {
 			.thenReturn(banListInstanceFullText.getSemiLimited());
 
 
-		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, true);
+		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, true, false);
 
 		final List<Card> forbiddenTrimmed = banListInstance.getForbidden();
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
@@ -165,7 +165,7 @@ public class CardsServiceTest {
 			.thenReturn(new ArrayList<>());
 
 
-		assertThrows(CacheLoaderException.class, () -> cardsService.getBanListByBanStatus(banListStartDate, false));
+		assertThrows(CacheLoaderException.class, () -> cardsService.getBanListByBanStatus(banListStartDate, false, false));
 
 
 		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));

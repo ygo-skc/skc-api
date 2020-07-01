@@ -15,4 +15,6 @@ public class DbQueryConstants
 	public static final String GET_PRODUCT_DETAILS = "SELECT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type, product_position, card_rarity, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association, monster_links, monster_scales FROM product_contents WHERE product_id = :packId AND product_locale = :locale ORDER BY product_position";
 
 	public static final String GET_DATABASE_TOTALS = "SELECT * FROM totals";
+
+	public static final String GET_PRODUCT_INFO_FOR_CARD = "select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity from product_contents where card_number = :cardId";
 }

@@ -135,4 +135,6 @@ public class HibernateDao implements Dao
 
 	public DatabaseStats getDatabaseStats()	{ return null; }
 
+	public List<Product> getProductDetailsForCard(final String cardId) { return null; }
+
 }

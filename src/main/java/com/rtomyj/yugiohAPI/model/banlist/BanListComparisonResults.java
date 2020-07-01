@@ -32,7 +32,7 @@ public class BanListComparisonResults extends RepresentationModel<BanListCompari
 	private void setLink()
 	{
 		this.add(
-			linkTo(methodOn(controllerClass).getCard(id)).withSelfRel()
+			linkTo(methodOn(controllerClass).getCard(id, false)).withSelfRel()
 		);
 	}
 

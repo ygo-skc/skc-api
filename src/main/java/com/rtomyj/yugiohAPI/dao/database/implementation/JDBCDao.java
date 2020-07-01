@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,9 +29,11 @@ import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.datasource.lookup.MapDataSourceLookup;
 import org.springframework.stereotype.Repository;
 
 import lombok.NonNull;
@@ -542,6 +546,38 @@ public class JDBCDao implements Dao
 					.banListTotal(row.getInt(3))
 					.yearsOfBanListCoverage(row.getInt(4))
 					.build();
+		});
+	}
+
+
+	public List<Product> getProductDetailsForCard(final String cardId)
+	{
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("cardId", cardId);
+
+		return jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+			try {
+				// TODO: Need to update code block to make sure packContent list contains all occurences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
+				return Product
+						.builder()
+						.packId(row.getString(1))
+						.packLocale(row.getString(2))
+						.packName(row.getString(3))
+						.packReleaseDate(dateFormat.parse(row.getString(4)))
+						.productType((row.getString(5)))
+						.productSubType(row.getString(6))
+						.packContent(
+								Collections.singletonList(ProductContent
+										.builder()
+										.position(row.getInt(7))
+										.rarity(row.getString(8))
+										.build())
+						)
+						.build();
+			} catch (ParseException e) {
+				log.error("Cannot parse date from DB when retrieving product info for card {} with exception: {}", cardId, e.toString());
+				return null;
+			}
 		});
 	}
 
