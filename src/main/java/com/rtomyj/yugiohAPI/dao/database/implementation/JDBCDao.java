@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -29,11 +28,9 @@ import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.datasource.lookup.MapDataSourceLookup;
 import org.springframework.stereotype.Repository;
 
 import lombok.NonNull;
@@ -416,14 +413,14 @@ public class JDBCDao implements Dao
 				try {
 					availableProductsList.add( Product
 							.builder()
-							.packId(row.getString(1))
-							.packLocale(row.getString(2))
-							.packName(row.getString(3))
-							.packReleaseDate(dateFormat.parse(row.getString(4)))
-							.packTotal(row.getInt(5))
+							.productId(row.getString(1))
+							.productLocale(row.getString(2))
+							.productName(row.getString(3))
+							.productReleaseDate(dateFormat.parse(row.getString(4)))
+							.productTotal(row.getInt(5))
 							.productType(row.getString(6))
 							.productSubType(row.getString(7))
-							.packRarityCount(this.getProductRarityCount(row.getString(1)))
+							.productRarityCount(this.getProductRarityCount(row.getString(1)))
 							.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
@@ -475,21 +472,21 @@ public class JDBCDao implements Dao
 					try {
 						pack = Product
 								.builder()
-								.packId(row.getString(1))
-								.packLocale(row.getString(2))
-								.packName(row.getString(3))
-								.packReleaseDate(dateFormat.parse(row.getString(4)))
-								.packTotal(row.getInt(5))
+								.productId(row.getString(1))
+								.productLocale(row.getString(2))
+								.productName(row.getString(3))
+								.productReleaseDate(dateFormat.parse(row.getString(4)))
+								.productTotal(row.getInt(5))
 								.productType(row.getString(6))
 								.productSubType(row.getString(7))
-								.packRarityCount(this.getProductRarityCount(row.getString(1)))
-								.packContent(new ArrayList<ProductContent>())
+								.productRarityCount(this.getProductRarityCount(row.getString(1)))
+								.productContent(new ArrayList<ProductContent>())
 								.build();
 					} catch (Exception e) {
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
 					}
 				}
-				pack.getPackContent().add(ProductContent
+				pack.getProductContent().add(ProductContent
 					.builder()
 					.position(row.getInt(8))
 					.rarity(row.getString(9))
@@ -560,13 +557,13 @@ public class JDBCDao implements Dao
 				// TODO: Need to update code block to make sure packContent list contains all occurences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
 				return Product
 						.builder()
-						.packId(row.getString(1))
-						.packLocale(row.getString(2))
-						.packName(row.getString(3))
-						.packReleaseDate(dateFormat.parse(row.getString(4)))
+						.productId(row.getString(1))
+						.productLocale(row.getString(2))
+						.productName(row.getString(3))
+						.productReleaseDate(dateFormat.parse(row.getString(4)))
 						.productType((row.getString(5)))
 						.productSubType(row.getString(6))
-						.packContent(
+						.productContent(
 								Collections.singletonList(ProductContent
 										.builder()
 										.position(row.getInt(7))

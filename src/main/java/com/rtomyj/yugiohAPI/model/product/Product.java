@@ -36,16 +36,16 @@ import lombok.With;
 public class Product extends RepresentationModel<Product>
 {
 
-	private String packId;
-	private String packLocale;
-	private String packName;
+	private String productId;
+	private String productLocale;
+	private String productName;
 	private String productType;
 	private String productSubType;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date packReleaseDate;
-	private Integer packTotal;
-	private Map<String, Integer> packRarityCount;
-	private List<ProductContent> packContent;
+	private Date productReleaseDate;
+	private Integer productTotal;
+	private Map<String, Integer> productRarityCount;
+	private List<ProductContent> productContent;
 
 	private static final Class<ProductController> controllerClass = ProductController.class;
 
@@ -53,7 +53,7 @@ public class Product extends RepresentationModel<Product>
 	private void setLink()
 	{
 		this.add(
-			linkTo(methodOn(controllerClass).getPack(packId, packLocale)).withSelfRel()
+			linkTo(methodOn(controllerClass).getProduct(productId, productLocale)).withSelfRel()
 		);
 	}
 
@@ -61,7 +61,7 @@ public class Product extends RepresentationModel<Product>
 	public void setLinks()
 	{
 		this.setLink();
-		if (this.packContent != null)	ProductContent.setLinks(this.packContent);	// set links for pack contents
+		if (this.productContent != null)	ProductContent.setLinks(this.productContent);	// set links for pack contents
 	}
 
 

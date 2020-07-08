@@ -39,7 +39,7 @@ public class ProductController
 
 
 	@GetMapping("/products/{productType}/{locale}")
-	public ResponseEntity<Products> getPacks(
+	public ResponseEntity<Products> getProduct(
 			@PathVariable("productType") final ProductType productType
 			, @PathVariable("locale") final String locale)
 	{
@@ -51,7 +51,7 @@ public class ProductController
 
 	// todo: add validation/prevent null pointer exception when productid is invalid
 	@GetMapping("/product/{productId}/{locale}")
-	public ResponseEntity<Product> getPack(
+	public ResponseEntity<Product> getProduct(
 			@PathVariable("productId") final String productId
 			, @PathVariable("locale") final String locale)
 	{
