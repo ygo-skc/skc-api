@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -563,13 +564,12 @@ public class JDBCDao implements Dao
 						.productReleaseDate(dateFormat.parse(row.getString(4)))
 						.productType((row.getString(5)))
 						.productSubType(row.getString(6))
-						.productContent(
-								Collections.singletonList(ProductContent
+						.productContent(new ArrayList(
+								Arrays.asList(ProductContent
 										.builder()
 										.position(row.getInt(7))
 										.rarity(row.getString(8))
-										.build())
-						)
+										.build())))
 						.build();
 			} catch (ParseException e) {
 				log.error("Cannot parse date from DB when retrieving product info for card {} with exception: {}", cardId, e.toString());

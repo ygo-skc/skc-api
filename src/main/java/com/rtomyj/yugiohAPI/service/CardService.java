@@ -1,19 +1,19 @@
 package com.rtomyj.yugiohAPI.service;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
-
+import com.rtomyj.yugiohAPI.model.product.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service that is used to access card info from DB.
@@ -59,6 +59,25 @@ public class CardService
 		{
 			card.setFoundIn(dao.getProductDetailsForCard(cardId));
 			card.setRestrictedIn(dao.getBanListDetailsForCard(cardId));
+
+			/*
+				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
+				found in the same pack into the same ProductContent object
+			 */
+			Product firstOccurrenceOfProduct = null;
+			final Iterator<Product> it = card.getFoundIn().iterator();
+
+			while (it.hasNext())
+			{
+				final Product currentProduct = it.next();
+
+				if ( firstOccurrenceOfProduct != null && firstOccurrenceOfProduct.getProductId().equals(currentProduct.getProductId()) )
+				{
+					firstOccurrenceOfProduct.getProductContent().addAll(currentProduct.getProductContent());
+					it.remove();
+				}
+				else	firstOccurrenceOfProduct = currentProduct;
+			}
 		}
 
 		return card;
