@@ -76,15 +76,16 @@ public class JDBCDao implements Dao
 			if (row.next())
 			{
 				return Card
-					.builder()
-					.cardID(cardID)
-					.cardColor(row.getString(1))
-					.cardName(row.getString(2))
-					.cardAttribute(row.getString(3))
-					.cardEffect(row.getString(4))
-					.monsterType(row.getString(5))
-					.monsterAttack(row.getObject(6, Integer.class))
-					.monsterDefense(row.getObject(7, Integer.class))
+						.builder()
+						.cardID(cardID)
+						.cardColor(row.getString(1))
+						.cardName(row.getString(2))
+						.cardAttribute(row.getString(3))
+						.cardEffect(row.getString(4))
+						.monsterType(row.getString(5))
+						.monsterAttack(row.getObject(6, Integer.class))
+						.monsterDefense(row.getObject(7, Integer.class))
+						.monsterAssociation((row.getString(8)))
 					.build();
 			}
 

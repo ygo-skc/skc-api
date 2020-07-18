@@ -2,7 +2,7 @@ package com.rtomyj.yugiohAPI.dao;
 
 public class DbQueryConstants
 {
-	public static final String GET_CARD_BY_ID = "SELECT card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense FROM card_info" +
+	public static final String GET_CARD_BY_ID = "SELECT card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association FROM card_info" +
 			" WHERE card_number = :cardId";
 
 	public static final String GET_BAN_LIST_BY_STATUS = "SELECT card_name, monster_type, card_color, card_effect, card_number FROM ban_list_info" +
