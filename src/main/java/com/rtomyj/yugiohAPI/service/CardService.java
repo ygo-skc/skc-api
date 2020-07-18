@@ -71,7 +71,8 @@ public class CardService
 			{
 				final Product currentProduct = it.next();
 
-				if ( firstOccurrenceOfProduct != null && firstOccurrenceOfProduct.getProductId().equals(currentProduct.getProductId()) )
+				if ( firstOccurrenceOfProduct != null && firstOccurrenceOfProduct.getProductId().equals(currentProduct.getProductId())
+						&& firstOccurrenceOfProduct.getProductContent().get(0).getPosition().equals(currentProduct.getProductContent().get(0).getPosition()) )
 				{
 					firstOccurrenceOfProduct.getProductContent().addAll(currentProduct.getProductContent());
 					it.remove();
