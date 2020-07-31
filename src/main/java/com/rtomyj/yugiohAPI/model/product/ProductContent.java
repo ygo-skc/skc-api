@@ -16,7 +16,7 @@ import org.springframework.hateoas.RepresentationModel;
 public class ProductContent extends RepresentationModel<ProductContent>
 {
 	private Card card;
-	private Integer position;
+	private String position;
 	private String rarity;
 
 

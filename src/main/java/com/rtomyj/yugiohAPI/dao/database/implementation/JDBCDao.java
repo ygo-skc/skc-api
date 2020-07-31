@@ -12,11 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.products.ProductType;
+import com.rtomyj.yugiohAPI.model.MonsterAssociation;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
@@ -27,6 +30,7 @@ import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -53,6 +57,9 @@ public class JDBCDao implements Dao
 	private SimpleDateFormat dateFormat;
 	private int numUniqueCardsParsed;
 
+	@Autowired
+	private ObjectMapper objectMapper;
+
 
 	@Override
 	public BanListStartDates getBanListStartDates()
@@ -75,18 +82,28 @@ public class JDBCDao implements Dao
 		{
 			if (row.next())
 			{
-				return Card
-						.builder()
-						.cardID(cardID)
-						.cardColor(row.getString(1))
-						.cardName(row.getString(2))
-						.cardAttribute(row.getString(3))
-						.cardEffect(row.getString(4))
-						.monsterType(row.getString(5))
-						.monsterAttack(row.getObject(6, Integer.class))
-						.monsterDefense(row.getObject(7, Integer.class))
-						.monsterAssociation((row.getString(8)))
-					.build();
+				try
+				{
+					log.info(row.getString(8));
+					final Card desiredCard = Card
+							.builder()
+							.cardID(cardID)
+							.cardColor(row.getString(1))
+							.cardName(row.getString(2))
+							.cardAttribute(row.getString(3))
+							.cardEffect(row.getString(4))
+							.monsterType(row.getString(5))
+							.monsterAttack(row.getObject(6, Integer.class))
+							.monsterDefense(row.getObject(7, Integer.class))
+							.monsterAssociation(objectMapper.readValue(row.getString(8), MonsterAssociation.class))
+							.build();
+
+					return desiredCard;
+				} catch (JsonProcessingException e)
+				{
+					log.error("Exception occurred when parsing monster association column, {}", e.toString());
+					return null;
+				}
 			}
 
 			return null;
@@ -488,23 +505,28 @@ public class JDBCDao implements Dao
 						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
 					}
 				}
-				pack.getProductContent().add(ProductContent
-					.builder()
-					.position(row.getInt(8))
-					.rarity(row.getString(9))
-					.card(Card
-						.builder()
-							.cardID(row.getString(10))
-							.cardColor(row.getString(11))
-							.cardName(row.getString(12))
-							.cardAttribute(row.getString(13))
-							.cardEffect(row.getString(14))
-							.monsterType(row.getString(15))
-							.monsterAttack(row.getObject(16, Integer.class))
-							.monsterDefense(row.getObject(17, Integer.class))
-							.monsterAssociation(row.getString(18))
-						.build())
-					.build());
+
+				try {
+					pack.getProductContent().add(ProductContent
+							.builder()
+							.position(row.getString(8))
+							.rarity(row.getString(9))
+							.card(Card
+									.builder()
+									.cardID(row.getString(10))
+									.cardColor(row.getString(11))
+									.cardName(row.getString(12))
+									.cardAttribute(row.getString(13))
+									.cardEffect(row.getString(14))
+									.monsterType(row.getString(15))
+									.monsterAttack(row.getObject(16, Integer.class))
+									.monsterDefense(row.getObject(17, Integer.class))
+									.monsterAssociation(objectMapper.readValue(row.getString(18), MonsterAssociation.class))
+											.build())
+									.build());
+				} catch (JsonProcessingException e) {
+					log.error("Exception occurred when parsing monster association column, {}", e.toString());
+				}
 			}
 
 			return pack;
@@ -568,7 +590,7 @@ public class JDBCDao implements Dao
 						.productContent(new ArrayList(
 								Arrays.asList(ProductContent
 										.builder()
-										.position(row.getInt(7))
+										.position(row.getString(7))
 										.rarity(row.getString(8))
 										.build())))
 						.build();

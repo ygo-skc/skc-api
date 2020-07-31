@@ -40,22 +40,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Card extends RepresentationModel<Card>
 {
-	/** Name of the card */
+
 	private String cardID;
 	private String cardName;
 	private String cardColor;
 	private String cardAttribute;
-	private String monsterAssociation;
 	private String monsterType;
-	private String cardEffect;
+	private MonsterAssociation monsterAssociation;
 	/**
 	 * Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
 	 */
 	private Integer monsterAttack;
 	private Integer monsterDefense;
 
-	private String leftScale;
-	private String rightScale;
+	private String cardEffect;
 
 	private List<String> arrows;
 
