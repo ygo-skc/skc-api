@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -655,6 +657,42 @@ public class JDBCDao implements Dao
 							.build();
 				}))
 				.build();
+	}
+
+
+	public Set<String> getCardColors()
+	{
+
+		final String sql = "SELECT card_color FROM card_colors";
+
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+			return row.getString(1);
+		}));
+
+	}
+
+
+	public Set<String> getMonsterAttributes()
+	{
+
+		final String sql = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute";
+
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+			return row.getString(1);
+		}));
+
+	}
+
+
+	public Set<Integer> getLevels()
+	{
+
+		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
+
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+			return row.getInt(1);
+		}));
+
 	}
 
 }

@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.service;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,6 +50,20 @@ public class CardBrowseService
         Card.trimEffects(browseResults.getResults());
         return browseResults;
 
+    }
+
+
+    public CardBrowseCriteria getBrowseCriteria()
+    {
+
+        final CardBrowseCriteria cardBrowseCriteria = CardBrowseCriteria.
+                builder()
+                .cardColors(dao.getCardColors())
+                .attributes(dao.getMonsterAttributes())
+                .levels(dao.getLevels())
+                .build();
+
+        return cardBrowseCriteria;
     }
 
 }

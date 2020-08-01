@@ -143,4 +143,10 @@ public class HibernateDao implements Dao
 
 	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels){ return null; }
 
+	public Set<String> getCardColors(){ return null; }
+
+	public Set<String> getMonsterAttributes(){ return null; }
+
+	public Set<Integer> getLevels(){ return null; }
+
 }

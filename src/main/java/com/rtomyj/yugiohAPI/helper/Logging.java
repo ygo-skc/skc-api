@@ -12,7 +12,7 @@ public class Logging
 
         MDC.put("reqIp", httpServletRequest.getRemoteHost());
         MDC.put("reqRes", endpoint);
-        
+
     }
 
 }

@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.controller;
 
 import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.model.BrowseResults;
+import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
 import com.rtomyj.yugiohAPI.service.CardBrowseService;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,19 @@ public class CardBrowseController
         MDC.clear();
 
         return browseResults;
+
+    }
+
+
+    @GetMapping("/criteria")
+    public CardBrowseCriteria browseCriteria()
+    {
+
+        Logging.configureMDC(httpServletRequest, endpoint + "/criteria");
+        final CardBrowseCriteria cardBrowseCriteria = cardBrowseService.getBrowseCriteria();
+        MDC.clear();
+
+        return cardBrowseCriteria;
 
     }
 

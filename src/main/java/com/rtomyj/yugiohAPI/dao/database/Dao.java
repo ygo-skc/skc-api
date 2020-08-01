@@ -147,4 +147,10 @@ public interface Dao
 
 	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels);
 
+	public Set<String> getCardColors();
+
+	public Set<String> getMonsterAttributes();
+
+	public Set<Integer> getLevels();
+
 }
