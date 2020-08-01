@@ -2,7 +2,7 @@ package com.rtomyj.yugiohAPI.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.rtomyj.yugiohAPI.helper.products.ProductType;
+import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.Products;
 import com.rtomyj.yugiohAPI.service.ProductService;

@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.helper.products;
+package com.rtomyj.yugiohAPI.helper.enumeration.products;
 
 public enum ProductType
 {
