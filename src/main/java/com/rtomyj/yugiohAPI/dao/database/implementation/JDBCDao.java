@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,7 +29,6 @@ import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
-import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -82,28 +80,31 @@ public class JDBCDao implements Dao
 		{
 			if (row.next())
 			{
+				MonsterAssociation monsterAssociation = null;
 				try
 				{
-					log.info(row.getString(8));
-					final Card desiredCard = Card
-							.builder()
-							.cardID(cardID)
-							.cardColor(row.getString(1))
-							.cardName(row.getString(2))
-							.cardAttribute(row.getString(3))
-							.cardEffect(row.getString(4))
-							.monsterType(row.getString(5))
-							.monsterAttack(row.getObject(6, Integer.class))
-							.monsterDefense(row.getObject(7, Integer.class))
-							.monsterAssociation(objectMapper.readValue(row.getString(8), MonsterAssociation.class))
-							.build();
-
-					return desiredCard;
+					if (row.getString(8) != null)  monsterAssociation = objectMapper.readValue(row.getString(8), MonsterAssociation.class);
 				} catch (JsonProcessingException e)
 				{
 					log.error("Exception occurred when parsing monster association column, {}", e.toString());
 					return null;
 				}
+
+
+				final Card desiredCard = Card
+						.builder()
+						.cardID(cardID)
+						.cardColor(row.getString(1))
+						.cardName(row.getString(2))
+						.cardAttribute(row.getString(3))
+						.cardEffect(row.getString(4))
+						.monsterType(row.getString(5))
+						.monsterAttack(row.getObject(6, Integer.class))
+						.monsterDefense(row.getObject(7, Integer.class))
+						.monsterAssociation(monsterAssociation)
+						.build();
+
+				return desiredCard;
 			}
 
 			return null;
@@ -506,9 +507,18 @@ public class JDBCDao implements Dao
 					}
 				}
 
-				try {
-					pack.getProductContent().add(ProductContent
-							.builder()
+				MonsterAssociation monsterAssociation = null;
+				try
+				{
+					if (row.getString(18) != null)  monsterAssociation = objectMapper.readValue(row.getString(18), MonsterAssociation.class);
+				} catch (JsonProcessingException e)
+				{
+					log.error("Exception occurred when parsing monster association column, {}", e.toString());
+					return null;
+				}
+
+				pack.getProductContent()
+						.add(ProductContent.builder()
 							.position(row.getString(8))
 							.rarity(row.getString(9))
 							.card(Card
@@ -521,12 +531,10 @@ public class JDBCDao implements Dao
 									.monsterType(row.getString(15))
 									.monsterAttack(row.getObject(16, Integer.class))
 									.monsterDefense(row.getObject(17, Integer.class))
-									.monsterAssociation(objectMapper.readValue(row.getString(18), MonsterAssociation.class))
-											.build())
-									.build());
-				} catch (JsonProcessingException e) {
-					log.error("Exception occurred when parsing monster association column, {}", e.toString());
-				}
+									.monsterAssociation(monsterAssociation)
+									.build()
+							).build()
+							);
 			}
 
 			return pack;

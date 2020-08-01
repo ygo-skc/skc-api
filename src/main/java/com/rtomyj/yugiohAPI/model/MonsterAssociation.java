@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 public class MonsterAssociation
 {
 
-    private String level;
+    private Integer level;
 
-    private String rank;
+    private Integer rank;
 
-    private String scaleRating;
+    private Integer scaleRating;
 
-    private String linkRating;
+    private Integer linkRating;
     private List<String> linkArrows;
 
 }
