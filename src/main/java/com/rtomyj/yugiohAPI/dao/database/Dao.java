@@ -2,9 +2,11 @@ package com.rtomyj.yugiohAPI.dao.database;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
@@ -142,5 +144,7 @@ public interface Dao
 	public List<Product> getProductDetailsForCard(final String cardId);
 
 	public List<BanList> getBanListDetailsForCard(final String cardId);
+
+	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels);
 
 }

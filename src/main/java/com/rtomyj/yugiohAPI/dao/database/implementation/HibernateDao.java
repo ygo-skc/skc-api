@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.dao.database.implementation;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.Root;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
@@ -138,5 +140,7 @@ public class HibernateDao implements Dao
 	public List<Product> getProductDetailsForCard(final String cardId) { return null; }
 
 	public List<BanList> getBanListDetailsForCard(final String cardId) { return null; }
+
+	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels){ return null; }
 
 }

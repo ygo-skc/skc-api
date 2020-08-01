@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,8 +17,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.BrowseQueryDefinition;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.MonsterAssociation;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
@@ -627,6 +630,31 @@ public class JDBCDao implements Dao
 				return null;
 			}
 		});
+	}
+
+
+	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels)
+	{
+		final String sql = "SELECT card_name, card_color, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND monster_association REGEXP :monsterLevels order by card_name";
+		final String cc = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
+		final String mm = (monsterLevels.isEmpty())? ".*" : String.join("|", monsterLevels);
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("cardColors", cc);
+		sqlParams.addValue("monsterLevels", mm);
+
+
+		return BrowseResults
+				.builder()
+				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
+					return Card
+							.builder()
+							.cardName(row.getString(BrowseQueryDefinition.CARD_NAME.toString()))
+							.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
+							.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
+							.build();
+				}))
+				.build();
 	}
 
 }
