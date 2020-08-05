@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.dao.database.implementation;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -143,10 +144,10 @@ public class HibernateDao implements Dao
 
 	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels){ return null; }
 
-	public Set<String> getCardColors(){ return null; }
+	public CompletableFuture<Set<String>> getCardColors(){ return null; }
 
-	public Set<String> getMonsterAttributes(){ return null; }
+	public CompletableFuture<Set<String>> getMonsterAttributes(){ return null; }
 
-	public Set<Integer> getLevels(){ return null; }
+	public CompletableFuture<Set<Integer>> getLevels(){ return null; }
 
 }

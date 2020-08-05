@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.dao.database;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
@@ -147,10 +148,10 @@ public interface Dao
 
 	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels);
 
-	public Set<String> getCardColors();
+	public CompletableFuture<Set<String>> getCardColors();
 
-	public Set<String> getMonsterAttributes();
+	public CompletableFuture<Set<String>> getMonsterAttributes();
 
-	public Set<Integer> getLevels();
+	public CompletableFuture<Set<Integer>> getLevels();
 
 }

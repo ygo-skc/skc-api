@@ -4,6 +4,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 @Service
 @Slf4j
@@ -54,18 +56,21 @@ public class CardBrowseService
     }
 
 
+    @SneakyThrows
     public CardBrowseCriteria getBrowseCriteria()
     {
 
-        final CardBrowseCriteria cardBrowseCriteria = CardBrowseCriteria.
+        Future<Set<String>> cardColors = dao.getCardColors();
+        Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
+        Future<Set<Integer>> levels =  dao.getLevels();
+
+        return CardBrowseCriteria.
                 builder()
-                .cardColors(dao.getCardColors())
-                .attributes(dao.getMonsterAttributes())
-                .levels(dao.getLevels())
+                .cardColors(cardColors.get())
+                .attributes(monsterAttributes.get())
+                .levels(levels.get())
                 .build();
 
-        return cardBrowseCriteria;
-        
     }
 
 }
