@@ -637,14 +637,26 @@ public class JDBCDao implements Dao
 
 	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels)
 	{
-		final String sql = "SELECT card_name, card_color, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND monster_association REGEXP :monsterLevels order by card_name";
-		final String cc = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
-		final String mm = (monsterLevels.isEmpty())? ".*" : String.join("|", monsterLevels);
+		final String SQL_TEMPLATE = "SELECT card_name, card_color, card_effect FROM card_info WHERE card_color REGEXP :cardColors %s ORDER BY card_name";
+		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("cardColors", cc);
-		sqlParams.addValue("monsterLevels", mm);
+		sqlParams.addValue("cardColors", cardColorCriteria);
 
+		/*
+			Only use where clause for card level if there is a criteria specified by user.
+			Unlike other criteria, using the REGEX .* will not work as it will clash with other monster association JSON fields in DB.
+		 */
+		String cardWhereClause = "";
+		if (!monsterLevels.isEmpty())
+		{
+			final String monsterLevelCriteria = String.join("|", monsterLevels);
+			sqlParams.addValue("monsterLevels", monsterLevelCriteria);
+
+			cardWhereClause = "AND monster_association REGEXP :monsterLevels";
+		}
+
+		final String sql = String.format(SQL_TEMPLATE, cardWhereClause);
 
 		return BrowseResults
 				.builder()

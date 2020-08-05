@@ -34,15 +34,16 @@ public class CardBrowseService
     public BrowseResults getBrowseResults(final String cardColors, final String monsterLevels)
     {
 
-        Set<String> cardColorsSet = (cardColors.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(cardColors.split(",")));
-        log.info("Getting browse results for {}", cardColorsSet);
+        final Set<String> cardColorsSet = (cardColors.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(cardColors.split(",")));
 
-        Set<String> monsterLevelSet = new HashSet<>();
-        for(String level: monsterLevels.split(","))
+        final Set<String> monsterLevelSet = new HashSet<>();
+        if (!monsterLevels.isEmpty())
         {
-            monsterLevelSet.add(String.format(levelExpression, level));
+            for(String level: monsterLevels.split(","))
+            {
+                monsterLevelSet.add(String.format(levelExpression, level));
+            }
         }
-        log.info(monsterLevelSet.toString());
 
 
         final BrowseResults browseResults = dao.getBrowseResults(cardColorsSet, monsterLevelSet);
@@ -64,6 +65,7 @@ public class CardBrowseService
                 .build();
 
         return cardBrowseCriteria;
+        
     }
 
 }
