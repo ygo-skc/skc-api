@@ -70,10 +70,11 @@ public class CardsService
 
 
 
+	// ToDo: update javaDoc
 	/**
 	 * Uses the desired date of the ban list and retrieves the contents of the ban list but with the cards that have the desired status.
-	 * @param date The date of the ban list to retrieve from DB. Must follow format: YYYY-DD-MM.
-	 * @param status Restriction on what kind of ban list cards to retrieve from DB (forbidden, limited, semi-limited)
+	 * @param banListStartDate The date of the ban list to retrieve from DB. Must follow format: YYYY-DD-MM.
+	 * @param saveBandwidth Restriction on what kind of ban list cards to retrieve from DB (forbidden, limited, semi-limited)
 	 * @return List of Cards that satisfy the wanted criteria.
 	 */
 	public BanListInstance getBanListByBanStatus(final String banListStartDate, final boolean saveBandwidth, final boolean fetchAllInfo)
