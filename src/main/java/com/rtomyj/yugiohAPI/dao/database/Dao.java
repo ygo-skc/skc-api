@@ -154,4 +154,8 @@ public interface Dao
 
 	public CompletableFuture<Set<Integer>> getLevels();
 
+	public CompletableFuture<Set<Integer>> getRanks();
+
+	public CompletableFuture<Set<Integer>> getLinkRatings();
+
 }

@@ -638,7 +638,7 @@ public class JDBCDao implements Dao
 
 	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels)
 	{
-		final String SQL_TEMPLATE = "SELECT card_name, card_color, card_effect FROM card_info WHERE card_color REGEXP :cardColors %s ORDER BY card_name";
+		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors %s ORDER BY card_name";
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
@@ -664,8 +664,10 @@ public class JDBCDao implements Dao
 				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
 					return Card
 							.builder()
+							.cardID(row.getString(BrowseQueryDefinition.CARD_ID.toString()))
 							.cardName(row.getString(BrowseQueryDefinition.CARD_NAME.toString()))
 							.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
+							.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
 							.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
 							.build();
 				}))
@@ -673,11 +675,11 @@ public class JDBCDao implements Dao
 	}
 
 
-	@Async
+	@Async("asyncExecutor")
 	public CompletableFuture<Set<String>> getCardColors()
 	{
 
-		final String sql = "SELECT card_color FROM card_colors";
+		final String sql = "SELECT card_color FROM card_colors WHERE card_color != 'Token'";
 
 		final Set<String> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
 			return row.getString(1);
@@ -687,7 +689,7 @@ public class JDBCDao implements Dao
 	}
 
 
-	@Async
+	@Async("asyncExecutor")
 	public CompletableFuture<Set<String>> getMonsterAttributes()
 	{
 
@@ -702,11 +704,41 @@ public class JDBCDao implements Dao
 	}
 
 
-	@Async
+	@Async("asyncExecutor")
 	public CompletableFuture<Set<Integer>> getLevels()
 	{
 
 		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
+
+		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+			return row.getInt(1);
+		}));
+
+		return CompletableFuture.completedFuture(result);
+
+	}
+
+
+	@Async("asyncExecutor")
+	public CompletableFuture<Set<Integer>> getRanks()
+	{
+
+		final String sql = "SELECT CAST(card_rank AS UNSIGNED) AS card_rank FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.rank') AS card_rank FROM cards WHERE monster_association LIKE '%rank%') AS ranks ORDER BY card_rank";
+
+		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+			return row.getInt(1);
+		}));
+
+		return CompletableFuture.completedFuture(result);
+
+	}
+
+
+	@Async("asyncExecutor")
+	public CompletableFuture<Set<Integer>> getLinkRatings()
+	{
+
+		final String sql = "SELECT CAST(link_rating AS UNSIGNED) AS link_rating FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.linkRating') AS link_rating FROM cards WHERE monster_association LIKE '%linkRating%') AS link_ratings ORDER BY link_rating";
 
 		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
 			return row.getInt(1);

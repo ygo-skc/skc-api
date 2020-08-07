@@ -19,5 +19,7 @@ public class CardBrowseCriteria
     private Set<String> cardColors;
     private Set<String> attributes;
     private Set<Integer> levels;
+    private Set<Integer> ranks;
+    private Set<Integer> linkRatings;
 
 }

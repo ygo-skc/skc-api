@@ -150,4 +150,8 @@ public class HibernateDao implements Dao
 
 	public CompletableFuture<Set<Integer>> getLevels(){ return null; }
 
+	public CompletableFuture<Set<Integer>> getRanks() { return null; }
+
+	public CompletableFuture<Set<Integer>> getLinkRatings() { return null; }
+
 }
