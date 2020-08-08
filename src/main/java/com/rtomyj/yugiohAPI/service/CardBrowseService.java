@@ -49,6 +49,8 @@ public class CardBrowseService
 
 
         final BrowseResults browseResults = dao.getBrowseResults(cardColorsSet, monsterLevelSet);
+        browseResults.setNumResults(browseResults.getResults().size());
+
         Card.setLinks(browseResults.getResults());
         Card.trimEffects(browseResults.getResults());
         return browseResults;
@@ -61,18 +63,18 @@ public class CardBrowseService
     {
 
         Future<Set<String>> cardColors = dao.getCardColors();
-        Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
-        Future<Set<Integer>> levels =  dao.getLevels();
-        Future<Set<Integer>> ranks =  dao.getRanks();
-        Future<Set<Integer>> linkRatings =  dao.getLinkRatings();
+//        Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
+//        Future<Set<Integer>> levels =  dao.getLevels();
+//        Future<Set<Integer>> ranks =  dao.getRanks();
+//        Future<Set<Integer>> linkRatings =  dao.getLinkRatings();
 
         return CardBrowseCriteria.
                 builder()
                 .cardColors(cardColors.get())
-                .attributes(monsterAttributes.get())
-                .levels(levels.get())
-                .ranks(ranks.get())
-                .linkRatings(linkRatings.get())
+//                .attributes(monsterAttributes.get())
+//                .levels(levels.get())
+//                .ranks(ranks.get())
+//                .linkRatings(linkRatings.get())
                 .build();
 
     }

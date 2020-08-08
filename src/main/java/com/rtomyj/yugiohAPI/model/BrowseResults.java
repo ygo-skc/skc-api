@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BrowseResults {
 
+    private int numResults;
     private List<Card> results;
 
 }
