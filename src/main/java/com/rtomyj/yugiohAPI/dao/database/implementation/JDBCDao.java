@@ -636,13 +636,16 @@ public class JDBCDao implements Dao
 	}
 
 
-	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> monsterLevels)
+	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels)
 	{
-		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors %s ORDER BY card_name";
+		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes %s ORDER BY card_name";
+
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
+		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardColors", cardColorCriteria);
+		sqlParams.addValue("attributes", attributeCriteria);
 
 		/*
 			Only use where clause for card level if there is a criteria specified by user.
@@ -658,6 +661,9 @@ public class JDBCDao implements Dao
 		}
 
 		final String sql = String.format(SQL_TEMPLATE, cardWhereClause);
+
+		log.info(sql);
+		log.info(sqlParams.toString());
 
 		return BrowseResults
 				.builder()

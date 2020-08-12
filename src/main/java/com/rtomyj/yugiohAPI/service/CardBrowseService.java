@@ -33,10 +33,11 @@ public class CardBrowseService
     }
 
 
-    public BrowseResults getBrowseResults(final String cardColors, final String monsterLevels)
+    public BrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterLevels)
     {
 
         final Set<String> cardColorsSet = (cardColors.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(cardColors.split(",")));
+        final Set<String> attributeSet = (attributes.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(attributes.split(",")));
 
         final Set<String> monsterLevelSet = new HashSet<>();
         if (!monsterLevels.isEmpty())
@@ -48,7 +49,7 @@ public class CardBrowseService
         }
 
 
-        final BrowseResults browseResults = dao.getBrowseResults(cardColorsSet, monsterLevelSet);
+        final BrowseResults browseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet);
         browseResults.setNumResults(browseResults.getResults().size());
 
         Card.setLinks(browseResults.getResults());
@@ -62,8 +63,8 @@ public class CardBrowseService
     public CardBrowseCriteria getBrowseCriteria()
     {
 
-        Future<Set<String>> cardColors = dao.getCardColors();
-//        Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
+        final Future<Set<String>> cardColors = dao.getCardColors();
+        final Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
 //        Future<Set<Integer>> levels =  dao.getLevels();
 //        Future<Set<Integer>> ranks =  dao.getRanks();
 //        Future<Set<Integer>> linkRatings =  dao.getLinkRatings();
@@ -71,7 +72,7 @@ public class CardBrowseService
         return CardBrowseCriteria.
                 builder()
                 .cardColors(cardColors.get())
-//                .attributes(monsterAttributes.get())
+                .attributes(monsterAttributes.get())
 //                .levels(levels.get())
 //                .ranks(ranks.get())
 //                .linkRatings(linkRatings.get())

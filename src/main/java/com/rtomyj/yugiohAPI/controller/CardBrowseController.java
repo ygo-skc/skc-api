@@ -37,11 +37,13 @@ public class CardBrowseController
 
 
     @GetMapping()
-    public BrowseResults browse(@RequestParam(value = "cardColors", defaultValue = "") final String cardColors, @RequestParam(value = "levels", defaultValue = "") final String monsterLevels)
+    public BrowseResults browse(@RequestParam(value = "cardColors", defaultValue = "") final String cardColors
+            , @RequestParam(value = "attributes", defaultValue = "") final String attributes
+            , @RequestParam(value = "levels", defaultValue = "") final String monsterLevels)
     {
 
         Logging.configureMDC(httpServletRequest, endpoint);
-        final BrowseResults browseResults = cardBrowseService.getBrowseResults(cardColors, monsterLevels);
+        final BrowseResults browseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels);
         MDC.clear();
 
         return browseResults;
