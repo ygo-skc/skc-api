@@ -1,6 +1,7 @@
 package com.rtomyj.yugiohAPI.model.product;
 
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -17,7 +18,7 @@ public class ProductContent extends RepresentationModel<ProductContent>
 {
 	private Card card;
 	private String position;
-	private String rarity;
+	private Set<String> rarities;
 
 
 

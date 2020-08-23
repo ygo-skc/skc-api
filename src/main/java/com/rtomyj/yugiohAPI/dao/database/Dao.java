@@ -15,6 +15,7 @@ import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import com.rtomyj.yugiohAPI.model.product.Product;
+import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
 /**
@@ -136,13 +137,13 @@ public interface Dao
 
 	public Map<String, Integer> getProductRarityCount(final String packId);
 
-	public Product getPackContents(final String packId, final String locale);
+	public Set<ProductContent> getProductContents(final String productId, final String locale);
 
 	public MonsterType getMonsterTypeStats(final String cardColor);
 
 	public DatabaseStats getDatabaseStats();
 
-	public List<Product> getProductDetailsForCard(final String cardId);
+	public Set<Product> getProductDetailsForCard(final String cardId);
 
 	public List<BanList> getBanListDetailsForCard(final String cardId);
 
@@ -157,5 +158,7 @@ public interface Dao
 	public CompletableFuture<Set<Integer>> getRanks();
 
 	public CompletableFuture<Set<Integer>> getLinkRatings();
+
+	public Product getProductInfo(final String productId, final String locale);
 
 }

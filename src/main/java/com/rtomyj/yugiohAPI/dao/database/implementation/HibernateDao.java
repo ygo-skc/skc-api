@@ -21,6 +21,7 @@ import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
 import com.rtomyj.yugiohAPI.model.product.Product;
+import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
 import org.hibernate.Session;
@@ -129,7 +130,7 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-	public Product getPackContents(final String packId, final String locale)
+	public Set<ProductContent> getProductContents(final String packId, final String locale)
 	{
 		return null;
 	}
@@ -138,7 +139,7 @@ public class HibernateDao implements Dao
 
 	public DatabaseStats getDatabaseStats()	{ return null; }
 
-	public List<Product> getProductDetailsForCard(final String cardId) { return null; }
+	public Set<Product> getProductDetailsForCard(final String cardId) { return null; }
 
 	public List<BanList> getBanListDetailsForCard(final String cardId) { return null; }
 
@@ -153,5 +154,7 @@ public class HibernateDao implements Dao
 	public CompletableFuture<Set<Integer>> getRanks() { return null; }
 
 	public CompletableFuture<Set<Integer>> getLinkRatings() { return null; }
+
+	public Product getProductInfo(final String productId, final String locale) { return null; }
 
 }

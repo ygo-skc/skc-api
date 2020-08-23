@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -482,69 +482,52 @@ public class JDBCDao implements Dao
 
 
 
-	public Product getPackContents(final String packId, final String locale)
+	public Set<ProductContent> getProductContents(final String packId, final String locale)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("packId", packId);
 		sqlParams.addValue("locale", locale);
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_DETAILS, sqlParams, (ResultSet row) -> {
-			Product pack = null;
 
-			while (row.next())
-			{
-				if (pack == null)
-				{
-					try {
-						pack = Product
-								.builder()
-								.productId(row.getString(1))
-								.productLocale(row.getString(2))
-								.productName(row.getString(3))
-								.productReleaseDate(dateFormat.parse(row.getString(4)))
-								.productTotal(row.getInt(5))
-								.productType(row.getString(6))
-								.productSubType(row.getString(7))
-								.productRarityCount(this.getProductRarityCount(row.getString(1)))
-								.productContent(new ArrayList<ProductContent>())
-								.build();
-					} catch (Exception e) {
-						log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", packId, e.toString());
-					}
-				}
+		final Map<String, Set<String>> rarities = new HashMap<>();
+		final Set<ProductContent> productContents = new LinkedHashSet<>(jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_CONTENT, sqlParams, (ResultSet row, int rowNum) -> {
+			rarities.computeIfAbsent(row.getString(10), k -> new HashSet<>());
+			rarities.get(row.getString(10)).add(row.getString(9));
 
-				MonsterAssociation monsterAssociation = null;
-				try
-				{
-					if (row.getString(18) != null)  monsterAssociation = objectMapper.readValue(row.getString(18), MonsterAssociation.class);
-				} catch (JsonProcessingException e)
-				{
-					log.error("Exception occurred when parsing monster association column, {}", e.toString());
-					return null;
-				}
-
-				pack.getProductContent()
-						.add(ProductContent.builder()
-							.position(row.getString(8))
-							.rarity(row.getString(9))
-							.card(Card
-									.builder()
-									.cardID(row.getString(10))
-									.cardColor(row.getString(11))
-									.cardName(row.getString(12))
-									.cardAttribute(row.getString(13))
-									.cardEffect(row.getString(14))
-									.monsterType(row.getString(15))
-									.monsterAttack(row.getObject(16, Integer.class))
-									.monsterDefense(row.getObject(17, Integer.class))
-									.monsterAssociation(monsterAssociation)
-									.build()
-							).build()
-							);
+			MonsterAssociation monsterAssociation = null;
+			try {
+				if (row.getString(18) != null)
+					monsterAssociation = objectMapper.readValue(row.getString(18), MonsterAssociation.class);
+			} catch (JsonProcessingException e) {
+				log.error("Exception occurred when parsing monster association column, {}", e.toString());
+				return null;
 			}
 
-			return pack;
-		});
+			final Card card = Card
+					.builder()
+					.cardID(row.getString(10))
+					.cardColor(row.getString(11))
+					.cardName(row.getString(12))
+					.cardAttribute(row.getString(13))
+					.cardEffect(row.getString(14))
+					.monsterType(row.getString(15))
+					.monsterAttack(row.getObject(16, Integer.class))
+					.monsterDefense(row.getObject(17, Integer.class))
+					.monsterAssociation(monsterAssociation)
+					.build();
+
+			return ProductContent
+					.builder()
+					.position(row.getString(8))
+					.card(card)
+					.build();
+		}));
+
+		for (ProductContent content: productContents)
+		{
+			content.setRarities(rarities.get(content.getCard().getCardID()));
+		}
+		return productContents;
 	}
 
 
@@ -585,34 +568,54 @@ public class JDBCDao implements Dao
 	}
 
 
-	public List<Product> getProductDetailsForCard(final String cardId)
+	public Set<Product> getProductDetailsForCard(final String cardId)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardId", cardId);
 
-		return jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+
+		final Map<String, Map<String, Set<String>>> rarities = new HashMap<>();
+		final Set<Product> products = new HashSet(jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+			final String productId = row.getString(1);
+			final String cardPosition = row.getString(7);
+
+			rarities.computeIfAbsent(productId, k -> new HashMap<>());
+
+			rarities.get(productId).computeIfAbsent(cardPosition, k -> new HashSet<>());
+			rarities.get(productId).get(cardPosition).add(row.getString(8));
+
+
 			try {
 				// TODO: Need to update code block to make sure packContent list contains all occurences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
 				return Product
 						.builder()
-						.productId(row.getString(1))
+						.productId(productId)
 						.productLocale(row.getString(2))
 						.productName(row.getString(3))
 						.productReleaseDate(dateFormat.parse(row.getString(4)))
 						.productType((row.getString(5)))
 						.productSubType(row.getString(6))
-						.productContent(new ArrayList(
-								Arrays.asList(ProductContent
-										.builder()
-										.position(row.getString(7))
-										.rarity(row.getString(8))
-										.build())))
 						.build();
 			} catch (ParseException e) {
 				log.error("Cannot parse date from DB when retrieving product info for card {} with exception: {}", cardId, e.toString());
 				return null;
 			}
-		});
+		}));
+
+
+		for (Product product: products)
+		{
+			product.setProductContent(new ArrayList<>());
+			for(Map.Entry<String, Set<String>> cardPositionAndRarityMap: rarities.get(product.getProductId()).entrySet())
+			{
+				product.getProductContent().add(ProductContent
+						.builder()
+						.position(cardPositionAndRarityMap.getKey())
+						.rarities(cardPositionAndRarityMap.getValue())
+						.build());
+			}
+		}
+		return products;
 	}
 
 
@@ -752,6 +755,38 @@ public class JDBCDao implements Dao
 
 		return CompletableFuture.completedFuture(result);
 
+	}
+
+
+	public Product getProductInfo(final String productId, final String locale)
+	{
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("productId", productId);
+		sqlParams.addValue("locale", locale);
+
+
+		return jdbcNamedTemplate.queryForObject(DbQueryConstants.GET_PRODUCT_DETAILS, sqlParams, (ResultSet row, int rowNum) -> {
+			Product product = null;
+
+			try {
+				product = Product
+						.builder()
+						.productId(row.getString(1))
+						.productLocale(row.getString(2))
+						.productName(row.getString(3))
+						.productReleaseDate(dateFormat.parse(row.getString(4)))
+						.productTotal(row.getInt(5))
+						.productType(row.getString(6))
+						.productSubType(row.getString(7))
+						.productRarityCount(this.getProductRarityCount(row.getString(1)))
+						.productContent(new ArrayList<ProductContent>())
+						.build();
+			} catch (Exception e) {
+				log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", productId, e.toString());
+			}
+
+			return product;
+		});
 	}
 
 }

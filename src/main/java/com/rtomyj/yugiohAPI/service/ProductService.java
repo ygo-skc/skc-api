@@ -29,7 +29,8 @@ public class ProductService
 
 	public Product getPack(final String packId, final String locale)
 	{
-		final Product pack = dao.getPackContents(packId, locale);
+		final Product pack = dao.getProductInfo(packId, locale);
+		pack.getProductContent().addAll(dao.getProductContents(packId, locale));
 		pack.setLinks();
 
 		return pack;
