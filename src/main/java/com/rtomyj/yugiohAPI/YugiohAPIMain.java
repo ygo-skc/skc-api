@@ -11,15 +11,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
-public class YugiohAPIMain {
-
+public class YugiohAPIMain
+{
 
 	/**
 	 * Inits the program. Main method for program.
 	 * @param args Java arguments
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(YugiohAPIMain.class);
+		SpringApplication.run(YugiohAPIMain.class, args);
 	}
 
 }
