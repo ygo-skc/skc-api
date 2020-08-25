@@ -54,7 +54,7 @@ public class CardServiceTest
 			.thenReturn(successfulCardReceived);
 
 
-		final Card card = cardService.getCardInfo(testCardId);
+		final Card card = cardService.getCardInfo(testCardId, false);
 
 		assertEquals(testCardId, card.getCardID());
 		assertEquals(testCardName, card.getCardName());
@@ -72,7 +72,7 @@ public class CardServiceTest
 			.thenThrow(new YgoException());
 
 
-		assertThrows(CacheLoaderException.class, () -> cardService.getCardInfo(testCardId));
+		assertThrows(CacheLoaderException.class, () -> cardService.getCardInfo(testCardId, false));
 
 
 		verify(dao, times(1)).getCardInfo(eq(testCardId));
