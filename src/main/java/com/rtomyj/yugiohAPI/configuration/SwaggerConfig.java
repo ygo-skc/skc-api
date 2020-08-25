@@ -40,7 +40,9 @@ public class SwaggerConfig {
 	 */
 	private ApiInfo infoSection()
 	{
-		return new ApiInfo("Yugioh API", "Desc", "v1.2", "Terms", new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com")
+		return new ApiInfo("YuGiOh API"
+				, "Application Programming Interface for interfacing with a Database that contains information such as Ban List dates/content, YuGiOh product information, card information, etc."
+				, "v1.2", "Terms", new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com")
 		, "Apache License Version 2.0", "https://www.apache.org/licenses/LICENSE-2.0", new ArrayList<>());
 	}
 }

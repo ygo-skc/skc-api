@@ -8,13 +8,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.rtomyj.yugiohAPI.controller.CardController;
+import com.rtomyj.yugiohAPI.controller.card.CardController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import com.rtomyj.yugiohAPI.model.product.Product;
-import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;

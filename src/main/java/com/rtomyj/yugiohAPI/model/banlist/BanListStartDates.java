@@ -5,7 +5,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 
-import com.rtomyj.yugiohAPI.controller.banlist.DatesController;
+import com.rtomyj.yugiohAPI.controller.banlist.BanListDatesController;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,13 +27,13 @@ public class BanListStartDates extends RepresentationModel<BanListStartDates>
 
 	List<BanList> banListStartDates;
 
-	private static final Class<DatesController> controllerClass = DatesController.class;
+	private static final Class<BanListDatesController> controllerClass = BanListDatesController.class;
 
 
 	private void setLink()
 	{
 		this.add(
-			linkTo(methodOn(controllerClass).getStartDatesOfBanLists()).withSelfRel()
+			linkTo(methodOn(controllerClass).getBanListStartDates()).withSelfRel()
 		);
 	}
 

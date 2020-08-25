@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.rtomyj.yugiohAPI.controller.ProductController;
+import com.rtomyj.yugiohAPI.controller.product.ProductController;
 
 import org.springframework.hateoas.RepresentationModel;
 

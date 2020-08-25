@@ -1,7 +1,7 @@
 package com.rtomyj.yugiohAPI.model.banlist;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.rtomyj.yugiohAPI.controller.CardController;
+import com.rtomyj.yugiohAPI.controller.card.CardController;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

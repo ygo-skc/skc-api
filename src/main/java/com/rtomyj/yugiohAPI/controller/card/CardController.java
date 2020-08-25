@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.controller;
+package com.rtomyj.yugiohAPI.controller.card;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;

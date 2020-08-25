@@ -8,7 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
+import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import com.rtomyj.yugiohAPI.model.Card;
@@ -47,7 +47,7 @@ public class BanListInstance extends RepresentationModel<BanListInstance>
 	private BanListNewContent newContent;
 	private BanListRemovedContent removedContent;
 
-	private static final Class<CardsController> banListController = CardsController.class;
+	private static final Class<BannedCardsController> banListController = BannedCardsController.class;
 
 
 

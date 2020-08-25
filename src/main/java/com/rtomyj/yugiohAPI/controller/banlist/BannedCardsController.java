@@ -3,10 +3,13 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
+import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerResponseConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.CardsService;
 
+import io.swagger.models.Swagger;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,36 +32,30 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
 @RestController
-@RequestMapping(path="/api/v1/ban/cards", produces = "application/hal+json; charset=UTF-8")
+@RequestMapping(path=YgoApiBaseController.BASE_ENDPOINT + "/ban/cards", produces = "application/hal+json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
 @Api(description = "Request information about current and past ban lists", tags = "Ban List")
-public class CardsController {
+public class BannedCardsController extends YgoApiBaseController {
+
+	/**
+	 * The base endpoint for this controller.
+	 */
+	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban/cards";
+
 	/**
 	 * Service object used to get information about banned cards from the database.
 	 */
 	private final CardsService bannedCardsService;
 
-	/**
-	 * Updated on every request with info about request.
-	 */
-	private final HttpServletRequest request;
-
-	/**
-	 * The base endpoint for this controller.
-	 */
-	private static final String endPoint = "/api/v1/ban/cards";
-
-
 
 	@Autowired
-	public CardsController(final CardsService bannedCardsService, final HttpServletRequest request)
+	public BannedCardsController(final CardsService bannedCardsService, final HttpServletRequest request)
 	{
 		this.bannedCardsService = bannedCardsService;
 		this.request = request;
 	}
-
 
 
 	/**
@@ -78,13 +75,15 @@ public class CardsController {
 		, responseContainer = "Object"
 		, tags = "Ban List")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "OK")
-		, @ApiResponse(code = 400, message = "Malformed request, make sure banListStartDate is valid")
-		, @ApiResponse(code = 404, message = "No resource for requested ban list start date")
+		@ApiResponse(code = 200, message = SwaggerResponseConstants.http200)
+		, @ApiResponse(code = 400, message = SwaggerResponseConstants.http400)
+		, @ApiResponse(code = 404, message = SwaggerResponseConstants.http404)
 	})
-	public ResponseEntity<BanListInstance> getBannedCards(@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable String banListStartDate
+	public ResponseEntity<BanListInstance> getBannedCards(
+			@Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable String banListStartDate
 			, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") boolean saveBandwidth
-			, @RequestParam(name = "allInfo", required = false, defaultValue = "false") boolean fetchAllInfo)
+			, @RequestParam(name = "allInfo", required = false, defaultValue = "false") boolean fetchAllInfo
+	)
 			throws YgoException
 	{
 		MDC.put("reqIp", request.getRemoteHost());

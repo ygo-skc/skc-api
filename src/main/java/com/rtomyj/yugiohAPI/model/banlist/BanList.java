@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
+import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
 
 import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
@@ -57,7 +57,7 @@ public class BanList extends RepresentationModel<BanList> implements Serializabl
 	@Column(name = "ban_status", length=15)
 	private String banStatus;
 
-	private static final Class<CardsController> controllerClass = CardsController.class;
+	private static final Class<BannedCardsController> controllerClass = BannedCardsController.class;
 	//private static final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
 
 

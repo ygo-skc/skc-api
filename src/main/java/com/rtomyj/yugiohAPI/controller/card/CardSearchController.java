@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.controller;
+package com.rtomyj.yugiohAPI.controller.card;
 
 import java.util.List;
 

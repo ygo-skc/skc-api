@@ -6,9 +6,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.rtomyj.yugiohAPI.controller.banlist.CardsController;
-import com.rtomyj.yugiohAPI.controller.banlist.NewController;
-import com.rtomyj.yugiohAPI.controller.banlist.RemovedController;
+import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
+import com.rtomyj.yugiohAPI.controller.banlist.BanListNewContentController;
+import com.rtomyj.yugiohAPI.controller.banlist.BanListRemovedContentController;
 
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
@@ -30,16 +30,16 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 	private int numRemoved;
 	private List<BanListComparisonResults> removedCards;
 
-	private static final Class<RemovedController> controllerClass = RemovedController.class;
-	private static final Class<CardsController> banListController = CardsController.class;
-	private static final Class<NewController> newController = NewController.class;
+	private static final Class<BanListRemovedContentController> controllerClass = BanListRemovedContentController.class;
+	private static final Class<BannedCardsController> banListController = BannedCardsController.class;
+	private static final Class<BanListNewContentController> newController = BanListNewContentController.class;
 
 
 
 	private void setLink()
 	{
 		this.add(
-			linkTo(methodOn(controllerClass).getRemovedContent(listRequested)).withSelfRel()
+			linkTo(methodOn(controllerClass).getNewlyRemovedContentForBanList(listRequested)).withSelfRel()
 		);
 
 		this.add(
@@ -47,11 +47,11 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 		);
 
 		this.add(
-			linkTo(methodOn(newController).getNewContent(listRequested)).withRel("new-cards")
+			linkTo(methodOn(newController).getNewlyAddedContentForBanList(listRequested)).withRel("new-cards")
 		);
 
 		this.add(
-			linkTo(methodOn(controllerClass).getRemovedContent(comparedTo)).withRel("previous")
+			linkTo(methodOn(controllerClass).getNewlyRemovedContentForBanList(comparedTo)).withRel("previous")
 		);
 	}
 

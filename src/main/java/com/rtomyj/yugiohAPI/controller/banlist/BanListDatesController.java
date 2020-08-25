@@ -2,6 +2,8 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerResponseConstants;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
@@ -24,30 +26,32 @@ import io.swagger.annotations.ApiResponses;
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
 @RestController
-@RequestMapping(path="/api/v1/ban/dates", produces = "application/json; charset=UTF-8")
+@RequestMapping(path=YgoApiBaseController.BASE_ENDPOINT + "/ban/dates", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Api(description = "Request information about current and past ban lists"
 	, tags = "Ban List")
-public class DatesController
+public class BanListDatesController extends YgoApiBaseController
 {
-
-	/**
-	 * Service object used to interface the database DAO
-	 */
-	@Autowired
-	private BanService banListService;
 
 	/**
 	 * The base endpoint used by this controller.
 	 */
-	@Value("/api/v1/ban/dates")
-	private String endPoint;
+	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban/dates";
 
 	/**
-	 * Object containing info about the request.
+	 * Service object used to interface the database DAO
 	 */
+	private BanService banListService;
+
+
 	@Autowired
-	private HttpServletRequest request;
+	public BanListDatesController(final HttpServletRequest request, final BanService banListService)
+	{
+
+		this.request = request;
+		this.banListService = banListService;
+
+	}
 
 
 	/**
@@ -59,10 +63,11 @@ public class DatesController
 		, response = BanListStartDates.class
 		, tags = "Ban List")
 	@ApiResponses( value = {
-		@ApiResponse(code = 200, message = "OK")
+		@ApiResponse(code = 200, message = SwaggerResponseConstants.http200)
 	})
-	public ResponseEntity<BanListStartDates> getStartDatesOfBanLists()
+	public ResponseEntity<BanListStartDates> getBanListStartDates()
 	{
+
 		MDC.put("reqIp", request.getRemoteHost());
 		MDC.put("reqRes", endPoint);
 
@@ -70,6 +75,7 @@ public class DatesController
 
 		MDC.clear();
 		return ResponseEntity.ok(banListStartDates);
+
 	}
 
 }
