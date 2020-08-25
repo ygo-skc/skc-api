@@ -157,4 +157,6 @@ public class HibernateDao implements Dao
 
 	public Product getProductInfo(final String productId, final String locale) { return null; }
 
+	public List<Product> getProductsByLocale(final String locale) { return null; }
+
 }

@@ -38,6 +38,14 @@ public class ProductController
 
 
 
+	@GetMapping("/products/{locale}")
+	public ResponseEntity<Products> getProductsByLocale(@PathVariable("locale") final String locale)
+	{
+		return ResponseEntity.ok(availablePacksService.getProductsByLocale(locale));
+	}
+
+
+
 	@GetMapping("/products/{productType}/{locale}")
 	public ResponseEntity<Products> getProduct(
 			@PathVariable("productType") final ProductType productType

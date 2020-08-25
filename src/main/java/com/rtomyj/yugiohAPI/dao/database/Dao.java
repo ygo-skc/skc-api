@@ -161,4 +161,6 @@ public interface Dao
 
 	public Product getProductInfo(final String productId, final String locale);
 
+	public List<Product> getProductsByLocale(final String locale);
+
 }

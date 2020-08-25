@@ -20,6 +20,8 @@ import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.BrowseQueryDefinition;
+import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefinition;
+import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.BrowseResults;
@@ -787,6 +789,36 @@ public class JDBCDao implements Dao
 
 			return product;
 		});
+	}
+
+
+	public List<Product> getProductsByLocale(final String locale){
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("locale", locale);
+
+//		return jdbcNamedTemplate.queryForList(DbQueryConstants.GET_AVAILABLE_PRODUCTS_BY_LOCALE, sqlParams, (ResultSet row, int rowNum) -> {
+//			Product product = null;
+//			try
+//			{
+//				product = Product
+//						.builder()
+//						.productId(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
+//						.productLocale(row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
+//						.productName(row.getString(ProductsTableDefinition.PRODUCT_NAME.toString()))
+//						.productType(row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString()))
+//						.productSubType(row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString()))
+////						.productReleaseDate(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString())
+//						.productTotal(row.getInt(ProductViewDefinition.PRODUCT_CONTENT_TOTAL.toString()))
+//						.build();
+//			} catch(Exception e)
+//			{
+//				log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", productId, e.toString());
+//			}
+//
+//			return product;
+//		});
+
+		return null;
 	}
 
 }

@@ -17,6 +17,16 @@ public class ProductService
 	@Qualifier("jdbc")
 	private Dao dao;
 
+
+	public Products getProductsByLocale(final String locale)
+	{
+		final Products allProductsByLocale = new Products();
+		allProductsByLocale.setProducts(dao.getProductsByLocale(locale));
+		allProductsByLocale.setLinks();
+
+		return allProductsByLocale;
+	}
+
 	public Products getAvailablePacks(final ProductType productType, final String locale)
 	{
 		final Products allPacks = dao.getAllProductsByType(productType, locale);
@@ -24,7 +34,6 @@ public class ProductService
 
 		return allPacks;
 	}
-
 
 
 	public Product getPack(final String packId, final String locale)
