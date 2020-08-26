@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -261,7 +262,7 @@ public class JDBCDao implements Dao
 	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<BanListComparisonResults>();
+		if (oldBanList.equals(""))	return new ArrayList<BanListComparisonResults>();
 
 		String query = new StringBuilder()
 			.append("select removed_cards.card_number, removed_cards.ban_status, cards.card_name")
@@ -351,7 +352,7 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardColor", cardColor);
 		sqlParams.addValue("monsterType", monsterType);
 
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+		return new ArrayList<>(Objects.requireNonNull(jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			/*
 				Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
 				ie:	ID		Name		BanList
@@ -364,49 +365,44 @@ public class JDBCDao implements Dao
 			final Map<String, Card> cardInfoTracker = new LinkedHashMap<>();
 			int numUniqueCardsParsed = 0;
 
-			while (row.next())
-			{
+			while (row.next()) {
 				Card card = cardInfoTracker.get(row.getString(1));
 
-				if (card == null)
-				{
-					if (numUniqueCardsParsed == limit)	break;
+				if (card == null) {
+					if (numUniqueCardsParsed == limit) break;
 
 					card = Card.builder()
-						.cardID(row.getString(1))
-						.cardColor(row.getString(2))
-						.cardName(row.getString(3))
-						.cardAttribute(row.getString(4))
-						.cardEffect(row.getString(5))
-						.monsterType(row.getString(6))
-						.monsterAttack(row.getObject(7, Integer.class))
-						.monsterDefense(row.getObject(8, Integer.class))
-						.restrictedIn(new ArrayList<>())
-						.build();
-						cardInfoTracker.put(card.getCardID(), card);
+							.cardID(row.getString(1))
+							.cardColor(row.getString(2))
+							.cardName(row.getString(3))
+							.cardAttribute(row.getString(4))
+							.cardEffect(row.getString(5))
+							.monsterType(row.getString(6))
+							.monsterAttack(row.getObject(7, Integer.class))
+							.monsterDefense(row.getObject(8, Integer.class))
+							.restrictedIn(new ArrayList<>())
+							.build();
+					cardInfoTracker.put(card.getCardID(), card);
 
-						numUniqueCardsParsed++;
+					numUniqueCardsParsed++;
 				}
 
-				try
-				{
-					if (row.getString(9) != null)
-					{
+				try {
+					if (row.getString(9) != null) {
 						card.getRestrictedIn()
-							.add(BanList
-								.builder()
-								.banListDate(dateFormat.parse(row.getString(9)))
-								.banStatus(row.getString(10))
-								.build());
+								.add(BanList
+										.builder()
+										.banListDate(dateFormat.parse(row.getString(9)))
+										.banStatus(row.getString(10))
+										.build());
 					}
-				} catch (ParseException e)
-				{
+				} catch (ParseException e) {
 					log.error("Error occurred while parsing date for ban list, date: {}", row.getString(9));
 				}
 			}
 
 			return cardInfoTracker.values();
-		}).stream().collect(Collectors.toList());
+		})));
 	}
 
 
@@ -706,9 +702,7 @@ public class JDBCDao implements Dao
 
 		final String sql = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute";
 
-		final Set<String> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
-			return row.getString(1);
-		}));
+		final Set<String> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
 
 		return CompletableFuture.completedFuture(result);
 
@@ -721,9 +715,7 @@ public class JDBCDao implements Dao
 
 		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
 
-		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
-			return row.getInt(1);
-		}));
+		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getInt(1)));
 
 		return CompletableFuture.completedFuture(result);
 
@@ -736,9 +728,7 @@ public class JDBCDao implements Dao
 
 		final String sql = "SELECT CAST(card_rank AS UNSIGNED) AS card_rank FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.rank') AS card_rank FROM cards WHERE monster_association LIKE '%rank%') AS ranks ORDER BY card_rank";
 
-		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
-			return row.getInt(1);
-		}));
+		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getInt(1)));
 
 		return CompletableFuture.completedFuture(result);
 
@@ -751,9 +741,7 @@ public class JDBCDao implements Dao
 
 		final String sql = "SELECT CAST(link_rating AS UNSIGNED) AS link_rating FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.linkRating') AS link_rating FROM cards WHERE monster_association LIKE '%linkRating%') AS link_ratings ORDER BY link_rating";
 
-		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
-			return row.getInt(1);
-		}));
+		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getInt(1)));
 
 		return CompletableFuture.completedFuture(result);
 

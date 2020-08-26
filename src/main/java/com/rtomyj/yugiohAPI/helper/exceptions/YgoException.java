@@ -14,8 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class YgoException extends RuntimeException
 {
+
 	private static final long serialVersionUID = 1L;
 
 	private  String code;
 	private String message;
+
 }

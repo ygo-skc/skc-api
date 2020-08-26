@@ -4,12 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
-import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
-import com.rtomyj.yugiohAPI.helper.constants.SwaggerResponseConstants;
+import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
 
+import io.swagger.annotations.ApiParam;
 import org.jboss.logging.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
-@Api(description = "Request information about current and past ban lists", tags = "Ban List")
+@Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
 public class BanListRemovedContentController extends YgoApiBaseController {
 
 	/**
@@ -45,9 +46,14 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 	/**
 	 * Service used to interface with dao.
 	 */
-	private DiffService banListDiffService;
+	private final DiffService banListDiffService;
 
 
+	/**
+	 * Create object instance.
+	 * @param request Object containing info about the client and their request.
+	 * @param banListDiffService Service object to use to accomplish functionality needed by this endpoint.
+	 */
 	@Autowired
 	public BanListRemovedContentController(final HttpServletRequest request, final DiffService banListDiffService)
 	{
@@ -59,18 +65,23 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 
 
 	@GetMapping(path = "/{banListStartDate}")
-	@ApiOperation(value = "Retrieve removed cards of a specific ban list given valid date a ban list started (use /api/v1/ban/dates to see a valid list)"
+	@ApiOperation(value = "Retrieve cards removed from the ban list relative to the previous ban list (use /api/v1/ban/dates to see a valid list of start dates)"
 		, response = BanListRemovedContent.class
 		, responseContainer = "Object"
-		, tags = "Ban List")
+		, tags = SwaggerConstants.SWAGGER_TAG_BAN_LIST)
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = SwaggerResponseConstants.http200)
-		, @ApiResponse(code = 400, message = SwaggerResponseConstants.http400)
-		, @ApiResponse(code = 404, message = SwaggerResponseConstants.http404)
+		@ApiResponse(code = 200, message = SwaggerConstants.http200)
+		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
+		, @ApiResponse(code = 404, message = SwaggerConstants.http404)
 	})
 	public ResponseEntity<BanListRemovedContent> getNewlyRemovedContentForBanList(
-		@Pattern(regexp = RegexConstants.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
-		throws YgoException
+			@ApiParam(
+					value = "Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates)."
+					, example = "2020-04-01"
+					, required = true
+			)
+			@Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
+			throws YgoException
 	{
 
 		MDC.put("reqIp", request.getRemoteHost());
@@ -83,4 +94,5 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 		return ResponseEntity.ok(banListRemovedContent);
 
 	}
+
 }

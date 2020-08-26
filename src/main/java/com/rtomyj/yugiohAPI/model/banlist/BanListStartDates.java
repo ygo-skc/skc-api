@@ -25,23 +25,27 @@ import io.swagger.annotations.ApiModel;
 public class BanListStartDates extends RepresentationModel<BanListStartDates>
 {
 
-	List<BanList> banListStartDates;
+	private List<BanList> banListStartDates;
 
 	private static final Class<BanListDatesController> controllerClass = BanListDatesController.class;
 
 
 	private void setLink()
 	{
+
 		this.add(
 			linkTo(methodOn(controllerClass).getBanListStartDates()).withSelfRel()
 		);
+
 	}
 
 
 	public void setLinks()
 	{
+
 		this.setLink();
 		BanList.setLinks(this.banListStartDates);
+
 	}
 
 }

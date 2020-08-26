@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.helper.enumeration.products;
 
 public enum Rarity
 {
+
 	C("Common")
 	, R("Rarity")
 	, SR("Super Rare")
@@ -18,4 +19,5 @@ public enum Rarity
 	{
 		return rarity;
 	}
+
 }

@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.helper.enumeration.products;
 
 public enum ProductType
 {
+
 	PACK("PACK")
 	, DECK("DECK");
 
@@ -14,4 +15,5 @@ public enum ProductType
 	{
 		return productType;
 	}
+
 }

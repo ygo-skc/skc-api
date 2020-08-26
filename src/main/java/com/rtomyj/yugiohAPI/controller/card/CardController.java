@@ -3,7 +3,7 @@ package com.rtomyj.yugiohAPI.controller.card;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
-import com.rtomyj.yugiohAPI.helper.constants.RegexConstants;
+import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
@@ -83,7 +83,7 @@ public class CardController
 		, @ApiResponse(code = 404, message = "No resource for requested card ID")
 	})
 	public ResponseEntity<Card> getCard(
-			@PathVariable("cardId") @Pattern(regexp = RegexConstants.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
+			@PathVariable("cardId") @Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
 			, @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
 		throws YgoException
 	{

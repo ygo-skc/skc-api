@@ -3,13 +3,12 @@ package com.rtomyj.yugiohAPI.controller.banlist;
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
-import com.rtomyj.yugiohAPI.helper.constants.SwaggerResponseConstants;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,22 +27,26 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(path=YgoApiBaseController.BASE_ENDPOINT + "/ban/dates", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
-@Api(description = "Request information about current and past ban lists"
-	, tags = "Ban List")
+@Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
 public class BanListDatesController extends YgoApiBaseController
 {
 
 	/**
 	 * The base endpoint used by this controller.
 	 */
-	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban/dates";
+	private static final String END_POINT = YgoApiBaseController.BASE_ENDPOINT + "/ban/dates";
 
 	/**
 	 * Service object used to interface the database DAO
 	 */
-	private BanService banListService;
+	private final BanService banListService;
 
 
+	/**
+	 * Create object instance.
+	 * @param request Object containing info about the client and their request.
+	 * @param banListService Service object to use to accomplish functionality needed by this endpoint.
+	 */
 	@Autowired
 	public BanListDatesController(final HttpServletRequest request, final BanService banListService)
 	{
@@ -55,21 +58,21 @@ public class BanListDatesController extends YgoApiBaseController
 
 
 	/**
-	 * Looks in the database or cache for the start dates of all ban lists stored in database.
+	 * Looks in the database for the start dates of all ban lists stored in database.
 	 * @return Map that contains a list of all dates of the ban lists in database.
 	 */
-	@GetMapping()
-	@ApiOperation(value = "Retrieve dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints."
+	@GetMapping
+	@ApiOperation(value = "Retrieve start (effective) dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints."
 		, response = BanListStartDates.class
-		, tags = "Ban List")
+		, tags = SwaggerConstants.SWAGGER_TAG_BAN_LIST)
 	@ApiResponses( value = {
-		@ApiResponse(code = 200, message = SwaggerResponseConstants.http200)
+		@ApiResponse(code = 200, message = SwaggerConstants.http200)
 	})
 	public ResponseEntity<BanListStartDates> getBanListStartDates()
 	{
 
 		MDC.put("reqIp", request.getRemoteHost());
-		MDC.put("reqRes", endPoint);
+		MDC.put("reqRes", END_POINT);
 
 		final BanListStartDates banListStartDates = banListService.getBanListStartDates();
 
