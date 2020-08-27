@@ -20,12 +20,11 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping(path = YgoApiBaseController.BASE_ENDPOINT + "/stats")
-@CrossOrigin(origins = "*")
+@RequestMapping(path="/stats")
+@CrossOrigin(origins="*")
 @Slf4j
 public class StatsController extends YgoApiBaseController
 {
-
 
     private Dao dao;
 

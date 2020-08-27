@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiResponses;
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
  */
 @RestController
-@RequestMapping(path=YgoApiBaseController.BASE_ENDPOINT + "/ban/dates", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/ban/dates", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
 public class BanListDatesController extends YgoApiBaseController
@@ -34,7 +34,7 @@ public class BanListDatesController extends YgoApiBaseController
 	/**
 	 * The base endpoint used by this controller.
 	 */
-	private static final String END_POINT = YgoApiBaseController.BASE_ENDPOINT + "/ban/dates";
+	private static final String END_POINT = BASE_ENDPOINT + "/ban/dates";
 
 	/**
 	 * Service object used to interface the database DAO

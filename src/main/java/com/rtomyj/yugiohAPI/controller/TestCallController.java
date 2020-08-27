@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) for testing the health of the API.
  */
 @RestController
-@RequestMapping(path=YgoApiBaseController.BASE_ENDPOINT + "/testcall", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/testcall", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Api(tags = {SwaggerConstants.SWAGGER_TAG_TEST_CALL})

@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @RestController
-@RequestMapping(path=YgoApiBaseController.BASE_ENDPOINT + "/ban/removed", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/ban/removed", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated

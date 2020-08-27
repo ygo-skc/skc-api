@@ -1,9 +1,3 @@
-
-ygo:
-  endpoints:
-    v1:
-      test-call: /api/v1/testcall
-
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/yugioh_API_DB
@@ -14,6 +8,8 @@ spring:
 
 server:
   port: 9999
+  servlet:
+    contextPath: /api/v1
   compression:
     enabled: true
     mime-types: application/json
