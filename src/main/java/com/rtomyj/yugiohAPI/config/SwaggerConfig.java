@@ -34,7 +34,9 @@ public class SwaggerConfig
 						.build()
 				.apiInfo(infoSection())
 				.tags(new Tag(SwaggerTagEnum.TEST_CALL_TAG.getTagName(), SwaggerTagEnum.TEST_CALL_TAG.getTagDescription()))
-				.tags(new Tag(SwaggerTagEnum.BAN_LIST_TAG.getTagName(), SwaggerTagEnum.BAN_LIST_TAG.getTagDescription()));
+				.tags(new Tag(SwaggerTagEnum.BAN_LIST_TAG.getTagName(), SwaggerTagEnum.BAN_LIST_TAG.getTagDescription()))
+				.tags(new Tag(SwaggerTagEnum.CARD_TAG.getTagName(), SwaggerTagEnum.CARD_TAG.getTagDescription()))
+				.tags(new Tag(SwaggerTagEnum.PRODUCT_TAG.getTagName(), SwaggerTagEnum.PRODUCT_TAG.getTagDescription()));
 	}
 
 

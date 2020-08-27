@@ -5,6 +5,7 @@ import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
@@ -34,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
-@Api(description = "Request information about card data stored in database.", tags = "Card")
+@Api(tags = {SwaggerConstants.SWAGGER_TAG_CARD})
 public class CardController extends YgoApiBaseController
 {
 

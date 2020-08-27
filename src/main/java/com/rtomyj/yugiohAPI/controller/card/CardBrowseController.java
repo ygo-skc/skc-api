@@ -2,9 +2,11 @@ package com.rtomyj.yugiohAPI.controller.card;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.Logging;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
 import com.rtomyj.yugiohAPI.service.CardBrowseService;
+import io.swagger.annotations.Api;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(path = "/card/browse", produces = "application/json; charset=UTF-8")
 @CrossOrigin("*")
+@Api(tags = {SwaggerConstants.SWAGGER_TAG_CARD})
 public class CardBrowseController extends YgoApiBaseController
 {
 

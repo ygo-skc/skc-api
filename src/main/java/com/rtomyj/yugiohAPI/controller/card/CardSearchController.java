@@ -3,10 +3,12 @@ package com.rtomyj.yugiohAPI.controller.card;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(path = "/card/search", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = {"*"})
+@Api(tags = {SwaggerConstants.SWAGGER_TAG_CARD})
 public class CardSearchController extends YgoApiBaseController
 {
 
