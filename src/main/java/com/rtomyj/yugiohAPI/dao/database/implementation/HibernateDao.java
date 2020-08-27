@@ -20,6 +20,7 @@ import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
+import com.rtomyj.yugiohAPI.model.hibernate.BanListTable;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
@@ -49,8 +50,8 @@ public class HibernateDao implements Dao
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
 		CriteriaQuery<BanList> criteriaQuery = criteriaBuilder.createQuery(BanList.class);
-		Root<BanList> root = criteriaQuery.from(BanList.class);
-		criteriaQuery.select(root.get("banListDate")).distinct(true);
+		Root<BanListTable> root = criteriaQuery.from(BanListTable.class);
+		criteriaQuery.select(criteriaBuilder.construct(BanList.class, root.get("banListDate"))).distinct(true);
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
 
 		final BanListStartDates banListStartDates = BanListStartDates
