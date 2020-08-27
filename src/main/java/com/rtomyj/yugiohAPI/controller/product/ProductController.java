@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.controller.product;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.Products;
@@ -19,46 +20,29 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
-@RequestMapping(path = "/api/v1", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "/product", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
-public class ProductController
+public class ProductController extends YgoApiBaseController
 {
 
-	private ProductService availablePacksService;
-	private HttpServletRequest request;
+	private static final String END_POINT = BASE_ENDPOINT + "/product";
+
+	private final ProductService availablePacksService;
 
 
 	@Autowired
-	public ProductController(final ProductService availablePacksService, final HttpServletRequest request)
+	public ProductController(final HttpServletRequest request, final ProductService availablePacksService)
 	{
+
 		this.availablePacksService = availablePacksService;
 		this.request = request;
+
 	}
-
-
-
-	@GetMapping("/products/{locale}")
-	public ResponseEntity<Products> getProductsByLocale(@PathVariable("locale") final String locale)
-	{
-		return ResponseEntity.ok(availablePacksService.getProductsByLocale(locale));
-	}
-
-
-
-	@GetMapping("/products/{productType}/{locale}")
-	public ResponseEntity<Products> getProduct(
-			@PathVariable("productType") final ProductType productType
-			, @PathVariable("locale") final String locale)
-	{
-		log.info(productType.toString());
-		return ResponseEntity.ok(availablePacksService.getAvailablePacks(productType, locale));
-	}
-
 
 
 	// todo: add validation/prevent null pointer exception when productid is invalid
-	@GetMapping("/product/{productId}/{locale}")
+	@GetMapping("/{productId}/{locale}")
 	public ResponseEntity<Product> getProduct(
 			@PathVariable("productId") final String productId
 			, @PathVariable("locale") final String locale)

@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.controller.card;
 
 import java.util.List;
 
+import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
@@ -15,15 +16,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
-@RequestMapping(path = "/api/v1/card/search", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "/card/search", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = {"*"})
-public class CardSearchController
+public class CardSearchController extends YgoApiBaseController
 {
 
+	private static final String END_POINT = BASE_ENDPOINT + "/card/search";
+
+	private final CardService cardService;
+
+
 	@Autowired
-	private CardService cardService;
+	public CardSearchController(final HttpServletRequest request, final CardService cardService)
+	{
+
+		this.request = request;
+		this.cardService = cardService;
+
+	}
+
 
 	@GetMapping
 	public ResponseEntity<List<Card>> searchByCriteria(

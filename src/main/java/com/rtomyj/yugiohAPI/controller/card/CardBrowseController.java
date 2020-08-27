@@ -1,5 +1,6 @@
 package com.rtomyj.yugiohAPI.controller.card;
 
+import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.model.BrowseResults;
 import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
@@ -15,22 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping(path = "/api/v1/card/browse", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "/card/browse", produces = "application/json; charset=UTF-8")
 @CrossOrigin("*")
-public class CardBrowseController
+public class CardBrowseController extends YgoApiBaseController
 {
 
-    private static final String endpoint = "/api/v1/card/browse";
-
-    private final HttpServletRequest httpServletRequest;
+    private static final String END_POINT = BASE_ENDPOINT + "/card/browse";
 
     private final CardBrowseService cardBrowseService;
 
 
-    public CardBrowseController(@Autowired final HttpServletRequest httpServletRequest, @Autowired final CardBrowseService cardBrowseService)
+    @Autowired
+    public CardBrowseController(final HttpServletRequest request, final CardBrowseService cardBrowseService)
     {
 
-        this.httpServletRequest = httpServletRequest;
+        this.request = request;
         this.cardBrowseService = cardBrowseService;
 
     }
@@ -42,7 +42,7 @@ public class CardBrowseController
             , @RequestParam(value = "levels", defaultValue = "") final String monsterLevels)
     {
 
-        Logging.configureMDC(httpServletRequest, endpoint);
+        Logging.configureMDC(request, END_POINT);
         final BrowseResults browseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels);
         MDC.clear();
 
@@ -55,7 +55,7 @@ public class CardBrowseController
     public CardBrowseCriteria browseCriteria()
     {
 
-        Logging.configureMDC(httpServletRequest, endpoint + "/criteria");
+        Logging.configureMDC(request, END_POINT + "/criteria");
         final CardBrowseCriteria cardBrowseCriteria = cardBrowseService.getBrowseCriteria();
         MDC.clear();
 

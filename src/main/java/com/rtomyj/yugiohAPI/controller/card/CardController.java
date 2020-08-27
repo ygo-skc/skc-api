@@ -3,6 +3,7 @@ package com.rtomyj.yugiohAPI.controller.card;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
+import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
@@ -29,37 +30,33 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
  */
 @RestController
-@RequestMapping(path = "/api/v1/card", produces = "application/json; charset=UTF-8")
+@RequestMapping(path = "/card", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
 @Api(description = "Request information about card data stored in database.", tags = "Card")
-public class CardController
+public class CardController extends YgoApiBaseController
 {
+
+	/**
+	 * Base url for this endpoint.
+	 */
+	private static final String END_POINT = BASE_ENDPOINT + "/card";
+
 	/**
 	 * Service object used to interface with DB DAO.
 	 */
 	private final CardService cardService;
 
-	/**
-	 * Object with information about http request.
-	 */
-	private final HttpServletRequest httpRequest;
-
-	/**
-	 * Base url for this endpoint.
-	 */
-	private static final String endPoint = "/api/v1/card";
-
-
 
 	@Autowired
-	public CardController(final CardService cardService, final HttpServletRequest httpRequest)
+	public CardController(final HttpServletRequest request, final CardService cardService)
 	{
-		this.cardService = cardService;
-		this.httpRequest = httpRequest;
-	}
 
+		this.request = request;
+		this.cardService = cardService;
+
+	}
 
 
 	/**
@@ -87,8 +84,8 @@ public class CardController
 			, @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
 		throws YgoException
 	{
-		MDC.put("reqIp", httpRequest.getRemoteHost());
-		MDC.put("reqRes", endPoint);
+		MDC.put("reqIp", request.getRemoteHost());
+		MDC.put("reqRes", END_POINT);
 
 		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
 		log.info("Successfully retrieved resource: ( {}, fetching all info {}.", cardId, fetchAllInfo);
@@ -96,4 +93,5 @@ public class CardController
 		MDC.clear();
 		return ResponseEntity.ok(foundCard);
 	}
+
 }
