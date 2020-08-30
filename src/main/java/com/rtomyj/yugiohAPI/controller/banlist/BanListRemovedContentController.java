@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
+@Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
 public class BanListRemovedContentController extends YgoApiBaseController {
 
 	/**
@@ -68,7 +68,7 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 	@ApiOperation(value = "Retrieve cards removed from the ban list relative to the previous ban list (use /api/v1/ban/dates to see a valid list of start dates)"
 		, response = BanListRemovedContent.class
 		, responseContainer = "Object"
-		, tags = SwaggerConstants.SWAGGER_TAG_BAN_LIST)
+		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = SwaggerConstants.http200)
 		, @ApiResponse(code = 400, message = SwaggerConstants.http400)

@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
+@Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
 public class BannedCardsController extends YgoApiBaseController {
 
 	/**
@@ -80,7 +80,7 @@ public class BannedCardsController extends YgoApiBaseController {
 	@ApiOperation(value = "Retrieves information about a ban list using a valid effective start date for the ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListInstance.class
 		, responseContainer = "Object"
-		, tags = SwaggerConstants.SWAGGER_TAG_BAN_LIST)
+		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = SwaggerConstants.http200)
 		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
@@ -93,10 +93,10 @@ public class BannedCardsController extends YgoApiBaseController {
 					, required = true
 			) @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable final String banListStartDate
 			, @ApiParam(
-					value = "If true, truncates information to save bandwidth."
+					value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION
 			) @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth
 			, @ApiParam(
-					value = "If true, compares desired ban list with the ban list it replaced and returns the new cards added and the cards removed in the ban list transition."
+					value = SwaggerConstants.FETCH_ALL_DESCRIPTION
 			) @RequestParam(name = "allInfo", required = false, defaultValue = "false") final boolean fetchAllInfo)
 			throws YgoException
 	{

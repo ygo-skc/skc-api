@@ -9,6 +9,10 @@ import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(path = "/card/search", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = {"*"})
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_CARD})
+@Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
 public class CardSearchController extends YgoApiBaseController
 {
 
@@ -44,14 +48,36 @@ public class CardSearchController extends YgoApiBaseController
 
 
 	@GetMapping
+	@ApiOperation(value = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)"
+			, response = Card.class
+			, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = SwaggerConstants.http200)
+	})
 	public ResponseEntity<List<Card>> searchByCriteria(
-			@RequestParam(name = "cId", required = false, defaultValue="") final String cardId
-			, @RequestParam(name = "cName", required = false, defaultValue="") final String cardName
-			, @RequestParam(name = "cAttribute", required = false, defaultValue="") final String cardAttribute
-			, @RequestParam(name = "cColor", required = false, defaultValue="") final String cardColor
-			, @RequestParam(name = "mType", required = false, defaultValue="") final String monsterType
-			, @RequestParam(name = "limit", required = false, defaultValue = "-1") final int limit
-			, @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth)
+			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
+					, example = "5"
+			) @RequestParam(name = "cId", required = false, defaultValue="") final String cardId
+			, @ApiParam(value = SwaggerConstants.CARD_NAME_DESCRIPTION
+					, example = "hero"
+			) @RequestParam(name = "cName", required = false, defaultValue="") final String cardName
+			, @ApiParam(value = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION
+					, example = "water"
+			) @RequestParam(name = "cAttribute", required = false, defaultValue="") final String cardAttribute
+			, @ApiParam(value = SwaggerConstants.CARD_COLOR_DESCRIPTION
+					, example = "effect"
+			) @RequestParam(name = "cColor", required = false, defaultValue="") final String cardColor
+			, @ApiParam(value = SwaggerConstants.MONSTER_TYPE_DESCRIPTION
+					, example = "war"
+			) @RequestParam(name = "mType", required = false, defaultValue="") final String monsterType
+			, @ApiParam(value = SwaggerConstants.RESULT_LIMIT_DESCRIPTION
+					, example = "5"
+					, defaultValue = "-1"
+			) @RequestParam(name = "limit", required = false, defaultValue = "-1") final int limit
+			, @ApiParam(value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION
+					, example = "false"
+					, defaultValue = "true"
+			) @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth)
 			throws YgoException
 	{
 

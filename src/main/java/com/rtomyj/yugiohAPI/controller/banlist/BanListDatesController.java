@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(path="/ban/dates", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
+@Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
 public class BanListDatesController extends YgoApiBaseController
 {
 
@@ -64,7 +64,7 @@ public class BanListDatesController extends YgoApiBaseController
 	@GetMapping
 	@ApiOperation(value = "Retrieve start (effective) dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints."
 		, response = BanListStartDates.class
-		, tags = SwaggerConstants.SWAGGER_TAG_BAN_LIST)
+		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = SwaggerConstants.http200)
 	})

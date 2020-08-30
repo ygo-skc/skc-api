@@ -4,12 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
+import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.service.CardService;
 
+import io.swagger.annotations.ApiParam;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_CARD})
+@Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
 public class CardController extends YgoApiBaseController
 {
 
@@ -71,28 +73,33 @@ public class CardController extends YgoApiBaseController
 	 * @return Card object as a response.
 	 */
 	@GetMapping("/{cardId}")
-	@ApiOperation(value = "Get information about a specific card"
+	@ApiOperation(value = "Get information about a specific card."
 		, response = Card.class
-		, responseContainer = "Object"
-		, tags = "Card")
+		, responseContainer = "Object")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = "OK")
-		, @ApiResponse(code = 400, message = "Malformed request, make sure cardId is valid")
-		, @ApiResponse(code = 404, message = "No resource for requested card ID")
+		@ApiResponse(code = 200, message = SwaggerConstants.http200)
+		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
+		, @ApiResponse(code = 404, message = SwaggerConstants.http404)
 	})
 	public ResponseEntity<Card> getCard(
-			@PathVariable("cardId") @Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
-			, @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
+			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
+					, example = "40044918"
+					, required = true
+			) @PathVariable("cardId") @Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
+			, @ApiParam(value = SwaggerConstants.FETCH_ALL_DESCRIPTION
+					, example = "true"
+			) @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
 		throws YgoException
 	{
-		MDC.put("reqIp", request.getRemoteHost());
-		MDC.put("reqRes", END_POINT);
+
+		Logging.configureMDC(request, END_POINT);
 
 		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
 		log.info("Successfully retrieved resource: ( {}, fetching all info {}.", cardId, fetchAllInfo);
 
 		MDC.clear();
 		return ResponseEntity.ok(foundCard);
+
 	}
 
 }

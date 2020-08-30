@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(path="/testcall", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_TEST_CALL})
+@Api(tags = {SwaggerConstants.TEST_CALL_TAG_NAME})
 public class TestCallController extends YgoApiBaseController
 {
 
@@ -54,7 +54,7 @@ public class TestCallController extends YgoApiBaseController
 	 * @return String confirming API is up.
 	 */
 	@GetMapping()
-	@ApiOperation(value = "Simple test operation.", response = ResponseEntity.class, tags = SwaggerConstants.SWAGGER_TAG_TEST_CALL)
+	@ApiOperation(value = "Simple test operation.", response = ResponseEntity.class, tags = SwaggerConstants.TEST_CALL_TAG_NAME)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = SwaggerConstants.http200)
 	})

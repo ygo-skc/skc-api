@@ -3,7 +3,6 @@ package com.rtomyj.yugiohAPI.controller.product;
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
-import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.Products;
 import com.rtomyj.yugiohAPI.service.ProductService;
 import io.swagger.annotations.Api;
@@ -23,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(path = "/products", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_PRODUCT})
+@Api(tags = {SwaggerConstants.TAG_PRODUCT_TAG_NAME})
 public class ProductsController extends YgoApiBaseController
 {
 

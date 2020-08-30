@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
-@Api(tags = {SwaggerConstants.SWAGGER_TAG_BAN_LIST})
+@Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
 public class BanListNewContentController extends YgoApiBaseController
 {
 
@@ -77,7 +77,7 @@ public class BanListNewContentController extends YgoApiBaseController
 		value = "Retrieve cards that are either newly added to a ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListNewContent.class
 		, responseContainer = "Object"
-		, tags = SwaggerConstants.SWAGGER_TAG_BAN_LIST)
+		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = SwaggerConstants.http200)
 		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
