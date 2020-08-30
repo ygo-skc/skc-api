@@ -3,6 +3,8 @@ package com.rtomyj.yugiohAPI.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,7 +60,7 @@ public class TestCallController extends YgoApiBaseController
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = SwaggerConstants.http200)
 	})
-	public ResponseEntity<String> testCall()
+	public ResponseEntity<ApiTestCall> testCall()
 	{
 
 		MDC.put("reqIp", httpServletRequest.getRemoteHost());
@@ -67,7 +69,17 @@ public class TestCallController extends YgoApiBaseController
 		log.info("User requested API status");
 
 		MDC.clear();
-		return new ResponseEntity<>("API is online.", HttpStatus.OK);
+		return ResponseEntity.ok(new ApiTestCall("API is online and functional."));
+
+	}
+
+
+	@Getter
+	@AllArgsConstructor
+	private class ApiTestCall
+	{
+
+		private final String status;
 
 	}
 

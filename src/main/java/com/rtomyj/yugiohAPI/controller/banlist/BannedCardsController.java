@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Pattern;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
+import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
@@ -77,7 +78,7 @@ public class BannedCardsController extends YgoApiBaseController {
 	 */
 	@ResponseBody
 	@GetMapping(path = "{banListStartDate}")
-	@ApiOperation(value = "Retrieves information about a ban list using a valid effective start date for the ban list (use /api/v1/ban/dates to see a valid list of start dates)."
+	@ApiOperation(value = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListInstance.class
 		, responseContainer = "Object"
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
@@ -88,15 +89,15 @@ public class BannedCardsController extends YgoApiBaseController {
 	})
 	public ResponseEntity<BanListInstance> getBannedCards(
 			@ApiParam(
-					value = "Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates)."
+					value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION
 					, example = "2020-04-01"
 					, required = true
-			) @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}", message = "Date doesn't have correct format.") @PathVariable final String banListStartDate
+			) @Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate
 			, @ApiParam(
 					value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION
 			) @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth
 			, @ApiParam(
-					value = SwaggerConstants.FETCH_ALL_DESCRIPTION
+					value = SwaggerConstants.BAN_LIST_FETCH_ALL_DESCRIPTION
 			) @RequestParam(name = "allInfo", required = false, defaultValue = "false") final boolean fetchAllInfo)
 			throws YgoException
 	{

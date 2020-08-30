@@ -62,7 +62,7 @@ public class BanListDatesController extends YgoApiBaseController
 	 * @return Map that contains a list of all dates of the ban lists in database.
 	 */
 	@GetMapping
-	@ApiOperation(value = "Retrieve start (effective) dates of all ban lists stored in database. These dates are valid start dates that can be used by other endpoints."
+	@ApiOperation(value = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints."
 		, response = BanListStartDates.class
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {

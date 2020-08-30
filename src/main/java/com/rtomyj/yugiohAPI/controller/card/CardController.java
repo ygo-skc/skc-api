@@ -86,7 +86,7 @@ public class CardController extends YgoApiBaseController
 					, example = "40044918"
 					, required = true
 			) @PathVariable("cardId") @Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
-			, @ApiParam(value = SwaggerConstants.FETCH_ALL_DESCRIPTION
+			, @ApiParam(value = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION
 					, example = "true"
 			) @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
 		throws YgoException

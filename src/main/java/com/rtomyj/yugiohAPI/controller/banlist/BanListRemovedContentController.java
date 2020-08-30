@@ -65,7 +65,7 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 
 
 	@GetMapping(path = "/{banListStartDate}")
-	@ApiOperation(value = "Retrieve cards removed from the ban list relative to the previous ban list (use /api/v1/ban/dates to see a valid list of start dates)"
+	@ApiOperation(value = "Retrieve cards removed from the desired ban list compared to the previous logical ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListRemovedContent.class
 		, responseContainer = "Object"
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
@@ -76,7 +76,7 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 	})
 	public ResponseEntity<BanListRemovedContent> getNewlyRemovedContentForBanList(
 			@ApiParam(
-					value = "Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates)."
+					value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION
 					, example = "2020-04-01"
 					, required = true
 			)

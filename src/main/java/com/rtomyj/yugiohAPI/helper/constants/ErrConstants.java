@@ -4,8 +4,6 @@ package com.rtomyj.yugiohAPI.helper.constants;
 public class ErrConstants
 {
 
-	public static final String TEST_CALL_RESPONSE = "API is online.";
-
 	public static final String NOT_FOUND_DAO_ERR = "DB-404";
 
 	public static final String HATEOAS_EXCEPTION = "HATEOAS-001";

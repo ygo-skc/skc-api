@@ -74,7 +74,7 @@ public class BanListNewContentController extends YgoApiBaseController
 	 */
 	@GetMapping(path = "/{banListStartDate}")
 	@ApiOperation(
-		value = "Retrieve cards that are either newly added to a ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates)."
+		value = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListNewContent.class
 		, responseContainer = "Object"
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
@@ -85,7 +85,7 @@ public class BanListNewContentController extends YgoApiBaseController
 	})
 	public ResponseEntity<BanListNewContent> getNewlyAddedContentForBanList(
 			@ApiParam(
-					value = "Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates)."
+					value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION
 					, example = "2020-04-01"
 					, required = true
 			)

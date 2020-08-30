@@ -8,6 +8,7 @@ import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
 import com.rtomyj.yugiohAPI.service.CardBrowseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.MDC;
@@ -43,7 +44,7 @@ public class CardBrowseController extends YgoApiBaseController
 
 
     @GetMapping()
-    @ApiOperation(value = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid options)."
+    @ApiOperation(value = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
             , response = BrowseResults.class
             , responseContainer = "Object"
     )
@@ -51,9 +52,18 @@ public class CardBrowseController extends YgoApiBaseController
             @ApiResponse(code = 200, message = SwaggerConstants.http200)
     })
     public BrowseResults browse(
-            @RequestParam(value = "cardColors", defaultValue = "") final String cardColors
-            , @RequestParam(value = "attributes", defaultValue = "") final String attributes
-            , @RequestParam(value = "levels", defaultValue = "") final String monsterLevels
+            @ApiParam(
+                    value = "Desired set of card types to include in browse results."
+                    , example = "effect,fusion"
+            ) @RequestParam(value = "cardColors", defaultValue = "") final String cardColors
+            , @ApiParam(
+                    value = "Desired set of attributes to include in browse results."
+                    , example = "wind,dark,light"
+            ) @RequestParam(value = "attributes", defaultValue = "") final String attributes
+            , @ApiParam(
+                    value = "Desired set of monster levels to include in browse results."
+                    , example = "4,5,6,7,8"
+            ) @RequestParam(value = "levels", defaultValue = "") final String monsterLevels
     )
     {
 
