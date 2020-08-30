@@ -4,6 +4,8 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.Card;
 import com.rtomyj.yugiohAPI.model.product.Product;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
@@ -28,22 +30,22 @@ public class CardService
 	/**
 	 * Cache used to store card data to prevent querying DB.
 	 */
-	private final Cache<String, Card> CARD_CACHE;
-
+	private final Cache<CardRequest, Card> CARD_CACHE;
 
 
 	@Autowired
 	public CardService(@Qualifier("jdbc") final Dao dao)
 	{
+
 		this.dao = dao;
-		this.CARD_CACHE = new Cache2kBuilder<String, Card>() {}
-			.expireAfterWrite(7, TimeUnit.DAYS)
+		this.CARD_CACHE = new Cache2kBuilder<CardRequest, Card>() {}
+			.expireAfterWrite(1, TimeUnit.DAYS)
 			.entryCapacity(1000)
 			.permitNullValues(false)
 			.loader(this::onCacheMiss)
 			.build();
-	}
 
+	}
 
 
 	/**
@@ -55,18 +57,38 @@ public class CardService
 	public Card getCardInfo(final String cardId, final boolean fetchAllInfo)
 		throws YgoException
 	{
-		final Card card = CARD_CACHE.get(cardId);
-		if (fetchAllInfo)
+
+		return CARD_CACHE.get(new CardRequest(cardId, fetchAllInfo));
+
+	}
+
+
+	/**
+	 *
+	 * @param cardRequest
+	 * @return
+	 * @throws YgoException
+	 */
+	public Card onCacheMiss(final CardRequest cardRequest)
+		throws YgoException
+	{
+
+		log.info("Card w/ id: ( {} ) not found in cache. Using DB.", cardRequest.cardId);
+
+		final Card foundCard = dao.getCardInfo(cardRequest.cardId);
+
+
+		if (cardRequest.fetchAllInfo)
 		{
-			card.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardId)));
-			card.setRestrictedIn(dao.getBanListDetailsForCard(cardId));
+			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardRequest.cardId)));
+			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardRequest.cardId));
 
 			/*
 				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
 				found in the same pack into the same ProductContent object
 			 */
 			Product firstOccurrenceOfProduct = null;
-			final Iterator<Product> it = card.getFoundIn().iterator();
+			final Iterator<Product> it = foundCard.getFoundIn().iterator();
 
 			while (it.hasNext())
 			{
@@ -82,23 +104,25 @@ public class CardService
 			}
 		}
 
-		return card;
-	}
 
-
-
-	public Card onCacheMiss(final String cardId)
-		throws YgoException
-	{
-		log.info("Card w/ id: ( {} ) not found in cache. Using DB.", cardId);
-
-		final Card foundCard = dao.getCardInfo(cardId);
 		foundCard.setLinks();
 		return foundCard;
+
 	}
 
 
-
+	/**
+	 *
+	 * @param cardId
+	 * @param cardName
+	 * @param cardAttribute
+	 * @param cardColor
+	 * @param monsterType
+	 * @param limit
+	 * @param saveBandwidth
+	 * @return
+	 * @throws YgoException
+	 */
 	public List<Card> getCardSearchResults(
 			final String cardId
 			, final String cardName
@@ -114,6 +138,28 @@ public class CardService
 
 		if (saveBandwidth)	Card.trimEffects(searchResults);
 		return searchResults;
+
+	}
+
+
+	/**
+	 *
+	 */
+	@Getter
+	@EqualsAndHashCode
+	private class CardRequest
+	{
+
+		private final String cardId;
+		private final boolean fetchAllInfo;
+
+		public CardRequest(final String cardId, final boolean fetchAllInfo)
+		{
+
+			this.cardId = cardId;
+			this.fetchAllInfo = fetchAllInfo;
+
+		}
 
 	}
 
