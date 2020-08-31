@@ -23,10 +23,13 @@ public class SwaggerConstants
     public static final String CARD_COLOR_DESCRIPTION = "A simple identifier for card type. If the card is synchro, the card color is synchro.";
     public static final String MONSTER_TYPE_DESCRIPTION = "Monster type such as Spellcaster.";
 
+    public static final String PRODUCT_LOCALE_DESCRIPTION = "A locale to use to limit products. As of now the only locale available is \"en\" but in the future other locales can be added to support products in other regions like Japan.";
+
     // Swagger tag names
     public static final String TEST_CALL_TAG_NAME = "Test Call";
     public static final String BAN_LIST_TAG_NAME = "Ban List";
     public static final String TAG_CAR_TAG_NAMED = "Card Info";
     public static final String TAG_PRODUCT_TAG_NAME = "Product Info";
+    public static final String TAG_STATS_NAME = "Database Statistics";
 
 }

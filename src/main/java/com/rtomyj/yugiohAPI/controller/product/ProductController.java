@@ -8,6 +8,10 @@ import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.service.ProductService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,9 +48,21 @@ public class ProductController extends YgoApiBaseController
 
 	// todo: add validation/prevent null pointer exception when productid is invalid
 	@GetMapping("/{productId}/{locale}")
+	@ApiOperation(value = "Fetch information about a particular YuGiOh product using product ID given by Konami."
+			, response = Product.class
+			, responseContainer = "Object")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = SwaggerConstants.http200)
+			, @ApiResponse(code = 400, message = SwaggerConstants.http400)
+			, @ApiResponse(code = 404, message = SwaggerConstants.http404)
+	})
 	public ResponseEntity<Product> getProduct(
-			@PathVariable("productId") final String productId
-			, @PathVariable("locale") final String locale)
+			@ApiParam(value = "Unique identifier each YuGiOh product has. It is the 3 or 4 alpha numeric string found on every card."
+					, example = "LOB"
+			) @PathVariable("productId") final String productId
+			, @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
+					, example = "en"
+			) @PathVariable("locale") final String locale)
 	{
 		log.info(productId);
 		return ResponseEntity.ok(availablePacksService.getPack(productId, locale.toUpperCase()));

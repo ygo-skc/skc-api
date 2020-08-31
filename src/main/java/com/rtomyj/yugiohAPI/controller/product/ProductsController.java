@@ -6,6 +6,10 @@ import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.product.Products;
 import com.rtomyj.yugiohAPI.service.ProductService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +53,20 @@ public class ProductsController extends YgoApiBaseController
 
 
     @GetMapping("/{productType}/{locale}")
+    @ApiOperation(value = "Retrieve products that fit a certain product type and locale."
+            , response = Products.class
+            , responseContainer = "Object")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerConstants.http200)
+            , @ApiResponse(code = 400, message = SwaggerConstants.http400)
+            , @ApiResponse(code = 404, message = SwaggerConstants.http404)
+    })
     public ResponseEntity<Products> getProduct(
-            @PathVariable("productType") final ProductType productType
-            , @PathVariable("locale") final String locale)
+            @ApiParam(value = "A specific product type used to limit results."
+            ) @PathVariable("productType") final ProductType productType
+            , @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
+                    , example = "en"
+            ) @PathVariable("locale") final String locale)
     {
         log.info(productType.toString());
         return ResponseEntity.ok(availablePacksService.getAvailablePacks(productType, locale));
