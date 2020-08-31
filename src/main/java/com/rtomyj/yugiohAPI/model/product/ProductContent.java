@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;

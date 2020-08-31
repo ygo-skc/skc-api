@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,18 +20,16 @@ import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.BrowseQueryDefinition;
-import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefinition;
-import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
-import com.rtomyj.yugiohAPI.model.BrowseResults;
-import com.rtomyj.yugiohAPI.model.MonsterAssociation;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
+import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
-import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
@@ -529,7 +526,7 @@ public class JDBCDao implements Dao
 	}
 
 
-	public MonsterType getMonsterTypeStats(@NonNull final String cardColor)
+	public MonsterTypeStats getMonsterTypeStats(@NonNull final String cardColor)
 	{
 		final String query = "SELECT monster_type, count(*) AS 'Total' FROM card_info WHERE monster_type IS NOT NULL AND card_color = :cardColor GROUP BY monster_type ORDER BY monster_type";
 
@@ -537,7 +534,7 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardColor", cardColor);
 
 
-		MonsterType monsterType = MonsterType.builder()
+		MonsterTypeStats monsterType = MonsterTypeStats.builder()
 				.scope(cardColor)
 				.monsterTypes(new HashMap<>())
 				.build();
@@ -637,7 +634,7 @@ public class JDBCDao implements Dao
 	}
 
 
-	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels)
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels)
 	{
 		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes %s ORDER BY card_name";
 
@@ -666,7 +663,7 @@ public class JDBCDao implements Dao
 		log.info(sql);
 		log.info(sqlParams.toString());
 
-		return BrowseResults
+		return CardBrowseResults
 				.builder()
 				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
 					return Card

@@ -21,7 +21,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 
 import org.cache2k.integration.CacheLoaderException;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,9 +35,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CardsServiceTest {
+public class BannedCardsServiceTest {
 	@InjectMocks
-	private CardsService cardsService;
+	private BannedCardsService bannedCardsService;
 
 	@Mock
 	private Dao dao;
@@ -72,7 +72,7 @@ public class CardsServiceTest {
 			.thenReturn(banListInstanceFullText.getSemiLimited());
 
 
-		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, false, false);
+		final BanListInstance banListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, false, false);
 
 		final List<Card> forbidden = banListInstance.getForbidden();
 		final List<Card> limited = banListInstance.getLimited();
@@ -119,7 +119,7 @@ public class CardsServiceTest {
 			.thenReturn(banListInstanceFullText.getSemiLimited());
 
 
-		final BanListInstance banListInstance = cardsService.getBanListByBanStatus(banListStartDate, true, false);
+		final BanListInstance banListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, true, false);
 
 		final List<Card> forbiddenTrimmed = banListInstance.getForbidden();
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
@@ -165,7 +165,7 @@ public class CardsServiceTest {
 			.thenReturn(new ArrayList<>());
 
 
-		assertThrows(CacheLoaderException.class, () -> cardsService.getBanListByBanStatus(banListStartDate, false, false));
+		assertThrows(CacheLoaderException.class, () -> bannedCardsService.getBanListByBanStatus(banListStartDate, false, false));
 
 
 		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.rtomyj.yugiohAPI.controller.banlist.BanListDatesController;
 
+import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiModel;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Start dates of ban lists.")
-public class BanListStartDates extends RepresentationModel<BanListStartDates>
+public class BanListStartDates extends RepresentationModel<BanListStartDates> implements HateoasLinks
 {
 
 	private List<BanList> banListStartDates;
@@ -30,7 +31,8 @@ public class BanListStartDates extends RepresentationModel<BanListStartDates>
 	private static final Class<BanListDatesController> controllerClass = BanListDatesController.class;
 
 
-	private void setLink()
+	@Override
+	public void setSelfLink()
 	{
 
 		this.add(
@@ -40,11 +42,12 @@ public class BanListStartDates extends RepresentationModel<BanListStartDates>
 	}
 
 
+	@Override
 	public void setLinks()
 	{
 
-		this.setLink();
-		BanList.setLinks(this.banListStartDates);
+		this.setSelfLink();
+		HateoasLinks.setLinks(this.banListStartDates);
 
 	}
 

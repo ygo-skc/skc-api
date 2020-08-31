@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.card;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;

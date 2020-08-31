@@ -11,7 +11,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

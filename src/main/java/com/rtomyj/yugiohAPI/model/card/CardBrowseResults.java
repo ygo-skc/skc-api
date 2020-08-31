@@ -1,5 +1,6 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.card;
 
+import com.rtomyj.yugiohAPI.model.card.Card;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BrowseResults {
+public class CardBrowseResults {
 
     private int numResults;
     private List<Card> results;

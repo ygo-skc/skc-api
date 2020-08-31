@@ -5,8 +5,8 @@ import java.util.List;
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.service.CardService;
+import com.rtomyj.yugiohAPI.model.card.Card;
+import com.rtomyj.yugiohAPI.service.card.CardService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

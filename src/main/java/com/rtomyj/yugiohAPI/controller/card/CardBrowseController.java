@@ -3,9 +3,9 @@ package com.rtomyj.yugiohAPI.controller.card;
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
-import com.rtomyj.yugiohAPI.model.BrowseResults;
-import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
-import com.rtomyj.yugiohAPI.service.CardBrowseService;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseCriteria;
+import com.rtomyj.yugiohAPI.service.card.CardBrowseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -45,13 +45,13 @@ public class CardBrowseController extends YgoApiBaseController
 
     @GetMapping()
     @ApiOperation(value = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
-            , response = BrowseResults.class
+            , response = CardBrowseResults.class
             , responseContainer = "Object"
     )
     @ApiResponses( value = {
             @ApiResponse(code = 200, message = SwaggerConstants.http200)
     })
-    public BrowseResults browse(
+    public CardBrowseResults browse(
             @ApiParam(
                     value = "Desired set of card types to include in browse results."
                     , example = "effect,fusion"
@@ -68,10 +68,10 @@ public class CardBrowseController extends YgoApiBaseController
     {
 
         Logging.configureMDC(request, END_POINT);
-        final BrowseResults browseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels);
+        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels);
         MDC.clear();
 
-        return browseResults;
+        return cardBrowseResults;
 
     }
 

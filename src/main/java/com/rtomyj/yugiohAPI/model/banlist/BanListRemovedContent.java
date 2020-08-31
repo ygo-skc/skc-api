@@ -10,6 +10,7 @@ import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListNewContentController;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListRemovedContentController;
 
+import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -22,7 +23,7 @@ import io.swagger.annotations.ApiModel;
 @AllArgsConstructor
 @ApiModel(description = "Information about a ban list (listRequested) obtained by comparing to a previous ban list (comparedTo). The information retrieved will be the removedCards.")
 @JsonPropertyOrder({ "listRequested", "comparedTo", "numRemoved", "removedCards" })
-public class BanListRemovedContent extends RepresentationModel<BanListRemovedContent>
+public class BanListRemovedContent extends RepresentationModel<BanListRemovedContent> implements HateoasLinks
 {
 	private String listRequested;
 	private String comparedTo;
@@ -35,31 +36,31 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 	private static final Class<BanListNewContentController> newController = BanListNewContentController.class;
 
 
-
-	private void setLink()
+	@Override
+	public void setSelfLink()
 	{
+
 		this.add(
 			linkTo(methodOn(controllerClass).getNewlyRemovedContentForBanList(listRequested)).withSelfRel()
 		);
 
-		this.add(
-			linkTo(methodOn(banListController).getBannedCards(listRequested, false, true)).withRel("banlist")
-		);
-
-		this.add(
-			linkTo(methodOn(newController).getNewlyAddedContentForBanList(listRequested)).withRel("new-cards")
-		);
-
-		this.add(
-			linkTo(methodOn(controllerClass).getNewlyRemovedContentForBanList(comparedTo)).withRel("previous")
-		);
 	}
 
 
-
+	@Override
 	public void setLinks()
 	{
-		this.setLink();
-		BanListComparisonResults.setLinks(removedCards);
+		this.setSelfLink();
+
+		this.add(
+				linkTo(methodOn(banListController).getBannedCards(listRequested, false, true)).withRel("Ban List Content")
+		);
+		this.add(
+				linkTo(methodOn(newController).getNewlyAddedContentForBanList(listRequested)).withRel("Ban List New Content")
+		);
+		this.add(
+				linkTo(methodOn(controllerClass).getNewlyRemovedContentForBanList(comparedTo)).withRel("Previous Ban Lists' Removed Content")
+		);
+		HateoasLinks.setLinks(removedCards);
 	}
 }

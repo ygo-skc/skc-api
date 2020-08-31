@@ -1,12 +1,11 @@
 package com.rtomyj.yugiohAPI.controller.stats;
 
 
-import com.google.inject.internal.util.Strings;
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
-import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
-import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
+import com.rtomyj.yugiohAPI.service.stats.StatsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,7 +14,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,21 +37,21 @@ public class StatsController extends YgoApiBaseController
 
     private static final String END_POINT = BASE_ENDPOINT + "/stats";
 
-    private final Dao dao;
+    private final StatsService statsService;
 
 
     @Autowired
-    public StatsController(final HttpServletRequest request, @Qualifier("jdbc") final Dao dao)
+    public StatsController(final HttpServletRequest request, final StatsService statsService)
     {
 
         this.request = request;
-        this.dao = dao;
+        this.statsService = statsService;
 
     }
 
 
     @ApiOperation(value = "Retrieve sum of all unique monster types for a given color of a card."
-            , response = MonsterType.class
+            , response = MonsterTypeStats.class
             , responseContainer = "Object")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = SwaggerConstants.http200)
@@ -61,7 +59,7 @@ public class StatsController extends YgoApiBaseController
             , @ApiResponse(code = 404, message = SwaggerConstants.http404)
     })
     @GetMapping("/card/monster_type/{cardColor}")
-    public ResponseEntity<MonsterType> getMonsterTypeByColor(
+    public ResponseEntity<MonsterTypeStats> getMonsterTypeByColor(
             @ApiParam(
               value = SwaggerConstants.CARD_COLOR_DESCRIPTION
                     , defaultValue = "fusion"
@@ -69,7 +67,8 @@ public class StatsController extends YgoApiBaseController
     )
     {
 
-        return ResponseEntity.ok(dao.getMonsterTypeStats(Strings.capitalize(cardColor)));
+        // TODO: add loggers
+        return ResponseEntity.ok(statsService.getMonsterTypeStats(cardColor));
 
     }
 
@@ -88,7 +87,7 @@ public class StatsController extends YgoApiBaseController
 
         // TODO: add loggers
         log.info("Stat base endpoint hit");
-        return ResponseEntity.ok(dao.getDatabaseStats());
+        return ResponseEntity.ok(statsService.getDatabaseStats());
 
     }
 

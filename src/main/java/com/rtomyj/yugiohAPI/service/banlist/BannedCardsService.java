@@ -7,11 +7,10 @@ import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
-import org.custommonkey.xmlunit.Diff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-public class CardsService
+public class BannedCardsService
 {
+
 	/**
 	 * Dao for DB;
 	 */
@@ -48,7 +48,7 @@ public class CardsService
 
 
 	@Autowired
-	public CardsService(@Qualifier("jdbc") final Dao dao, final DiffService diffService)
+	public BannedCardsService(@Qualifier("jdbc") final Dao dao, final DiffService diffService)
 	{
 		this.dao = dao;
 		this.diffService = diffService;
@@ -80,6 +80,7 @@ public class CardsService
 	public BanListInstance getBanListByBanStatus(final String banListStartDate, final boolean saveBandwidth, final boolean fetchAllInfo)
 		throws YgoException
 	{
+
 		/* Determines which cache to use depending on user bandwidth preferences */
 		Cache<String, BanListInstance> cache;
 		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
@@ -94,6 +95,7 @@ public class CardsService
 		}
 
 		return banListInstance;
+
 	}
 
 
@@ -119,7 +121,7 @@ public class CardsService
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
 		}
 
-		banListInstance.setLinks(false);
+		banListInstance.setLinks();
 		return banListInstance;
 	}
 
@@ -128,6 +130,7 @@ public class CardsService
 	private BanListInstance onLowBandwidthCacheMiss(final String banListStartDate)
 		throws YgoException
 	{
+
 		log.info("Ban list w/ start date: ( {} ) not found in low bandwidth cache. Using DB.", banListStartDate);
 		final BanListInstance banListInstance = BanListInstance.builder()
 			.forbidden(dao.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN))
@@ -147,7 +150,8 @@ public class CardsService
 		}
 
 		Card.trimEffects(banListInstance);
-		banListInstance.setLinks(true);
+		banListInstance.setLinks();
 		return banListInstance;
+
 	}
 }

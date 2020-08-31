@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.model;
+package com.rtomyj.yugiohAPI.model.card;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.card.CardController;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
+import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import com.rtomyj.yugiohAPI.model.product.Product;
@@ -37,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @ApiModel(description = "Describes attributes of a YGO card.")
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 @Slf4j
-public class Card extends RepresentationModel<Card>
+public class Card extends RepresentationModel<Card> implements HateoasLinks
 {
 
 	private String cardID;
@@ -62,6 +63,7 @@ public class Card extends RepresentationModel<Card>
 
 	@JsonIgnore
 	private static final int maxCardEffectLength = 120;
+
 	@JsonIgnore
 	private static final String cardEffectTrimTermination = "...";
 
@@ -78,12 +80,10 @@ public class Card extends RepresentationModel<Card>
 	}
 
 
-
 	public static void trimEffect(final Card card)
 	{
 		card.setCardEffect(trimEffect(card.getCardEffect()));
 	}
-
 
 
 	/**
@@ -98,7 +98,6 @@ public class Card extends RepresentationModel<Card>
 	}
 
 
-
 	public static void trimEffects(final BanListInstance banListInstance)
 	{
 		Card.trimEffects(banListInstance.getForbidden());
@@ -107,27 +106,25 @@ public class Card extends RepresentationModel<Card>
 	}
 
 
-
-	private void setLink()
-		throws YgoException
+	@Override
+	public void setSelfLink()
 	{
+
 		this.add(
 			linkTo(methodOn(cardController).getCard(cardID, true)).withSelfRel()
 		);
+
 	}
 
 
-
+	@Override
 	public void setLinks()
 	{
-		this.setLink();
-	}
 
+		this.setSelfLink();
 
+		HateoasLinks.setLinks(restrictedIn);
 
-	public static void setLinks(final List<Card> cards)
-	{
-		cards.forEach(card -> card.setLinks());
 	}
 
 }

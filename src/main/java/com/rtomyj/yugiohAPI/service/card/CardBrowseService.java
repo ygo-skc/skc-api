@@ -1,9 +1,10 @@
-package com.rtomyj.yugiohAPI.service;
+package com.rtomyj.yugiohAPI.service.card;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.BrowseResults;
-import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.model.CardBrowseCriteria;
+import com.rtomyj.yugiohAPI.model.HateoasLinks;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
+import com.rtomyj.yugiohAPI.model.card.Card;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseCriteria;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CardBrowseService
     }
 
 
-    public BrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterLevels)
+    public CardBrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterLevels)
     {
 
         final Set<String> cardColorsSet = (cardColors.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(cardColors.split(",")));
@@ -49,12 +50,12 @@ public class CardBrowseService
         }
 
 
-        final BrowseResults browseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet);
-        browseResults.setNumResults(browseResults.getResults().size());
+        final CardBrowseResults cardBrowseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet);
+        cardBrowseResults.setNumResults(cardBrowseResults.getResults().size());
 
-        Card.setLinks(browseResults.getResults());
-        Card.trimEffects(browseResults.getResults());
-        return browseResults;
+        HateoasLinks.setLinks(cardBrowseResults.getResults());
+        Card.trimEffects(cardBrowseResults.getResults());
+        return cardBrowseResults;
 
     }
 

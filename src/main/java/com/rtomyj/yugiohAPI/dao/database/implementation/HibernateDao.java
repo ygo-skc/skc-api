@@ -13,13 +13,13 @@ import javax.persistence.criteria.Root;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
-import com.rtomyj.yugiohAPI.model.BrowseResults;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
-import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
 import com.rtomyj.yugiohAPI.model.hibernate.BanListTable;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
@@ -136,7 +136,7 @@ public class HibernateDao implements Dao
 		return null;
 	}
 
-	public MonsterType getMonsterTypeStats(final String cardColor){ return null; }
+	public MonsterTypeStats getMonsterTypeStats(final String cardColor){ return null; }
 
 	public DatabaseStats getDatabaseStats()	{ return null; }
 
@@ -144,7 +144,7 @@ public class HibernateDao implements Dao
 
 	public List<BanList> getBanListDetailsForCard(final String cardId) { return null; }
 
-	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels){ return null; }
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels){ return null; }
 
 	public CompletableFuture<Set<String>> getCardColors(){ return null; }
 

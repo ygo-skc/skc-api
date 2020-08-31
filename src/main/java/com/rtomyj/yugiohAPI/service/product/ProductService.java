@@ -1,4 +1,4 @@
-package com.rtomyj.yugiohAPI.service;
+package com.rtomyj.yugiohAPI.service.product;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;

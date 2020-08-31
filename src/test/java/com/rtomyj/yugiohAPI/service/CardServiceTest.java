@@ -9,8 +9,9 @@ import static org.mockito.Mockito.when;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 
+import com.rtomyj.yugiohAPI.service.card.CardService;
 import org.cache2k.integration.CacheLoaderException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

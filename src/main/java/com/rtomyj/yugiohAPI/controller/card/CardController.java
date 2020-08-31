@@ -8,8 +8,8 @@ import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.Card;
-import com.rtomyj.yugiohAPI.service.CardService;
+import com.rtomyj.yugiohAPI.model.card.Card;
+import com.rtomyj.yugiohAPI.service.card.CardService;
 
 import io.swagger.annotations.ApiParam;
 import org.slf4j.MDC;

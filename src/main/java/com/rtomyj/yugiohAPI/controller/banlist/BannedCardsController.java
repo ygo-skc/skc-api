@@ -8,7 +8,7 @@ import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
-import com.rtomyj.yugiohAPI.service.banlist.CardsService;
+import com.rtomyj.yugiohAPI.service.banlist.BannedCardsService;
 
 import io.swagger.annotations.ApiParam;
 import org.slf4j.MDC;
@@ -48,7 +48,7 @@ public class BannedCardsController extends YgoApiBaseController {
 	/**
 	 * Service object used to get information about banned cards from the database.
 	 */
-	private final CardsService bannedCardsService;
+	private final BannedCardsService bannedCardsService;
 
 
 	/**
@@ -57,7 +57,7 @@ public class BannedCardsController extends YgoApiBaseController {
 	 * @param bannedCardsService Service object to use to accomplish functionality needed by this endpoint.
 	 */
 	@Autowired
-	public BannedCardsController(final HttpServletRequest request, final CardsService bannedCardsService)
+	public BannedCardsController(final HttpServletRequest request, final BannedCardsService bannedCardsService)
 	{
 
 		this.request = request;

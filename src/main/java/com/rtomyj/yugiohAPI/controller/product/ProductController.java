@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.model.product.Product;
-import com.rtomyj.yugiohAPI.service.ProductService;
+import com.rtomyj.yugiohAPI.service.product.ProductService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -7,13 +7,13 @@ import java.util.concurrent.CompletableFuture;
 
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
-import com.rtomyj.yugiohAPI.model.BrowseResults;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
-import com.rtomyj.yugiohAPI.model.Stats.MonsterType;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
@@ -139,7 +139,7 @@ public interface Dao
 
 	public Set<ProductContent> getProductContents(final String productId, final String locale);
 
-	public MonsterType getMonsterTypeStats(final String cardColor);
+	public MonsterTypeStats getMonsterTypeStats(final String cardColor);
 
 	public DatabaseStats getDatabaseStats();
 
@@ -147,7 +147,7 @@ public interface Dao
 
 	public List<BanList> getBanListDetailsForCard(final String cardId);
 
-	public BrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels);
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels);
 
 	public CompletableFuture<Set<String>> getCardColors();
 

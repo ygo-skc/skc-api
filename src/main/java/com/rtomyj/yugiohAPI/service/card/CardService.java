@@ -1,8 +1,8 @@
-package com.rtomyj.yugiohAPI.service;
+package com.rtomyj.yugiohAPI.service.card;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

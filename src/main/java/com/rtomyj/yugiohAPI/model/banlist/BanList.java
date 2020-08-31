@@ -7,6 +7,7 @@ import com.rtomyj.yugiohAPI.config.DateConfig;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListNewContentController;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListRemovedContentController;
 import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
+import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -30,7 +30,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
-public class BanList extends RepresentationModel<BanList>
+public class BanList extends RepresentationModel<BanList> implements HateoasLinks
 {
 
 	/**
@@ -56,7 +56,15 @@ public class BanList extends RepresentationModel<BanList>
 	private static final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
 
 
-	private void setLink()
+	@Override
+	public void setSelfLink()
+	{
+
+	}
+
+
+	@Override
+	public void setLinks()
 	{
 
 		final String banListDateStr = banListSimpleDateFormat.format(banListDate);
@@ -73,21 +81,6 @@ public class BanList extends RepresentationModel<BanList>
 				linkTo(methodOn(BAN_LIST_REMOVED_CONTENT_CONTROLLER_CLASS)
 						.getNewlyRemovedContentForBanList(banListDateStr))
 						.withRel("Ban List Removed Content"));
-
-	}
-
-
-	public void setLinks()
-	{
-		this.setLink();
-	}
-
-
-	public static void setLinks(final List<BanList> banlists)
-	{
-
-		 banlists
-		 	.forEach(banlist -> banlist.setLinks());
 
 	}
 
