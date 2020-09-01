@@ -123,7 +123,8 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks
 
 		this.setSelfLink();
 
-		HateoasLinks.setLinks(restrictedIn);
+		if (restrictedIn != null)
+			HateoasLinks.setLinks(restrictedIn);
 
 	}
 

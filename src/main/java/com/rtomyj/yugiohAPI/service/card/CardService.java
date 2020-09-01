@@ -2,6 +2,7 @@ package com.rtomyj.yugiohAPI.service.card;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
+import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import lombok.EqualsAndHashCode;
@@ -137,6 +138,7 @@ public class CardService
 		final List<Card> searchResults = dao.getCardNameByCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
 
 		if (saveBandwidth)	Card.trimEffects(searchResults);
+		HateoasLinks.setLinks(searchResults);
 		return searchResults;
 
 	}

@@ -51,9 +51,16 @@ public class CardBrowseService
 
 
         final CardBrowseResults cardBrowseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet);
+        cardBrowseResults.setRequestedCriteria(
+                CardBrowseCriteria
+                        .builder()
+                        .cardColors(cardColorsSet)
+                        .attributes(attributeSet)
+                        .build()
+        );
         cardBrowseResults.setNumResults(cardBrowseResults.getResults().size());
 
-        HateoasLinks.setLinks(cardBrowseResults.getResults());
+        cardBrowseResults.setLinks();
         Card.trimEffects(cardBrowseResults.getResults());
         return cardBrowseResults;
 
