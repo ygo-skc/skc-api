@@ -14,6 +14,7 @@ import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
+import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
@@ -153,7 +154,7 @@ public interface Dao
 
 	public CompletableFuture<Set<String>> getMonsterAttributes();
 
-	public CompletableFuture<Set<Integer>> getLevels();
+	public Set<MonsterAssociation> getLevels();
 
 	public CompletableFuture<Set<Integer>> getRanks();
 

@@ -44,6 +44,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
 /**
  * JDBC implementation of DB DAO interface.
@@ -706,15 +707,28 @@ public class JDBCDao implements Dao
 	}
 
 
-	@Async("asyncExecutor")
-	public CompletableFuture<Set<Integer>> getLevels()
+	public Set<MonsterAssociation> getLevels()
 	{
 
-		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
+//		Below query cannot be used on Remote Servers MySQL software due to version being outdated and having no access to update it - JSON functions are not supported.
+//		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
+		final String sql = "SELECT DISTINCT monster_association FROM cards WHERE monster_association LIKE '%level%'";
 
-		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getInt(1)));
+		final StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
 
-		return CompletableFuture.completedFuture(result);
+		final Set<MonsterAssociation> result = new HashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+			try {
+				return objectMapper.readValue(row.getString(1), MonsterAssociation.class);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}));
+
+		stopWatch.stop();
+		log.debug("Time taken to retrieve unique card levels from DB was: {}ms", stopWatch.getTotalTimeMillis());
+		return result;
 
 	}
 

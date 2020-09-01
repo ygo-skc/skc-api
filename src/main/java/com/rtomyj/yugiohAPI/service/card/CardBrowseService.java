@@ -5,16 +5,19 @@ import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseCriteria;
+import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -73,7 +76,7 @@ public class CardBrowseService
 
         final Future<Set<String>> cardColors = dao.getCardColors();
         final Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
-//        Future<Set<Integer>> levels =  dao.getLevels();
+//        final Future<Set<Integer>> levels =  dao.getLevels();
 //        Future<Set<Integer>> ranks =  dao.getRanks();
 //        Future<Set<Integer>> linkRatings =  dao.getLinkRatings();
 
@@ -81,10 +84,21 @@ public class CardBrowseService
                 builder()
                 .cardColors(cardColors.get())
                 .attributes(monsterAttributes.get())
-//                .levels(levels.get())
+                .levels(uniqueCardLevels())
 //                .ranks(ranks.get())
 //                .linkRatings(linkRatings.get())
                 .build();
+
+    }
+
+
+    @Async("asyncExecutor")
+    private Set<Integer> uniqueCardLevels()
+    {
+
+        final Set<MonsterAssociation> monsterAssociations = dao.getLevels();
+
+        return monsterAssociations.stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet());
 
     }
 

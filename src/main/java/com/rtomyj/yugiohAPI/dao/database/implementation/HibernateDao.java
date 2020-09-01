@@ -20,6 +20,7 @@ import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
+import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
 import com.rtomyj.yugiohAPI.model.hibernate.BanListTable;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
@@ -150,7 +151,7 @@ public class HibernateDao implements Dao
 
 	public CompletableFuture<Set<String>> getMonsterAttributes(){ return null; }
 
-	public CompletableFuture<Set<Integer>> getLevels(){ return null; }
+	public Set<MonsterAssociation> getLevels(){ return null; }
 
 	public CompletableFuture<Set<Integer>> getRanks() { return null; }
 
