@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.constants.LogConstants;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.BrowseQueryDefinition;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
@@ -707,54 +708,33 @@ public class JDBCDao implements Dao
 	}
 
 
-	public Set<MonsterAssociation> getLevels()
+	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField)
 	{
 
 //		Below query cannot be used on Remote Servers MySQL software due to version being outdated and having no access to update it - JSON functions are not supported.
 //		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
-		final String sql = "SELECT DISTINCT monster_association FROM cards WHERE monster_association LIKE '%level%'";
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		sqlParams.addValue("monsterAssociationField", "%" + monsterAssociationField + "%");
+
+		final String sql = "SELECT DISTINCT monster_association FROM cards WHERE monster_association LIKE :monsterAssociationField";
 
 		final StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
-		final Set<MonsterAssociation> result = new HashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
+		final Set<MonsterAssociation> result = new HashSet<>(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
 			try {
 				return objectMapper.readValue(row.getString(1), MonsterAssociation.class);
 			} catch (JsonProcessingException e) {
-				e.printStackTrace();
+				log.error(LogConstants.ERROR_READING_OBJECT_USING_OBJECT_MAPPER, e);
 				return null;
 			}
 		}));
 
 		stopWatch.stop();
 		log.debug("Time taken to retrieve unique card levels from DB was: {}ms", stopWatch.getTotalTimeMillis());
+
 		return result;
-
-	}
-
-
-	@Async("asyncExecutor")
-	public CompletableFuture<Set<Integer>> getRanks()
-	{
-
-		final String sql = "SELECT CAST(card_rank AS UNSIGNED) AS card_rank FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.rank') AS card_rank FROM cards WHERE monster_association LIKE '%rank%') AS ranks ORDER BY card_rank";
-
-		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getInt(1)));
-
-		return CompletableFuture.completedFuture(result);
-
-	}
-
-
-	@Async("asyncExecutor")
-	public CompletableFuture<Set<Integer>> getLinkRatings()
-	{
-
-		final String sql = "SELECT CAST(link_rating AS UNSIGNED) AS link_rating FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.linkRating') AS link_rating FROM cards WHERE monster_association LIKE '%linkRating%') AS link_ratings ORDER BY link_rating";
-
-		final Set<Integer> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getInt(1)));
-
-		return CompletableFuture.completedFuture(result);
 
 	}
 

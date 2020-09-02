@@ -154,11 +154,7 @@ public interface Dao
 
 	public CompletableFuture<Set<String>> getMonsterAttributes();
 
-	public Set<MonsterAssociation> getLevels();
-
-	public CompletableFuture<Set<Integer>> getRanks();
-
-	public CompletableFuture<Set<Integer>> getLinkRatings();
+	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField);
 
 	public Product getProductInfo(final String productId, final String locale);
 

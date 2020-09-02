@@ -84,21 +84,19 @@ public class CardBrowseService
                 builder()
                 .cardColors(cardColors.get())
                 .attributes(monsterAttributes.get())
-                .levels(uniqueCardLevels())
-//                .ranks(ranks.get())
-//                .linkRatings(linkRatings.get())
+                .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
+                .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
+                .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
                 .build();
 
     }
 
 
     @Async("asyncExecutor")
-    private Set<Integer> uniqueCardLevels()
+    private Set<MonsterAssociation> uniqueMonsterAssociationField(final String monsterAssociationField)
     {
 
-        final Set<MonsterAssociation> monsterAssociations = dao.getLevels();
-
-        return monsterAssociations.stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet());
+        return dao.getMonsterAssociationField(monsterAssociationField);
 
     }
 

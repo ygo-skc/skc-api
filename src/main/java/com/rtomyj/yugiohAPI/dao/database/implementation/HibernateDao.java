@@ -151,11 +151,7 @@ public class HibernateDao implements Dao
 
 	public CompletableFuture<Set<String>> getMonsterAttributes(){ return null; }
 
-	public Set<MonsterAssociation> getLevels(){ return null; }
-
-	public CompletableFuture<Set<Integer>> getRanks() { return null; }
-
-	public CompletableFuture<Set<Integer>> getLinkRatings() { return null; }
+	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField){ return null; }
 
 	public Product getProductInfo(final String productId, final String locale) { return null; }
 

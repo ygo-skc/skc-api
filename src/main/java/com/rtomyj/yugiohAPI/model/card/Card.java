@@ -115,7 +115,6 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks
 	public static void trimEffects(final List<Card> cards)
 	{
 		cards
-			.stream()
 			.forEach(Card::trimEffect);
 	}
 
