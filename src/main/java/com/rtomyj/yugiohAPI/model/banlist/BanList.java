@@ -7,7 +7,10 @@ import com.rtomyj.yugiohAPI.config.DateConfig;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListNewContentController;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListRemovedContentController;
 import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.model.HateoasLinks;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +24,7 @@ import java.util.Date;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+
 /**
  * Model containing information about a Ban List.
  */
@@ -30,6 +34,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
+@ApiModel(
+		description = "Object representing a YuGiOh ban list. Each object instance describes a particular card, a start date of a ban list it was a part of, and the specific status (forbidden, limited, semi-limited). Typically, a list of BanList objects represents all cards in a ban list."
+		, parent = RepresentationModel.class
+)
 public class BanList extends RepresentationModel<BanList> implements HateoasLinks
 {
 
@@ -37,16 +45,28 @@ public class BanList extends RepresentationModel<BanList> implements HateoasLink
 	 * Start date of ban list.
 	 */
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@ApiModelProperty(
+			value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private Date banListDate;
 
 	/**
 	 * The ID of the card.
 	 */
+	@ApiModelProperty(
+			value = SwaggerConstants.CARD_ID_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String cardNumber;
 
 	/**
 	 * Whether card is forbidden, limited, or semi-limited
 	 */
+	@ApiModelProperty(
+			value = "The ban status for the card (forbidden, limited, semi-limited)."
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String banStatus;
 
 	private static final Class<BannedCardsController> BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController.class;

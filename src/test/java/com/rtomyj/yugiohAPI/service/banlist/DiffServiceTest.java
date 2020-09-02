@@ -21,7 +21,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
 import com.rtomyj.yugiohAPI.model.banlist.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.banlist.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.banlist.NewCards;
@@ -80,9 +80,9 @@ public class DiffServiceTest {
 
 		final BanListNewContent banListNewContentInstance = this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
 		final NewCards newCards = banListNewContentInstance.getNewCards();
-		final List<BanListComparisonResults> newForbiddenCards = newCards.getForbidden();
-		final List<BanListComparisonResults> newLimitedCards = newCards.getLimited();
-		final List<BanListComparisonResults> newSemiLimitedCards = newCards.getSemiLimited();
+		final List<CardPreviousBanListStatus> newForbiddenCards = newCards.getForbidden();
+		final List<CardPreviousBanListStatus> newLimitedCards = newCards.getLimited();
+		final List<CardPreviousBanListStatus> newSemiLimitedCards = newCards.getSemiLimited();
 
 		assertEquals(BAN_LIST_START_DATE, banListNewContentInstance.getListRequested());
 		assertEquals(PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.getComparedTo());
@@ -95,13 +95,13 @@ public class DiffServiceTest {
 		assertEquals(1, newSemiLimitedCards.size());
 
 		assertEquals(TestConstants.STRATOS_ID, newForbiddenCards.get(0).getId());
-		assertEquals("Limited", newForbiddenCards.get(0).getPreviousState());
+		assertEquals("Limited", newForbiddenCards.get(0).getPreviousBanStatus());
 
 		assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards.get(0).getId());
-		assertEquals("Unlimited", newLimitedCards.get(0).getPreviousState());
+		assertEquals("Unlimited", newLimitedCards.get(0).getPreviousBanStatus());
 
 		assertEquals(TestConstants.D_MALICIOUS_ID, newSemiLimitedCards.get(0).getId());
-		assertEquals("Forbidden", newSemiLimitedCards.get(0).getPreviousState());
+		assertEquals("Forbidden", newSemiLimitedCards.get(0).getPreviousBanStatus());
 
 
 		verify(this.dao, times(1))
@@ -161,7 +161,7 @@ public class DiffServiceTest {
 
 		final BanListRemovedContent banListRemovedContentInstance = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
 
-		final List<BanListComparisonResults> removedCards = banListRemovedContentInstance.getRemovedCards();
+		final List<CardPreviousBanListStatus> removedCards = banListRemovedContentInstance.getRemovedCards();
 
 		assertNotNull(removedCards);
 
@@ -171,13 +171,13 @@ public class DiffServiceTest {
 		assertEquals(3, removedCards.size());
 
 		assertEquals(TestConstants.STRATOS_ID, removedCards.get(0).getId());
-		assertEquals("Forbidden", removedCards.get(0).getPreviousState());
+		assertEquals("Forbidden", removedCards.get(0).getPreviousBanStatus());
 
 		assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards.get(1).getId());
-		assertEquals("Limited", removedCards.get(1).getPreviousState());
+		assertEquals("Limited", removedCards.get(1).getPreviousBanStatus());
 
 		assertEquals(TestConstants.D_MALICIOUS_ID, removedCards.get(2).getId());
-		assertEquals("Semi-Limited", removedCards.get(2).getPreviousState());
+		assertEquals("Semi-Limited", removedCards.get(2).getPreviousBanStatus());
 
 
 		verify(this.dao, times(1))

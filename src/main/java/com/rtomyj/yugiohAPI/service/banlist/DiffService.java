@@ -7,7 +7,7 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
 import com.rtomyj.yugiohAPI.model.banlist.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.banlist.BanListRemovedContent;
 import com.rtomyj.yugiohAPI.model.banlist.NewCards;
@@ -79,9 +79,9 @@ public class DiffService
 
 
 		// builds meta data object for new cards request
-		final List<BanListComparisonResults> forbidden = dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN);
-		final List<BanListComparisonResults> limited = dao.getNewContentOfBanList(banListStartDate, Status.LIMITED);
-		final List<BanListComparisonResults> semiLimited = dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED);
+		final List<CardPreviousBanListStatus> forbidden = dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN);
+		final List<CardPreviousBanListStatus> limited = dao.getNewContentOfBanList(banListStartDate, Status.LIMITED);
+		final List<CardPreviousBanListStatus> semiLimited = dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED);
 
 		final BanListNewContent newCardsMeta = BanListNewContent.builder()
 			.listRequested(banListStartDate)
@@ -124,7 +124,7 @@ public class DiffService
 
 
 
-		final List<BanListComparisonResults> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
+		final List<CardPreviousBanListStatus> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
 
     	// builds meta data object for removed cards request
 		final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()

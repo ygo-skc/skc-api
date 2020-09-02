@@ -9,7 +9,7 @@ import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
-import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
@@ -113,14 +113,14 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status);
+	public List<CardPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status);
 
 	/**
 	 *
 	 * @param newBanList
 	 * @return
 	 */
-	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList);
+	public List<CardPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
 
 	/**
 	 *

@@ -29,7 +29,7 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 	private String comparedTo;
 
 	private int numRemoved;
-	private List<BanListComparisonResults> removedCards;
+	private List<CardPreviousBanListStatus> removedCards;
 
 	private static final Class<BanListRemovedContentController> controllerClass = BanListRemovedContentController.class;
 	private static final Class<BannedCardsController> banListController = BannedCardsController.class;

@@ -3,6 +3,8 @@ package com.rtomyj.yugiohAPI.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.MDC;
@@ -76,9 +78,14 @@ public class TestCallController extends YgoApiBaseController
 
 	@Getter
 	@AllArgsConstructor
+	@ApiModel(description = "Return object for test call endpoint.")
 	private class ApiTestCall
 	{
 
+		@ApiModelProperty(
+				value = "The current status of the API."
+				, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+		)
 		private final String status;
 
 	}

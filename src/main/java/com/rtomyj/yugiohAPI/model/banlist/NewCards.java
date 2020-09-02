@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.rtomyj.yugiohAPI.model.HateoasLinks;
-import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,9 +25,9 @@ public class NewCards extends RepresentationModel<NewCards> implements HateoasLi
 	private int numLimited;
 	private int numSemiLimited;
 
-	private List<BanListComparisonResults> forbidden;
-	private List<BanListComparisonResults> limited;
-	private List<BanListComparisonResults> semiLimited;
+	private List<CardPreviousBanListStatus> forbidden;
+	private List<CardPreviousBanListStatus> limited;
+	private List<CardPreviousBanListStatus> semiLimited;
 
 
 	@Override

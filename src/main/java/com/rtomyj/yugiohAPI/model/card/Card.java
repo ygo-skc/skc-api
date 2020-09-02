@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.card.CardController;
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import com.rtomyj.yugiohAPI.model.HateoasLinks;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import com.rtomyj.yugiohAPI.model.product.Product;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
@@ -35,30 +37,50 @@ import lombok.extern.slf4j.Slf4j;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "Describes attributes of a YGO card.")
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 @Slf4j
+@ApiModel(
+		description = "Describes attributes of a YGO card."
+		, parent = RepresentationModel.class
+)
 public class Card extends RepresentationModel<Card> implements HateoasLinks
 {
 
+	@ApiModelProperty(value = SwaggerConstants.CARD_ID_DESCRIPTION)
 	private String cardID;
+
+	@ApiModelProperty(value = SwaggerConstants.CARD_NAME_DESCRIPTION)
 	private String cardName;
+
+	@ApiModelProperty(value = SwaggerConstants.CARD_COLOR_DESCRIPTION)
 	private String cardColor;
+
+	@ApiModelProperty(value = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION)
 	private String cardAttribute;
+
+	@ApiModelProperty(value = SwaggerConstants.MONSTER_TYPE_DESCRIPTION)
 	private String monsterType;
+
+	@ApiModelProperty(value = SwaggerConstants.MONSTER_ASSOCIATION_DESCRIPTION)
 	private MonsterAssociation monsterAssociation;
-	/**
-	 * Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
-	 */
+
+//	Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
+	@ApiModelProperty(value = SwaggerConstants.MONSTER_ATK_DESCRIPTION)
 	private Integer monsterAttack;
+
+	@ApiModelProperty(value = SwaggerConstants.MONSTER_DEF_DESCRIPTION)
 	private Integer monsterDefense;
 
+	@ApiModelProperty(value = SwaggerConstants.CARD_EFFECT_DESCRIPTION)
 	private String cardEffect;
 
-	private List<String> arrows;
+	@ApiModelProperty(value = SwaggerConstants.MONSTER_LINK_ARROWS_DESCRIPTION)
+	private List<String> linkArrows;
 
+	@ApiModelProperty(value = SwaggerConstants.RESTRICTED_IN_DESCRIPTION)
 	private List<BanList> restrictedIn;
 
+	@ApiModelProperty(value = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION)
 	private List<Product> foundIn;
 
 	@JsonIgnore

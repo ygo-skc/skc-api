@@ -15,7 +15,7 @@ import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.banlist.BanList;
-import com.rtomyj.yugiohAPI.model.banlist.BanListComparisonResults;
+import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
 import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
@@ -93,11 +93,11 @@ public class HibernateDao implements Dao
 		return "";
 	}
 
-	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status){
+	public List<CardPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status){
 		return null;
 	}
 
-	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList)
+	public List<CardPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
 	{
 		return null;
 	}
