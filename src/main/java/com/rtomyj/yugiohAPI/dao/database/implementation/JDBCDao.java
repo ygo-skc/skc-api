@@ -40,7 +40,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import lombok.NonNull;
@@ -681,8 +680,7 @@ public class JDBCDao implements Dao
 	}
 
 
-	@Async("asyncExecutor")
-	public CompletableFuture<Set<String>> getCardColors()
+	public Set<String> getCardColors()
 	{
 
 		final String sql = "SELECT card_color FROM card_colors WHERE card_color != 'Token'";
@@ -691,19 +689,19 @@ public class JDBCDao implements Dao
 			return row.getString(1);
 		}));
 
-		return CompletableFuture.completedFuture(result);
+		return result;
+
 	}
 
 
-	@Async("asyncExecutor")
-	public CompletableFuture<Set<String>> getMonsterAttributes()
+	public Set<String> getMonsterAttributes()
 	{
 
 		final String sql = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute";
 
 		final Set<String> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
 
-		return CompletableFuture.completedFuture(result);
+		return result;
 
 	}
 

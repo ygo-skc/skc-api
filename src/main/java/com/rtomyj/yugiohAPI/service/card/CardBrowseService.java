@@ -28,6 +28,8 @@ public class CardBrowseService
 
     private static String levelExpression = "\"level\": \"%s\"";
 
+    private static CardBrowseCriteria cachedCardBrowseCriteria;
+
 
     public CardBrowseService(@Autowired @Qualifier("jdbc") final Dao dao)
     {
@@ -70,29 +72,31 @@ public class CardBrowseService
     }
 
 
-    @SneakyThrows
     public CardBrowseCriteria getBrowseCriteria()
     {
 
-        final Future<Set<String>> cardColors = dao.getCardColors();
-        final Future<Set<String>> monsterAttributes = dao.getMonsterAttributes();
-//        final Future<Set<Integer>> levels =  dao.getLevels();
-//        Future<Set<Integer>> ranks =  dao.getRanks();
-//        Future<Set<Integer>> linkRatings =  dao.getLinkRatings();
-
-        return CardBrowseCriteria.
-                builder()
-                .cardColors(cardColors.get())
-                .attributes(monsterAttributes.get())
-                .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
-                .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
-                .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
-                .build();
+        synchronized(this)
+        {
+            if (cachedCardBrowseCriteria == null)
+            {
+                synchronized(this)
+                {
+                    cachedCardBrowseCriteria = CardBrowseCriteria.
+                            builder()
+                            .cardColors(dao.getCardColors())
+                            .attributes(dao.getMonsterAttributes())
+                            .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
+                            .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
+                            .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
+                            .build();
+                }
+            }
+        }
+        return cachedCardBrowseCriteria;
 
     }
 
 
-    @Async("asyncExecutor")
     private Set<MonsterAssociation> uniqueMonsterAssociationField(final String monsterAssociationField)
     {
 
