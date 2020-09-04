@@ -20,6 +20,8 @@ public class SwaggerConstants
     public static final String BAN_LIST_FETCH_ALL_DESCRIPTION = "If true, compares desired ban list with the ban list it replaced (previous logical ban list) and returns the new cards added and the cards removed in the ban list transition. This option is equivalant to calling three endpoints - Banned Cards endpoint, Newly Banned endpoint and Removed endpoint.";
     public static final String BAN_LIST_START_DATE_DESCRIPTION = "Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates).";
     public static final String RESTRICTED_IN_DESCRIPTION = "Information about the ban lists a card was restricted in. Restrictions are any of the ban list statuses (forbidden, limited, semi-limited).";
+    public static final String PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION = "The start date of the previous logical ban list - in reference to the requested ban list - that is being used to compare differences in transitioning ban lists.";
+    public static final String NEWLY_ADDED_CARDS_TO_BAN_LIST_DESCRIPTION = "Results containing cards that were either newly added to a ban list or had their ban status (forbidden, limited, semi-limited) changed compared to the previous logical ban list.";
 
 
     // Common Card endpoint Swagger descriptions

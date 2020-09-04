@@ -8,7 +8,9 @@ import com.rtomyj.yugiohAPI.controller.banlist.BannedCardsController;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListNewContentController;
 import com.rtomyj.yugiohAPI.controller.banlist.BanListRemovedContentController;
 
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.model.HateoasLinks;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -19,13 +21,30 @@ import io.swagger.annotations.ApiModel;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "Information about a ban list (listRequested) obtained by comparing to a previous ban list (comparedTo). The information retrieved will be the newCards.")
 @JsonPropertyOrder({ "listRequested", "comparedTo", "newCards" })
+@ApiModel(
+		description = "Cards added to requested ban list that were not in the previous ban list or cards that have a different ban list status (forbidden, limited, semi-limited) compared to the previous ban list."
+		, parent = RepresentationModel.class
+)
 public class BanListNewContent extends RepresentationModel<BanListNewContent> implements HateoasLinks
 {
 
+	@ApiModelProperty(
+			value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String listRequested;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String comparedTo;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.NEWLY_ADDED_CARDS_TO_BAN_LIST_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private NewCards newCards;
 
 	private static final Class<BanListNewContentController> controllerClass = BanListNewContentController.class;

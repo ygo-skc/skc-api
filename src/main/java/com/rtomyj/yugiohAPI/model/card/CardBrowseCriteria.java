@@ -14,34 +14,46 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ApiModel(
+        description = "Information about valid browse criteria and valid values per criteria. May also be used to identify which browse criteria is being used for browse results."
+)
 public class CardBrowseCriteria
 {
 
-    @ApiModelProperty(value = "Unique set of identifiers for the type of card."
+    @ApiModelProperty(
+            value = "Unique set of identifiers for the type of card."
             , example = "normal, effect, fusion"
-            , dataType = "List")
+            , dataType = "List"
+    )
     private Set<String> cardColors;
 
-    @ApiModelProperty(value = "Unique set of identifiers of card attributes."
+    @ApiModelProperty(
+            value = "Unique set of identifiers of card attributes."
             , example = "Dark, Light, Earth, Wind, Water, Fire"
-            , dataType = "List")
+            , dataType = "List"
+    )
     private Set<String> attributes;
 
-    @ApiModelProperty(value = "Unique set of levels for monster cards in database."
+    @ApiModelProperty(
+            value = "Unique set of levels for monster cards in database."
             , example = "1, 2, 3, 4, 5, 6"
-            , dataType = "List")
+            , dataType = "List"
+    )
     private Set<Integer> levels;
 
-    @ApiModelProperty(value = "Unique set of ranks for monster cards in database."
+    @ApiModelProperty(
+            value = "Unique set of ranks for monster cards in database."
             , example = "1, 2, 3, 4, 5, 6"
-            , dataType = "List")
+            , dataType = "List"
+    )
     private Set<Integer> ranks;
 
-    @ApiModelProperty(value = "Unique set of link rating values for Link monster cards in database."
+    @ApiModelProperty(
+            value = "Unique set of link rating values for Link monster cards in database."
             , example = "1, 2, 3, 4, 5, 6"
-            , dataType = "List")
+            , dataType = "List"
+    )
     private Set<Integer> linkRatings;
 
 }

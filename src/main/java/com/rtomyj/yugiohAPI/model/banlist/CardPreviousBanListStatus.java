@@ -17,7 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @ApiModel(
-		description = "Contains info about a card "
+		description = "Contains info about a card that had its ban status (forbidden, limited, semi-limited) changed in reference to a previous logical ban list."
 		, parent = RepresentationModel.class
 )
 public class CardPreviousBanListStatus extends RepresentationModel<CardPreviousBanListStatus> implements HateoasLinks
