@@ -108,7 +108,7 @@ public class BannedCardsService
 			.forbidden(dao.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN))
 			.limited(dao.getBanListByBanStatus(banListStartDate, Status.LIMITED))
 			.semiLimited(dao.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED))
-			.startDate(banListStartDate)
+			.effectiveDate(banListStartDate)
 			.build();
 
 		banListInstance.setNumForbidden(banListInstance.getForbidden().size());
@@ -136,7 +136,7 @@ public class BannedCardsService
 			.forbidden(dao.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN))
 			.limited(dao.getBanListByBanStatus(banListStartDate, Status.LIMITED))
 			.semiLimited(dao.getBanListByBanStatus(banListStartDate, Status.SEMI_LIMITED))
-			.startDate(banListStartDate)
+			.effectiveDate(banListStartDate)
 			.build();
 
 		banListInstance.setNumForbidden(banListInstance.getForbidden().size());

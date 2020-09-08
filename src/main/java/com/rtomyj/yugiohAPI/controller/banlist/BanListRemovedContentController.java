@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @RestController
-@RequestMapping(path="/ban/removed", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/ban_list", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
@@ -41,7 +41,7 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 	/**
 	 * The base path/endpoint being used by controller.
 	 */
-	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban/removed";
+	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban_list";
 
 	/**
 	 * Service used to interface with dao.
@@ -64,7 +64,7 @@ public class BanListRemovedContentController extends YgoApiBaseController {
 	}
 
 
-	@GetMapping(path = "/{banListStartDate}")
+	@GetMapping(path = "/{banListStartDate}/removed")
 	@ApiOperation(value = "Retrieve cards removed from the desired ban list compared to the previous logical ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListRemovedContent.class
 		, responseContainer = "Object"

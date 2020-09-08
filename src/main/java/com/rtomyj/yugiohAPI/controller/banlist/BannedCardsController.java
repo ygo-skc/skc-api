@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
  */
 @RestController
-@RequestMapping(path="/ban/cards", produces = "application/hal+json; charset=UTF-8")
+@RequestMapping(path="/ban_list", produces = "application/hal+json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
@@ -43,7 +43,7 @@ public class BannedCardsController extends YgoApiBaseController {
 	/**
 	 * The base endpoint for this controller.
 	 */
-	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban/cards";
+	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban_list";
 
 	/**
 	 * Service object used to get information about banned cards from the database.
@@ -77,7 +77,7 @@ public class BannedCardsController extends YgoApiBaseController {
 	 * @return ban list for specified ban list start date.
 	 */
 	@ResponseBody
-	@GetMapping(path = "{banListStartDate}")
+	@GetMapping(path = "{banListStartDate}/cards")
 	@ApiOperation(value = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListInstance.class
 		, responseContainer = "Object"

@@ -49,7 +49,7 @@ public class BanListInstance extends RepresentationModel<BanListInstance> implem
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 			, position = 0
 	)
-	private String startDate;
+	private String effectiveDate;
 
 	@ApiModelProperty(
 			value = "Total number of cards forbidden in this ban list instance; ie size of forbidden list."
@@ -117,7 +117,7 @@ public class BanListInstance extends RepresentationModel<BanListInstance> implem
 	{
 
 		this.add(
-				linkTo(methodOn(banListController).getBannedCards(startDate, false, true))
+				linkTo(methodOn(banListController).getBannedCards(effectiveDate, false, true))
 						.withSelfRel()
 		);
 
@@ -131,10 +131,10 @@ public class BanListInstance extends RepresentationModel<BanListInstance> implem
 		this.setSelfLink();
 
 		this.add(
-				linkTo(methodOn(newController).getNewlyAddedContentForBanList(startDate)).withRel("Ban List New Content")
+				linkTo(methodOn(newController).getNewlyAddedContentForBanList(effectiveDate)).withRel("Ban List New Content")
 		);
 		this.add(
-				linkTo(methodOn(removedController).getNewlyRemovedContentForBanList(startDate)).withRel("Ban List Removed Content")
+				linkTo(methodOn(removedController).getNewlyRemovedContentForBanList(effectiveDate)).withRel("Ban List Removed Content")
 		);
 
 		HateoasLinks.setLinks(forbidden);

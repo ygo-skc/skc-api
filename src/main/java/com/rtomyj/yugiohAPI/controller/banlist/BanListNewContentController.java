@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * or cards that switched statuses (Forbidden -&gt; limited, limited -&gt; semi-limited, etc) compared with the previous ban list.
  */
 @RestController
-@RequestMapping(path="/ban/new", produces = "application/json; charset=UTF-8")
+@RequestMapping(path="/ban_list", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Slf4j
 @Validated
@@ -43,7 +43,7 @@ public class BanListNewContentController extends YgoApiBaseController
 	/**
 	 * The base path/endpoint being used by controller.
 	 */
-	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban/new";
+	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban_list";
 
 	/**
 	 * Service used to interface with dao.
@@ -66,13 +66,12 @@ public class BanListNewContentController extends YgoApiBaseController
 	}
 
 
-
 	/**
 	 *
 	 * @param banListStartDate The date of a ban list user wants to see new card information about.
 	 * @return Information about the new cards for the specified ban list date.
 	 */
-	@GetMapping(path = "/{banListStartDate}")
+	@GetMapping(path = "/{banListStartDate}/new")
 	@ApiOperation(
 		value = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListNewContent.class
