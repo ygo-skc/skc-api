@@ -24,13 +24,13 @@ import io.swagger.annotations.ApiModel;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Start dates of ban lists.", parent = RepresentationModel.class, discriminator = "links")
-public class BanListStartDates extends RepresentationModel<BanListStartDates> implements HateoasLinks
+public class BanListDates extends RepresentationModel<BanListDates> implements HateoasLinks
 {
 
 	@ApiParam(
 			value = "Array of objects containing valid start dates of all ban lists currently in DB."
 	)
-	private List<BanList> banListStartDates;
+	private List<BanListDate> banListDates;
 
 	private static final Class<BanListDatesController> controllerClass = BanListDatesController.class;
 
@@ -51,7 +51,7 @@ public class BanListStartDates extends RepresentationModel<BanListStartDates> im
 	{
 
 		this.setSelfLink();
-		HateoasLinks.setLinks(this.banListStartDates);
+		HateoasLinks.setLinks(this.banListDates);
 
 	}
 

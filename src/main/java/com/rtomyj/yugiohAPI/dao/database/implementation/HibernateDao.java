@@ -12,10 +12,11 @@ import javax.persistence.criteria.Root;
 import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDate;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
-import com.rtomyj.yugiohAPI.model.banlist.BanList;
-import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
-import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
@@ -43,24 +44,24 @@ public class HibernateDao implements Dao
 
 
 	@Override
-	public BanListStartDates getBanListStartDates()
+	public BanListDates getBanListDates()
 	{
 
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
-		CriteriaQuery<BanList> criteriaQuery = criteriaBuilder.createQuery(BanList.class);
+		CriteriaQuery<BanListDate> criteriaQuery = criteriaBuilder.createQuery(BanListDate.class);
 		Root<BanListTable> root = criteriaQuery.from(BanListTable.class);
-		criteriaQuery.select(criteriaBuilder.construct(BanList.class, root.get("banListDate"))).distinct(true);
+		criteriaQuery.select(criteriaBuilder.construct(BanListDate.class, root.get("banListDate"))).distinct(true);
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
 
-		final BanListStartDates banListStartDates = BanListStartDates
+		final BanListDates banListDates = BanListDates
 			.builder()
-			.banListStartDates(session.createQuery(criteriaQuery).getResultList())
+			.banListDates(session.createQuery(criteriaQuery).getResultList())
 			.build();
 
 		session.close();
-		return banListStartDates;
+		return banListDates;
 
 	}
 
@@ -92,11 +93,11 @@ public class HibernateDao implements Dao
 		return "";
 	}
 
-	public List<CardPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status){
+	public List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status){
 		return null;
 	}
 
-	public List<CardPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
+	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
 	{
 		return null;
 	}
@@ -142,7 +143,7 @@ public class HibernateDao implements Dao
 
 	public Set<Product> getProductDetailsForCard(final String cardId) { return null; }
 
-	public List<BanList> getBanListDetailsForCard(final String cardId) { return null; }
+	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId) { return null; }
 
 	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels){ return null; }
 

@@ -16,6 +16,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Builder
@@ -23,7 +25,7 @@ import io.swagger.annotations.ApiModel;
 @AllArgsConstructor
 @JsonPropertyOrder({ "listRequested", "comparedTo", "newCards" })
 @ApiModel(
-		description = "Cards added to requested ban list that were not in the previous ban list or cards that have a different ban list status (forbidden, limited, semi-limited) compared to the previous ban list."
+		description = "Cards added to requested ban list that were not in the previous ban list and/or cards that have a different ban list status (forbidden, limited, semi-limited) compared to the previous ban list."
 		, parent = RepresentationModel.class
 )
 public class BanListNewContent extends RepresentationModel<BanListNewContent> implements HateoasLinks
@@ -42,10 +44,40 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 	private String comparedTo;
 
 	@ApiModelProperty(
-			value = SwaggerConstants.NEWLY_ADDED_CARDS_TO_BAN_LIST_DESCRIPTION
+			value = "Total new forbidden cards added to a ban list when compared to a previous logical ban list."
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
-	private NewCards newCards;
+	private int numNewForbidden;
+
+	@ApiModelProperty(
+			value = "Total new limited cards added to a list when compared to a previous logical ban list."
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	private int numNewLimited;
+
+	@ApiModelProperty(
+			value = "Total new semi-limited cards added to a ban list when compared to a previous logical ban list."
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	private int numNewSemiLimited;
+
+	@ApiModelProperty(
+			value = "List containing newly forbidden cards and their previous ban status."
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	private List<CardsPreviousBanListStatus> newForbidden;
+
+	@ApiModelProperty(
+			value = "List containing newly limited cards and their previous ban status."
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	private List<CardsPreviousBanListStatus> newLimited;
+
+	@ApiModelProperty(
+			value = "List containing newly semi-limited cards and their previous ban status."
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	private List<CardsPreviousBanListStatus> newSemiLimited;
 
 	private static final Class<BanListNewContentController> controllerClass = BanListNewContentController.class;
 	private static final Class<BannedCardsController> banListController = BannedCardsController.class;
@@ -78,7 +110,9 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 				linkTo(methodOn(controllerClass).getNewlyAddedContentForBanList(comparedTo)).withRel("Previous Ban Lists' New Content")
 		);
 
-		newCards.setLinks();
+		HateoasLinks.setLinks(newForbidden);
+		HateoasLinks.setLinks(newLimited);
+		HateoasLinks.setLinks(newSemiLimited);
 
 	}
 

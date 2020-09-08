@@ -21,13 +21,12 @@ public class SwaggerConstants
     public static final String BAN_LIST_START_DATE_DESCRIPTION = "Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates).";
     public static final String RESTRICTED_IN_DESCRIPTION = "Information about the ban lists a card was restricted in. Restrictions are any of the ban list statuses (forbidden, limited, semi-limited).";
     public static final String PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION = "The start date of the previous logical ban list - in reference to the requested ban list - that is being used to compare differences in transitioning ban lists.";
-    public static final String NEWLY_ADDED_CARDS_TO_BAN_LIST_DESCRIPTION = "Results containing cards that were either newly added to a ban list or had their ban status (forbidden, limited, semi-limited) changed compared to the previous logical ban list.";
 
 
     // Common Card endpoint Swagger descriptions
     public static final String CARD_FETCH_ALL_DESCRIPTION = "If true, returns information about a card such as ban lists it was restricted (forbidden, limited or semi-limited) in and products it was included in. Otherwise, only basic info about the card is returned.";
     public static final String CARD_ID_DESCRIPTION = "ID given to mostly all YuGiOh cards by Konami that uniquely identifies it.";
-    public static final String CARD_NAME_DESCRIPTION = "A mame of a YuGiOh card.";
+    public static final String CARD_NAME_DESCRIPTION = "The mame of a particular YuGiOh card.";
     public static final String CARD_ATTRIBUTE_DESCRIPTION = "One of the six monster attributes (seven including 'Divine')";
     public static final String CARD_COLOR_DESCRIPTION = "A simple identifier for card type. If the card is synchro, the card color is synchro.";
     public static final String MONSTER_TYPE_DESCRIPTION = "Monster type such as Spellcaster.";
@@ -35,11 +34,20 @@ public class SwaggerConstants
     public static final String MONSTER_ATK_DESCRIPTION = "The attack stat of a monster card.";
     public static final String MONSTER_DEF_DESCRIPTION = "The defence stat of a monster card.";
     public static final String CARD_EFFECT_DESCRIPTION = "The text provided in a YuGiOh card either describing its effect or lore.";
-    public static final String MONSTER_LINK_ARROWS_DESCRIPTION = "Arrows for a Link card.";
 
 
-    public static final String PRODUCT_LOCALE_DESCRIPTION = "A locale to use to limit products. As of now the only locale available is \"en\" but in the future other locales can be added to support products in other regions like Japan.";
+    public static final String PRODUCT_LOCALE_DESCRIPTION = "A locale denoting products release region. As of now the only locale available is \"en\" but in the future other locales can be added to support products in other regions like Japan.";
     public static final String PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION = "Product information for all the products the card in question can be found in.";
+    public static final String PRODUCT_ID_DESCRIPTION = "Unique identifier given by Konami to all products.";
+    public static final String PRODUCT_NAME_DESCRIPTION = "Full product name.";
+    public static final String PRODUCT_TYPE_DESCRIPTION = "A string identifier used by API/DB to separate or distinguish products.";
+    public static final String PRODUCT_SUB_TYPE_DESCRIPTION = "A string identifier used by API/DB to separate or distinguish product types, ie, further distinguish products.";
+    public static final String PRODUCT_RELEASE_DATE_DESCRIPTION = "Date product was released in locale specified by locale property.";
+    public static final String PRODUCT_TOTAL_DESCRIPTION = "Total number of cards in the product.";
+    public static final String PRODUCT_RARITY_STATS_DESCRIPTION = "Statistics on card rarities for the product.";
+    public static final String PRODUCT_CONTENT_DESCRIPTION = "Actual content for product.";
+    public static final String CARD_POSITION_IN_PRODUCT_DESCRIPTION = "The position of the card within the product.";
+    public static final String CARD_RARITIES_FOR_POSITION_DESCRIPTION = "Set of possible rarities the card can be found in for the given product and position.";
 
 
     // Swagger tag names

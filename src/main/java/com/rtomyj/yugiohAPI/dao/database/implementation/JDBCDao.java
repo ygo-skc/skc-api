@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +24,9 @@ import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
-import com.rtomyj.yugiohAPI.model.banlist.BanList;
-import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
-import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
@@ -67,7 +66,7 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public BanListStartDates getBanListStartDates()
+	public BanListDates getBanListDates()
 	{
 		return null;
 	}
@@ -212,10 +211,10 @@ public class JDBCDao implements Dao
 
 
 	// TODO: make sure you write a test for the instance where the last ban list is selected
-	public List<CardPreviousBanListStatus> getNewContentOfBanList(final String newBanList, final Status status)
+	public List<CardsPreviousBanListStatus> getNewContentOfBanList(final String newBanList, final Status status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<CardPreviousBanListStatus>();
+		if (oldBanList == "")	return new ArrayList<CardsPreviousBanListStatus>();
 
 		String query = new StringBuilder()
 			.append("select new_cards.card_number, cards.card_name from (select new_list.card_number")
@@ -233,21 +232,21 @@ public class JDBCDao implements Dao
 
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			final List<CardPreviousBanListStatus> newCards = new ArrayList<>();
+			final List<CardsPreviousBanListStatus> newCards = new ArrayList<>();
 
 			while (row.next())
 			{
-				CardPreviousBanListStatus cardPreviousBanListStatus = new CardPreviousBanListStatus();
+				CardsPreviousBanListStatus cardsPreviousBanListStatus = new CardsPreviousBanListStatus();
 				final String cardID = row.getString(1);
 				String previousStatus = this.getCardBanListStatusByDate(cardID, oldBanList);
 				previousStatus = ( previousStatus == null ) ? "Unlimited" : previousStatus;
 
 
-				cardPreviousBanListStatus.setCardId(cardID);
-				cardPreviousBanListStatus.setPreviousBanStatus(previousStatus);
-				cardPreviousBanListStatus.setCardName(row.getString(2));
+				cardsPreviousBanListStatus.setCardId(cardID);
+				cardsPreviousBanListStatus.setPreviousBanStatus(previousStatus);
+				cardsPreviousBanListStatus.setCardName(row.getString(2));
 
-				newCards.add(cardPreviousBanListStatus);
+				newCards.add(cardsPreviousBanListStatus);
 			}
 
 			return newCards;
@@ -257,10 +256,10 @@ public class JDBCDao implements Dao
 
 
 	// TODO: make sure you write a test for the instance where the last ban list is selected
-	public List<CardPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
+	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList.equals(""))	return new ArrayList<CardPreviousBanListStatus>();
+		if (oldBanList.equals(""))	return new ArrayList<CardsPreviousBanListStatus>();
 
 		String query = new StringBuilder()
 			.append("select removed_cards.card_number, removed_cards.ban_status, cards.card_name")
@@ -277,11 +276,11 @@ public class JDBCDao implements Dao
 
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			final List<CardPreviousBanListStatus> REMOVED_CARDS = new ArrayList<>();
+			final List<CardsPreviousBanListStatus> REMOVED_CARDS = new ArrayList<>();
 
 			while(row.next())
 			{
-				final CardPreviousBanListStatus REMOVED_CARD = new CardPreviousBanListStatus();
+				final CardsPreviousBanListStatus REMOVED_CARD = new CardsPreviousBanListStatus();
 
 				REMOVED_CARD.setCardId(row.getString(1));
 				REMOVED_CARD.setPreviousBanStatus(row.getString(2));
@@ -388,7 +387,7 @@ public class JDBCDao implements Dao
 				try {
 					if (row.getString(9) != null) {
 						card.getRestrictedIn()
-								.add(BanList
+								.add(CardBanListStatus
 										.builder()
 										.banListDate(dateFormat.parse(row.getString(9)))
 										.banStatus(row.getString(10))
@@ -442,7 +441,7 @@ public class JDBCDao implements Dao
 							.productTotal(row.getInt(5))
 							.productType(row.getString(6))
 							.productSubType(row.getString(7))
-							.productRarityCount(this.getProductRarityCount(row.getString(1)))
+							.productRarityStats(this.getProductRarityCount(row.getString(1)))
 							.build());
 				} catch (ParseException e) {
 					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
@@ -514,7 +513,7 @@ public class JDBCDao implements Dao
 
 			return ProductContent
 					.builder()
-					.position(row.getString(8))
+					.productPosition(row.getString(8))
 					.card(card)
 					.build();
 		}));
@@ -606,7 +605,7 @@ public class JDBCDao implements Dao
 			{
 				product.getProductContent().add(ProductContent
 						.builder()
-						.position(cardPositionAndRarityMap.getKey())
+						.productPosition(cardPositionAndRarityMap.getKey())
 						.rarities(cardPositionAndRarityMap.getValue())
 						.build());
 			}
@@ -615,14 +614,14 @@ public class JDBCDao implements Dao
 	}
 
 
-	public List<BanList> getBanListDetailsForCard(final String cardId)
+	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardId", cardId);
 
 		return jdbcNamedTemplate.query(DbQueryConstants.GET_BAN_LIST_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
 			try {
-				return BanList
+				return CardBanListStatus
 						.builder()
 						.banListDate(dateFormat.parse(row.getString(1)))
 						.banStatus(row.getString(2))
@@ -757,7 +756,7 @@ public class JDBCDao implements Dao
 						.productTotal(row.getInt(5))
 						.productType(row.getString(6))
 						.productSubType(row.getString(7))
-						.productRarityCount(this.getProductRarityCount(row.getString(1)))
+						.productRarityStats(this.getProductRarityCount(row.getString(1)))
 						.productContent(new ArrayList<ProductContent>())
 						.build();
 			} catch (Exception e) {

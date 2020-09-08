@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
-import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 import com.rtomyj.yugiohAPI.service.banlist.BanService;
 
 import org.slf4j.MDC;
@@ -63,21 +63,21 @@ public class BanListDatesController extends YgoApiBaseController
 	 */
 	@GetMapping
 	@ApiOperation(value = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints."
-		, response = BanListStartDates.class
+		, response = BanListDates.class
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {
 		@ApiResponse(code = 200, message = SwaggerConstants.http200)
 	})
-	public ResponseEntity<BanListStartDates> getBanListStartDates()
+	public ResponseEntity<BanListDates> getBanListStartDates()
 	{
 
 		MDC.put("reqIp", request.getRemoteHost());
 		MDC.put("reqRes", END_POINT);
 
-		final BanListStartDates banListStartDates = banListService.getBanListStartDates();
+		final BanListDates banListDates = banListService.getBanListStartDates();
 
 		MDC.clear();
-		return ResponseEntity.ok(banListStartDates);
+		return ResponseEntity.ok(banListDates);
 
 	}
 

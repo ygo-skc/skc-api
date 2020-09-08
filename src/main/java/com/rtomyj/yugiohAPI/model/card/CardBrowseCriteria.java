@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @ApiModel(
-        description = "Information about valid browse criteria and valid values per criteria. May also be used to identify which browse criteria is being used for browse results."
+        description = "Valid browse criteria and valid values per criteria. May also be used to identify which browse criteria is being used for browse results."
 )
 public class CardBrowseCriteria
 {

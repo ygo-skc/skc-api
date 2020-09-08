@@ -10,10 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.card.CardController;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
-import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 
 import com.rtomyj.yugiohAPI.model.HateoasLinks;
-import com.rtomyj.yugiohAPI.model.banlist.BanList;
+import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import com.rtomyj.yugiohAPI.model.product.Product;
 import io.swagger.annotations.ApiModelProperty;
@@ -40,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 @Slf4j
 @ApiModel(
-		description = "Describes attributes of a YGO card."
+		description = "Describes attributes of a YuGiOh card."
 		, parent = RepresentationModel.class
 )
 public class Card extends RepresentationModel<Card> implements HateoasLinks
@@ -74,11 +73,8 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks
 	@ApiModelProperty(value = SwaggerConstants.CARD_EFFECT_DESCRIPTION)
 	private String cardEffect;
 
-	@ApiModelProperty(value = SwaggerConstants.MONSTER_LINK_ARROWS_DESCRIPTION)
-	private List<String> linkArrows;
-
 	@ApiModelProperty(value = SwaggerConstants.RESTRICTED_IN_DESCRIPTION)
-	private List<BanList> restrictedIn;
+	private List<CardBanListStatus> restrictedIn;
 
 	@ApiModelProperty(value = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION)
 	private List<Product> foundIn;

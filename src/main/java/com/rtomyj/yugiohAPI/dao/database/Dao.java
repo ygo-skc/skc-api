@@ -7,9 +7,9 @@ import java.util.Set;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
-import com.rtomyj.yugiohAPI.model.banlist.BanList;
-import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
-import com.rtomyj.yugiohAPI.model.banlist.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
 import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
@@ -63,7 +63,7 @@ public interface Dao
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-	public BanListStartDates getBanListStartDates();
+	public BanListDates getBanListDates();
 
 	/**
 	 * Retrieve the information about a Card given the ID.
@@ -112,14 +112,14 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<CardPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status);
+	public List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status);
 
 	/**
 	 *
 	 * @param newBanList
 	 * @return
 	 */
-	public List<CardPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
+	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
 
 	/**
 	 *
@@ -145,7 +145,7 @@ public interface Dao
 
 	public Set<Product> getProductDetailsForCard(final String cardId);
 
-	public List<BanList> getBanListDetailsForCard(final String cardId);
+	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId);
 
 	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels);
 

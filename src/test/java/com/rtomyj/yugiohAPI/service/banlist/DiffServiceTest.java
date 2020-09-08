@@ -21,10 +21,9 @@ import com.rtomyj.yugiohAPI.dao.database.Dao;
 import com.rtomyj.yugiohAPI.dao.database.Dao.Status;
 import com.rtomyj.yugiohAPI.helper.constants.TestConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.model.banlist.CardPreviousBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
 import com.rtomyj.yugiohAPI.model.banlist.BanListNewContent;
 import com.rtomyj.yugiohAPI.model.banlist.BanListRemovedContent;
-import com.rtomyj.yugiohAPI.model.banlist.NewCards;
 
 import org.cache2k.integration.CacheLoaderException;
 import org.junit.jupiter.api.BeforeAll;
@@ -80,9 +79,9 @@ public class DiffServiceTest {
 
 		final BanListNewContent banListNewContentInstance = this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
 		final NewCards newCards = banListNewContentInstance.getNewCards();
-		final List<CardPreviousBanListStatus> newForbiddenCards = newCards.getForbidden();
-		final List<CardPreviousBanListStatus> newLimitedCards = newCards.getLimited();
-		final List<CardPreviousBanListStatus> newSemiLimitedCards = newCards.getSemiLimited();
+		final List<CardsPreviousBanListStatus> newForbiddenCards = newCards.getForbidden();
+		final List<CardsPreviousBanListStatus> newLimitedCards = newCards.getLimited();
+		final List<CardsPreviousBanListStatus> newSemiLimitedCards = newCards.getSemiLimited();
 
 		assertEquals(BAN_LIST_START_DATE, banListNewContentInstance.getListRequested());
 		assertEquals(PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.getComparedTo());
@@ -161,7 +160,7 @@ public class DiffServiceTest {
 
 		final BanListRemovedContent banListRemovedContentInstance = this.diffService.getRemovedContentOfBanList(BAN_LIST_START_DATE);
 
-		final List<CardPreviousBanListStatus> removedCards = banListRemovedContentInstance.getRemovedCards();
+		final List<CardsPreviousBanListStatus> removedCards = banListRemovedContentInstance.getRemovedCards();
 
 		assertNotNull(removedCards);
 

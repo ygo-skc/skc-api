@@ -15,7 +15,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Getter
 @Builder
 @ApiModel(
-        description = "Information about high level stats for data in the database."
+        description = "High level stats for data in the database."
         , parent = RepresentationModel.class
 )
 public class DatabaseStats extends RepresentationModel<DatabaseStats> implements HateoasLinks

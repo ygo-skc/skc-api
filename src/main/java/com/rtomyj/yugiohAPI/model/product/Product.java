@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.yugiohAPI.controller.product.ProductController;
 
+import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
@@ -31,20 +33,66 @@ import lombok.With;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "Information about a YGO pack.")
 @JsonInclude(Include.NON_EMPTY)
+@ApiModel(
+		description = "Information about a YuGiOh product such as a booster pack or tin."
+)
 public class Product extends RepresentationModel<Product>
 {
 
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_ID_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String productId;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String productLocale;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_NAME_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String productName;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String productType;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_SUB_TYPE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private String productSubType;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_RELEASE_DATE_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date productReleaseDate;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_TOTAL_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private Integer productTotal;
-	private Map<String, Integer> productRarityCount;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_RARITY_STATS_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	private Map<String, Integer> productRarityStats;
+
+	@ApiModelProperty(
+			value = SwaggerConstants.PRODUCT_CONTENT_DESCRIPTION
+			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
 	private List<ProductContent> productContent;
 
 	private static final Class<ProductController> controllerClass = ProductController.class;
@@ -63,7 +111,6 @@ public class Product extends RepresentationModel<Product>
 		this.setLink();
 		if (this.productContent != null)	ProductContent.setLinks(this.productContent);	// set links for pack contents
 	}
-
 
 
 	public static void setLinks(final List<Product> packs)

@@ -23,8 +23,11 @@ import io.swagger.annotations.ApiModel;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "Information about a ban list (listRequested) obtained by comparing to a previous ban list (comparedTo). The information retrieved will be the removedCards.")
 @JsonPropertyOrder({ "listRequested", "comparedTo", "numRemoved", "removedCards" })
+@ApiModel(
+		description = "Cards that were removed from a ban list compared to the previous logical ban list."
+		, parent = RepresentationModel.class
+)
 public class BanListRemovedContent extends RepresentationModel<BanListRemovedContent> implements HateoasLinks
 {
 
@@ -50,7 +53,7 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 			value = "List containing removed cards and their previous ban status."
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
-	private List<CardPreviousBanListStatus> removedCards;
+	private List<CardsPreviousBanListStatus> removedCards;
 
 	private static final Class<BanListRemovedContentController> controllerClass = BanListRemovedContentController.class;
 	private static final Class<BannedCardsController> banListController = BannedCardsController.class;
