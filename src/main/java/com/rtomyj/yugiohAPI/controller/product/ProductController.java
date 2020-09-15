@@ -65,7 +65,7 @@ public class ProductController extends YgoApiBaseController
 			) @PathVariable("locale") final String locale)
 	{
 		log.info(productId);
-		return ResponseEntity.ok(availablePacksService.getPack(productId, locale.toUpperCase()));
+		return ResponseEntity.ok(availablePacksService.getProductByLocale(productId, locale.toUpperCase()));
 	}
 
 }

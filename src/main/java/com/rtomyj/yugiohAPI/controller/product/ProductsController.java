@@ -48,7 +48,9 @@ public class ProductsController extends YgoApiBaseController
     @GetMapping("/{locale}")
     public ResponseEntity<Products> getProductsByLocale(@PathVariable("locale") final String locale)
     {
+
         return ResponseEntity.ok(availablePacksService.getProductsByLocale(locale));
+
     }
 
 
@@ -61,15 +63,17 @@ public class ProductsController extends YgoApiBaseController
             , @ApiResponse(code = 400, message = SwaggerConstants.http400)
             , @ApiResponse(code = 404, message = SwaggerConstants.http404)
     })
-    public ResponseEntity<Products> getProduct(
+    public ResponseEntity<Products> getProductsByLocaleAndProductType(
             @ApiParam(value = "A specific product type used to limit results."
             ) @PathVariable("productType") final ProductType productType
             , @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
                     , example = "en"
             ) @PathVariable("locale") final String locale)
     {
+
         log.info(productType.toString());
-        return ResponseEntity.ok(availablePacksService.getAvailablePacks(productType, locale));
+        return ResponseEntity.ok(availablePacksService.getProductsByLocaleAndProductType(productType, locale));
+
     }
 
 }

@@ -75,21 +75,20 @@ public class CardBrowseService
     public CardBrowseCriteria getBrowseCriteria()
     {
 
-        synchronized(this)
+        if (cachedCardBrowseCriteria == null)
         {
-            if (cachedCardBrowseCriteria == null)
+            synchronized(this)
             {
-                synchronized(this)
-                {
-                    cachedCardBrowseCriteria = CardBrowseCriteria.
-                            builder()
-                            .cardColors(dao.getCardColors())
-                            .attributes(dao.getMonsterAttributes())
-                            .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
-                            .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
-                            .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
-                            .build();
-                }
+                cachedCardBrowseCriteria = CardBrowseCriteria.
+                        builder()
+                        .cardColors(dao.getCardColors())
+                        .attributes(dao.getMonsterAttributes())
+                        .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
+                        .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
+                        .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
+                        .build();
+
+                cachedCardBrowseCriteria.setLinks();
             }
         }
         return cachedCardBrowseCriteria;

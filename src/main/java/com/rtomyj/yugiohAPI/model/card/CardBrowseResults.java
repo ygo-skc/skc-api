@@ -2,7 +2,6 @@ package com.rtomyj.yugiohAPI.model.card;
 
 import com.rtomyj.yugiohAPI.controller.card.CardBrowseController;
 import com.rtomyj.yugiohAPI.model.HateoasLinks;
-import com.rtomyj.yugiohAPI.model.card.Card;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -49,13 +48,14 @@ public class CardBrowseResults extends RepresentationModel<CardBrowseResults> im
     private static final Class<CardBrowseController> cardBrowseController = CardBrowseController.class;
 
 
+    // TODO: add links
     @Override
     public void setSelfLink()
     {
 
-        this.add(
-                linkTo(methodOn(cardBrowseController).browse("", "", "")).withSelfRel()
-        );
+//        this.add(
+//                linkTo(methodOn(cardBrowseController).browse("", "", "")).withSelfRel()
+//        );
 
     }
 

@@ -106,9 +106,6 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 		this.add(
 				linkTo(methodOn(removedController).getNewlyRemovedContentForBanList(listRequested)).withRel("Ban List Removed Content")
 		);
-		this.add(
-				linkTo(methodOn(controllerClass).getNewlyAddedContentForBanList(comparedTo)).withRel("Previous Ban Lists' New Content")
-		);
 
 		HateoasLinks.setLinks(newForbidden);
 		HateoasLinks.setLinks(newLimited);

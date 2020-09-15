@@ -20,29 +20,37 @@ public class ProductService
 
 	public Products getProductsByLocale(final String locale)
 	{
+
 		final Products allProductsByLocale = new Products();
 		allProductsByLocale.setProducts(dao.getProductsByLocale(locale));
 		allProductsByLocale.setLinks();
 
 		return allProductsByLocale;
+
 	}
 
-	public Products getAvailablePacks(final ProductType productType, final String locale)
+	public Products getProductsByLocaleAndProductType(final ProductType productType, final String locale)
 	{
-		final Products allPacks = dao.getAllProductsByType(productType, locale);
-		allPacks.setLinks();
 
-		return allPacks;
+		final Products products = dao.getAllProductsByType(productType, locale);
+		products.setLocale(locale);
+		products.setProductType(productType);
+		products.setLinks();
+
+		return products;
+
 	}
 
 
-	public Product getPack(final String packId, final String locale)
+	public Product getProductByLocale(final String packId, final String locale)
 	{
-		final Product pack = dao.getProductInfo(packId, locale);
-		pack.getProductContent().addAll(dao.getProductContents(packId, locale));
-		pack.setLinks();
 
-		return pack;
+		final Product product = dao.getProductInfo(packId, locale);
+		product.getProductContent().addAll(dao.getProductContents(packId, locale));
+		product.setLinks();
+
+		return product;
+
 	}
 
 }

@@ -82,9 +82,6 @@ public class BanListRemovedContent extends RepresentationModel<BanListRemovedCon
 		this.add(
 				linkTo(methodOn(newController).getNewlyAddedContentForBanList(listRequested)).withRel("Ban List New Content")
 		);
-		this.add(
-				linkTo(methodOn(controllerClass).getNewlyRemovedContentForBanList(comparedTo)).withRel("Previous Ban Lists' Removed Content")
-		);
 		HateoasLinks.setLinks(removedCards);
 	}
 }
