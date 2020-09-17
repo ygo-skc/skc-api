@@ -3,7 +3,7 @@
 CREATE VIEW card_info
 AS
 SELECT
-	card_number, card_colors.card_color, card_name, cards.card_attribute, cards.card_effect, cards.monster_type, cards.monster_attack, cards.monster_defense, card_colors.color_id
+	card_number, card_colors.card_color, card_name, cards.card_attribute, cards.card_effect, cards.monster_type, cards.monster_attack, cards.monster_defense, card_colors.color_id, cards.monster_association
 FROM
 	cards, card_colors
 WHERE

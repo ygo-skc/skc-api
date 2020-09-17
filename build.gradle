@@ -86,6 +86,7 @@ configurations {
 		exclude module: 'spring-boot-starter-tomcat'
 		exclude group: 'org.apache.tomcat'
 		exclude group: 'junit'
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
 	compileOnly {

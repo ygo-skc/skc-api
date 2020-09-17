@@ -13,6 +13,7 @@ CREATE TABLE cards
 	card_attribute VARCHAR(20) NOT NULL,
 	card_effect VARCHAR(1500),
 	monster_type VARCHAR(35),
+	monster_association VARCHAR(70),
 	monster_attack INT,
 	monster_defense INT,
 	PRIMARY KEY(card_number),

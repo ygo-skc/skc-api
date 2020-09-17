@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDate;
 import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -31,7 +31,7 @@ public class BanServiceTest
 	@Mock
 	private Dao dao;
 
-	private static BanListDates banListDates;
+	private static BanListDates banListDatesInstance;
 	private static Date testBanListDate;
 
 
@@ -41,18 +41,16 @@ public class BanServiceTest
 		final SimpleDateFormat banListSimpleDate = new SimpleDateFormat("yyyy-mm-dd");
 		testBanListDate = banListSimpleDate.parse("2020-01-20");
 
-		final CardBanListStatus cardBanListStatus = CardBanListStatus
+		final List<BanListDate> banListDates = new ArrayList<>();
+		banListDates.add(BanListDate
+				.builder()
+				.effectiveDate(testBanListDate)
+				.build());
+
+
+		banListDatesInstance = BanListDates
 			.builder()
-			.banListDate(testBanListDate)
-			.build();
-
-		final List<CardBanListStatus> cardBanListStatuses = new ArrayList<>();
-		cardBanListStatuses.add(cardBanListStatus);
-
-
-		banListDates = BanListDates
-			.builder()
-			.cardBanListStatusStartDates(cardBanListStatuses)
+			.banListDates(banListDates)
 			.build();
 	}
 
@@ -62,10 +60,10 @@ public class BanServiceTest
 	public void testFetchingAllBanListDates()
 	{
 		when(dao.getBanListDates())
-			.thenReturn(BanServiceTest.banListDates);
+			.thenReturn(BanServiceTest.banListDatesInstance);
 
 		final BanListDates banListDates = banService.getBanListStartDates();
 
-		assertEquals(1, banListDates.getCardBanListStatusStartDates().size());
+		assertEquals(1, banListDates.getBanListDates().size());
 	}
 }

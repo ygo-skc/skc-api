@@ -66,11 +66,11 @@ public class DiffServiceTest {
 		throws YgoException
 	{
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
-			.thenReturn(DiffServiceTest.banListNewContent.getNewCards().getForbidden());
+			.thenReturn(DiffServiceTest.banListNewContent.getNewForbidden());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.LIMITED)))
-			.thenReturn(DiffServiceTest.banListNewContent.getNewCards().getLimited());
+			.thenReturn(DiffServiceTest.banListNewContent.getNewLimited());
 		when(this.dao.getNewContentOfBanList(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
-			.thenReturn(DiffServiceTest.banListNewContent.getNewCards().getSemiLimited());
+			.thenReturn(DiffServiceTest.banListNewContent.getNewSemiLimited());
 		when(this.dao.isValidBanList(eq(BAN_LIST_START_DATE)))
 			.thenReturn(true);
 		when(this.dao.getPreviousBanListDate(eq(BAN_LIST_START_DATE)))
@@ -78,10 +78,9 @@ public class DiffServiceTest {
 
 
 		final BanListNewContent banListNewContentInstance = this.diffService.getNewContentOfBanList(BAN_LIST_START_DATE);
-		final NewCards newCards = banListNewContentInstance.getNewCards();
-		final List<CardsPreviousBanListStatus> newForbiddenCards = newCards.getForbidden();
-		final List<CardsPreviousBanListStatus> newLimitedCards = newCards.getLimited();
-		final List<CardsPreviousBanListStatus> newSemiLimitedCards = newCards.getSemiLimited();
+		final List<CardsPreviousBanListStatus> newForbiddenCards = banListNewContentInstance.getNewForbidden();
+		final List<CardsPreviousBanListStatus> newLimitedCards = banListNewContentInstance.getNewLimited();
+		final List<CardsPreviousBanListStatus> newSemiLimitedCards = banListNewContentInstance.getNewSemiLimited();
 
 		assertEquals(BAN_LIST_START_DATE, banListNewContentInstance.getListRequested());
 		assertEquals(PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.getComparedTo());
@@ -93,13 +92,13 @@ public class DiffServiceTest {
 		assertEquals(1, newLimitedCards.size());
 		assertEquals(1, newSemiLimitedCards.size());
 
-		assertEquals(TestConstants.STRATOS_ID, newForbiddenCards.get(0).getId());
+		assertEquals(TestConstants.STRATOS_ID, newForbiddenCards.get(0).getCardId());
 		assertEquals("Limited", newForbiddenCards.get(0).getPreviousBanStatus());
 
-		assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards.get(0).getId());
+		assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards.get(0).getCardId());
 		assertEquals("Unlimited", newLimitedCards.get(0).getPreviousBanStatus());
 
-		assertEquals(TestConstants.D_MALICIOUS_ID, newSemiLimitedCards.get(0).getId());
+		assertEquals(TestConstants.D_MALICIOUS_ID, newSemiLimitedCards.get(0).getCardId());
 		assertEquals("Forbidden", newSemiLimitedCards.get(0).getPreviousBanStatus());
 
 
@@ -169,13 +168,13 @@ public class DiffServiceTest {
 
 		assertEquals(3, removedCards.size());
 
-		assertEquals(TestConstants.STRATOS_ID, removedCards.get(0).getId());
+		assertEquals(TestConstants.STRATOS_ID, removedCards.get(0).getCardId());
 		assertEquals("Forbidden", removedCards.get(0).getPreviousBanStatus());
 
-		assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards.get(1).getId());
+		assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards.get(1).getCardId());
 		assertEquals("Limited", removedCards.get(1).getPreviousBanStatus());
 
-		assertEquals(TestConstants.D_MALICIOUS_ID, removedCards.get(2).getId());
+		assertEquals(TestConstants.D_MALICIOUS_ID, removedCards.get(2).getCardId());
 		assertEquals("Semi-Limited", removedCards.get(2).getPreviousBanStatus());
 
 
