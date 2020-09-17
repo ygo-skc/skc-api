@@ -26,7 +26,7 @@ public class CardBrowseService
 
     private Dao dao;
 
-    private static String levelExpression = "\"level\": \"%s\"";
+    private static final String levelExpression = "\"level\": \"%s\"";
 
     private static CardBrowseCriteria cachedCardBrowseCriteria;
 
