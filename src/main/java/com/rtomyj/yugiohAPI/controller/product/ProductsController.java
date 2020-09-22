@@ -32,24 +32,33 @@ public class ProductsController extends YgoApiBaseController
 
     private static final String END_POINT = BASE_ENDPOINT + "/products";
 
-    private final ProductService availablePacksService;
+    private final ProductService availableProductsService;
 
 
     @Autowired
-    public ProductsController(final HttpServletRequest request, final ProductService availablePacksService)
+    public ProductsController(final HttpServletRequest request, final ProductService availableProductsService)
     {
 
-        this.availablePacksService = availablePacksService;
+        this.availableProductsService = availableProductsService;
         this.request = request;
 
     }
 
 
     @GetMapping("/{locale}")
-    public ResponseEntity<Products> getProductsByLocale(@PathVariable("locale") final String locale)
+    @ApiOperation(value = "Retrieve all products for a given locale."
+            , response = Products.class
+            , responseContainer = "Object")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = SwaggerConstants.http200)
+            , @ApiResponse(code = 400, message = SwaggerConstants.http400)
+            , @ApiResponse(code = 404, message = SwaggerConstants.http404)
+    })
+    public ResponseEntity<Products> getProductsByLocale(
+            @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION, example = "en") @PathVariable("locale") final String locale)
     {
 
-        return ResponseEntity.ok(availablePacksService.getProductsByLocale(locale));
+        return ResponseEntity.ok(availableProductsService.getProductsByLocale(locale));
 
     }
 
@@ -64,15 +73,12 @@ public class ProductsController extends YgoApiBaseController
             , @ApiResponse(code = 404, message = SwaggerConstants.http404)
     })
     public ResponseEntity<Products> getProductsByLocaleAndProductType(
-            @ApiParam(value = "A specific product type used to limit results."
-            ) @PathVariable("productType") final ProductType productType
-            , @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
-                    , example = "en"
-            ) @PathVariable("locale") final String locale)
+            @ApiParam(value = "A specific product type used to limit results.") @PathVariable("productType") final ProductType productType
+            , @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION, example = "en") @PathVariable("locale") final String locale)
     {
 
         log.info(productType.toString());
-        return ResponseEntity.ok(availablePacksService.getProductsByLocaleAndProductType(productType, locale));
+        return ResponseEntity.ok(availableProductsService.getProductsByLocaleAndProductType(productType, locale));
 
     }
 

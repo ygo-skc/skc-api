@@ -14,6 +14,7 @@ import com.rtomyj.yugiohAPI.controller.product.ProductController;
 
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.NonNull;
 import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModel;
@@ -113,8 +114,9 @@ public class Product extends RepresentationModel<Product>
 	}
 
 
-	public static void setLinks(final List<Product> packs)
+	public static void setLinks(@NonNull final List<Product> packs)
 	{
+
 		packs
 			.stream()
 			.forEach(pack -> pack.setLinks());
