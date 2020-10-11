@@ -1,21 +1,22 @@
 {
 	"listRequested": "2018-12-03",
 	"comparedTo": "2018-09-17",
-   "removedCards": [
+	"numRemoved": 3,
+	"removedCards": [
 		{
-			"id": "40044918",
-			"name": "Elemental HERO Stratos",
-			"previousState": "Forbidden"
+			"cardId": "40044918",
+			"cardName": "Elemental HERO Stratos",
+			"previousBanStatus": "Forbidden"
       },
       {
-			"id": "08949584",
-			"name": "A Hero Lives",
-			"previousState": "Limited"
+			"cardId": "08949584",
+			"cardName": "A Hero Lives",
+			"previousBanStatus": "Limited"
       },
       {
-			"id": "09411399",
-			"name": "Destiny HERO - Malicious",
-			"previousState": "Semi-Limited"
+			"cardId": "09411399",
+			"cardName": "Destiny HERO - Malicious",
+			"previousBanStatus": "Semi-Limited"
       }
    ]
 }

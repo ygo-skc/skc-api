@@ -1,39 +1,54 @@
 package com.rtomyj.yugiohAPI.service.banlist;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
- * Service used to interface with the ban_lists table in DB.
+ * Service used to interface with database for basic operations regarding ban lists.
  */
 @Service
+@Slf4j
 public class BanService
 {
+
 	/**
-	 * DB access object.
+	 * Object used to interface with DB.
+	 */
+	private final Dao dao;
+
+
+	/**
+	 * Create object instance.
+	 * @param dao object used to interface with DB.
 	 */
 	@Autowired
-	@Qualifier("hibernate")
-	private Dao dao;
+	public BanService(@Qualifier("hibernate") final Dao dao)
+	{
 
+		this.dao = dao;
+
+	}
 
 
 	/**
+	 * Uses dao helper object to retrieve start dates of all ban lists in the database.
 	 * @return List of BanList objects
 	 */
-	public ServiceLayerHelper getBanListStartDates()
+	public BanListDates getBanListStartDates()
 	{
-		final ServiceLayerHelper serviceLayerHelper = ServiceLayerHelper
-			.builder()
-			.requestedResource(dao.getBanListStartDates())
-			.status(HttpStatus.OK)
-			.build();
 
-		return serviceLayerHelper;
+		log.info("Sending list of ban list start dates.");
+		final BanListDates banListDates = dao.getBanListDates();
+		banListDates.setLinks();
+
+		return banListDates;
+
 	}
+
 }

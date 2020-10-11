@@ -1,27 +1,28 @@
 {
 	"listRequested": "2018-12-03",
 	"comparedTo": "2018-09-17",
-	"newCards": {
-		"forbidden": [
-			{
-				"id": "40044918",
-				"name": "Elemental HERO Stratos",
-				"previousState": "Limited"
-			}
-		],
-		"limited": [
-			{
-				"id": "08949584",
-				"name": "A Hero Lives",
-				"previousState": "Unlimited"
-			}
-		],
-		"semiLimited": [
-			{
-				"id": "09411399",
-				"name": "Destiny HERO - Malicious",
-				"previousState": "Forbidden"
-			}
-		]
-	}
+	"numNewForbidden": 1,
+	"numNewLimited": 1,
+	"numNewSemiLimited": 1,
+	"newForbidden": [
+		{
+			"cardId": "40044918",
+			"cardName": "Elemental HERO Stratos",
+			"previousBanStatus": "Limited"
+		}
+	],
+	"newLimited": [
+		{
+			"cardId": "08949584",
+			"cardName": "A Hero Lives",
+			"previousBanStatus": "Unlimited"
+		}
+	],
+	"newSemiLimited": [
+		{
+			"cardId": "09411399",
+			"cardName": "Destiny HERO - Malicious",
+			"previousBanStatus": "Forbidden"
+		}
+	]
 }

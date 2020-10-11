@@ -1,37 +1,41 @@
-
 plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply true
-	id 'org.springframework.boot' version '2.2.5.RELEASE' apply true
+	id 'org.springframework.boot' version '2.3.3.RELEASE' apply true
 	id 'jacoco' apply true
 	id 'java' apply true
 }
 
 sourceSets.main.java.srcDirs = ["src/main/java"]
 
-
-
 ext {
-	springVersion = '2.2.5.RELEASE'
-	swagger2Version = '2.9.2'
+	baseName = 'YGO-API'
+	springVersion = '2.3.3.RELEASE'
+	swagger2Version = '3.0.0'
 	javadocVersion = '3.1.1'
 	cache2kVersion = '1.2.4.Final'
 	lombokVersion = '1.18.12'
-	mysqlVersion = '8.0.19'
+	mysqlVersion = '8.0.21'
+	jacksonVersion = "2.11.2"
+	cucumberVersion = "6.7.0"
 }
-
 
 
 group = 'com.rtomyj'
 archivesBaseName = 'YGO-API'
-version = '1.1.2'
-sourceCompatibility = '1.8'
+version = '1.2.0'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
+
+apply from: 'gradle/testConfig.gradle'
 
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'	// used for snapshots
+	}
 }
-
 
 
 sourceSets {
@@ -41,11 +45,16 @@ sourceSets {
 }
 
 
-
 dependencies {
+	implementation "javax.validation:validation-api:2.0.1.Final"
+
 	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+	implementation "org.springframework.boot:spring-boot-starter-hateoas:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
+	implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
+
+	implementation "org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE"
 
 	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
 	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
@@ -53,12 +62,11 @@ dependencies {
 
 	implementation "org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion"
 
-	implementation "io.springfox:springfox-swagger2:$swagger2Version"
-	implementation "io.springfox:springfox-swagger-ui:$swagger2Version"
+	implementation "io.springfox:springfox-boot-starter:$swagger2Version"
 
 	runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
 	implementation "org.cache2k:cache2k-api:$cache2kVersion"
 	implementation "org.cache2k:cache2k-core:$cache2kVersion"
@@ -66,15 +74,7 @@ dependencies {
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
 	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
 
-
-	/* Test level dependencies */
-	testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
-	testRuntimeOnly "com.h2database:h2"
-
-	testImplementation "org.junit.jupiter:junit-jupiter-api"
-	testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }
-
 
 
 configurations {
@@ -83,9 +83,13 @@ configurations {
 		exclude module: 'spring-boot-starter-tomcat'
 		exclude group: 'org.apache.tomcat'
 		exclude group: 'junit'
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
+	compileOnly {
+		extendsFrom annotationProcessor
 	}
 }
-
 
 
 bootJar {
@@ -98,7 +102,6 @@ bootJar {
 }
 
 
-
 task bootJarPath {
 	doFirst {
 		println "${buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"
@@ -106,22 +109,10 @@ task bootJarPath {
 }
 
 
-
 javadoc {
+
+	options.memberLevel = JavadocMemberLevel.PRIVATE
 	source = sourceSets.main.allJava
+
 }
 
-
-
-tasks.withType(Test) {
-   maxParallelForks = Runtime.runtime.availableProcessors() / 3 ?: 1
-}
-
-
-
-test {
-	useJUnitPlatform()
-
-	minHeapSize = "512m"
-	maxHeapSize = "768m"
-}

@@ -1,25 +1,18 @@
-
-ygo:
-  endpoints:
-    v1:
-      test-call: /api/v1/testcall
-      ban-list-dates: /api/v1/ban/dates
-      ban-list-new-cards: /api/v1/ban/new
-      ban-list-removed-cards: /api/v1/ban/removed
-      banned-cards: /api/v1/ban/cards
-      card: /api/v1/card
-
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/yugioh_API_DB
     username: root
     password:
+  hateoas:
+    use-hal-as-default-json-media-type: true
 
 server:
   port: 9999
+  servlet:
+    contextPath: /api/v1
   compression:
     enabled: true
     mime-types: application/json
-    min-response-size: 4096
+    min-response-size: 16384
   http2:
     enabled: true

@@ -1,6 +1,9 @@
 {
-   "bannedCards": {
-      "forbidden": [
+   "banListInstance": {
+	   "numForbidden": 1
+	   , "numLimited": 1
+	   , "numSemiLimited": 1
+	   , "forbidden": [
 			{
 				"cardName": "Elemental HERO Stratos",
 				"monsterType": "Warrior/Effect",

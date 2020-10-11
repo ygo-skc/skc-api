@@ -1,11 +1,22 @@
 package com.rtomyj.yugiohAPI.dao.database;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.rtomyj.yugiohAPI.configuration.exception.YgoException;
-import com.rtomyj.yugiohAPI.model.BanListComparisonResults;
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
-import com.rtomyj.yugiohAPI.model.Card;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
+import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
+import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
+import com.rtomyj.yugiohAPI.model.card.Card;
+import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
+import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
+import com.rtomyj.yugiohAPI.model.product.Product;
+import com.rtomyj.yugiohAPI.model.product.ProductContent;
+import com.rtomyj.yugiohAPI.model.product.Products;
 
 /**
  * Contract for database operations.
@@ -52,7 +63,7 @@ public interface Dao
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-	public BanListStartDates getBanListStartDates();
+	public BanListDates getBanListDates();
 
 	/**
 	 * Retrieve the information about a Card given the ID.
@@ -101,14 +112,14 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<BanListComparisonResults> getNewContentOfBanList(String banListDate, Status status);
+	public List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status);
 
 	/**
 	 *
 	 * @param newBanList
 	 * @return
 	 */
-	public List<BanListComparisonResults> getRemovedContentOfBanList(String newBanList);
+	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
 
 	/**
 	 *
@@ -118,7 +129,35 @@ public interface Dao
 	 */
 	public String getCardBanListStatusByDate(String cardId, String banListDate);
 
-	public String getCardInfoByCardNameSearch(String cardName);
-
 	public boolean isValidBanList(final String banListDate);
+
+	public List<Card> getCardNameByCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit);
+
+	public Products getAllProductsByType(final ProductType productType, final String locale);
+
+	public Map<String, Integer> getProductRarityCount(final String packId);
+
+	public Set<ProductContent> getProductContents(final String productId, final String locale);
+
+	public MonsterTypeStats getMonsterTypeStats(final String cardColor);
+
+	public DatabaseStats getDatabaseStats();
+
+	public Set<Product> getProductDetailsForCard(final String cardId);
+
+	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId);
+
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels, Set<String> monsterRankSet
+			, Set<String> monsterLinkRatingsSet);
+
+	public Set<String> getCardColors();
+
+	public Set<String> getMonsterAttributes();
+
+	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField);
+
+	public Product getProductInfo(final String productId, final String locale);
+
+	public List<Product> getProductsByLocale(final String locale);
+
 }

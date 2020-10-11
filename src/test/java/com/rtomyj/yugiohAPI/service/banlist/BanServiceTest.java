@@ -9,9 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.helper.ServiceLayerHelper;
-import com.rtomyj.yugiohAPI.model.BanList;
-import com.rtomyj.yugiohAPI.model.BanListStartDates;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDate;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -33,7 +31,7 @@ public class BanServiceTest
 	@Mock
 	private Dao dao;
 
-	private static BanListStartDates banListStartDates;
+	private static BanListDates banListDatesInstance;
 	private static Date testBanListDate;
 
 
@@ -43,18 +41,16 @@ public class BanServiceTest
 		final SimpleDateFormat banListSimpleDate = new SimpleDateFormat("yyyy-mm-dd");
 		testBanListDate = banListSimpleDate.parse("2020-01-20");
 
-		final BanList banList = BanList
+		final List<BanListDate> banListDates = new ArrayList<>();
+		banListDates.add(BanListDate
+				.builder()
+				.effectiveDate(testBanListDate)
+				.build());
+
+
+		banListDatesInstance = BanListDates
 			.builder()
-			.banListDate(testBanListDate)
-			.build();
-
-		final List<BanList> banLists = new ArrayList<>();
-		banLists.add(banList);
-
-
-		banListStartDates = BanListStartDates
-			.builder()
-			.banListStartDates(banLists)
+			.banListDates(banListDates)
 			.build();
 	}
 
@@ -63,13 +59,11 @@ public class BanServiceTest
 	@Test
 	public void testFetchingAllBanListDates()
 	{
-		when(dao.getBanListStartDates())
-			.thenReturn(banListStartDates);
+		when(dao.getBanListDates())
+			.thenReturn(BanServiceTest.banListDatesInstance);
 
-		final ServiceLayerHelper serviceLayerHelper = banService.getBanListStartDates();
-		final BanListStartDates banListStartDates = (BanListStartDates) serviceLayerHelper.getRequestedResource();
+		final BanListDates banListDates = banService.getBanListStartDates();
 
-		assertEquals(HttpStatus.OK, serviceLayerHelper.getStatus());
-		assertEquals(1, banListStartDates.getBanListStartDates().size());
+		assertEquals(1, banListDates.getBanListDates().size());
 	}
 }
