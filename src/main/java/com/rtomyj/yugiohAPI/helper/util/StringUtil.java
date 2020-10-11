@@ -16,7 +16,7 @@ public final class StringUtil
             }
         }
 
-        return joinedStr.toString();
+        return joinedStr;
 
     }
 

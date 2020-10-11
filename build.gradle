@@ -22,7 +22,7 @@ ext {
 
 group = 'com.rtomyj'
 archivesBaseName = 'YGO-API'
-version = '1.2.0'
+version = '1.2.1'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 

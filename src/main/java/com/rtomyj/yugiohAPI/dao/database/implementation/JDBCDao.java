@@ -669,15 +669,24 @@ public class JDBCDao implements Dao
 			Only use where clause for card level if there is a criteria specified by user.
 			Unlike other criteria, using the REGEX .* will not work as it will clash with other monster association JSON fields in DB.
 		 */
-		final String cardWhereClause = " AND monster_association REGEXP :monsterAssociation ";
-		final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
-		final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
-		final String linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet);
-		final String monsterAssociationCriteria = StringUtil.concatenateStringsWithDelimiter("|", levelCriteria, rankCriteria, linkRatingCriteria);
+		String monsterAssociationWhereClause;
+		if (monsterLevels.isEmpty() && monsterRankSet.isEmpty() && monsterLinkRatingsSet.isEmpty())
+		{
+			monsterAssociationWhereClause = "";
+		} else
+		{
 
-		sqlParams.addValue("monsterAssociation", monsterAssociationCriteria);
+			monsterAssociationWhereClause = " AND monster_association REGEXP :monsterAssociation ";
+			final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
+			final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
+			final String linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet);
+			final String monsterAssociationCriteria = StringUtil.concatenateStringsWithDelimiter("|", levelCriteria, rankCriteria, linkRatingCriteria);
 
-		final String sql = String.format(SQL_TEMPLATE, cardWhereClause);
+			sqlParams.addValue("monsterAssociation", monsterAssociationCriteria);
+
+		}
+
+		final String sql = String.format(SQL_TEMPLATE, monsterAssociationWhereClause);
 
 		return CardBrowseResults
 				.builder()
