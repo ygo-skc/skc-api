@@ -1,22 +1,19 @@
 package com.rtomyj.yugiohAPI.service.card;
 
 import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.model.HateoasLinks;
+import com.rtomyj.yugiohAPI.helper.enumeration.browse.MonsterAssociationExpression;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseCriteria;
 import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,9 +21,7 @@ import java.util.stream.Collectors;
 public class CardBrowseService
 {
 
-    private Dao dao;
-
-    private static final String levelExpression = "\"level\": \"%s\"";
+    private final Dao dao;
 
     private static CardBrowseCriteria cachedCardBrowseCriteria;
 
@@ -39,23 +34,20 @@ public class CardBrowseService
     }
 
 
-    public CardBrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterLevels)
+    public CardBrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterLevels
+            , final String monsterRanks, final String monsterLinkRatings)
     {
 
         final Set<String> cardColorsSet = (cardColors.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(cardColors.split(",")));
         final Set<String> attributeSet = (attributes.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(attributes.split(",")));
 
-        final Set<String> monsterLevelSet = new HashSet<>();
-        if (!monsterLevels.isEmpty())
-        {
-            for(String level: monsterLevels.split(","))
-            {
-                monsterLevelSet.add(String.format(levelExpression, level));
-            }
-        }
+        final Set<String> monsterLevelSet = transformMonsterAssociationValuesIntoSQL(monsterLevels, MonsterAssociationExpression.LEVEL_EXPRESSION);
+        final Set<String> monsterRankSet = transformMonsterAssociationValuesIntoSQL(monsterRanks, MonsterAssociationExpression.RANK_EXPRESSION);
+        final Set<String> monsterLinkRatingsSet = transformMonsterAssociationValuesIntoSQL(monsterLinkRatings, MonsterAssociationExpression.LINK_RATING_EXPRESSION);
 
 
-        final CardBrowseResults cardBrowseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet);
+        final CardBrowseResults cardBrowseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet
+                , monsterRankSet, monsterLinkRatingsSet);
         cardBrowseResults.setRequestedCriteria(
                 CardBrowseCriteria
                         .builder()
@@ -100,6 +92,33 @@ public class CardBrowseService
     {
 
         return dao.getMonsterAssociationField(monsterAssociationField);
+
+    }
+
+
+    /**
+     * Parses a comma delimited string supplied by the user that contains values for a specific monster association key that a user wants to retrieve contents for.
+     * User also supplies a pattern defining a key-value pair where the key is a valid monster association and the value is a parametrized String token that will be replaced by
+     *  String.format()
+     *      Eg) "level": "%s"
+     * This updated patterns will be inserted in the returned Set for use in a SQL query.
+     * @param monsterAssociationUserValueString The comma delimited string containing the browse monster association values wanted by user.
+     * @param monsterAssociationAttributeSQLPattern Key-value pair to use in a SQL query, with a parametrized value.
+     * @return Set containing {@code monsterAssociationAttributeSQLPattern}s modified with the unique values from monsterAssociationUserValueString.
+     */
+    private Set<String> transformMonsterAssociationValuesIntoSQL(final String monsterAssociationUserValueString, final MonsterAssociationExpression monsterAssociationAttributeSQLPattern)
+    {
+
+        final Set<String> monsterAssociationUserValueSet = new HashSet<>();
+        if (!monsterAssociationUserValueString.isEmpty())
+        {
+            for(String monsterAssociationUserValueToken: monsterAssociationUserValueString.split(","))
+            {
+                monsterAssociationUserValueSet.add(String.format(monsterAssociationAttributeSQLPattern.toString(), monsterAssociationUserValueToken));
+            }
+        }
+
+        return monsterAssociationUserValueSet;
 
     }
 

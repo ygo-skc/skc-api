@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -24,6 +25,7 @@ import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefi
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.helper.util.StringUtil;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
 import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
@@ -636,7 +638,23 @@ public class JDBCDao implements Dao
 	}
 
 
-	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels)
+	private String transformCollectionToSQLOr(final Collection<String> monsterAssociationValueSet)
+	{
+
+		String monsterAssociationStr = "";
+
+		if (!monsterAssociationValueSet.isEmpty())
+		{
+			monsterAssociationStr = String.join("|", monsterAssociationValueSet);
+		}
+
+		return monsterAssociationStr;
+
+	}
+
+
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet
+			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet)
 	{
 		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes %s ORDER BY card_name";
 
@@ -651,19 +669,15 @@ public class JDBCDao implements Dao
 			Only use where clause for card level if there is a criteria specified by user.
 			Unlike other criteria, using the REGEX .* will not work as it will clash with other monster association JSON fields in DB.
 		 */
-		String cardWhereClause = "";
-		if (!monsterLevels.isEmpty())
-		{
-			final String monsterLevelCriteria = String.join("|", monsterLevels);
-			sqlParams.addValue("monsterLevels", monsterLevelCriteria);
+		final String cardWhereClause = " AND monster_association REGEXP :monsterAssociation ";
+		final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
+		final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
+		final String linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet);
+		final String monsterAssociationCriteria = StringUtil.concatenateStringsWithDelimiter("|", levelCriteria, rankCriteria, linkRatingCriteria);
 
-			cardWhereClause = "AND monster_association REGEXP :monsterLevels";
-		}
+		sqlParams.addValue("monsterAssociation", monsterAssociationCriteria);
 
 		final String sql = String.format(SQL_TEMPLATE, cardWhereClause);
-
-		log.info(sql);
-		log.info(sqlParams.toString());
 
 		return CardBrowseResults
 				.builder()

@@ -64,11 +64,20 @@ public class CardBrowseController extends YgoApiBaseController
                     value = "Desired set of monster levels to include in browse results."
                     , example = "4,5,6,7,8"
             ) @RequestParam(value = "levels", defaultValue = "") final String monsterLevels
+            , @ApiParam(
+                    value = "Desired set of monster ranks to include in browse results."
+                    , example = "4,7,8"
+            ) @RequestParam(value = "ranks", defaultValue = "") final String monsterRanks
+                    , @ApiParam(
+                    value = "Desired set of monster ranks to include in browse results."
+                    , example = "4,7,8"
+            ) @RequestParam(value = "linkRatings", defaultValue = "") final String monsterLinkRatings
     )
     {
 
         Logging.configureMDC(request, END_POINT);
-        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels);
+        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes
+                , monsterLevels, monsterRanks, monsterLinkRatings);
         MDC.clear();
 
         return cardBrowseResults;
