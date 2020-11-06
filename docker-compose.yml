@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  ygo-api:
+    image: openjdk
+    container_name: ygo-api
+    ports:
+      - "8080:8080"
+    volumes:
+       - ./build/libs/ygo-api.jar:/ygo-api.jar
+    command: java -jar -Dspring.profiles.active=docker-remote ygo-api.jar
+    restart: always
+    networks:
+      - yugioh-api
+
+
+networks:
+  yugioh-api:
+    name: yugioh-api
+    driver: bridge
