@@ -1,10 +1,44 @@
 package com.rtomyj.yugiohAPI.dao.database.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
+import com.rtomyj.yugiohAPI.dao.database.Dao;
+import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
+import com.rtomyj.yugiohAPI.helper.constants.LogConstants;
+import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
+import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.BrowseQueryDefinition;
+import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefinition;
+import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
+import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
+import com.rtomyj.yugiohAPI.helper.util.StringUtil;
+import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
+import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
+import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
+import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
+import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
+import com.rtomyj.yugiohAPI.model.card.Card;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
+import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
+import com.rtomyj.yugiohAPI.model.product.Product;
+import com.rtomyj.yugiohAPI.model.product.ProductContent;
+import com.rtomyj.yugiohAPI.model.product.Products;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
+
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -14,41 +48,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rtomyj.yugiohAPI.dao.DbQueryConstants;
-import com.rtomyj.yugiohAPI.dao.database.Dao;
-import com.rtomyj.yugiohAPI.helper.constants.ErrConstants;
-import com.rtomyj.yugiohAPI.helper.constants.LogConstants;
-import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.BrowseQueryDefinition;
-import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefinition;
-import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
-import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
-import com.rtomyj.yugiohAPI.helper.enumeration.products.ProductType;
-import com.rtomyj.yugiohAPI.helper.util.StringUtil;
-import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
-import com.rtomyj.yugiohAPI.model.card.MonsterAssociation;
-import com.rtomyj.yugiohAPI.model.banlist.CardBanListStatus;
-import com.rtomyj.yugiohAPI.model.banlist.CardsPreviousBanListStatus;
-import com.rtomyj.yugiohAPI.model.banlist.BanListDates;
-import com.rtomyj.yugiohAPI.model.card.Card;
-import com.rtomyj.yugiohAPI.model.Stats.DatabaseStats;
-import com.rtomyj.yugiohAPI.model.Stats.MonsterTypeStats;
-import com.rtomyj.yugiohAPI.model.product.Product;
-import com.rtomyj.yugiohAPI.model.product.ProductContent;
-import com.rtomyj.yugiohAPI.model.product.Products;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Repository;
-
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StopWatch;
-
 /**
  * JDBC implementation of DB DAO interface.
  */
@@ -57,16 +56,25 @@ import org.springframework.util.StopWatch;
 @Slf4j
 public class JDBCDao implements Dao
 {
-	@Autowired
-	private NamedParameterJdbcTemplate jdbcNamedTemplate;
+
+	private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+
+	private final SimpleDateFormat dateFormat;
+
+	private final ObjectMapper objectMapper;
+
 
 	@Autowired
-	@Qualifier("dbSimpleDateFormat")
-	private SimpleDateFormat dateFormat;
-	private int numUniqueCardsParsed;
+	public JDBCDao(final NamedParameterJdbcTemplate jdbcNamedTemplate
+			, @Qualifier("dbSimpleDateFormat") final SimpleDateFormat dateFormat
+			, final ObjectMapper objectMapper)
+	{
 
-	@Autowired
-	private ObjectMapper objectMapper;
+		this.jdbcNamedTemplate = jdbcNamedTemplate;
+		this.dateFormat = dateFormat;
+		this.objectMapper = objectMapper;
+
+	}
 
 
 	@Override
@@ -74,7 +82,6 @@ public class JDBCDao implements Dao
 	{
 		return null;
 	}
-
 
 
 	@Override
@@ -101,7 +108,7 @@ public class JDBCDao implements Dao
 				}
 
 
-				final Card desiredCard = Card
+				return Card
 						.builder()
 						.cardID(cardID)
 						.cardColor(row.getString(1))
@@ -113,8 +120,6 @@ public class JDBCDao implements Dao
 						.monsterDefense(row.getObject(7, Integer.class))
 						.monsterAssociation(monsterAssociation)
 						.build();
-
-				return desiredCard;
 			}
 
 			return null;
@@ -161,31 +166,38 @@ public class JDBCDao implements Dao
 	public int getNumberOfBanLists() {
 
 		String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
-		return jdbcNamedTemplate.query(query, (ResultSet row) ->  {
+		final Integer numBanLists = jdbcNamedTemplate.query(query, (ResultSet row) ->  {
 			if (row.next())	return row.getInt(1);
 
 			return null;
 		});
+
+		if (numBanLists == null)	return 0;
+		return numBanLists;
+
 	}
 
 
 
 	public int getBanListPosition(String banListDate)
 	{
-		String query = new StringBuilder().append("SELECT row_num FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date")
-			.append(" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter)")
-			.append(" AS sorted WHERE ban_list_date = :banListDate")
-			.toString();
+		String query = "SELECT row_num FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date" +
+				" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter)" +
+				" AS sorted WHERE ban_list_date = :banListDate";
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("banListDate", banListDate);
 
 
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			if (row.next())	return (int) Float.parseFloat(row.getString(1));	// somehow row_num is treated as a float
+		final Integer banListPosition = jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			if (row.next())	return row.getInt(1);
 
-			return -1;
+			return null;
 		});
+
+		if (banListPosition == null)	return -1;
+		return banListPosition;
+
 	}
 
 
@@ -196,11 +208,9 @@ public class JDBCDao implements Dao
 		if (currentBanListPosition <= 1)	return "";
 		int previousBanListPosition = currentBanListPosition - 1;
 
-		String query = new StringBuilder()
-			.append("SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date")
-			.append(" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC)")
-			.append(" AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = :previousBanListPosition")
-			.toString();
+		String query = "SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date" +
+				" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC)" +
+				" AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = :previousBanListPosition";
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("previousBanListPosition", previousBanListPosition);
@@ -218,16 +228,14 @@ public class JDBCDao implements Dao
 	public List<CardsPreviousBanListStatus> getNewContentOfBanList(final String newBanList, final Status status)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList == "")	return new ArrayList<CardsPreviousBanListStatus>();
+		if (oldBanList.equals(""))	return new ArrayList<>();
 
-		String query = new StringBuilder()
-			.append("select new_cards.card_number, cards.card_name from (select new_list.card_number")
-			.append(" from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)")
-			.append(" as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList")
-			.append(" and ban_status = :status) as old_list on new_list.card_number = old_list.card_number")
-			.append(" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number")
-			.append(" ORDER BY cards.card_name")
-			.toString();
+		String query = "select new_cards.card_number, cards.card_name from (select new_list.card_number" +
+				" from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)" +
+				" as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList" +
+				" and ban_status = :status) as old_list on new_list.card_number = old_list.card_number" +
+				" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number" +
+				" ORDER BY cards.card_name";
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("status", status.toString());
@@ -263,16 +271,14 @@ public class JDBCDao implements Dao
 	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
 	{
 		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList.equals(""))	return new ArrayList<CardsPreviousBanListStatus>();
+		if (oldBanList.equals(""))	return new ArrayList<>();
 
-		String query = new StringBuilder()
-			.append("select removed_cards.card_number, removed_cards.ban_status, cards.card_name")
-			.append(" from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists")
-			.append(" where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status")
-			.append(" from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number")
-			.append(" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number")
-			.append(" ORDER BY cards.card_name")
-			.toString();
+		String query = "select removed_cards.card_number, removed_cards.ban_status, cards.card_name" +
+				" from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists" +
+				" where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status" +
+				" from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number" +
+				" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number" +
+				" ORDER BY cards.card_name";
 
 		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("newBanList", newBanList);
@@ -333,16 +339,14 @@ public class JDBCDao implements Dao
 		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
 
 
-		final String query = new StringBuilder()
-				.append("SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status")
-				.append(" FROM search")
-				.append(" WHERE card_number LIKE :cardId")
-				.append(" AND card_name LIKE :cardName")
-				.append(" AND card_attribute REGEXP :cardAttribute")
-				.append(" AND card_color REGEXP :cardColor")
-				.append(" AND IFNULL(monster_type, '') REGEXP :monsterType")
-				.append(" ORDER BY color_id, card_name ASC")
-				.toString();
+		final String query = "SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status" +
+				" FROM search" +
+				" WHERE card_number LIKE :cardId" +
+				" AND card_name LIKE :cardName" +
+				" AND card_attribute REGEXP :cardAttribute" +
+				" AND card_color REGEXP :cardColor" +
+				" AND IFNULL(monster_type, '') REGEXP :monsterType" +
+				" ORDER BY color_id, card_name ASC";
 		log.info(query);
 
 
@@ -410,15 +414,16 @@ public class JDBCDao implements Dao
 
 	public boolean isValidBanList(final String banListDate)
 	{
+
 		final String query = "select distinct ban_list_date from ban_lists where ban_list_date = :banListDate";
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("banListDate", banListDate);
 
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			if (row.next())	return true;
-			else	return false;
-		});
+
+		final List<Object> results = Collections.singletonList(jdbcNamedTemplate.queryForList(query, sqlParams, Object.class));
+		return results.size() == 1;
+
 	}
 
 
@@ -452,11 +457,10 @@ public class JDBCDao implements Dao
 				}
 			}
 
-			final Products products = Products
+			return Products
 					.builder()
 					.products(availableProductsList)
 					.build();
-			return products;
 		});
 	}
 
@@ -555,15 +559,13 @@ public class JDBCDao implements Dao
 
 	public DatabaseStats getDatabaseStats()
 	{
-		return jdbcNamedTemplate.queryForObject(DbQueryConstants.GET_DATABASE_TOTALS, (SqlParameterSource) null, (ResultSet row, int rowNum) -> {
-			return DatabaseStats
-					.builder()
-					.productTotal(row.getInt(1))
-					.cardTotal(row.getInt(2))
-					.banListTotal(row.getInt(3))
-					.yearsOfBanListCoverage(row.getInt(4))
-					.build();
-		});
+		return jdbcNamedTemplate.queryForObject(DbQueryConstants.GET_DATABASE_TOTALS, (SqlParameterSource) null, (ResultSet row, int rowNum) -> DatabaseStats
+				.builder()
+				.productTotal(row.getInt(1))
+				.cardTotal(row.getInt(2))
+				.banListTotal(row.getInt(3))
+				.yearsOfBanListCoverage(row.getInt(4))
+				.build());
 	}
 
 
@@ -574,7 +576,7 @@ public class JDBCDao implements Dao
 
 
 		final Map<String, Map<String, Set<String>>> rarities = new HashMap<>();
-		final Set<Product> products = new HashSet(jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+		final Set<Product> products = new HashSet<>(jdbcNamedTemplate.query(DbQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
 			final String productId = row.getString(1);
 			final String cardPosition = row.getString(7);
 
@@ -585,7 +587,7 @@ public class JDBCDao implements Dao
 
 
 			try {
-				// TODO: Need to update code block to make sure packContent list contains all occurences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
+				// TODO: Need to update code block to make sure packContent list contains all occurrences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
 				return Product
 						.builder()
 						.productId(productId)
@@ -690,16 +692,14 @@ public class JDBCDao implements Dao
 
 		return CardBrowseResults
 				.builder()
-				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
-					return Card
-							.builder()
-							.cardID(row.getString(BrowseQueryDefinition.CARD_ID.toString()))
-							.cardName(row.getString(BrowseQueryDefinition.CARD_NAME.toString()))
-							.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
-							.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
-							.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
-							.build();
-				}))
+				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> Card
+						.builder()
+						.cardID(row.getString(BrowseQueryDefinition.CARD_ID.toString()))
+						.cardName(row.getString(BrowseQueryDefinition.CARD_NAME.toString()))
+						.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
+						.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
+						.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
+						.build()))
 				.build();
 	}
 
@@ -709,11 +709,7 @@ public class JDBCDao implements Dao
 
 		final String sql = "SELECT card_color FROM card_colors WHERE card_color != 'Token'";
 
-		final Set<String> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> {
-			return row.getString(1);
-		}));
-
-		return result;
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
 
 	}
 
@@ -722,10 +718,7 @@ public class JDBCDao implements Dao
 	{
 
 		final String sql = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute";
-
-		final Set<String> result = new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
-
-		return result;
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
 
 	}
 
@@ -769,10 +762,10 @@ public class JDBCDao implements Dao
 
 
 		return jdbcNamedTemplate.queryForObject(DbQueryConstants.GET_PRODUCT_DETAILS, sqlParams, (ResultSet row, int rowNum) -> {
-			Product product = null;
 
-			try {
-				product = Product
+			try
+			{
+				return Product
 						.builder()
 						.productId(row.getString(1))
 						.productLocale(row.getString(2))
@@ -782,13 +775,16 @@ public class JDBCDao implements Dao
 						.productType(row.getString(6))
 						.productSubType(row.getString(7))
 						.productRarityStats(this.getProductRarityCount(row.getString(1)))
-						.productContent(new ArrayList<ProductContent>())
+						.productContent(new ArrayList<>())
 						.build();
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
+
 				log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", productId, e.toString());
+				return null;
+
 			}
 
-			return product;
 		});
 	}
 
@@ -815,7 +811,10 @@ public class JDBCDao implements Dao
 				product.setProductReleaseDate(dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString())));
 			} catch(ParseException e)
 			{
+
 				log.error("Cannot parse date from DB when retrieving product {} with exception: {}", product.getProductId(), e.toString());
+				return null;
+
 			}
 
 			return product;
