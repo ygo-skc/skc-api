@@ -812,7 +812,7 @@ public class JDBCDao implements Dao
 					.build();
 			try
 			{
-				product.setProductReleaseDate(dateFormat.parse(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()));
+				product.setProductReleaseDate(dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString())));
 			} catch(ParseException e)
 			{
 				log.error("Cannot parse date from DB when retrieving product {} with exception: {}", product.getProductId(), e.toString());
