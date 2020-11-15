@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 
 @RestController
 @RequestMapping(path = "/products", produces = "application/json; charset=UTF-8")
@@ -30,17 +28,14 @@ import javax.servlet.http.HttpServletRequest;
 public class ProductsController extends YgoApiBaseController
 {
 
-    private static final String END_POINT = BASE_ENDPOINT + "/products";
-
     private final ProductService availableProductsService;
 
 
     @Autowired
-    public ProductsController(final HttpServletRequest request, final ProductService availableProductsService)
+    public ProductsController(final ProductService availableProductsService)
     {
 
         this.availableProductsService = availableProductsService;
-        this.request = request;
 
     }
 

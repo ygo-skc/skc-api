@@ -12,11 +12,6 @@ public abstract class YgoApiBaseController
      */
     public static String BASE_ENDPOINT;
 
-    /**
-     * Object containing info about clients request.
-     */
-    protected HttpServletRequest request;
-
 
     @Value("${server.servlet.contextPath}")
     public void setBaseEndpoint(String baseEndpoint)

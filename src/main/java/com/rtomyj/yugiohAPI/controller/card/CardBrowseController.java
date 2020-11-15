@@ -28,16 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 public class CardBrowseController extends YgoApiBaseController
 {
 
-    private static final String END_POINT = BASE_ENDPOINT + "/card/browse";
-
     private final CardBrowseService cardBrowseService;
 
 
     @Autowired
-    public CardBrowseController(final HttpServletRequest request, final CardBrowseService cardBrowseService)
+    public CardBrowseController(final CardBrowseService cardBrowseService)
     {
 
-        this.request = request;
         this.cardBrowseService = cardBrowseService;
 
     }
@@ -75,12 +72,7 @@ public class CardBrowseController extends YgoApiBaseController
     )
     {
 
-        Logging.configureMDC(request, END_POINT);
-        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes
-                , monsterLevels, monsterRanks, monsterLinkRatings);
-        MDC.clear();
-
-        return cardBrowseResults;
+        return cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels, monsterRanks, monsterLinkRatings);
 
     }
 
@@ -96,11 +88,7 @@ public class CardBrowseController extends YgoApiBaseController
     public CardBrowseCriteria browseCriteria()
     {
 
-        Logging.configureMDC(request, END_POINT + "/criteria");
-        final CardBrowseCriteria cardBrowseCriteria = cardBrowseService.getBrowseCriteria();
-        MDC.clear();
-
-        return cardBrowseCriteria;
+        return cardBrowseService.getBrowseCriteria();
 
     }
 

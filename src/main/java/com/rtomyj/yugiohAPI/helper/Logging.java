@@ -3,15 +3,23 @@ package com.rtomyj.yugiohAPI.helper;
 import org.slf4j.MDC;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 public class Logging
 {
 
-    public static void configureMDC(final HttpServletRequest httpServletRequest, final String endpoint)
+    private final static String CLIENT_UUID_NAME = "CLIENT_UUID";
+    
+
+    public static void configureMDC(final HttpServletRequest httpServletRequest)
     {
 
+        String queryParams = httpServletRequest.getQueryString() == null? "" : "?" + httpServletRequest.getQueryString();
+
         MDC.put("reqIp", httpServletRequest.getRemoteHost());
-        MDC.put("reqRes", endpoint);
+        MDC.put("reqUrl", httpServletRequest.getServletPath() +queryParams);
+        MDC.put("reqUUID", UUID.randomUUID().toString());
+        MDC.put("clientUUID", httpServletRequest.getHeader(CLIENT_UUID_NAME));
 
     }
 

@@ -1,17 +1,17 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern;
-
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListNewContent;
 import com.rtomyj.yugiohAPI.service.banlist.DiffService;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.jboss.logging.MDC;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,11 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.constraints.Pattern;
 
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list
@@ -41,11 +37,6 @@ public class BanListNewContentController extends YgoApiBaseController
 {
 
 	/**
-	 * The base path/endpoint being used by controller.
-	 */
-	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban_list";
-
-	/**
 	 * Service used to interface with dao.
 	 */
 	private final DiffService banListDiffService;
@@ -53,14 +44,12 @@ public class BanListNewContentController extends YgoApiBaseController
 
 	/**
 	 * Create object instance.
-	 * @param request Object containing info about the client and their request.
 	 * @param banListDiffService Service object to use to accomplish functionality needed by this endpoint.
 	 */
 	@Autowired
-	public BanListNewContentController(final HttpServletRequest request, final DiffService banListDiffService)
+	public BanListNewContentController(final DiffService banListDiffService)
 	{
 
-		this.request = request;
 		this.banListDiffService = banListDiffService;
 
 	}
@@ -92,13 +81,9 @@ public class BanListNewContentController extends YgoApiBaseController
 			throws YgoException
 	{
 
-		MDC.put("reqIp", request.getRemoteHost());
-		MDC.put("reqRes", endPoint);
-
 		final BanListNewContent serviceLayerHelper = banListDiffService.getNewContentOfBanList(banListStartDate);
 		log.info("Successfully retrieved new content for ban list: ( {} ).", banListStartDate);
 
-		MDC.clear();
 		return ResponseEntity.ok(serviceLayerHelper);
 
 	}
