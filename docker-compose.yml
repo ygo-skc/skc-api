@@ -12,7 +12,8 @@ services:
     restart: always
     networks:
       - yugioh-api
-
+    environment:
+      - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
 
 networks:
   yugioh-api:
