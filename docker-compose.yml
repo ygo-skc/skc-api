@@ -5,7 +5,7 @@ services:
     image: openjdk
     container_name: ygo-api
     ports:
-      - "8080:8080"
+      - "443:8443"
     volumes:
        - ./build/libs/ygo-api.jar:/ygo-api.jar
     command: java -jar -Dspring.profiles.active=docker-remote ygo-api.jar

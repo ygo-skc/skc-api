@@ -9,7 +9,7 @@ public class Logging
 {
 
     private final static String CLIENT_UUID_NAME = "CLIENT_UUID";
-    
+
 
     public static void configureMDC(final HttpServletRequest httpServletRequest)
     {
