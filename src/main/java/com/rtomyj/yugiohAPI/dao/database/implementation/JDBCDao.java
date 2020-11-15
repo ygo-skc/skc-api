@@ -656,6 +656,10 @@ public class JDBCDao implements Dao
 	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet
 			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet)
 	{
+
+		final StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+
 		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes %s ORDER BY card_name";
 
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
@@ -687,8 +691,9 @@ public class JDBCDao implements Dao
 		}
 
 		final String sql = String.format(SQL_TEMPLATE, monsterAssociationWhereClause);
+		log.debug("Fetching card browse results from DB using query: ( {} ) with sql params ( {} ).", sql, sqlParams);
 
-		return CardBrowseResults
+		final CardBrowseResults cardBrowseResults =  CardBrowseResults
 				.builder()
 				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> Card
 						.builder()
@@ -699,16 +704,28 @@ public class JDBCDao implements Dao
 						.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
 						.build()))
 				.build();
+
+		stopWatch.stop();
+		log.debug("Time taken to retrieve card browse results: {}ms", stopWatch.getTotalTimeMillis());
+		return cardBrowseResults;
+
 	}
 
 
 	public Set<String> getCardColors()
 	{
 
+		final StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+
 		final String sql = "SELECT card_color FROM card_colors WHERE card_color != 'Token'";
 
-		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
+		log.debug("Retrieving unique card color values from DB using query {}", sql);
+		final Set<String> cardColors =  new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
 
+		stopWatch.stop();
+		log.debug("Time taken to retrieve unique card color values: {}ms", stopWatch.getTotalTimeMillis());
+		return cardColors;
 	}
 
 
@@ -727,13 +744,14 @@ public class JDBCDao implements Dao
 //		Below query cannot be used on Remote Servers MySQL software due to version being outdated and having no access to update it - JSON functions are not supported.
 //		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
 
+		final StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("monsterAssociationField", "%" + monsterAssociationField + "%");
 
 		final String sql = "SELECT DISTINCT monster_association FROM cards WHERE monster_association LIKE :monsterAssociationField";
 
-		final StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
 
 		final Set<MonsterAssociation> result = new HashSet<>(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
 			try {
@@ -745,7 +763,7 @@ public class JDBCDao implements Dao
 		}));
 
 		stopWatch.stop();
-		log.debug("Time taken to retrieve unique card levels from DB was: {}ms", stopWatch.getTotalTimeMillis());
+		log.debug("Time taken to retrieve unique {} from DB was: {}ms", monsterAssociationField, stopWatch.getTotalTimeMillis());
 
 		return result;
 

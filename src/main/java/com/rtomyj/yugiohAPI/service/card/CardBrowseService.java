@@ -23,8 +23,6 @@ public class CardBrowseService
 
     private final Dao dao;
 
-    private static CardBrowseCriteria cachedCardBrowseCriteria;
-
 
     public CardBrowseService(@Autowired @Qualifier("jdbc") final Dao dao)
     {
@@ -67,23 +65,17 @@ public class CardBrowseService
     public CardBrowseCriteria getBrowseCriteria()
     {
 
-        if (cachedCardBrowseCriteria == null)
-        {
-            synchronized(this)
-            {
-                cachedCardBrowseCriteria = CardBrowseCriteria.
-                        builder()
-                        .cardColors(dao.getCardColors())
-                        .attributes(dao.getMonsterAttributes())
-                        .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
-                        .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
-                        .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
-                        .build();
+        final CardBrowseCriteria cardBrowseCriteria  = CardBrowseCriteria.
+                builder()
+                .cardColors(dao.getCardColors())
+                .attributes(dao.getMonsterAttributes())
+                .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
+                .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
+                .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
+                .build();
 
-                cachedCardBrowseCriteria.setLinks();
-            }
-        }
-        return cachedCardBrowseCriteria;
+        cardBrowseCriteria.setLinks();
+        return cardBrowseCriteria;
 
     }
 
@@ -118,6 +110,7 @@ public class CardBrowseService
             }
         }
 
+        log.debug("Transformed monster association values to valid SQL using pattern [ {} ], results={}", monsterAssociationAttributeSQLPattern, monsterAssociationUserValueSet);
         return monsterAssociationUserValueSet;
 
     }

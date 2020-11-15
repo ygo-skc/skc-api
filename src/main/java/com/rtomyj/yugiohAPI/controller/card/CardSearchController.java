@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import java.util.List;
 @RequestMapping(path = "/card/search", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = {"*"})
 @Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
+@Slf4j
 public class CardSearchController extends YgoApiBaseController
 {
 
@@ -75,7 +77,11 @@ public class CardSearchController extends YgoApiBaseController
 			throws YgoException
 	{
 
+		log.info("Retrieving search results.");
 		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth);
+		log.info("Successfully retrieved search results using the following: [ cardId={}, cardName={}, cardAttribute={}, cardColor={}, monsterType={}, limit={}, saveBandwidth={} ]. Found {} matching results."
+				, cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth, searchResult.size());
+
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
 
 	}

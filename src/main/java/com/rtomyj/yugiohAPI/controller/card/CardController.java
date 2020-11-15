@@ -81,8 +81,9 @@ public class CardController extends YgoApiBaseController
 		throws YgoException
 	{
 
+		log.info("Retrieving card info for : {}.", cardId);
 		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
-		log.info("Successfully retrieved resource: ( {}, fetching all info {}.", cardId, fetchAllInfo);
+		log.info("Successfully retrieved card info for: {}, fetching all info: {}.", cardId, fetchAllInfo);
 
 		return ResponseEntity.ok(foundCard);
 
