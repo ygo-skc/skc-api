@@ -124,14 +124,8 @@ public class CardService
 	 * @return
 	 * @throws YgoException
 	 */
-	public List<Card> getCardSearchResults(
-			final String cardId
-			, final String cardName
-			, final String cardAttribute
-			, final String cardColor
-			, final String monsterType
-			, final int limit
-			, final boolean saveBandwidth)
+	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType
+			, final int limit, final boolean saveBandwidth)
 		throws YgoException
 	{
 
