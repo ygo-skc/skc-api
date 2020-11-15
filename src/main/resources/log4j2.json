@@ -1,6 +1,6 @@
 {
 	"configuration": {
-		"packages": "com.rtomyj",
+		"packages": "com.rtomyj.yugiohAPI",
 		"appenders": {
 			"Console": {
 				"name": "STD_Out",
@@ -11,9 +11,18 @@
 			}
 		},
 		"loggers": {
+			"logger": {
+				"name": "com.rtomyj.yugiohAPI",
+				"additivity": false
+				, "level": "DEBUG"
+				, "AppenderRef": {
+					"ref": "STD_Out"
+				}
+			},
 			"root": {
-				"level": "info",
-				"AppenderRef": {
+				"additivity": false
+				, "level": "INFO"
+				, "AppenderRef": {
 					"ref": "STD_Out"
 				}
 			}
