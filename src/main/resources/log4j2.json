@@ -5,7 +5,7 @@
 			"Console": {
 				"name": "STD_Out",
 				"PatternLayout": {
-					"pattern": "%-5p: @[ %d{YYYY/dd/MM HH:mm:ss} ] [ w/ info: reqIp=%X{reqIp}, reqUrl=%X{reqUrl}, reqUUID=%X{reqUUID}, clientUUID=%X{clientUUID} ] [ %t ] %c: %m%n"
+					"pattern": ">>> %-5p: [ %d{YYYY/dd/MM HH:mm:ss} ] [ reqIp=%X{reqIp}, reqUrl=%X{reqUrl}, reqUUID=%X{reqUUID}, clientUUID=%X{clientUUID} ] [ %l ] %m%n"
 				}
 			}
 		},
