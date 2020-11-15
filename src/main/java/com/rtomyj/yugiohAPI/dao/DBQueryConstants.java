@@ -3,7 +3,7 @@ package com.rtomyj.yugiohAPI.dao;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefinition;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
 
-public class DbQueryConstants
+public class DBQueryConstants
 {
 	public static final String GET_CARD_BY_ID = "SELECT card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association FROM card_info" +
 			" WHERE card_number = :cardId";

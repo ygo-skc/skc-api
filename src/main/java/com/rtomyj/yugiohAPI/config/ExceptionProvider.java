@@ -23,22 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExceptionProvider extends ResponseEntityExceptionHandler
 {
+
 	@ResponseBody
 	@ExceptionHandler(YgoException.class)
 	public final ResponseEntity<YgoError> test(final YgoException exception)
 	{
 
-		if (exception.getCode() == ErrConstants.NOT_FOUND_DAO_ERR)
+		if (exception.getCode().equals(ErrConstants.NOT_FOUND_DAO_ERR))
 		{
-			final HttpStatus status = HttpStatus.NOT_FOUND;
 
+			final HttpStatus status = HttpStatus.NOT_FOUND;
 			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.toString(), status);
 			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
+
 		}
-
 		return null;
-	}
 
+	}
 
 
 	@ResponseBody
@@ -46,9 +47,11 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	@ExceptionHandler(ConstraintViolationException.class)
 	public YgoError onValidationFail(final ConstraintViolationException exception)
 	{
+
 		log.error("Request did not conform to spec. Exception: {}", exception.toString());
 		YgoError ygoException = new YgoError(Error.D101.toString(), Error.D101.name());
 		return ygoException;
+
 	}
 
 }
