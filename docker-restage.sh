@@ -10,5 +10,4 @@ ssh -i ~/.ssh/ygo-api.pem "${user}@${server}" << EOF
 	cd api
   docker-compose stop
   docker-compose up -d
-  docker container logs -f ygo-api
 EOF
