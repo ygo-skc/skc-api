@@ -13,7 +13,7 @@ server:
   ssl:
     key-store: classpath:ygo-api-keystore.jks
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
-    key-alias: ygoapidev
+    key-alias: ygoapi
   compression:
     enabled: true
     mime-types: application/json
