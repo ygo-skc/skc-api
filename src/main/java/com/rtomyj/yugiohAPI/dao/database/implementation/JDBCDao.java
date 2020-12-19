@@ -182,24 +182,11 @@ public class JDBCDao implements Dao
 
 
 
-	public int getBanListPosition(String banListDate)
+	public List<String> getBanListDatesInOrder()
 	{
-		String query = "SELECT row_num FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date" +
-				" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC) AS dates, (SELECT @row_num:=0) counter)" +
-				" AS sorted WHERE ban_list_date = :banListDate";
+		final String query = "select distinct ban_list_date from ban_lists order by ban_list_date";
 
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("banListDate", banListDate);
-
-
-		final Integer banListPosition = jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			if (row.next())	return row.getInt(1);
-
-			return null;
-		});
-
-		if (banListPosition == null)	return -1;
-		return banListPosition;
+		return jdbcNamedTemplate.queryForList(query, (SqlParameterSource) null, String.class);
 
 	}
 
@@ -207,22 +194,13 @@ public class JDBCDao implements Dao
 
 	public String getPreviousBanListDate(String currentBanList)
 	{
-		int currentBanListPosition = this.getBanListPosition(currentBanList);
-		if (currentBanListPosition <= 1)	return "";
-		int previousBanListPosition = currentBanListPosition - 1;
+		final List<String> sortedBanListDates = this.getBanListDatesInOrder();
+		final int currentBanListPosition = sortedBanListDates.indexOf(currentBanList);
 
-		String query = "SELECT ban_list_date FROM (SELECT @row_num:=@row_num+1 row_num, ban_list_date" +
-				" FROM (SELECT DISTINCT ban_list_date FROM ban_lists ORDER BY ban_list_date ASC)" +
-				" AS dates, (SELECT @row_num:=0) counter) AS sorted where row_num = :previousBanListPosition";
+		if (currentBanListPosition == 0)	return "";
+		final int previousBanListPosition = currentBanListPosition - 1;
 
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("previousBanListPosition", previousBanListPosition);
-
-
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			if (row.next())	return row.getString(1);
-			return null;
-		});
+		return sortedBanListDates.get(previousBanListPosition);
 	}
 
 
@@ -574,7 +552,7 @@ public class JDBCDao implements Dao
 
 
 		final Map<String, Map<String, Set<String>>> rarities = new HashMap<>();
-		final Set<Product> products = new HashSet<>(jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+		final Set<Product> products = new LinkedHashSet<>(jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
 			final String productId = row.getString(1);
 			final String cardPosition = row.getString(7);
 
