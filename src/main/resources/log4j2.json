@@ -1,18 +1,28 @@
 {
 	"configuration": {
-		"packages": "com.rtomyj",
+		"packages": "com.rtomyj.yugiohAPI",
 		"appenders": {
 			"Console": {
 				"name": "STD_Out",
 				"PatternLayout": {
-					"pattern": "%-5p: @[ %d{YYYY/dd/MM HH:mm:ss} ] [ w/ info: reqIp=%X{reqIp}, reqRes=%X{reqRes} ] [ %t ] %c: %m%n"
+					"pattern": "> %highlight{%level}: [ %d{YYYY/dd/MM HH:mm:ss} ] [ reqIp=%X{reqIp}, reqUrl=%X{reqUrl}, reqUUID=%X{reqUUID}, clientUUID=%X{clientUUID} ] [ %l ] %highlight{%m} %n"
+					, "disableAnsi": false
 				}
 			}
 		},
 		"loggers": {
+			"logger": {
+				"name": "com.rtomyj.yugiohAPI",
+				"additivity": false
+				, "level": "DEBUG"
+				, "AppenderRef": {
+					"ref": "STD_Out"
+				}
+			},
 			"root": {
-				"level": "info",
-				"AppenderRef": {
+				"additivity": false
+				, "level": "INFO"
+				, "AppenderRef": {
 					"ref": "STD_Out"
 				}
 			}

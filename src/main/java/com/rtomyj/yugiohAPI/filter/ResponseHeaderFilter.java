@@ -1,29 +1,26 @@
 package com.rtomyj.yugiohAPI.filter;
 
-import java.io.IOException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Component;
+import java.io.IOException;
 
 @Component
-public class ResponseHeaderFilter implements Filter
+public class ResponseHeaderFilter extends OncePerRequestFilter
 {
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
 		throws IOException, ServletException
 	{
 
-		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-		httpServletResponse.setHeader("Cache-Control", "max-age=300");
-
+		response.setHeader("Cache-Control", "max-age=300");
 		chain.doFilter(request, response);
 
 	}
+
 }

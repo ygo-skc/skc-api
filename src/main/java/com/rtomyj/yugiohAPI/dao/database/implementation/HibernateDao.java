@@ -83,9 +83,9 @@ public class HibernateDao implements Dao
 		return 0;
 	}
 
-	public int getBanListPosition(String banListDate)
+	public List<String> getBanListDatesInOrder()
 	{
-		return 0;
+		return null;
 	}
 
 	public String getPreviousBanListDate(String currentBanList)

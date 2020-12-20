@@ -1,18 +1,17 @@
 package com.rtomyj.yugiohAPI.controller.card;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern;
-
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
-import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.service.card.CardService;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.MDC;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,11 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.constraints.Pattern;
 
 /**
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
@@ -42,21 +37,15 @@ public class CardController extends YgoApiBaseController
 {
 
 	/**
-	 * Base url for this endpoint.
-	 */
-	private static final String END_POINT = BASE_ENDPOINT + "/card";
-
-	/**
 	 * Service object used to interface with DB DAO.
 	 */
 	private final CardService cardService;
 
 
 	@Autowired
-	public CardController(final HttpServletRequest request, final CardService cardService)
+	public CardController(final CardService cardService)
 	{
 
-		this.request = request;
 		this.cardService = cardService;
 
 	}
@@ -92,12 +81,10 @@ public class CardController extends YgoApiBaseController
 		throws YgoException
 	{
 
-		Logging.configureMDC(request, END_POINT);
-
+		log.info("Retrieving card info for : {}.", cardId);
 		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
-		log.info("Successfully retrieved resource: ( {}, fetching all info {}.", cardId, fetchAllInfo);
+		log.info("Successfully retrieved card info for: {}, fetching all info: {}.", cardId, fetchAllInfo);
 
-		MDC.clear();
 		return ResponseEntity.ok(foundCard);
 
 	}

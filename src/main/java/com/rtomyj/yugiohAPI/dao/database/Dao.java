@@ -87,11 +87,11 @@ public interface Dao
 	public int getNumberOfBanLists();
 
 	/**
+	 * todo update me
 	 * Returns an integer ([1, n]) that corresponds to the position of the banListDate when the database is sorted by banListDate ASC.
-	 * @param banListDate the starting date for a ban list to query the database with.
 	 * @return The position of the ban list queried in the database: -1 if not in database, 1 if it is the first ban list while database is sorted ASC.
 	 */
-	public int getBanListPosition(String banListDate);
+	public List<String> getBanListDatesInOrder();
 
 	/**
 	 * Checks the database and returns the date of the previous ban list as the one passed into the method.

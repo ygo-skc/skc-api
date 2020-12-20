@@ -1,17 +1,17 @@
 package com.rtomyj.yugiohAPI.controller.banlist;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern;
-
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.RegexExpressions;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.banlist.BanListInstance;
 import com.rtomyj.yugiohAPI.service.banlist.BannedCardsService;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.MDC;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,11 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.constraints.Pattern;
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
@@ -38,12 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Validated
 @Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
-public class BannedCardsController extends YgoApiBaseController {
-
-	/**
-	 * The base endpoint for this controller.
-	 */
-	private static final String endPoint = YgoApiBaseController.BASE_ENDPOINT + "/ban_list";
+public class BannedCardsController extends YgoApiBaseController
+{
 
 	/**
 	 * Service object used to get information about banned cards from the database.
@@ -53,14 +45,12 @@ public class BannedCardsController extends YgoApiBaseController {
 
 	/**
 	 * Create object instance.
-	 * @param request Object containing info about the client and their request.
 	 * @param bannedCardsService Service object to use to accomplish functionality needed by this endpoint.
 	 */
 	@Autowired
-	public BannedCardsController(final HttpServletRequest request, final BannedCardsService bannedCardsService)
+	public BannedCardsController(final BannedCardsService bannedCardsService)
 	{
 
-		this.request = request;
 		this.bannedCardsService = bannedCardsService;
 
 	}
@@ -102,13 +92,9 @@ public class BannedCardsController extends YgoApiBaseController {
 			throws YgoException
 	{
 
-		MDC.put("reqIp", request.getRemoteHost());
-		MDC.put("reqRes", endPoint);
-
 		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth, fetchAllInfo);
 		log.info("Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
 
-		MDC.clear();
 		return ResponseEntity.ok(reqBanListInstance);
 
 	}

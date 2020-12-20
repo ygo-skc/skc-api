@@ -3,7 +3,7 @@ package com.rtomyj.yugiohAPI.dao;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductViewDefinition;
 import com.rtomyj.yugiohAPI.helper.enumeration.table.definitions.ProductsTableDefinition;
 
-public class DbQueryConstants
+public class DBQueryConstants
 {
 	public static final String GET_CARD_BY_ID = "SELECT card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association FROM card_info" +
 			" WHERE card_number = :cardId";
@@ -23,7 +23,7 @@ public class DbQueryConstants
 
 	public static final String GET_DATABASE_TOTALS = "SELECT * FROM totals";
 
-	public static final String GET_PRODUCT_INFO_FOR_CARD = "select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity from product_contents where card_number = :cardId";
+	public static final String GET_PRODUCT_INFO_FOR_CARD = "select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity from product_contents where card_number = :cardId ORDER BY product_release_date DESC";
 
 	public static final String GET_BAN_LIST_INFO_FOR_CARD = "SELECT ban_list_date, ban_status FROM ban_lists WHERE card_number = :cardId ORDER BY ban_list_date DESC";
 }

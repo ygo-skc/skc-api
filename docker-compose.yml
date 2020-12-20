@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  ygo-api:
+    image: openjdk
+    container_name: ygo-api
+    ports:
+      - "443:8443"
+    volumes:
+       - ./build/libs/ygo-api.jar:/ygo-api.jar
+    command: java -jar -Dspring.profiles.active=docker-remote ygo-api.jar
+    restart: always
+    networks:
+      - yugioh-api
+    environment:
+      - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
+
+networks:
+  yugioh-api:
+    name: yugioh-api
+    driver: bridge

@@ -8,7 +8,7 @@ plugins {
 sourceSets.main.java.srcDirs = ["src/main/java"]
 
 ext {
-	baseName = 'YGO-API'
+	baseName = 'ygo-api'
 	springVersion = '2.3.3.RELEASE'
 	swagger2Version = '3.0.0'
 	javadocVersion = '3.1.1'
@@ -20,9 +20,9 @@ ext {
 }
 
 
-group = 'com.rtomyj'
-archivesBaseName = 'YGO-API'
-version = '1.2.0'
+group = 'com.rtomyj.ygo'
+archivesBaseName = 'ygo-api'
+version = '1.2.1'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 

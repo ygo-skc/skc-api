@@ -1,17 +1,16 @@
 package com.rtomyj.yugiohAPI.controller.card;
 
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
-import com.rtomyj.yugiohAPI.helper.Logging;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
-import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.model.card.CardBrowseCriteria;
+import com.rtomyj.yugiohAPI.model.card.CardBrowseResults;
 import com.rtomyj.yugiohAPI.service.card.CardBrowseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.slf4j.MDC;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,25 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping(path = "/card/browse", produces = "application/json; charset=UTF-8")
 @CrossOrigin("*")
 @Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
+@Slf4j
 public class CardBrowseController extends YgoApiBaseController
 {
-
-    private static final String END_POINT = BASE_ENDPOINT + "/card/browse";
 
     private final CardBrowseService cardBrowseService;
 
 
     @Autowired
-    public CardBrowseController(final HttpServletRequest request, final CardBrowseService cardBrowseService)
+    public CardBrowseController(final CardBrowseService cardBrowseService)
     {
 
-        this.request = request;
         this.cardBrowseService = cardBrowseService;
 
     }
@@ -69,16 +64,16 @@ public class CardBrowseController extends YgoApiBaseController
                     , example = "4,7,8"
             ) @RequestParam(value = "ranks", defaultValue = "") final String monsterRanks
                     , @ApiParam(
-                    value = "Desired set of monster ranks to include in browse results."
+                    value = "Desired set of monster ranks to include in browse results  ."
                     , example = "4,7,8"
             ) @RequestParam(value = "linkRatings", defaultValue = "") final String monsterLinkRatings
     )
     {
 
-        Logging.configureMDC(request, END_POINT);
-        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes
-                , monsterLevels, monsterRanks, monsterLinkRatings);
-        MDC.clear();
+        log.info("Retrieving browse results.");
+        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterLevels, monsterRanks, monsterLinkRatings);
+        log.info("Successfully retrieved card browse results using criteria: [ cardColors={}, attributes={}, monsterLevels={}, monsterRanks={}, monsterLinkRatings={} ]. Found {} matching results"
+                , cardColors, attributes, monsterLevels, monsterRanks, monsterLinkRatings, cardBrowseResults.getNumResults());
 
         return cardBrowseResults;
 
@@ -96,9 +91,9 @@ public class CardBrowseController extends YgoApiBaseController
     public CardBrowseCriteria browseCriteria()
     {
 
-        Logging.configureMDC(request, END_POINT + "/criteria");
+        log.info("Retrieving browse criteria.");
         final CardBrowseCriteria cardBrowseCriteria = cardBrowseService.getBrowseCriteria();
-        MDC.clear();
+        log.info("Successfully retrieved browse criteria for cards.");
 
         return cardBrowseCriteria;
 

@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 
 /**
  *
@@ -35,16 +33,13 @@ import javax.servlet.http.HttpServletRequest;
 public class StatsController extends YgoApiBaseController
 {
 
-    private static final String END_POINT = BASE_ENDPOINT + "/stats";
-
     private final StatsService statsService;
 
 
     @Autowired
-    public StatsController(final HttpServletRequest request, final StatsService statsService)
+    public StatsController(final StatsService statsService)
     {
 
-        this.request = request;
         this.statsService = statsService;
 
     }
@@ -86,7 +81,6 @@ public class StatsController extends YgoApiBaseController
     {
 
         // TODO: add loggers
-        log.info("Stat base endpoint hit");
         return ResponseEntity.ok(statsService.getDatabaseStats());
 
     }

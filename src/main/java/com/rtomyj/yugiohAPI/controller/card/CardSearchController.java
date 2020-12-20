@@ -1,18 +1,16 @@
 package com.rtomyj.yugiohAPI.controller.card;
 
-import java.util.List;
-
 import com.rtomyj.yugiohAPI.controller.YgoApiBaseController;
 import com.rtomyj.yugiohAPI.helper.constants.SwaggerConstants;
 import com.rtomyj.yugiohAPI.helper.exceptions.YgoException;
 import com.rtomyj.yugiohAPI.model.card.Card;
 import com.rtomyj.yugiohAPI.service.card.CardService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,26 +20,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @RestController
 @RequestMapping(path = "/card/search", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = {"*"})
 @Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
+@Slf4j
 public class CardSearchController extends YgoApiBaseController
 {
-
-	private static final String END_POINT = BASE_ENDPOINT + "/card/search";
 
 	private final CardService cardService;
 
 
 	@Autowired
-	public CardSearchController(final HttpServletRequest request, final CardService cardService)
+	public CardSearchController(final CardService cardService)
 	{
 
-		this.request = request;
 		this.cardService = cardService;
 
 	}
@@ -81,7 +77,11 @@ public class CardSearchController extends YgoApiBaseController
 			throws YgoException
 	{
 
+		log.info("Retrieving search results.");
 		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth);
+		log.info("Successfully retrieved search results using the following: [ cardId={}, cardName={}, cardAttribute={}, cardColor={}, monsterType={}, limit={}, saveBandwidth={} ]. Found {} matching results."
+				, cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth, searchResult.size());
+
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
 
 	}
