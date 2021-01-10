@@ -1,38 +1,25 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+about: Create a report to help us fix an unexpected issue with the API
+title: 'Bug Report - '
+labels: 'bug'
+assignees: 'rtomyj'
 
 ---
 
-**Describe the bug**
+## Describe the bug
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## REST request used that produced bug
+**REST Method, eg) GET, POST, etc:** 
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Full URL (with url params & endpoint) used:** 
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Request body:** 
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Request headers:** 
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+## Website issue
+**Can you see the issue in the website (https://www.thesupremekingscastle.com)?:** 
 
-**Additional context**
-Add any other context about the problem here.
+**If so, attach a screenshot or url for page that sees issue and briefly describe where to look:** 

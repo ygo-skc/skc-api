@@ -5,10 +5,10 @@ repository:
   homepage: https://www.thesupremekingscastle.com/about
   private: false
   has_issues: true
-  has_wiki: true
+  has_wiki: false
 
   # Either `true` to enable downloads for this repository, `false` to disable them.
-  has_downloads: true
+  has_downloads: false
 
   # Updates the default branch for this repository.
   default_branch: v1.2.1
