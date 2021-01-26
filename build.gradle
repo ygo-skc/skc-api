@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.3.RELEASE' apply true
 	id 'jacoco' apply true
 	id 'java' apply true
+	id 'scala' apply true
 }
 
 sourceSets.main.java.srcDirs = ["src/main/java"]
@@ -17,6 +18,7 @@ ext {
 	mysqlVersion = '8.0.21'
 	jacksonVersion = "2.11.2"
 	cucumberVersion = "6.7.0"
+	gatlingVersion = "3.5.0"
 }
 
 
