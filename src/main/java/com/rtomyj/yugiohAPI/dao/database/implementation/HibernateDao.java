@@ -145,12 +145,14 @@ public class HibernateDao implements Dao
 
 	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId) { return null; }
 
-	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels, Set<String> monsterRankSet
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet, final Set<String> monsterLevels, Set<String> monsterRankSet
 			, Set<String> monsterLinkRatingsSet){ return null; }
 
 	public Set<String> getCardColors(){ return null; }
 
 	public Set<String> getMonsterAttributes(){ return null; }
+
+	public Set<String> getMonsterTypes(){ return null; }
 
 	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField){ return null; }
 

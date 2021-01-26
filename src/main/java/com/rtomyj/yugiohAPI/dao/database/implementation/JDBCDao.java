@@ -631,21 +631,23 @@ public class JDBCDao implements Dao
 	}
 
 
-	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet
 			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet)
 	{
 
 		final StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
-		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes %s ORDER BY card_name";
+		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes AND monster_type REGEXP :monsterTypes %s ORDER BY card_name";
 
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
+		final String monsterTypeCriteria = (monsterTypeSet.isEmpty())? ".*" : "^" + String.join("|", monsterTypeSet);
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardColors", cardColorCriteria);
 		sqlParams.addValue("attributes", attributeCriteria);
+		sqlParams.addValue("monsterTypes", monsterTypeCriteria);
 
 		/*
 			Only use where clause for card level if there is a criteria specified by user.
@@ -712,6 +714,14 @@ public class JDBCDao implements Dao
 
 		final String sql = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute";
 		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
+
+	}
+
+	public Set<String> getMonsterTypes()
+	{
+
+		final String sql = "SELECT DISTINCT monster_type FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_type";
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1).split("/")[0]));
 
 	}
 

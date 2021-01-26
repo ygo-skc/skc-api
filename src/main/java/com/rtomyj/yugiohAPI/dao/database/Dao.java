@@ -147,12 +147,14 @@ public interface Dao
 
 	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId);
 
-	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterLevels, Set<String> monsterRankSet
+	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet, final Set<String> monsterLevels, Set<String> monsterRankSet
 			, Set<String> monsterLinkRatingsSet);
 
 	public Set<String> getCardColors();
 
 	public Set<String> getMonsterAttributes();
+
+	public Set<String> getMonsterTypes();
 
 	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField);
 

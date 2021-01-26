@@ -32,19 +32,20 @@ public class CardBrowseService
     }
 
 
-    public CardBrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterLevels
+    public CardBrowseResults getBrowseResults(final String cardColors, final String attributes, final String monsterTypes, final String monsterLevels
             , final String monsterRanks, final String monsterLinkRatings)
     {
 
         final Set<String> cardColorsSet = (cardColors.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(cardColors.split(",")));
         final Set<String> attributeSet = (attributes.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(attributes.split(",")));
+        final Set<String> monsterTypeSet = (monsterTypes.isBlank())? new HashSet<>() : new HashSet<>(Arrays.asList(monsterTypes.split(",")));
 
         final Set<String> monsterLevelSet = transformMonsterAssociationValuesIntoSQL(monsterLevels, MonsterAssociationExpression.LEVEL_EXPRESSION);
         final Set<String> monsterRankSet = transformMonsterAssociationValuesIntoSQL(monsterRanks, MonsterAssociationExpression.RANK_EXPRESSION);
         final Set<String> monsterLinkRatingsSet = transformMonsterAssociationValuesIntoSQL(monsterLinkRatings, MonsterAssociationExpression.LINK_RATING_EXPRESSION);
 
 
-        final CardBrowseResults cardBrowseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterLevelSet
+        final CardBrowseResults cardBrowseResults = dao.getBrowseResults(cardColorsSet, attributeSet, monsterTypeSet, monsterLevelSet
                 , monsterRankSet, monsterLinkRatingsSet);
         cardBrowseResults.setRequestedCriteria(
                 CardBrowseCriteria
@@ -69,6 +70,7 @@ public class CardBrowseService
                 builder()
                 .cardColors(dao.getCardColors())
                 .attributes(dao.getMonsterAttributes())
+                .monsterTypes(dao.getMonsterTypes())
                 .levels(uniqueMonsterAssociationField("level").stream().map(MonsterAssociation::getLevel).collect(Collectors.toSet()))
                 .ranks(uniqueMonsterAssociationField("rank").stream().map(MonsterAssociation::getRank).collect(Collectors.toSet()))
                 .linkRatings(uniqueMonsterAssociationField("linkRating").stream().map(MonsterAssociation::getLinkRating).collect(Collectors.toSet()))
