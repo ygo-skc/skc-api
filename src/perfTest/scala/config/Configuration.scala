@@ -5,7 +5,9 @@ import scala.language.postfixOps
 
 object Configuration
 {
-  val baseUrl: String = "http://localhost:9999"
+  val baseUrl = "http://localhost:9999"
+  val browseCardsUri = "/api/v1/card/browse"
+
   val users = 10
-  val rampup = 5 seconds
+  val rampup = 60 seconds
 }

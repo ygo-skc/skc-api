@@ -1,13 +1,14 @@
 package requests
 
-import config.Configuration.baseUrl
+import config.Configuration
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 
 object BrowseResultsRequest {
   var get_browse_results: HttpRequestBuilder = http("Browse Details")
-    .get(baseUrl + "/api/v1/card/browse?monsterTypes=warrior")
+    .get(Configuration.browseCardsUri)
     .header("CLIENT_UUID", "PERF-TEST")
-    .check(status is 200)
+    .queryParam("monsterTypes", "${monsterType}")
+    .check(status.is(200))
 }
