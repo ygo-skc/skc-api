@@ -3,7 +3,6 @@ plugins {
 	id 'org.springframework.boot' version '2.3.3.RELEASE' apply true
 	id 'jacoco' apply true
 	id 'java' apply true
-	id 'scala' apply true
 }
 
 sourceSets.main.java.srcDirs = ["src/main/java"]
@@ -30,6 +29,7 @@ targetCompatibility = '11'
 
 
 apply from: 'gradle/testConfig.gradle'
+apply from: 'gradle/performanceTest.gradle'
 
 
 repositories {
