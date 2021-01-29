@@ -5,10 +5,10 @@ services:
     image: "openjdk:11.0-jdk-slim"
     container_name: ygo-api
     ports:
-      - "443:8443"
+      - "9998:8080"
     volumes:
        - ./build/libs/ygo-api.jar:/ygo-api.jar
-    command: java -jar -Dspring.profiles.active=docker-remote ygo-api.jar
+    command: java -jar -Dspring.profiles.active=docker-local ygo-api.jar
     restart: always
     networks:
       - yugioh-api
