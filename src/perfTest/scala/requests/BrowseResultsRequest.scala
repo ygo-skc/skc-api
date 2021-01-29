@@ -9,6 +9,11 @@ object BrowseResultsRequest {
   var get_browse_results: HttpRequestBuilder = http("Browse Details")
     .get(Configuration.browseCardsUri)
     .header("CLIENT_UUID", "PERF-TEST")
-    .queryParam("monsterTypes", "${monsterType}")
+    .queryParam("cardColors", "${cardColors}")
+    .queryParam("attributes", "${attributes}")
+    .queryParam("monsterTypes", "${monsterTypes}")
+    .queryParam("levels", "${levels}")
+    .queryParam("ranks", "${ranks}")
+    .queryParam("linkRatings", "${linkRatings}")
     .check(status.is(200))
 }
