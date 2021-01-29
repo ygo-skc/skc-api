@@ -1,5 +1,6 @@
 package scenarios
 
+import config.Configuration
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
 import requests.BrowseResultsRequest
@@ -13,7 +14,7 @@ object BrowseResultsScenario {
 
   val getBrowseResultsScenario: ScenarioBuilder = scenario("Get Card Browse Results")
     .feed(cardBrowseFeed)
-    .during(40 seconds)
+    .during(Configuration.simulationMaxTime)
     {
       exec(BrowseResultsRequest.get_browse_results)
     }

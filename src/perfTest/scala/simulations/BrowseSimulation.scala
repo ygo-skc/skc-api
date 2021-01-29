@@ -1,5 +1,6 @@
 package simulations
 
+import config.Configuration
 import config.Configuration._
 import protocols.Protocol._
 import io.gatling.core.Predef._
@@ -15,10 +16,10 @@ class BrowseSimulation extends Simulation {
 
 
   setUp(scn)
-    .maxDuration(25 seconds)
+    .maxDuration(Configuration.simulationMaxTime)
     .assertions(
-      global.responseTime.max.lt(1000)
-      , global.successfulRequests.percent.gt(85)
+      global.responseTime.mean.lt(350)
+      , global.failedRequests.percent.lt(.001)
     )
     .protocols(httpProtocol)
 }
