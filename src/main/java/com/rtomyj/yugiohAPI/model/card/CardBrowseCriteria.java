@@ -52,6 +52,13 @@ public class CardBrowseCriteria extends RepresentationModel<CardBrowseCriteria> 
     private Set<String> monsterTypes;
 
     @ApiModelProperty(
+            value = "Unique set of identifiers for monster sub types."
+            , example = "Flip, Toon, Gemini, etc"
+            , dataType = "List"
+    )
+    private Set<String> monsterSubTypes;
+
+    @ApiModelProperty(
             value = "Unique set of levels for monster cards in database."
             , example = "1, 2, 3, 4, 5, 6"
             , dataType = "List"

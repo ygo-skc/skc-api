@@ -631,23 +631,26 @@ public class JDBCDao implements Dao
 	}
 
 
-	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet
-			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet)
+	public CardBrowseResults getBrowseResults(@NonNull final Set<String> cardColors, @NonNull final Set<String> attributeSet, @NonNull final Set<String> monsterTypeSet
+			, @NonNull final Set<String> monsterSubTypeSet, @NonNull final Set<String> monsterLevels, @NonNull Set<String> monsterRankSet, @NonNull Set<String> monsterLinkRatingsSet)
 	{
 
 		final StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
-		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes AND monster_type REGEXP :monsterTypes %s ORDER BY card_name";
+		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info" +
+				" WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes AND monster_type REGEXP :monsterTypes AND monster_type REGEXP :monsterSubTypes %s ORDER BY card_name";
 
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
-		final String monsterTypeCriteria = (monsterTypeSet.isEmpty())? ".*" : "^" + String.join("|", monsterTypeSet);
+		final String monsterTypeCriteria = (monsterTypeSet.isEmpty())? ".*" : "^" + String.join("|", monsterTypeSet).replace("?", "\\?");
+		final String monsterSubTypeCriteria = (monsterSubTypeSet.isEmpty())? ".*" : ".+/" + String.join("|", monsterSubTypeSet).replace("?", "\\?");
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardColors", cardColorCriteria);
 		sqlParams.addValue("attributes", attributeCriteria);
 		sqlParams.addValue("monsterTypes", monsterTypeCriteria);
+		sqlParams.addValue("monsterSubTypes", monsterSubTypeCriteria);
 
 		/*
 			Only use where clause for card level if there is a criteria specified by user.
@@ -720,9 +723,21 @@ public class JDBCDao implements Dao
 	public Set<String> getMonsterTypes()
 	{
 
-		final String sql = "SELECT DISTINCT monster_type FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_type";
-		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1).split("/")[0]));
+		final String sql = "SELECT DISTINCT SUBSTRING_INDEX(monster_type, '/', 1) AS monster_types FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_types";
+		return new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1)));
 
+	}
+
+	public Set<String> getMonsterSubTypes()
+	{
+		final String sql = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(monster_type, '/', 2), '/', -1) AS monster_sub_types FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_sub_types";
+
+		final Set<String> monsterSubTypes =  new LinkedHashSet<>(jdbcNamedTemplate.query(sql, (ResultSet row, int rowNum) -> row.getString(1).split("/")[0]));
+		final Set<String> cardColors = this.getCardColors();
+
+		monsterSubTypes.removeAll(cardColors);
+		monsterSubTypes.remove("Pendulum");	// removing pendulum individually as pendulum monster color/name is categorized by cards other color: eg  Pendulum-Normal, Pendulum-Fusion, etc
+		return monsterSubTypes;
 	}
 
 

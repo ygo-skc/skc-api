@@ -60,6 +60,10 @@ public class CardBrowseController extends YgoApiBaseController
                     , example = "spellcaster,wyrm,warrior"
             ) @RequestParam(value = "monsterTypes", defaultValue = "") final String monsterTypes
             , @ApiParam(
+                    value = "Desired set of monster sub types to include in browse results."
+                    , example = "flip,gemini,toon"
+            ) @RequestParam(value = "monsterSubTypes", defaultValue = "") final String monsterSubTypes
+            , @ApiParam(
                     value = "Desired set of monster levels to include in browse results."
                     , example = "4,5,6,7,8"
             ) @RequestParam(value = "levels", defaultValue = "") final String monsterLevels
@@ -75,8 +79,8 @@ public class CardBrowseController extends YgoApiBaseController
     {
 
         log.info("Retrieving browse results.");
-        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterTypes, monsterLevels, monsterRanks, monsterLinkRatings);
-        log.info("Successfully retrieved card browse results using criteria: [ cardColors={}, attributes={}, monsterTypes={}, monsterLevels={}, monsterRanks={}, monsterLinkRatings={} ]. Found {} matching results"
+        final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterTypes, monsterSubTypes, monsterLevels, monsterRanks, monsterLinkRatings);
+        log.info("Successfully retrieved card browse results using criteria: [ cardColors={}, attributes={}, monsterTypes={}, monsterLevels={}, monsterRanks={}, monsterLinkRatings={} ]. Found {} matching results."
                 , cardColors, attributes, monsterTypes, monsterLevels, monsterRanks, monsterLinkRatings, cardBrowseResults.getNumResults());
 
         return cardBrowseResults;
