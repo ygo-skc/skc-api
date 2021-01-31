@@ -29,6 +29,7 @@ targetCompatibility = '11'
 
 
 apply from: 'gradle/testConfig.gradle'
+apply from: 'gradle/integrationTest.gradle'
 apply from: 'gradle/performanceTest.gradle'
 
 

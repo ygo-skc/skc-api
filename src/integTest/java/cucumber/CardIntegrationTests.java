@@ -11,10 +11,9 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class CardIntegrationTests {
 
-    private final String BASE_ENDPOINT = "https://ygoapi-dev.cfapps.io/api/v1/card";
+    private final String BASE_ENDPOINT = "https://dev.skc-ygo-api.com/api/v1/card";
 
     private Response response;
-
 
     @Given("I request info for card with ID: {string}")
     public void i_request_info_for_card_with_id(String cardId)
@@ -30,6 +29,13 @@ public class CardIntegrationTests {
     public void http_status_should_be(final int httpStatus)
     {
         response.then().statusCode(httpStatus);
+    }
+
+
+    @And("cardID should be {string}")
+    public void check_card_id_is_correct(final String cardID)
+    {
+        response.then().body("cardID", equalTo(cardID));
     }
 
 

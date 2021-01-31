@@ -1,0 +1,49 @@
+apply plugin: 'java'
+
+sourceSets {
+    integTest {
+        java {
+            srcDirs = ["src/integTest/java"]
+        }
+
+        resources {
+            srcDirs = ["src/integTest/resources"]
+        }
+    }
+}
+
+
+dependencies {
+
+    integTestImplementation "commons-logging:commons-logging:1.2"
+
+    integTestImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+
+    integTestImplementation 'io.rest-assured:rest-assured:4.2.0'
+    integTestImplementation 'io.rest-assured:json-path:4.2.0'
+    integTestImplementation 'io.rest-assured:xml-path:4.2.0'
+    integTestImplementation 'io.rest-assured:json-schema-validator:4.2.0'
+
+    integTestImplementation "org.junit.jupiter:junit-jupiter-api"
+    integTestImplementation "org.junit.jupiter:junit-jupiter-engine"
+
+}
+
+
+configurations {
+    cucumberRuntime {
+        extendsFrom integTestImplementation
+    }
+}
+
+
+task runIntegrationTests() {
+    dependsOn assemble, compileIntegTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.integTest.output
+            args = ['--plugin', 'pretty', '--glue', 'cucumber', 'src/integTest/resources']
+        }
+    }
+}
