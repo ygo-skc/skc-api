@@ -9,5 +9,6 @@ fi
 ssh -i ~/.ssh/ygo-api.pem "${user}@${server}" << EOF
 	cd api
 	docker-compose kill
+	docker-compose rm -f
 	docker-compose up -d
 EOF
