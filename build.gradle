@@ -17,23 +17,26 @@ ext {
 	mysqlVersion = '8.0.21'
 	jacksonVersion = "2.11.2"
 	cucumberVersion = "6.7.0"
+	gatlingVersion = "3.5.0"
 }
 
 
 group = 'com.rtomyj.ygo'
 archivesBaseName = 'ygo-api'
-version = '1.2.1'
+version = '1.2.2'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
 
 apply from: 'gradle/testConfig.gradle'
+apply from: 'gradle/integrationTest.gradle'
+apply from: 'gradle/performanceTest.gradle'
 
 
 repositories {
 	mavenCentral()
 	maven {
-		url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/'	// used for snapshots
+		url 'https://oss.jfrog.org/artifactory/oss-snapshot-local/'	// used for snapshots
 	}
 }
 
@@ -46,33 +49,33 @@ sourceSets {
 
 
 dependencies {
-	implementation "javax.validation:validation-api:2.0.1.Final"
+	implementation("javax.validation:validation-api:2.0.1.Final")
 
-	implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-hateoas:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-log4j2:$springVersion"
-	implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
+	implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-log4j2:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
 
-	implementation "org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE"
+	implementation("org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE")
 
-	implementation "org.springframework.boot:spring-boot-starter-jetty:$springVersion"
-	implementation "org.eclipse.jetty:jetty-alpn-conscrypt-server"
-	implementation "org.eclipse.jetty.http2:http2-server"
+	implementation("org.springframework.boot:spring-boot-starter-jetty:$springVersion")
+	implementation("org.eclipse.jetty:jetty-alpn-conscrypt-server")
+	implementation("org.eclipse.jetty.http2:http2-server")
 
-	implementation "org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion"
+	implementation("org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion")
 
-	implementation "io.springfox:springfox-boot-starter:$swagger2Version"
+	implementation("io.springfox:springfox-boot-starter:$swagger2Version")
 
-	runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
+	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
-	implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 
-	implementation "org.cache2k:cache2k-api:$cache2kVersion"
-	implementation "org.cache2k:cache2k-core:$cache2kVersion"
+	implementation("org.cache2k:cache2k-api:$cache2kVersion")
+	implementation("org.cache2k:cache2k-core:$cache2kVersion")
 
-	annotationProcessor "org.projectlombok:lombok:$lombokVersion"	// needed to compile via gradle CLI
-	implementation "org.projectlombok:lombok:$lombokVersion"	// plug in required to work in VSCode, might be the same for other IDE's
+	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
+	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE's
 
 }
 

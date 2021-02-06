@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -20,6 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @ApiModel(
         description = "Valid browse criteria and valid values per criteria. May also be used to identify which browse criteria is being used for browse results."
@@ -41,6 +43,20 @@ public class CardBrowseCriteria extends RepresentationModel<CardBrowseCriteria> 
             , dataType = "List"
     )
     private Set<String> attributes;
+
+    @ApiModelProperty(
+            value = "Unique set of identifiers for monster types."
+            , example = "Spellcaster, Wyrm, Warrior, etc"
+            , dataType = "List"
+    )
+    private Set<String> monsterTypes;
+
+    @ApiModelProperty(
+            value = "Unique set of identifiers for monster sub types."
+            , example = "Flip, Toon, Gemini, etc"
+            , dataType = "List"
+    )
+    private Set<String> monsterSubTypes;
 
     @ApiModelProperty(
             value = "Unique set of levels for monster cards in database."

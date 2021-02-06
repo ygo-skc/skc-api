@@ -16,3 +16,22 @@ server:
     min-response-size: 16384
   http2:
     enabled: true
+
+
+
+mapper:
+  "[java.lang.Exception]":
+    to: "com.rtomyj.yugiohAPI.helper.exceptions.YgoException"
+    message: inherit
+    code: inherit
+  "[java.lang.RuntimeException]":
+    to: "com.rtomyj.yugiohAPI.helper.exceptions.YgoException"
+    message: inherit
+    code: "YOOOOO"
+  "[com.rtomyj.yugiohAPI.helper.exceptions.YgoException]":
+    to: "java.lang.Exception"
+    message: inherit
+    code: inherit
+
+
+test: javi rules

@@ -1,0 +1,6 @@
+cardColors;attributes;monsterTypes;levels;ranks;linkRatings
+Fusion,Effect;Dark;Fiend;;;
+Xyz;Dark,Wind,Water;Dragon;;;
+Synchro;Dark,Wind,Fire;Spellcaster;;;
+Normal,Effect;Water,Light;Fiend,Spellcaster,Warrior;;;
+Fusion,Xyz;;;1,2,3,4;4;

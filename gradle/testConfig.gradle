@@ -4,23 +4,9 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
     testRuntimeOnly "com.h2database:h2"
 
-    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
-
-    testImplementation 'io.rest-assured:rest-assured:4.2.0'
-    testImplementation 'io.rest-assured:json-path:4.2.0'
-    testImplementation 'io.rest-assured:xml-path:4.2.0'
-    testImplementation 'io.rest-assured:json-schema-validator:4.2.0'
-
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-engine"
 
-}
-
-
-configurations {
-    cucumberRuntime {
-        extendsFrom testImplementation
-    }
 }
 
 
@@ -29,18 +15,6 @@ test {
 
     minHeapSize = "256m"
     maxHeapSize = "512m"
-}
-
-
-task cucumber() {
-    dependsOn assemble, compileTestJava
-    doLast {
-        javaexec {
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'cucumber', 'src/test/resources/cucumber']
-        }
-    }
 }
 
 

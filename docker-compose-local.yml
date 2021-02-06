@@ -5,7 +5,7 @@ services:
     image: "openjdk:11.0-jdk-slim"
     container_name: ygo-api
     ports:
-      - "443:8443"
+      - "9998:8080"
     volumes:
        - ./build/libs/ygo-api.jar:/ygo-api.jar
     command: java -jar ygo-api.jar
@@ -15,7 +15,7 @@ services:
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - SPRING_PROFILES_ACTIVE=docker-remote
+      - SPRING_PROFILES_ACTIVE=docker-local
 
 networks:
   yugioh-api:

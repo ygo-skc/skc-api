@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/yugioh_API_DB
+    url: jdbc:mysql://ygo-db:3306/yugioh_API_DB
     username: root
-    password:
+    password: ${MYSQL_ROOT_PASSWORD}
   hateoas:
     use-hal-as-default-json-media-type: true
 
 server:
-  port: 9999
+  port: 8080
   servlet:
     contextPath: /api/v1
   compression:
