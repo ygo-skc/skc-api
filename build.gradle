@@ -118,4 +118,3 @@ javadoc {
 	source = sourceSets.main.allJava
 
 }
-

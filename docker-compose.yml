@@ -15,7 +15,6 @@ services:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker-remote
-    scale: 2
 
 networks:
   yugioh-api:
