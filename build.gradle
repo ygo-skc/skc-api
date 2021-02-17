@@ -1,3 +1,18 @@
+buildscript {
+	ext {
+		baseName = 'ygo-api'
+		springVersion = '2.4.2'
+		swagger2Version = '3.0.0'
+		javadocVersion = '3.1.1'
+		cache2kVersion = '1.2.4.Final'
+		lombokVersion = '1.18.12'
+		mysqlVersion = '8.0.21'
+		jacksonVersion = "2.11.2"
+		cucumberVersion = "6.7.0"
+		gatlingVersion = "3.5.0"
+	}
+}
+
 plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply true
 	id 'org.springframework.boot' version '2.3.3.RELEASE' apply true
@@ -6,19 +21,6 @@ plugins {
 }
 
 sourceSets.main.java.srcDirs = ["src/main/java"]
-
-ext {
-	baseName = 'ygo-api'
-	springVersion = '2.3.3.RELEASE'
-	swagger2Version = '3.0.0'
-	javadocVersion = '3.1.1'
-	cache2kVersion = '1.2.4.Final'
-	lombokVersion = '1.18.12'
-	mysqlVersion = '8.0.21'
-	jacksonVersion = "2.11.2"
-	cucumberVersion = "6.7.0"
-	gatlingVersion = "3.5.0"
-}
 
 
 group = 'com.rtomyj.ygo'
@@ -73,6 +75,8 @@ dependencies {
 
 	implementation("org.cache2k:cache2k-api:$cache2kVersion")
 	implementation("org.cache2k:cache2k-core:$cache2kVersion")
+
+	implementation("com.google.guava:guava:30.1-jre")
 
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
 	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE's

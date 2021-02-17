@@ -63,12 +63,7 @@ public class TestCallController extends YgoApiBaseController
 	public ResponseEntity<ApiTestCall> testCall()
 	{
 
-		MDC.put("reqIp", httpServletRequest.getRemoteHost());
-		MDC.put("reqRes", END_POINT);
-
 		log.info("User requested API status");
-
-		MDC.clear();
 		return ResponseEntity.ok(new ApiTestCall("API is online and functional."));
 
 	}
