@@ -303,7 +303,7 @@ public class JDBCDao implements Dao
 
 
 
-	public List<Card> getCardNameByCriteria(
+	public List<Card> searchForCardWithCriteria(
 			String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit
 	)
 	{
@@ -332,8 +332,10 @@ public class JDBCDao implements Dao
 
 		log.debug("Fetching card search results from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams);
 
+		final StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
 
-		return new ArrayList<>(Objects.requireNonNull(jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+		final ArrayList<Card> searchResults = new ArrayList<>(Objects.requireNonNull(jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			/*
 				Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
 				ie:	ID		Name		BanList
@@ -384,6 +386,11 @@ public class JDBCDao implements Dao
 
 			return cardInfoTracker.values();
 		})));
+
+		stopwatch.stop();
+		log.debug("Time taken to fetch search results from DB: {}ms", stopwatch.getTotalTimeMillis());
+
+		return searchResults;
 	}
 
 
