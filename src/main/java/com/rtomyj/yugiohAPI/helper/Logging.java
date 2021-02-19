@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Logging
 {
 
-    private final static String CLIENT_UUID_NAME = "CLIENT_UUID";
+    private final static String CLIENT_UUID_NAME = "CLIENT_ID";
     private final static String CLIENT_USER_AGENT = "User-Agent";
     private final static String CLIENT_IP = "HTTP_X_FORWARDED_FOR";
 
@@ -24,9 +24,9 @@ public class Logging
 
         // proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
         MDC.put("reqIp", Strings.isNullOrEmpty(httpServletRequest.getHeader(CLIENT_IP))? httpServletRequest.getRemoteHost() : httpServletRequest.getHeader(CLIENT_IP));
-        MDC.put("reqUrl", httpServletRequest.getServletPath() + queryParams);
+        MDC.put("reqPath", httpServletRequest.getServletPath() + queryParams);
         MDC.put("reqUUID", UUID.randomUUID().toString());
-        MDC.put("clientUUID", httpServletRequest.getHeader(CLIENT_UUID_NAME));
+        MDC.put("clientID", httpServletRequest.getHeader(CLIENT_UUID_NAME));
         MDC.put("userAgent", httpServletRequest.getHeader(CLIENT_USER_AGENT));
 
     }

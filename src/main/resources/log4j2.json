@@ -5,7 +5,7 @@
 			"Console": {
 				"name": "STD_Out",
 				"PatternLayout": {
-					"pattern": "> %highlight{%level}: [ %d{YYYY/dd/MM HH:mm:ss} ] [ reqIp=%X{reqIp}, reqUrl=%X{reqUrl}, reqUUID=%X{reqUUID}, clientUUID=%X{clientUUID}, userAgent=%X{userAgent} ] [ %l ] %highlight{%m} %n"
+					"pattern": ">> %highlight{%level:} %highlight{%m} ::: MDC[reqIp=%X{reqIp}, reqPath=%X{reqPath}, reqUUID=%X{reqUUID}, clientID=%X{clientID}, userAgent=%X{userAgent}] ::: @%l ON %d{YYYY/dd/MM HH:mm:ss.SS} %n"
 					, "disableAnsi": false
 				}
 			}
@@ -14,7 +14,7 @@
 			"logger": {
 				"name": "com.rtomyj.yugiohAPI",
 				"additivity": false
-				, "level": "DEBUG"
+				, "level": "${env:LOG_LEVEL}"
 				, "AppenderRef": {
 					"ref": "STD_Out"
 				}
