@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path="/ban_list/dates", produces = "application/json; charset=UTF-8")
 @CrossOrigin(origins = "*")
 @Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
+@Slf4j
 public class BanListDatesController extends YgoApiBaseController
 {
 
@@ -58,9 +60,10 @@ public class BanListDatesController extends YgoApiBaseController
 	})
 	public ResponseEntity<BanListDates> getBanListStartDates()
 	{
-
+		log.info("User is retrieving all effective start dates for ban lists.");
 		final BanListDates banListDates = banListService.getBanListStartDates();
 
+		log.info("Successfully retrieved all effective start dates for ban list. Currently there are {} ban lists", banListDates.getBanListDates().size());
 		return ResponseEntity.ok(banListDates);
 
 	}

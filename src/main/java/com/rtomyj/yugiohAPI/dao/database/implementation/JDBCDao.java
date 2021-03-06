@@ -208,6 +208,10 @@ public class JDBCDao implements Dao
 	// TODO: make sure you write a test for the instance where the last ban list is selected
 	public List<CardsPreviousBanListStatus> getNewContentOfBanList(final String newBanList, final Status status)
 	{
+		final StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+
+
 		String oldBanList = this.getPreviousBanListDate(newBanList);
 		if (oldBanList.equals(""))	return new ArrayList<>();
 
@@ -223,8 +227,9 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("newBanList", newBanList);
 		sqlParams.addValue("oldBanList", oldBanList);
 
+		log.debug("Fetching new {} cards in ban list from DB using query ({}) with sql params ({}).", status, query, sqlParams);
 
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+		final List<CardsPreviousBanListStatus> newCardList =  jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			final List<CardsPreviousBanListStatus> newCards = new ArrayList<>();
 
 			while (row.next())
@@ -244,6 +249,11 @@ public class JDBCDao implements Dao
 
 			return newCards;
 		});
+
+		stopwatch.stop();
+		log.debug("Time taken to fetch new {} cards ({}ms)", status, stopwatch.getTotalTimeMillis());
+
+		return newCardList;
 	}
 
 
@@ -307,6 +317,10 @@ public class JDBCDao implements Dao
 			String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit
 	)
 	{
+		final StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+
+
 		cardId = '%' + cardId + '%';
 		cardName = '%' + cardName + '%';
 		cardAttribute = (cardAttribute.isEmpty())? ".*" : cardAttribute;
@@ -331,9 +345,6 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("monsterType", monsterType);
 
 		log.debug("Fetching card search results from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams);
-
-		final StopWatch stopwatch = new StopWatch();
-		stopwatch.start();
 
 		final ArrayList<Card> searchResults = new ArrayList<>(Objects.requireNonNull(jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
 			/*

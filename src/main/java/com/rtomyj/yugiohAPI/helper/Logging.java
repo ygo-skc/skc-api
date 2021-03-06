@@ -20,7 +20,7 @@ public class Logging
 
 
     /**
-     * Configures the global MDC object for a particular request. This object is used to hold useful info that will later be used in logs to better track requests.
+     * Configures the global MDC object for all requests. MDC is used to hold useful info that will later be used in logs to better track requests.
      * @param httpServletRequest Contains useful information about new requests to the server from the client that will be used to access IP address and header information.
      */
     public static void configureMDC(final HttpServletRequest httpServletRequest)
