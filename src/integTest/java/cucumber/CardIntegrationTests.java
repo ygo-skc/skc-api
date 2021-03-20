@@ -3,23 +3,17 @@ package cucumber;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static io.restassured.RestAssured.*;
+import static io.restassured.matcher.RestAssuredMatchers.*;
+import static org.hamcrest.Matchers.*;
 
 public class CardIntegrationTests {
 
-    private final String BASE_ENDPOINT = "https://dev.skc-ygo-api.com/api/v1/card";
+    private final String BASE_ENDPOINT = "http://localhost:9999/api/v1/card";
+//    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
+//    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
 
     private JsonPath jsonPath;
     private ValidatableResponse validatableResponse;
@@ -29,8 +23,8 @@ public class CardIntegrationTests {
     {
 
         final String requestEndpoint = BASE_ENDPOINT + "/" + cardId + "?allInfo=true";
-        jsonPath = RestAssured.get(requestEndpoint).jsonPath();
-        validatableResponse = RestAssured.get(requestEndpoint).then();
+        jsonPath = get(requestEndpoint).jsonPath();
+        validatableResponse = get(requestEndpoint).then();
 
     }
 
@@ -39,7 +33,7 @@ public class CardIntegrationTests {
     {
 
         final String requestEndpoint = BASE_ENDPOINT + "/" + cardId;
-        validatableResponse = RestAssured.get(requestEndpoint).then();
+        validatableResponse = get(requestEndpoint).then();
 
     }
 

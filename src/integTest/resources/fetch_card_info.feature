@@ -22,7 +22,7 @@ Feature: Fetch information about an individual card.
             | 35809262 | Elemental HERO Flame Wingman            | Fusion           | Wind          | Warrior/Fusion/Effect           | 2100       | 1200       | 200        | 3                | 0                |
             | 47963370 | Magician of Chaos                       | Ritual           | Dark          | Spellcaster/Ritual/Effect       | 2500       | 2100       | 200        | 1                | 0                |
             | 29981921 | Legendary Six Samurai - Shi En          | Synchro          | Dark          | Warrior/Synchro/Effect          | 2500       | 1400       | 200        | 2                | 0                |
-            | 84013237 | Number 39: Utopia                       | XYZ              | Light         | Warrior/Xyz/Effect              | 2500       | 2000       | 200        | 3                | 0                |
+            | 84013237 | Number 39: Utopia                       | Xyz              | Light         | Warrior/Xyz/Effect              | 2500       | 2000       | 200        | 3                | 0                |
             | 51531505 | Dragonpit Magician                      | Pendulum-Normal  | Water         | Spellcaster/Pendulum            | 900        | 2700       | 200        | 1                | 0                |
             | 15308295 | Abyss Actor - Comic Relief              | Pendulum-Effect  | Dark          | Fiend/Pendulum/Effect           | 1000       | 2000       | 200        | 2                | 0                |
             | 84569886 | D/D/D Super Doom King Purple Armageddon | Pendulum-Fusion  | Dark          | Fiend/Fusion/Pendulum/Effect    | 3500       | 3000       | 200        | 2                | 0                |
@@ -52,7 +52,7 @@ Feature: Fetch information about an individual card.
             | 35809262 | Elemental HERO Flame Wingman            | Fusion           | Wind          | Warrior/Fusion/Effect           | 2100       | 1200       | 200        |
             | 47963370 | Magician of Chaos                       | Ritual           | Dark          | Spellcaster/Ritual/Effect       | 2500       | 2100       | 200        |
             | 29981921 | Legendary Six Samurai - Shi En          | Synchro          | Dark          | Warrior/Synchro/Effect          | 2500       | 1400       | 200        |
-            | 84013237 | Number 39: Utopia                       | XYZ              | Light         | Warrior/Xyz/Effect              | 2500       | 2000       | 200        |
+            | 84013237 | Number 39: Utopia                       | Xyz              | Light         | Warrior/Xyz/Effect              | 2500       | 2000       | 200        |
             | 51531505 | Dragonpit Magician                      | Pendulum-Normal  | Water         | Spellcaster/Pendulum            | 900        | 2700       | 200        |
             | 15308295 | Abyss Actor - Comic Relief              | Pendulum-Effect  | Dark          | Fiend/Pendulum/Effect           | 1000       | 2000       | 200        |
             | 84569886 | D/D/D Super Doom King Purple Armageddon | Pendulum-Fusion  | Dark          | Fiend/Fusion/Pendulum/Effect    | 3500       | 3000       | 200        |

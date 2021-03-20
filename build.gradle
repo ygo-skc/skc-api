@@ -10,6 +10,8 @@ buildscript {
 		jacksonVersion = "2.11.2"
 		cucumberVersion = "6.7.0"
 		gatlingVersion = "3.5.0"
+		restAssuredVersion = '4.3.3'
+		groovyVersion = '3.0.7'
 	}
 }
 
@@ -19,8 +21,6 @@ plugins {
 	id 'jacoco' apply true
 	id 'java' apply true
 }
-
-sourceSets.main.java.srcDirs = ["src/main/java"]
 
 
 group = 'com.rtomyj.ygo'
@@ -58,8 +58,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springVersion")
 	implementation("org.springframework.boot:spring-boot-starter-log4j2:$springVersion")
 	implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
-
-	implementation("org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springVersion")
 	implementation("org.eclipse.jetty:jetty-alpn-conscrypt-server")
