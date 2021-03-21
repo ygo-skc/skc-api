@@ -6,7 +6,6 @@ import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class CardIntegrationTests {
@@ -105,6 +104,34 @@ public class CardIntegrationTests {
     }
 
 
+    @And("level should be {string}")
+    public void check_level(final String level)
+    {
+        final Integer levelInt = (level.equals(""))? null : Integer.parseInt(level);
+        if (levelInt != null)
+        {
+            validatableResponse.body("monsterAssociation.level", equalTo(levelInt));
+        } else
+        {
+            validatableResponse.body("monsterAssociation.level", equalTo(null));
+        }
+    }
+
+
+    @And("rank should be {string}")
+    public void check_rank(final String rank)
+    {
+        final Integer rankInt = (rank.equals(""))? null : Integer.parseInt(rank);
+        if (rankInt != null)
+        {
+            validatableResponse.body("monsterAssociation.rank", equalTo(rankInt));
+        } else
+        {
+            validatableResponse.body("monsterAssociation.rank", equalTo(null));
+        }
+    }
+
+
     @And("card effect should not be empty or null")
     public void check_card_effect_is_not_empty()
     {
@@ -113,7 +140,7 @@ public class CardIntegrationTests {
     }
 
 
-    @And("products card is found in should be greater than {int}")
+    @And("products card is found in should be greater than or equal to {int}")
     public void check_products_found_in_array_has_a_minimum_of_products(final int productsFoundIn)
     {
         validatableResponse.body("foundIn.size()", is(greaterThanOrEqualTo(productsFoundIn)));
@@ -127,7 +154,7 @@ public class CardIntegrationTests {
     }
 
 
-    @And("ban lists card is found in should be greater than {int}")
+    @And("ban lists card is found in should be greater than or equal to {int}")
     public void check_restricted_in_array_has_a_minimum_of(final int restrictedIn)
     {
         if (jsonPath.get("restrictedIn") == null)  check_restricted_in_array_is_not_included();
