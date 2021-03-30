@@ -10,8 +10,8 @@ import static org.hamcrest.Matchers.*;
 
 public class CardIntegrationTests {
 
-    private final String BASE_ENDPOINT = "http://localhost:9999/api/v1/card";
-//    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
+//    private final String BASE_ENDPOINT = "http://localhost:9999/api/v1/card";
+    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
 //    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
 
     private JsonPath jsonPath;

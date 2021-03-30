@@ -29,7 +29,8 @@ public class Logging
         String queryParams = httpServletRequest.getQueryString() == null? "" : "?" + httpServletRequest.getQueryString();
 
         // proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
-        MDC.put("reqIp", Strings.isNullOrEmpty(httpServletRequest.getHeader(HttpHeaders.X_FORWARDED_FOR))? httpServletRequest.getRemoteHost() : httpServletRequest.getHeader(HttpHeaders.X_FORWARDED_FOR));
+        MDC.put("reqIp", Strings.isNullOrEmpty(httpServletRequest.getHeader(HttpHeaders.X_FORWARDED_FOR))? httpServletRequest.getRemoteHost()
+                : httpServletRequest.getHeader(HttpHeaders.X_FORWARDED_FOR));
 
         MDC.put("reqPath", httpServletRequest.getServletPath() + queryParams);
         MDC.put("reqUUID", UUID.randomUUID().toString());
