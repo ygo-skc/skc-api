@@ -77,9 +77,9 @@ public class CardSearchController extends YgoApiBaseController
 			throws YgoException
 	{
 
-		log.info("Retrieving search results.");
+		log.info("User is searching for card.");
 		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth);
-		log.info("Successfully retrieved search results using the following: [ cardId={}, cardName={}, cardAttribute={}, cardColor={}, monsterType={}, limit={}, saveBandwidth={} ]. Found {} matching results."
+		log.info("Successfully retrieved search results using the following criteria: [ cardId={}, cardName={}, cardAttribute={}, cardColor={}, monsterType={}, limit={}, saveBandwidth={} ]. Found {} matching results."
 				, cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth, searchResult.size());
 
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);

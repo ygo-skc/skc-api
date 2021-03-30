@@ -26,16 +26,19 @@ import com.rtomyj.yugiohAPI.model.product.Product;
 import com.rtomyj.yugiohAPI.model.product.ProductContent;
 import com.rtomyj.yugiohAPI.model.product.Products;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StopWatch;
 
 
 /**
  * Hibernate implementation of DB DAO interface.
  */
 @Repository("hibernate")
+@Slf4j
 public class HibernateDao implements Dao
 {
 
@@ -46,6 +49,10 @@ public class HibernateDao implements Dao
 	@Override
 	public BanListDates getBanListDates()
 	{
+
+		final StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+
 
 		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
 		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
@@ -61,6 +68,11 @@ public class HibernateDao implements Dao
 			.build();
 
 		session.close();
+
+
+		stopwatch.stop();
+		log.debug("Time taken to fetch ban list effective start dates from DB: {}", stopwatch.getTotalTimeMillis());
+
 		return banListDates;
 
 	}
@@ -108,7 +120,7 @@ public class HibernateDao implements Dao
 	}
 
 	@Override
-	public List<Card> getCardNameByCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit)
+	public List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit)
 	{
 		return null;
 	}

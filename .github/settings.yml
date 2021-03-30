@@ -3,15 +3,18 @@ repository:
   name: ygo-api
   description: API to use to access info on individual YGO; cards, ban lists, and products.
   homepage: https://www.thesupremekingscastle.com/about
+  topics: ygo, skc, api
   private: false
   has_issues: true
   has_wiki: false
+  delete_branch_on_merge: false
+  enable_vulnerability_alerts: true
 
   # Either `true` to enable downloads for this repository, `false` to disable them.
   has_downloads: false
 
   # Updates the default branch for this repository.
-  default_branch: v1.2.3
+  default_branch: v1.2.4
 
   # Either `true` to allow squash-merging pull requests, or `false` to prevent
   # squash-merging.
@@ -24,8 +27,6 @@ repository:
   # Either `true` to allow rebase-merging pull requests, or `false` to prevent
   # rebase-merging.
   allow_rebase_merge: true
-
-  delete_branch_on_merge: false
 
 labels:
   - name: bug

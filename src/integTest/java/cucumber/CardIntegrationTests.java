@@ -3,23 +3,16 @@ package cucumber;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 public class CardIntegrationTests {
 
-    private final String BASE_ENDPOINT = "https://dev.skc-ygo-api.com/api/v1/card";
+//    private final String BASE_ENDPOINT = "http://localhost:9999/api/v1/card";
+    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
+//    private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
 
     private JsonPath jsonPath;
     private ValidatableResponse validatableResponse;
@@ -29,8 +22,8 @@ public class CardIntegrationTests {
     {
 
         final String requestEndpoint = BASE_ENDPOINT + "/" + cardId + "?allInfo=true";
-        jsonPath = RestAssured.get(requestEndpoint).jsonPath();
-        validatableResponse = RestAssured.get(requestEndpoint).then();
+        jsonPath = get(requestEndpoint).jsonPath();
+        validatableResponse = get(requestEndpoint).then();
 
     }
 
@@ -39,7 +32,7 @@ public class CardIntegrationTests {
     {
 
         final String requestEndpoint = BASE_ENDPOINT + "/" + cardId;
-        validatableResponse = RestAssured.get(requestEndpoint).then();
+        validatableResponse = get(requestEndpoint).then();
 
     }
 
@@ -111,6 +104,34 @@ public class CardIntegrationTests {
     }
 
 
+    @And("level should be {string}")
+    public void check_level(final String level)
+    {
+        final Integer levelInt = (level.equals(""))? null : Integer.parseInt(level);
+        if (levelInt != null)
+        {
+            validatableResponse.body("monsterAssociation.level", equalTo(levelInt));
+        } else
+        {
+            validatableResponse.body("monsterAssociation.level", equalTo(null));
+        }
+    }
+
+
+    @And("rank should be {string}")
+    public void check_rank(final String rank)
+    {
+        final Integer rankInt = (rank.equals(""))? null : Integer.parseInt(rank);
+        if (rankInt != null)
+        {
+            validatableResponse.body("monsterAssociation.rank", equalTo(rankInt));
+        } else
+        {
+            validatableResponse.body("monsterAssociation.rank", equalTo(null));
+        }
+    }
+
+
     @And("card effect should not be empty or null")
     public void check_card_effect_is_not_empty()
     {
@@ -119,7 +140,7 @@ public class CardIntegrationTests {
     }
 
 
-    @And("products card is found in should be greater than {int}")
+    @And("products card is found in should be greater than or equal to {int}")
     public void check_products_found_in_array_has_a_minimum_of_products(final int productsFoundIn)
     {
         validatableResponse.body("foundIn.size()", is(greaterThanOrEqualTo(productsFoundIn)));
@@ -133,7 +154,7 @@ public class CardIntegrationTests {
     }
 
 
-    @And("ban lists card is found in should be greater than {int}")
+    @And("ban lists card is found in should be greater than or equal to {int}")
     public void check_restricted_in_array_has_a_minimum_of(final int restrictedIn)
     {
         if (jsonPath.get("restrictedIn") == null)  check_restricted_in_array_is_not_included();

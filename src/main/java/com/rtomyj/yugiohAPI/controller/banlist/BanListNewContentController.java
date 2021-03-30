@@ -62,7 +62,8 @@ public class BanListNewContentController extends YgoApiBaseController
 	 */
 	@GetMapping(path = "/{banListStartDate}/new")
 	@ApiOperation(
-		value = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates)."
+		value = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list " +
+				"using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates)."
 		, response = BanListNewContent.class
 		, responseContainer = "Object"
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
@@ -80,11 +81,13 @@ public class BanListNewContentController extends YgoApiBaseController
 			@Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate)
 			throws YgoException
 	{
+		log.info("User is requesting new content for ban list: {}", banListStartDate);
+		final BanListNewContent banListNewContent = banListDiffService.getNewContentOfBanList(banListStartDate);
 
-		final BanListNewContent serviceLayerHelper = banListDiffService.getNewContentOfBanList(banListStartDate);
-		log.info("Successfully retrieved new content for ban list: ( {} ).", banListStartDate);
-
-		return ResponseEntity.ok(serviceLayerHelper);
+		log.info("Successfully retrieved new content for ban list ({}) using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})"
+				, banListNewContent.getListRequested(), banListNewContent.getComparedTo(), banListNewContent.getNumNewForbidden(), banListNewContent.getNumNewLimited()
+				, banListNewContent.getNumNewSemiLimited());
+		return ResponseEntity.ok(banListNewContent);
 
 	}
 }

@@ -64,12 +64,7 @@ public class CardService
 	}
 
 
-	/**
-	 *
-	 * @param cardRequest
-	 * @return
-	 * @throws YgoException
-	 */
+	// todo: add javadoc
 	public Card onCacheMiss(final CardRequest cardRequest)
 		throws YgoException
 	{
@@ -112,35 +107,28 @@ public class CardService
 	}
 
 
-	/**
-	 *
-	 * @param cardId
-	 * @param cardName
-	 * @param cardAttribute
-	 * @param cardColor
-	 * @param monsterType
-	 * @param limit
-	 * @param saveBandwidth
-	 * @return
-	 * @throws YgoException
-	 */
+	// todo: add javadoc
 	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType
 			, final int limit, final boolean saveBandwidth)
 		throws YgoException
 	{
 
-		final List<Card> searchResults = dao.getCardNameByCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
+		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
 
-		if (saveBandwidth)	Card.trimEffects(searchResults);
+		if (saveBandwidth)
+		{
+			log.debug("Trimming card effects to save bandwidth.");
+			Card.trimEffects(searchResults);
+		}
+
+		log.debug("Setting Hateoas links.");
 		HateoasLinks.setLinks(searchResults);
 		return searchResults;
 
 	}
 
 
-	/**
-	 *
-	 */
+	// todo: add javadoc
 	@Getter
 	@EqualsAndHashCode
 	private class CardRequest

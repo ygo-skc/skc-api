@@ -40,12 +40,14 @@ public class DiffService
 	public DiffService(@Qualifier("jdbc") final Dao dao)
 	{
 		this.dao = dao;
+
 		this.NEW_CARDS_CACHE = new Cache2kBuilder<String, BanListNewContent>() {}
 			.expireAfterWrite(7, TimeUnit.DAYS)
 			.entryCapacity(1000)
 			.permitNullValues(false)
 			.loader(this::onNewContentCacheMiss)
 			.build();
+
 		this.REMOVED_CARDS_CACHE = new Cache2kBuilder<String, BanListRemovedContent>() {}
 			.expireAfterWrite(7, TimeUnit.DAYS)
 			.entryCapacity(1000)
@@ -71,7 +73,7 @@ public class DiffService
 		throws YgoException
 	{
 
-		log.info("Ban list new content w/ start date: ( {} ) not found in cache. Using DB.", banListStartDate);
+		log.info("New content for ban list w/ start date: ({}) not found in cache. Using DB.", banListStartDate);
 
 		if ( !dao.isValidBanList(banListStartDate) )
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
@@ -92,6 +94,7 @@ public class DiffService
 				.newLimited(limited)
 				.newSemiLimited(semiLimited)
 				.build();
+
 		newCardsMeta.setLinks();
 
 		return newCardsMeta;

@@ -1,13 +1,12 @@
 apply plugin: 'java'
 
-sourceSets {
+sourceSets{
     integTest {
         java {
-            srcDirs = ["src/integTest/java"]
+            srcDirs("src/integTest/java")
         }
-
         resources {
-            srcDirs = ["src/integTest/resources"]
+            srcDirs("src/integTest/resources")
         }
     }
 }
@@ -19,21 +18,18 @@ dependencies {
 
     integTestImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
 
-    integTestImplementation 'io.rest-assured:rest-assured:4.2.0'
-    integTestImplementation 'io.rest-assured:json-path:4.2.0'
-    integTestImplementation 'io.rest-assured:xml-path:4.2.0'
-    integTestImplementation 'io.rest-assured:json-schema-validator:4.2.0'
+    integTestImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+    integTestImplementation "io.rest-assured:json-path:${restAssuredVersion}"
+    integTestImplementation "io.rest-assured:xml-path:${restAssuredVersion}"
+    integTestImplementation "io.rest-assured:json-schema-validator:${restAssuredVersion}"
+    integTestImplementation "io.rest-assured:rest-assured-common:${restAssuredVersion}"
+
+    integTestImplementation "org.codehaus.groovy:groovy:${groovyVersion}"   // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
+    integTestImplementation "org.codehaus.groovy:groovy-xml:${groovyVersion}"   // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
 
     integTestImplementation "org.junit.jupiter:junit-jupiter-api"
     integTestImplementation "org.junit.jupiter:junit-jupiter-engine"
 
-}
-
-
-configurations {
-    cucumberRuntime {
-        extendsFrom integTestImplementation
-    }
 }
 
 
@@ -42,7 +38,7 @@ task runIntegrationTests() {
     doLast {
         javaexec {
             main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.integTest.output
+            classpath = sourceSets.integTest.runtimeClasspath
             args = ['--plugin', 'pretty', '--glue', 'cucumber', 'src/integTest/resources']
         }
     }
