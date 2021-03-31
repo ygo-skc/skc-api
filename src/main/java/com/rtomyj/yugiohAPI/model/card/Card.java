@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @JsonInclude(Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 @Slf4j
 @ApiModel(
-		description = "Describes attributes of a YuGiOh card."
+		description = "Describes attributes of a Yu-Gi-Oh! card."
 		, parent = RepresentationModel.class
 )
 public class Card extends RepresentationModel<Card> implements HateoasLinks

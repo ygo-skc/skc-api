@@ -36,7 +36,7 @@ import lombok.With;
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
 @ApiModel(
-		description = "Information about a YuGiOh product such as a booster pack or tin."
+		description = "Information about a Yu-Gi-Oh! product such as a booster pack or tin."
 )
 public class Product extends RepresentationModel<Product>
 {

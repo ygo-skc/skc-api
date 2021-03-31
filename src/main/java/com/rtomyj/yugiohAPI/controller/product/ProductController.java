@@ -41,7 +41,7 @@ public class ProductController extends YgoApiBaseController
 
 	// todo: add validation/prevent null pointer exception when productid is invalid
 	@GetMapping("/{productId}/{locale}")
-	@ApiOperation(value = "Fetch information about a particular YuGiOh product using product ID given by Konami."
+	@ApiOperation(value = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami."
 			, response = Product.class
 			, responseContainer = "Object")
 	@ApiResponses(value = {
@@ -50,7 +50,7 @@ public class ProductController extends YgoApiBaseController
 			, @ApiResponse(code = 404, message = SwaggerConstants.http404)
 	})
 	public ResponseEntity<Product> getProduct(
-			@ApiParam(value = "Unique identifier each YuGiOh product has. It is the 3 or 4 alpha numeric string found on every card."
+			@ApiParam(value = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card."
 					, example = "LOB"
 			) @PathVariable("productId") final String productId
 			, @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION

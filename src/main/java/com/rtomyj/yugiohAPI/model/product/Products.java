@@ -29,14 +29,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
 @ApiModel(
-		description = "Contains information about YuGiOh products."
+		description = "Contains information about Yu-Gi-Oh! products."
 		, parent = RepresentationModel.class
 )
 public class Products extends RepresentationModel<Products> implements HateoasLinks
 {
 
 	@ApiModelProperty(
-			value = "List of YuGiOh products."
+			value = "List of Yu-Gi-Oh! products."
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
 	private List<Product> products;

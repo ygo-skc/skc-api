@@ -25,15 +25,15 @@ public class SwaggerConstants
 
     // Common Card endpoint Swagger descriptions
     public static final String CARD_FETCH_ALL_DESCRIPTION = "If true, returns information about a card such as ban lists it was restricted (forbidden, limited or semi-limited) in and products it was included in. Otherwise, only basic info about the card is returned.";
-    public static final String CARD_ID_DESCRIPTION = "ID given to mostly all YuGiOh cards by Konami that uniquely identifies it.";
-    public static final String CARD_NAME_DESCRIPTION = "The mame of a particular YuGiOh card.";
+    public static final String CARD_ID_DESCRIPTION = "ID given to mostly all Yu-Gi-Oh! cards by Konami that uniquely identifies it.";
+    public static final String CARD_NAME_DESCRIPTION = "The mame of a particular Yu-Gi-Oh! card.";
     public static final String CARD_ATTRIBUTE_DESCRIPTION = "One of the six monster attributes (seven including 'Divine')";
     public static final String CARD_COLOR_DESCRIPTION = "A simple identifier for card type. If the card is synchro, the card color is synchro.";
     public static final String MONSTER_TYPE_DESCRIPTION = "Monster type such as Spellcaster.";
     public static final String MONSTER_ASSOCIATION_DESCRIPTION = "Description off monsters associations such as Level, Link Rating, Rank, etc.";
     public static final String MONSTER_ATK_DESCRIPTION = "The attack stat of a monster card.";
     public static final String MONSTER_DEF_DESCRIPTION = "The defence stat of a monster card.";
-    public static final String CARD_EFFECT_DESCRIPTION = "The text provided in a YuGiOh card either describing its effect or lore.";
+    public static final String CARD_EFFECT_DESCRIPTION = "The text provided in a Yu-Gi-Oh! card either describing its effect or lore.";
 
 
     public static final String PRODUCT_LOCALE_DESCRIPTION = "A locale denoting products release region. As of now the only locale available is \"en\" but in the future other locales can be added to support products in other regions like Japan.";
