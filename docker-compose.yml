@@ -10,13 +10,13 @@ services:
     command: java -jar ygo-api.jar
     restart: always
     networks:
-      - yugioh-api
+      - ygo-network
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker-remote
 
 networks:
-  yugioh-api:
-    name: yugioh-api
+  ygo-network:
+    name: ygo-network
     driver: bridge

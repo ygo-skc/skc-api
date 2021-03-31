@@ -25,7 +25,7 @@ plugins {
 
 group = 'com.rtomyj.ygo'
 archivesBaseName = 'ygo-api'
-version = '1.2.3'
+version = '1.2.4'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
@@ -108,9 +108,19 @@ bootJar {
 
 
 task bootJarPath {
+	group 'Util'
+
 	doFirst {
 		println "${buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"
 	}
+}
+
+
+task createDockerJar(type: Copy) {
+	from "${buildDir}/libs/${project.archivesBaseName}-${project.version}.jar"
+	into "${buildDir}/libs"
+
+	rename ("${project.archivesBaseName}-${project.version}.jar", "${project.archivesBaseName}.jar")
 }
 
 
