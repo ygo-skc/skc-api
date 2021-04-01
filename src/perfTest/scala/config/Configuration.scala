@@ -10,7 +10,7 @@ object Configuration
   val dev = "https://dev.skc-ygo-api.com"
   val prod = "https://skc-ygo-api.com"
 
-  val baseUrl = localhostDocker
+  val baseUrl = prod
   val browseCardsUri = "/api/v1/card/browse"
 
   val users = 30
