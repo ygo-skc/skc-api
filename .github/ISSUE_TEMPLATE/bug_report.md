@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bug Report
 about: Create a report to help us fix an unexpected issue with the API
 title: 'Bug Report - '
 labels: 'bug'
