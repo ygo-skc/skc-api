@@ -33,6 +33,8 @@ labels:
     color: CC0000
   - name: feature
     color: 336699
+  - name: enhancement
+    color: 96ceb4
 
 milestones:
   - title: Operation Perfect Release
