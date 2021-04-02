@@ -58,10 +58,6 @@ sourceSets.create("perfTest") {
 	resources.srcDir("src/perfTest/resources")
 }
 
-val perfTestImplementation by configurations.getting {
-//	extendsFrom(configurations.implementation.get())
-}
-
 
 dependencies {
 	implementation("javax.validation:validation-api:2.0.1.Final")
@@ -92,38 +88,6 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
 	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE"s
 
-
-
-	testImplementation("org.springframework.boot:spring-boot-starter-test:$springVersion")
-	testRuntimeOnly("com.h2database:h2")
-
-	testImplementation("org.junit.jupiter:junit-jupiter-api")
-	testImplementation("org.junit.jupiter:junit-jupiter-engine")
-
-
-
-	integTestImplementation("commons-logging:commons-logging:1.2")
-
-	integTestImplementation("io.cucumber:cucumber-java:${cucumberVersion}")
-
-	integTestImplementation("io.rest-assured:rest-assured:${restAssuredVersion}")
-	integTestImplementation("io.rest-assured:json-path:${restAssuredVersion}")
-	integTestImplementation("io.rest-assured:xml-path:${restAssuredVersion}")
-	integTestImplementation("io.rest-assured:json-schema-validator:${restAssuredVersion}")
-	integTestImplementation("io.rest-assured:rest-assured-common:${restAssuredVersion}")
-
-	integTestImplementation("org.codehaus.groovy:groovy:${groovyVersion}")   // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
-	integTestImplementation("org.codehaus.groovy:groovy-xml:${groovyVersion}")   // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
-
-	integTestImplementation("org.junit.jupiter:junit-jupiter-api")
-	integTestImplementation("org.junit.jupiter:junit-jupiter-engine")
-
-
-
-	perfTestImplementation("org.scala-lang:scala-library:2.13.4")
-	perfTestImplementation("io.gatling.highcharts:gatling-charts-highcharts:3.5.0")
-	perfTestImplementation("io.gatling:gatling-core:3.5.0")
-
 }
 
 
@@ -139,10 +103,6 @@ configurations {
 
 	compileOnly {
 		extendsFrom(configurations.annotationProcessor.get())
-	}
-
-	"perfTestImplementation" {
-		exclude(group = "org.slf4j", module = "slf4j-log4j12")
 	}
 
 }
@@ -183,24 +143,20 @@ tasks.withType<Javadoc> {
 }
 
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-
-    minHeapSize = "256m"
-    maxHeapSize = "512m"
-    maxParallelForks = Runtime.getRuntime().availableProcessors() / 3 ?: 1
-}
+apply(from = "gradle/unitTest.gradle.kts")
+apply(from = "gradle/integTest.gradle.kts")
+apply(from = "gradle/perfTest.gradle.kts")
 
 
 tasks.create("runIntegrationTests") {
-    dependsOn(tasks.assemble, tasks["compileIntegTestJava"])
-    doLast {
-        javaexec {
-            main = "io.cucumber.core.cli.Main"
-            classpath = sourceSets["integTest"].runtimeClasspath
-            args = listOf("--plugin", "pretty", "--glue", "cucumber", "src/integTest/resources")
-        }
-    }
+	dependsOn(tasks.assemble, tasks["compileIntegTestJava"])
+	doLast {
+		javaexec {
+			main = "io.cucumber.core.cli.Main"
+			classpath = sourceSets["integTest"].runtimeClasspath
+			args = listOf("--plugin", "pretty", "--glue", "cucumber", "src/integTest/resources")
+		}
+	}
 }
 
 
@@ -212,8 +168,8 @@ tasks.register("perfTest", JavaExec::class) {
 
 	main = "io.gatling.app.Gatling"
 	args = listOf(
-		"-s", "simulations.BrowseSimulation",
-		"-rf", "${buildDir}/gatling-results",
-		"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
+			"-s", "simulations.BrowseSimulation",
+			"-rf", "${buildDir}/gatling-results",
+			"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
 	)
 }
