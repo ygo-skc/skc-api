@@ -169,7 +169,7 @@ tasks.register("perfTest", JavaExec::class) {
 
 	main = "io.gatling.app.Gatling"
 	args = listOf(
-			"-s", "com.rtomyj.skc.simulations.BrowseSimulation",
+			"-s", "BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
 			"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
 	)
