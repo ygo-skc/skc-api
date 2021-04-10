@@ -1,6 +1,4 @@
-val perfTestImplementation by configurations.getting {
-//	extendsFrom(configurations.implementation.get())
-}
+
 
 
 configurations {

@@ -20,9 +20,9 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.4.30"
 	kotlin("plugin.spring") version "1.4.30"
-	id ("jacoco")
-	id("java")
-	id("scala")
+	jacoco
+	java
+	scala
 }
 
 
@@ -36,27 +36,27 @@ repositories {
 }
 
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = JavaVersion.VERSION_11.toString()
-	}
-}
-
-
 sourceSets.create("integTest") {
 	java.srcDir("src/integTest/java")
 	resources.srcDir("src/integTest/resources")
 }
 
-val integTestImplementation by configurations.getting {
-//	extendsFrom(configurations.implementation.get())
+
+sourceSets.create("perfTest") {
+	withConvention(ScalaSourceSet::class) {
+		scala {
+			srcDir("src/perfTest/scala")
+		}
+	}
+	resources.srcDir("src/perfTest/resources")
 }
 
 
-sourceSets.create("perfTest") {
-	java.srcDir("src/perfTest/java")
-	resources.srcDir("src/perfTest/resources")
+tasks.withType<KotlinCompile> {
+	kotlinOptions {
+		freeCompilerArgs = listOf("-Xjsr305=strict")
+		jvmTarget = JavaVersion.VERSION_11.toString()
+	}
 }
 
 
@@ -93,6 +93,10 @@ dependencies {
 
 
 configurations {
+	val perfTestImplementation by getting {
+		//	extendsFrom(configurations.implementation.get())	// used to extend config
+	}
+
 
 	implementation {
 		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
@@ -169,7 +173,7 @@ tasks.register("perfTest", JavaExec::class) {
 
 	main = "io.gatling.app.Gatling"
 	args = listOf(
-			"-s", "BrowseSimulation",
+			"-s", "simulations.BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
 			"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
 	)
