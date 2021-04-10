@@ -10,10 +10,10 @@ object Configuration
   val dev = "https://dev.skc-ygo-api.com"
   val prod = "https://skc-ygo-api.com"
 
-  val baseUrl = prod
+  val baseUrl: String = prod
   val browseCardsUri = "/api/v1/card/browse"
 
   val users = 30
   val rampup = 60 seconds
-  val simulationMaxTime = 2 minutes
+  val simulationMaxTime = 5 minutes
 }

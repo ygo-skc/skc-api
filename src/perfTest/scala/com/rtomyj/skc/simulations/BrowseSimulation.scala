@@ -18,8 +18,8 @@ class BrowseSimulation extends Simulation {
   setUp(scn)
     .maxDuration(Configuration.simulationMaxTime)
     .assertions(
-      global.responseTime.mean.lt(350)
-      , global.failedRequests.percent.lt(.001)
+      global.responseTime.mean.lt(250)
+      , global.failedRequests.percent.is(0)
     )
     .protocols(httpProtocol)
 }

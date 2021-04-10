@@ -49,7 +49,6 @@ sourceSets.create("perfTest") {
 			srcDir("src/perfTest/scala")
 		}
 	}
-	resources.srcDir("src/perfTest/resources")
 }
 
 
@@ -177,6 +176,5 @@ tasks.register("perfTest", JavaExec::class) {
 	args = listOf(
 			"-s", "com.rtomyj.skc.simulations.BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
-			"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
 	)
 }
