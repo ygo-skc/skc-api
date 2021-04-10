@@ -1,4 +1,4 @@
-package cucumber;
+package com.rtomyj.skc.cucumber;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

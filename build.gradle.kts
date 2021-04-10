@@ -13,9 +13,6 @@ val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
 
 val archivesBaseName = "skc-api"
-group = "com.rtomyj.skc"
-version = "1.2.4"
-java.sourceCompatibility = JavaVersion.VERSION_11
 
 
 plugins {
@@ -27,6 +24,11 @@ plugins {
 	id("java")
 	id("scala")
 }
+
+
+group = "com.rtomyj.skc"
+version = "1.2.4"
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 
 repositories {
@@ -153,7 +155,7 @@ tasks.create("runIntegrationTests") {
 		javaexec {
 			main = "io.cucumber.core.cli.Main"
 			classpath = sourceSets["integTest"].runtimeClasspath
-			args = listOf("--plugin", "pretty", "--glue", "cucumber", "src/integTest/resources")
+			args = listOf("--plugin", "pretty", "--glue", "com/rtomyj/skc/cucumber", "src/integTest/resources")
 		}
 	}
 }
@@ -167,7 +169,7 @@ tasks.register("perfTest", JavaExec::class) {
 
 	main = "io.gatling.app.Gatling"
 	args = listOf(
-			"-s", "simulations.BrowseSimulation",
+			"-s", "com.rtomyj.skc.simulations.BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
 			"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
 	)
