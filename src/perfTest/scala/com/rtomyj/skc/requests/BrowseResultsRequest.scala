@@ -1,6 +1,6 @@
-package requests
+package com.rtomyj.skc.requests
 
-import config.Configuration
+import com.rtomyj.skc.config.Configuration
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder

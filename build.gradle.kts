@@ -89,6 +89,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
 	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE"s
 
+	compileOnly("org.scala-lang:scala-library:2.13.4")
 }
 
 
@@ -173,7 +174,7 @@ tasks.register("perfTest", JavaExec::class) {
 
 	main = "io.gatling.app.Gatling"
 	args = listOf(
-			"-s", "simulations.BrowseSimulation",
+			"-s", "com.rtomyj.skc.simulations.BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
 			"--binaries-folder", sourceSets["perfTest"].output.classesDirs.toString() // ignored because of above bug
 	)

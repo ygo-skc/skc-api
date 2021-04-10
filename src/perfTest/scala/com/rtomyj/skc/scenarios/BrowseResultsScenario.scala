@@ -1,9 +1,9 @@
-package scenarios
+package com.rtomyj.skc.scenarios
 
-import config.Configuration
+import com.rtomyj.skc.config.Configuration
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ScenarioBuilder
-import requests.BrowseResultsRequest
+import com.rtomyj.skc.requests.BrowseResultsRequest
 
 import scala.concurrent.duration._
 import scala.language.postfixOps

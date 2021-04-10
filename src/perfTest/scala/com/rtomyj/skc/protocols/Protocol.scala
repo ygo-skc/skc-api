@@ -1,6 +1,6 @@
-package protocols;
+package com.rtomyj.skc.protocols;
 
-import config.Configuration._
+import com.rtomyj.skc.config.Configuration._
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._

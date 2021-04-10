@@ -1,10 +1,10 @@
-package simulations
+package com.rtomyj.skc.simulations
 
-import config.Configuration
-import config.Configuration._
-import protocols.Protocol._
+import com.rtomyj.skc.config.Configuration
+import com.rtomyj.skc.config.Configuration._
+import com.rtomyj.skc.protocols.Protocol._
 import io.gatling.core.Predef._
-import scenarios.BrowseResultsScenario
+import com.rtomyj.skc.scenarios.BrowseResultsScenario
 
 import scala.concurrent.duration._
 import scala.language.postfixOps

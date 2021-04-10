@@ -1,4 +1,4 @@
-package config
+package com.rtomyj.skc.config
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
