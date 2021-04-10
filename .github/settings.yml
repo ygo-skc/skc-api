@@ -1,6 +1,6 @@
 repository:
   # See https://developer.github.com/v3/repos/#edit for all available settings.
-  name: ygo-api
+  name: skc-api
   description: API to use to access info on individual YGO; cards, ban lists, and products.
   homepage: https://www.thesupremekingscastle.com/about
   topics: ygo, skc, api
