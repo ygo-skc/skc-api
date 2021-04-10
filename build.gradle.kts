@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val springVersion = "2.4.2"
+val springBootVersion = "2.4.2"
+val scalaLibraryVersion = "2.13.5"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.1.1"
-val cache2kVersion = "1.2.4.Final"
-val lombokVersion = "1.18.12"
-val mysqlVersion = "8.0.21"
+val cache2kVersion = "2.0.0.Final"
+val lombokVersion = "1.18.20"
+val mysqlVersion = "8.0.23"
 val jacksonVersion = "2.11.2"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
@@ -63,13 +64,13 @@ tasks.withType<KotlinCompile> {
 dependencies {
 	implementation("javax.validation:validation-api:2.0.1.Final")
 
-	implementation("org.springframework.boot:spring-boot-starter-web:$springVersion")
-	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springVersion")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springVersion")
-	implementation("org.springframework.boot:spring-boot-starter-log4j2:$springVersion")
-	implementation("org.springframework.boot:spring-boot-starter-actuator:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 
-	implementation("org.springframework.boot:spring-boot-starter-jetty:$springVersion")
+	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
 	implementation("org.eclipse.jetty:jetty-alpn-conscrypt-server")
 	implementation("org.eclipse.jetty.http2:http2-server")
 
@@ -89,7 +90,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
 	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE"s
 
-	compileOnly("org.scala-lang:scala-library:2.13.4")
+	compileOnly("org.scala-lang:scala-library:${scalaLibraryVersion}")
 }
 
 
