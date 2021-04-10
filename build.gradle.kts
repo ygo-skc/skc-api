@@ -1,11 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "com.rtomyj.ygo"
-version = "1.2.4"
-java.sourceCompatibility = JavaVersion.VERSION_11
-val archivesBaseName = "ygo-api"
-
-val baseName = "ygo-api"
 val springVersion = "2.4.2"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.1.1"
@@ -17,6 +11,11 @@ val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
+
+val archivesBaseName = "skc-api"
+group = "com.rtomyj.skc"
+version = "1.2.4"
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 
 plugins {
