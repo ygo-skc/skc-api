@@ -657,7 +657,9 @@ public class JDBCDao implements Dao
 		stopWatch.start();
 
 		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info" +
-				" WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes AND monster_type REGEXP :monsterTypes AND monster_type REGEXP :monsterSubTypes %s ORDER BY card_name";
+				" WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes" +
+				" AND IFNULL(monster_type, '') REGEXP :monsterTypes" +
+				" AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s ORDER BY card_name";
 
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
@@ -685,7 +687,7 @@ public class JDBCDao implements Dao
 			final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
 			final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
 			final String linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet);
-			final String monsterAssociationCriteria = StringUtil.concatenateStringsWithDelimiter("|", levelCriteria, rankCriteria, linkRatingCriteria);
+			final String monsterAssociationCriteria = StringUtil.concatenateStringsWithDelimiter("+", levelCriteria, rankCriteria, linkRatingCriteria);
 
 			sqlParams.addValue("monsterAssociation", monsterAssociationCriteria);
 
