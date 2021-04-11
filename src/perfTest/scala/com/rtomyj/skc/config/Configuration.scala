@@ -1,19 +1,17 @@
 package com.rtomyj.skc.config
 
+import com.rtomyj.skc.constants.Url
+
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
 object Configuration
 {
-  val localhost = "http://localhost:9999"
-  val localhostDocker = "http://localhost:9998"
-  val dev = "https://dev.skc-ygo-api.com"
-  val prod = "https://skc-ygo-api.com"
 
-  val baseUrl: String = localhost
-  val browseCardsUri = "/api/v1/card/browse"
+  val baseUrl: String = Url.localhost
 
   val users = 30
-  val rampup = 60 seconds
-  val simulationMaxTime = 5 minutes
+  val rampup: FiniteDuration = 60 seconds
+  val simulationMaxTime: FiniteDuration = 5 minutes
+
 }
