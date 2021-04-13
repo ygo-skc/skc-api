@@ -20,7 +20,7 @@ public class ResponseHeaderFilter extends OncePerRequestFilter
 
 		response.setHeader("Cache-Control", "max-age=300");
 		response.setHeader("Connection", "Keep-Alive");
-		response.setHeader("Keep-Alive", "timeout=60, max=100");
+		response.setHeader("Keep-Alive", "timeout=60, max=600");
 		chain.doFilter(request, response);
 
 	}

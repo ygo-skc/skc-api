@@ -1,5 +1,7 @@
 package com.rtomyj.skc.controller.card;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.rtomyj.skc.controller.YgoApiBaseController;
 import com.rtomyj.skc.helper.constants.SwaggerConstants;
 import com.rtomyj.skc.model.card.CardBrowseCriteria;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 @RequestMapping(path = "/card/browse", produces = "application/json; charset=UTF-8")
 @CrossOrigin("*")
@@ -25,16 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class CardBrowseController extends YgoApiBaseController
 {
+    //ToDo: javadoc this class
 
     private final CardBrowseService cardBrowseService;
+
+    private final Supplier<CardBrowseCriteria> cardBrowseCriteriaSupplier;
 
 
     @Autowired
     public CardBrowseController(final CardBrowseService cardBrowseService)
     {
-
         this.cardBrowseService = cardBrowseService;
-
+        this.cardBrowseCriteriaSupplier  = Suppliers.memoizeWithExpiration(cardBrowseService::getBrowseCriteria, 10, TimeUnit.MINUTES);
     }
 
 
@@ -98,13 +104,11 @@ public class CardBrowseController extends YgoApiBaseController
     })
     public CardBrowseCriteria browseCriteria()
     {
-
         log.info("Retrieving browse criteria.");
-        final CardBrowseCriteria cardBrowseCriteria = cardBrowseService.getBrowseCriteria();
+        final CardBrowseCriteria cardBrowseCriteria = cardBrowseCriteriaSupplier.get();
         log.info("Successfully retrieved browse criteria for cards.");
 
         return cardBrowseCriteria;
-
     }
 
 }
