@@ -7,11 +7,8 @@ import scala.language.postfixOps
 
 object Configuration
 {
+  val baseUrl: String = Url.prod
 
-  val baseUrl: String = Url.localhost
-
-  val users = 30
   val rampup: FiniteDuration = 60 seconds
-  val simulationMaxTime: FiniteDuration = 5 minutes
-
+  val simulationMaxTime: FiniteDuration = 1 minutes
 }

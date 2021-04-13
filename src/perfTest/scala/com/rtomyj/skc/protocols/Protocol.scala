@@ -5,7 +5,8 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
 
-object Protocol {
+object Protocol
+{
     val httpProtocol: HttpProtocolBuilder = http
       .baseUrl(baseUrl)
       .disableCaching

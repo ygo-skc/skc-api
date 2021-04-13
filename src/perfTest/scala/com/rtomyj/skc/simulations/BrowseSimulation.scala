@@ -1,29 +1,31 @@
 package com.rtomyj.skc.simulations
 
-import com.rtomyj.skc.config.Configuration
-import com.rtomyj.skc.config.Configuration._
 import com.rtomyj.skc.protocols.Protocol._
-import io.gatling.core.Predef._
 import com.rtomyj.skc.scenarios.BrowseScenario
+import io.gatling.core.Predef._
 
-import scala.concurrent.duration._
 import scala.language.postfixOps
 
-class BrowseSimulation extends Simulation {
+class BrowseSimulation extends Simulation
+{
+  private val getBrowseCriteriaScenario = BrowseScenario.getBrowseCriteria
+    .inject(atOnceUsers(30))
 
   private val getBrowseResultsScenario = BrowseScenario.getBrowseResultsScenario
-    .inject(rampUsers(users).during(rampup))
+    .inject(atOnceUsers(30))
 
-  private val getBrowseCriteria = BrowseScenario.getBrowseCriteria
-    .inject(rampUsers(users).during(rampup))
+  private val browseUserLoadScenario = BrowseScenario.browseUserLoad
+    .inject(atOnceUsers(15))
 
 
-  setUp(getBrowseCriteria)
-    .maxDuration(Configuration.simulationMaxTime)
+  setUp(getBrowseCriteriaScenario
+      .andThen(getBrowseResultsScenario)
+      .andThen(browseUserLoadScenario)
+    )
     .assertions(
-      global.responseTime.mean.lt(250)
-      , global.failedRequests.percent.is(0)
+      global.failedRequests.count.is(0)
+      , details("Card Browse Criteria Request").responseTime.mean.lt(150)
+      , details("Card Browse Details Request").responseTime.mean.lt(250)
     )
     .protocols(httpProtocol)
-
 }
