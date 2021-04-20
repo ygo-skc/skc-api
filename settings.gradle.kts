@@ -1,1 +1,1 @@
-rootProject.name = "ygo-api"
+rootProject.name = "skc-api"
