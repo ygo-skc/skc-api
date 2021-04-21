@@ -6,9 +6,9 @@ if [ $# -eq 0 ]
 		echo "Need server name"
 fi
 
-ssh -i ~/.ssh/ygo-api.pem "${user}@${server}" << EOF
+ssh -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
 	cd api
 	docker-compose kill
 	docker-compose rm -f
-	docker-compose up --scale ygo-api=3 -d
+	docker-compose up --scale skc-api=3 -d
 EOF
