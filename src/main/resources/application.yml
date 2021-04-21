@@ -18,3 +18,34 @@ server:
     min-response-size: 16384
   http2:
     enabled: true
+
+
+---
+spring:
+  profiles: docker-local
+  datasource:
+    url: jdbc:mysql://ygo-db:3306/yugioh_API_DB
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:ygo-api-keystore.jks
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-alias: ygoapi
+
+---
+spring:
+  profiles: docker-remote
+  datasource:
+    url: jdbc:mysql://ygo-db:3306/yugioh_API_DB
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:ygo-api-keystore.jks
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-alias: ygoapi
