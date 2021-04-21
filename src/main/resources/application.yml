@@ -2,7 +2,7 @@ spring:
   datasource:
     hikari:
       maximum-pool-size: 30
-    url: jdbc:mysql://localhost:3306/yugioh_API_DB
+    url: jdbc:mysql://localhost:3306/skc_api_db
     username: root
     password:
   hateoas:
@@ -24,7 +24,7 @@ server:
 spring:
   profiles: docker-local
   datasource:
-    url: jdbc:mysql://skc-api-db:3306/yugioh_API_DB
+    url: jdbc:mysql://skc-api-db:3306/skc_api_db
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 
@@ -39,7 +39,7 @@ server:
 spring:
   profiles: docker-remote
   datasource:
-    url: jdbc:mysql://skc-api-db:3306/yugioh_API_DB
+    url: jdbc:mysql://skc-api-db:3306/skc_api_db
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 
