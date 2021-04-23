@@ -113,7 +113,7 @@ public class CardService
 		throws YgoException
 	{
 
-		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
+		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
 
 		if (saveBandwidth)
 		{

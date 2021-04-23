@@ -131,7 +131,7 @@ public interface Dao
 
 	public boolean isValidBanList(final String banListDate);
 
-	public List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit);
+	public List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit, final boolean getBanInfo);
 
 	public Products getAllProductsByType(final ProductType productType, final String locale);
 

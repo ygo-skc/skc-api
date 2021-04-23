@@ -314,12 +314,14 @@ public class JDBCDao implements Dao
 
 
 	public List<Card> searchForCardWithCriteria(
-			String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit
+			String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final boolean getBanInfo
 	)
 	{
-		final StopWatch stopwatch = new StopWatch();
-		stopwatch.start();
+		return (getBanInfo)? this.searchForCardsIncludeBanInfo(cardId, cardName, cardAttribute, cardColor, monsterType, limit) : this.searchForCards(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
+	}
 
+	private void prepSearchParams(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final MapSqlParameterSource sqlParams)
+	{
 
 		cardId = '%' + cardId + '%';
 		cardName = '%' + cardName + '%';
@@ -327,22 +329,74 @@ public class JDBCDao implements Dao
 		cardColor = (cardColor.isEmpty())? ".*" : cardColor;
 		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
 
-
-		final String query = "SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status" +
-				" FROM search" +
-				" WHERE card_number LIKE :cardId" +
-				" AND card_name LIKE :cardName" +
-				" AND card_attribute REGEXP :cardAttribute" +
-				" AND card_color REGEXP :cardColor" +
-				" AND IFNULL(monster_type, '') REGEXP :monsterType" +
-				" ORDER BY color_id, card_name ASC";
-
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardId", cardId);
 		sqlParams.addValue("cardName", cardName);
 		sqlParams.addValue("cardAttribute", cardAttribute);
 		sqlParams.addValue("cardColor", cardColor);
 		sqlParams.addValue("monsterType", monsterType);
+		sqlParams.addValue("limit", limit);
+
+	}
+
+
+	private List<Card> searchForCards(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit)
+	{
+
+		final StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		final String query = DBQueryConstants.SEARCH_QUERY;
+		prepSearchParams(cardId, cardName, cardAttribute, cardColor, monsterType, limit, sqlParams);
+
+
+		log.debug("Fetching card search results from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams);
+
+		final ArrayList<Card> searchResults = new ArrayList<>(Objects.requireNonNull(jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
+			final Map<String, Card> cardInfoTracker = new LinkedHashMap<>();
+
+			while (row.next()) {
+				Card card = cardInfoTracker.get(row.getString(1));
+
+				if (card == null) {
+
+					card = Card.builder()
+							.cardID(row.getString(1))
+							.cardColor(row.getString(2))
+							.cardName(row.getString(3))
+							.cardAttribute(row.getString(4))
+							.cardEffect(row.getString(5))
+							.monsterType(row.getString(6))
+							.monsterAttack(row.getObject(7, Integer.class))
+							.monsterDefense(row.getObject(8, Integer.class))
+							.restrictedIn(new ArrayList<>())
+							.build();
+					cardInfoTracker.put(card.getCardID(), card);
+
+				}
+			}
+
+			return cardInfoTracker.values();
+		})));
+
+		stopwatch.stop();
+		log.debug("Time taken to fetch search results from DB: {}ms", stopwatch.getTotalTimeMillis());
+
+		return searchResults;
+	}
+
+
+	private List<Card> searchForCardsIncludeBanInfo(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit)
+	{
+
+		final StopWatch stopwatch = new StopWatch();
+		stopwatch.start();
+
+
+		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
+		final String query = DBQueryConstants.SEARCH_QUERY_WITH_BAN_INFO;
+		prepSearchParams(cardId, cardName, cardAttribute, cardColor, monsterType, limit, sqlParams);
 
 		log.debug("Fetching card search results from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams);
 
@@ -357,6 +411,7 @@ public class JDBCDao implements Dao
 				 every time a new row has new ban list info of a card already in the map.
 			*/
 			final Map<String, Card> cardInfoTracker = new LinkedHashMap<>();
+
 			int numUniqueCardsParsed = 0;
 
 			while (row.next()) {
@@ -378,7 +433,6 @@ public class JDBCDao implements Dao
 							.build();
 					cardInfoTracker.put(card.getCardID(), card);
 
-					numUniqueCardsParsed++;
 				}
 
 				try {
@@ -393,6 +447,7 @@ public class JDBCDao implements Dao
 				} catch (ParseException e) {
 					log.error("Error occurred while parsing date for ban list, date: {}.", row.getString(9));
 				}
+				numUniqueCardsParsed++;
 			}
 
 			return cardInfoTracker.values();
