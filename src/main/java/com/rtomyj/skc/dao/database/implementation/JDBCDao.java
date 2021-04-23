@@ -322,7 +322,7 @@ public class JDBCDao implements Dao
 
 
 		cardId = '%' + cardId + '%';
-		cardName = '%' + cardName + '%';
+		cardName = cardName + '*';
 		cardAttribute = (cardAttribute.isEmpty())? ".*" : cardAttribute;
 		cardColor = (cardColor.isEmpty())? ".*" : cardColor;
 		monsterType = (monsterType.isEmpty())? ".*" : monsterType;
@@ -331,7 +331,7 @@ public class JDBCDao implements Dao
 		final String query = "SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status" +
 				" FROM search" +
 				" WHERE card_number LIKE :cardId" +
-				" AND card_name LIKE :cardName" +
+				" AND MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE)" +
 				" AND card_attribute REGEXP :cardAttribute" +
 				" AND card_color REGEXP :cardColor" +
 				" AND IFNULL(monster_type, '') REGEXP :monsterType" +
