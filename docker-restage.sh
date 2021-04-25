@@ -10,5 +10,5 @@ ssh -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
 	cd api
 	docker-compose kill
 	docker-compose rm -f
-	docker-compose up --scale skc-api=3 -d
+	docker-compose up --scale skc-api=2 -d
 EOF
