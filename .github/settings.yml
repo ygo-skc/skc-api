@@ -1,6 +1,6 @@
 repository:
   # See https://developer.github.com/v3/repos/#edit for all available settings.
-  name: ygo-api
+  name: skc-api
   description: API to use to access info on individual YGO; cards, ban lists, and products.
   homepage: https://www.thesupremekingscastle.com/about
   topics: ygo, skc, api
@@ -33,10 +33,15 @@ labels:
     color: CC0000
   - name: feature
     color: 336699
+  - name: enhancement
+    color: 96ceb4
 
 milestones:
   - title: Operation Perfect Release
     description: Get final non beta release as perfect as possible.
+    state: open
+  - title: Modernize The Fuck Outa Dis Shii
+    description: Use Kotlin instead of Java for main src code. Create global health check endpoint to create a status page for users to know which regions are impacted in case of downtime. Create endpoint for Suggestions that will call downstream SKC-Suggestions-API.
     state: open
 
 # Collaborators: give specific users access to this repository.

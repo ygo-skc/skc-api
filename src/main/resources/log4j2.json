@@ -12,7 +12,7 @@
 		},
 		"loggers": {
 			"logger": {
-				"name": "com.rtomyj.yugiohAPI",
+				"name": "com.rtomyj.skc",
 				"additivity": false
 				, "level": "${env:LOG_LEVEL}"
 				, "AppenderRef": {

@@ -1,23 +1,23 @@
-version: '3'
+version: '3.9'
 
 services:
-  ygo-api:
+  skc-api:
     image: "openjdk:11.0-jdk-slim"
-    container_name: ygo-api
+    container_name: skc-api
     ports:
-      - "9998:8080"
+      - "9998:8443"
     volumes:
-       - ./build/libs/ygo-api.jar:/ygo-api.jar
-    command: java -jar ygo-api.jar
+       - ./build/libs/skc-api.jar:/skc-api.jar
+    command: java -jar skc-api.jar
     restart: always
-    networks:
-      - yugioh-api
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker-local
+    networks:
+      - skc-network
 
 networks:
-  yugioh-api:
-    name: yugioh-api
+  skc-network:
+    name: skc-network
     driver: bridge

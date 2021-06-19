@@ -6,14 +6,14 @@ if [ $# -eq 0 ]
 		echo "Need server name"
 fi
 
-ssh -i ~/.ssh/ygo-api.pem "${user}@${server}" << EOF
+ssh -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
 	mkdir -p api/build/libs/
 EOF
 
-sftp -i ~/.ssh/ygo-api.pem "${user}@${server}" << EOF
+sftp -i ~/.ssh/skc-server-creds.pem "${user}@${server}" << EOF
 	cd api
 	put docker-compose.yml
 	cd build/libs
 	lcd build/libs
-	put *.jar ygo-api.jar
+	put *.jar skc-api.jar
 EOF
