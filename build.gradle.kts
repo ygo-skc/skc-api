@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val springBootVersion = "2.5.2"
 val scalaLibraryVersion = "2.13.5"
@@ -37,25 +38,18 @@ repositories {
 }
 
 
-sourceSets.create("integTest") {
-	java.srcDir("src/integTest/java")
-	resources.srcDir("src/integTest/resources")
-}
-
-
-sourceSets.create("perfTest") {
-	withConvention(ScalaSourceSet::class) {
-		scala {
-			srcDir("src/perfTest/scala")
-		}
+sourceSets {
+	create("integTest") {
+		java.srcDir("src/integTest/java")
+		resources.srcDir("src/integTest/resources")
 	}
-}
 
-
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = JavaVersion.VERSION_11.toString()
+	create("perfTest") {
+		withConvention(ScalaSourceSet::class) {
+			scala {
+				srcDir("src/perfTest/scala")
+			}
+		}
 	}
 }
 
@@ -113,68 +107,71 @@ configurations {
 
 }
 
-
-tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
-	group = "Build"
-	description = "Creates a JAR file that can be executed to launch YGO service"
-
-	manifest.attributes.apply {
-		put("Implementation-Title", archivesBaseName)
-	}
-}
-
-
-tasks.create("bootJarPath") {
-	group = "Util"
-
-	doFirst {
-		println("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
-	}
-}
-
-
-tasks.register("createDockerJar", Copy::class) {
-	from("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
-	into("${buildDir}/libs")
-
-	rename ("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
-}
-
-
-tasks.withType<Javadoc> {
-
-	options.memberLevel = JavadocMemberLevel.PRIVATE
-	source = sourceSets["main"].allJava
-
-}
-
-
 apply(from = "gradle/unitTest.gradle.kts")
 apply(from = "gradle/integTest.gradle.kts")
 apply(from = "gradle/perfTest.gradle.kts")
 
 
-tasks.create("runIntegrationTests") {
-	dependsOn(tasks.assemble, tasks["compileIntegTestJava"])
-	doLast {
-		javaexec {
-			main = "io.cucumber.core.cli.Main"
-			classpath = sourceSets["integTest"].runtimeClasspath
-			args = listOf("--plugin", "pretty", "--glue", "com/rtomyj/skc/cucumber", "src/integTest/resources")
+tasks {
+	withType<KotlinCompile> {
+		kotlinOptions {
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+			jvmTarget = JavaVersion.VERSION_11.toString()
 		}
 	}
-}
+
+	withType<BootJar> {
+		group = "Build"
+		description = "Creates a JAR file that can be executed to launch YGO service"
+
+		manifest.attributes.apply {
+			put("Implementation-Title", archivesBaseName)
+		}
+	}
+
+	create("bootJarPath") {
+		group = "Util"
+
+		doFirst {
+			println("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
+		}
+	}
+
+	register("createDockerJar", Copy::class) {
+		from("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
+		into("${buildDir}/libs")
+
+		rename ("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
+	}
+
+	withType<Javadoc> {
+
+		options.memberLevel = JavadocMemberLevel.PRIVATE
+		source = sourceSets["main"].allJava
+
+	}
+
+	create("runIntegrationTests") {
+		dependsOn(assemble, "compileIntegTestJava")
+		doLast {
+			javaexec {
+				main = "io.cucumber.core.cli.Main"
+				classpath = sourceSets["integTest"].runtimeClasspath
+				args = listOf("--plugin", "pretty", "--glue", "com/rtomyj/skc/cucumber", "src/integTest/resources")
+			}
+		}
+	}
+
+	register("perfTest", JavaExec::class) {
+		description = "Performance test executed using Gatling"
+		group = "Test"
+		classpath = sourceSets["perfTest"].runtimeClasspath
 
 
-tasks.register("perfTest", JavaExec::class) {
-	description = "Performance test executed using Gatling"
-	group = "Test"
-	classpath = sourceSets["perfTest"].runtimeClasspath
-
-
-	main = "io.gatling.app.Gatling"
-	args = listOf(
+		main = "io.gatling.app.Gatling"
+		args = listOf(
 			"-s", "com.rtomyj.skc.simulations.BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
-	)
+		)
+	}
 }
