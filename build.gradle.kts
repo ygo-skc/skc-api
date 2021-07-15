@@ -41,15 +41,11 @@ repositories {
 sourceSets {
 	create("integTest") {
 		java.srcDir("src/integTest/java")
-		resources.srcDir("src/integTest/resources")
 	}
 
 	create("perfTest") {
-		withConvention(ScalaSourceSet::class) {
-			scala {
-				srcDir("src/perfTest/scala")
-			}
-		}
+		scala.srcDir("src/perfTest/scala")
+		resources.srcDir("src/perfTest/resources")
 	}
 }
 
@@ -61,7 +57,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
-	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
 	implementation("org.eclipse.jetty:jetty-alpn-conscrypt-server")
@@ -88,11 +83,6 @@ dependencies {
 
 
 configurations {
-	val perfTestImplementation by getting {
-		//	extendsFrom(configurations.implementation.get())	// used to extend config
-	}
-
-
 	implementation {
 		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
 		exclude(module = "spring-boot-starter-tomcat")
@@ -155,7 +145,7 @@ tasks {
 		dependsOn(assemble, "compileIntegTestJava")
 		doLast {
 			javaexec {
-				main = "io.cucumber.core.cli.Main"
+				mainClass.set("io.cucumber.core.cli.Main")
 				classpath = sourceSets["integTest"].runtimeClasspath
 				args = listOf("--plugin", "pretty", "--glue", "com/rtomyj/skc/cucumber", "src/integTest/resources")
 			}
@@ -167,8 +157,7 @@ tasks {
 		group = "Test"
 		classpath = sourceSets["perfTest"].runtimeClasspath
 
-
-		main = "io.gatling.app.Gatling"
+		mainClass.set("io.gatling.app.Gatling")
 		args = listOf(
 			"-s", "com.rtomyj.skc.simulations.BrowseSimulation",
 			"-rf", "${buildDir}/gatling-results",
