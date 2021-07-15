@@ -1,6 +1,3 @@
-
-
-
 configurations {
 
     "perfTestImplementation" {

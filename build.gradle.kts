@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val springBootVersion = "2.4.2"
+val springBootVersion = "2.5.2"
 val scalaLibraryVersion = "2.13.5"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.1.1"
