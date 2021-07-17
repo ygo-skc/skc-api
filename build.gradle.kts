@@ -18,7 +18,7 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.4.4"
+	id("org.springframework.boot") version "2.5.2"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.4.30"
 	kotlin("plugin.spring") version "1.4.30"
@@ -108,6 +108,10 @@ tasks {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
 			jvmTarget = JavaVersion.VERSION_11.toString()
 		}
+	}
+
+	getByName<Jar>("jar") {
+		enabled = false	// Spring Boot > 2.5.x will create two JARs (one which is useless) unless this is disabled
 	}
 
 	withType<BootJar> {
