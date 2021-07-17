@@ -1,13 +1,48 @@
 {
 	"configuration": {
-		"packages": "com.rtomyj.yugiohAPI",
-		"appenders": {
-			"Console": {
-				"name": "STD_Out",
-				"PatternLayout": {
-					"pattern": ">> %highlight{%level:} %highlight{%m} ::: MDC[reqIp=%X{reqIp}, reqPath=%X{reqPath}, reqUUID=%X{reqUUID}, clientID=%X{clientID}, userAgent=%X{userAgent}] ::: @%l ON %d{YYYY/dd/MM HH:mm:ss.SS} %n"
-					, "disableAnsi": false
+		"properties": {
+			"property": [
+				{
+					"name": "log-path",
+					"value": "logs"
+				},
+				{
+					"name": "archive",
+					"value": "${log-path}/archive"
 				}
+			]
+		},
+		"appenders": {
+			"Console":
+			[
+				{
+					"name": "STD_Out",
+					"PatternLayout": {
+						"pattern": "%highlight{%level:} %highlight{%m} • MDC[reqIp=%X{reqIp}, reqPath=%X{reqPath}, reqUUID=%X{reqUUID}, clientID=%X{clientID}, userAgent=%X{userAgent}] • %l • %d{MM/dd/YYYY HH:mm:ss.SS} %n"
+						, "disableAnsi": false
+					}
+				}
+				, {
+					"name": "STD_Out_Simple",
+					"PatternLayout": {
+						"pattern": "%highlight{%level:} %highlight{%m} • %l • %d{MM/dd/YYYY HH:mm:ss.SS} %n"
+					, "disableAnsi": false
+					}
+				}
+			]
+			, "RollingFile": {
+				"name": "File Out",
+				"fileName": "${log-path}/skc-api.log",
+				"filePattern":"${log-path}/skc-api-%d{MM-dd-yy}.log.gz",
+				"PatternLayout": {
+					"pattern": "%level: %m • MDC[reqIp=%X{reqIp}, reqPath=%X{reqPath}, reqUUID=%X{reqUUID}, clientID=%X{clientID}, userAgent=%X{userAgent}] • %l • %d{MM/dd/YYYY HH:mm:ss.SS} %n"
+				},
+				"Policies": {
+					"TimeBasedTriggeringPolicy": {
+						"size":"10 MB"
+					}
+				},
+				"disableAnsi": true
 			}
 		},
 		"loggers": {
@@ -15,15 +50,21 @@
 				"name": "com.rtomyj.skc",
 				"additivity": false
 				, "level": "${env:LOG_LEVEL}"
-				, "AppenderRef": {
-					"ref": "STD_Out"
-				}
+				, "appender-ref":
+					[
+						{
+							"ref": "STD_Out"
+						}, {
+							"ref": "File Out",
+							"level": "INFO"
+						}
+					]
 			},
 			"root": {
 				"additivity": false
 				, "level": "INFO"
-				, "AppenderRef": {
-					"ref": "STD_Out"
+				, "appender-ref": {
+					"ref": "STD_Out_Simple"
 				}
 			}
 		}
