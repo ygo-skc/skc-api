@@ -1,25 +1,26 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "2.5.2"
-val scalaLibraryVersion = "2.13.5"
+val springBootVersion = "2.5.3"
 val swagger2Version = "3.0.0"
-val javadocVersion = "3.1.1"
-val cache2kVersion = "2.0.0.Final"
+val javadocVersion = "3.1.1" // 3.3.0
+val cache2kVersion = "2.2.1.Final"
 val lombokVersion = "1.18.20"
-val mysqlVersion = "8.0.23"
-val jacksonVersion = "2.11.2"
+val mysqlVersion = "8.0.26"
+val jacksonVersion = "2.12.4"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
+val guavaVersion = "30.1-jre"
 
 val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.5.2"
+	id("org.springframework.boot") version "2.5.3"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	id("info.solidsoft.pitest") version "1.5.1"
 	kotlin("jvm") version "1.4.30"
 	kotlin("plugin.spring") version "1.4.30"
 	jacoco
@@ -73,12 +74,10 @@ dependencies {
 	implementation("org.cache2k:cache2k-api:$cache2kVersion")
 	implementation("org.cache2k:cache2k-core:$cache2kVersion")
 
-	implementation("com.google.guava:guava:30.1-jre")
+	implementation("com.google.guava:guava:$guavaVersion")
 
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
 	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE"s
-
-	compileOnly("org.scala-lang:scala-library:${scalaLibraryVersion}")
 }
 
 
@@ -88,6 +87,10 @@ configurations {
 		exclude(module = "spring-boot-starter-tomcat")
 		exclude(group = "org.apache.tomcat")
 		exclude(group = "junit")
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+	}
+
+	testImplementation {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 
@@ -123,7 +126,7 @@ tasks {
 		}
 	}
 
-	create("bootJarPath") {
+	register("bootJarPath") {
 		group = "Util"
 
 		doFirst {
@@ -145,13 +148,13 @@ tasks {
 
 	}
 
-	create("runIntegrationTests") {
+	register("runIntegrationTests") {
 		dependsOn(assemble, "compileIntegTestJava")
 		doLast {
 			javaexec {
 				mainClass.set("io.cucumber.core.cli.Main")
 				classpath = sourceSets["integTest"].runtimeClasspath
-				args = listOf("--plugin", "pretty", "--glue", "com/rtomyj/skc/cucumber", "src/integTest/resources")
+				args = listOf("-g", "com/rtomyj/skc/cucumber", "src/integTest/resources")
 			}
 		}
 	}

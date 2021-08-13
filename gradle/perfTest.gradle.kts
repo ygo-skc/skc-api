@@ -1,3 +1,7 @@
+val scalaLibraryVersion = "2.13.6"
+val gatlingVersion = "3.6.1"
+
+
 configurations {
 
     "perfTestImplementation" {
@@ -9,8 +13,9 @@ configurations {
 
 dependencies {
 
-    "perfTestImplementation"("org.scala-lang:scala-library:2.13.4")
-    "perfTestImplementation"("io.gatling.highcharts:gatling-charts-highcharts:3.5.0")
-    "perfTestImplementation"("io.gatling:gatling-core:3.5.0")
+    "perfTestImplementation"("org.scala-lang:scala-library:$scalaLibraryVersion")
+    "perfTestImplementation"("io.gatling.highcharts:gatling-charts-highcharts:$gatlingVersion")
+    "perfTestImplementation"("io.gatling:gatling-core:$gatlingVersion")
+    "perfTestCompileOnly"("org.scala-lang:scala-library:$scalaLibraryVersion")
 
 }
