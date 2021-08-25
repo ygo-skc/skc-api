@@ -12,7 +12,7 @@ val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
-val guavaVersion = "30.1-jre"
+val guavaVersion = "30.1.1-jre"
 
 val archivesBaseName = "skc-api"
 
