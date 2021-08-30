@@ -1,4 +1,4 @@
-val springVersion = "2.5.2"
+val springVersion = "2.5.4"
 
 dependencies {
 
