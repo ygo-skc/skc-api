@@ -13,6 +13,7 @@ val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
 val guavaVersion = "30.1.1-jre"
+val validationAPIVersion = "2.0.1.Final"
 
 val archivesBaseName = "skc-api"
 
@@ -42,6 +43,7 @@ repositories {
 sourceSets {
 	create("integTest") {
 		java.srcDir("src/integTest/java")
+		resources.srcDir("src/integTest/resources")
 	}
 
 	create("perfTest") {
@@ -52,7 +54,7 @@ sourceSets {
 
 
 dependencies {
-	implementation("javax.validation:validation-api:2.0.1.Final")
+	implementation("javax.validation:validation-api:$validationAPIVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
@@ -113,10 +115,6 @@ tasks {
 		}
 	}
 
-	getByName<Jar>("jar") {
-		enabled = false	// Spring Boot > 2.5.x will create two JARs (one which is useless) unless this is disabled
-	}
-
 	withType<BootJar> {
 		group = "Build"
 		description = "Creates a JAR file that can be executed to launch YGO service"
@@ -124,6 +122,17 @@ tasks {
 		manifest.attributes.apply {
 			put("Implementation-Title", archivesBaseName)
 		}
+	}
+
+	withType<Javadoc> {
+
+		options.memberLevel = JavadocMemberLevel.PRIVATE
+		source = sourceSets["main"].allJava
+
+	}
+
+	getByName<Jar>("jar") {
+		enabled = false	// Spring Boot > 2.5.x will create two JARs (one which is useless) unless this is disabled
 	}
 
 	register("bootJarPath") {
@@ -139,13 +148,6 @@ tasks {
 		into("${buildDir}/libs")
 
 		rename ("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
-	}
-
-	withType<Javadoc> {
-
-		options.memberLevel = JavadocMemberLevel.PRIVATE
-		source = sourceSets["main"].allJava
-
 	}
 
 	register("integTest") {
