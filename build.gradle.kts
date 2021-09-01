@@ -136,6 +136,7 @@ tasks {
 	}
 
 	register("bootJarPath") {
+		description = "Prints the relative path where boot JAR resides"
 		group = "Util"
 
 		doFirst {
@@ -144,6 +145,9 @@ tasks {
 	}
 
 	register("createDockerJar", Copy::class) {
+		description = "Renames JAR (removes version number) which makes it easer to deploy via Docker"
+		group = "Util"
+
 		from("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
 		into("${buildDir}/libs")
 
@@ -151,6 +155,9 @@ tasks {
 	}
 
 	register("integTest") {
+		description = "Integration test executed using Cucumber"
+		group = "Verification"
+
 		dependsOn(assemble, "compileIntegTestJava")
 		doLast {
 			javaexec {
@@ -163,7 +170,8 @@ tasks {
 
 	register("perfTest", JavaExec::class) {
 		description = "Performance test executed using Gatling"
-		group = "Test"
+		group = "Verification"
+
 		classpath = sourceSets["perfTest"].runtimeClasspath
 
 		mainClass.set("io.gatling.app.Gatling")
