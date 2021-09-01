@@ -148,7 +148,7 @@ tasks {
 
 	}
 
-	register("runIntegrationTests") {
+	register("integTest") {
 		dependsOn(assemble, "compileIntegTestJava")
 		doLast {
 			javaexec {
