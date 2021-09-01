@@ -171,3 +171,12 @@ tasks {
 		)
 	}
 }
+
+pitest {
+	targetClasses.set(listOf("com.rtomyj.skc.*"))
+	excludedClasses.set(listOf("com.rtomyj.skc.model.*"))
+	threads.set(4)
+	outputFormats.set(listOf("XML", "HTML"))
+	timestampedReports.set(false)
+	junit5PluginVersion.set("0.12")
+}
