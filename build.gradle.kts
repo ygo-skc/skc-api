@@ -59,13 +59,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
-	implementation("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
+	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
-	implementation("org.eclipse.jetty:jetty-alpn-conscrypt-server")
-	implementation("org.eclipse.jetty.http2:http2-server")
+	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server")
+	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
-	implementation("org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion")
+	compileOnly("org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion")
 
 	implementation("io.springfox:springfox-boot-starter:$swagger2Version")
 
