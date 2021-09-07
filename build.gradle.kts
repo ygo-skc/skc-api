@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val springBootVersion = "2.5.4"
 val swagger2Version = "3.0.0"
-val javadocVersion = "3.1.1" // 3.3.0
+val javadocVersion = "3.2.0" // 3.3.0
 val cache2kVersion = "2.2.1.Final"
 val lombokVersion = "1.18.20"
 val mysqlVersion = "8.0.26"
@@ -22,6 +22,7 @@ plugins {
 	id("org.springframework.boot") version "2.5.4"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.6.0"
+	id("com.adarshr.test-logger") version "3.0.0"	// printing for JUnits
 	kotlin("jvm") version "1.5.30"
 	kotlin("plugin.spring") version "1.5.30"
 	jacoco
@@ -48,7 +49,6 @@ sourceSets {
 
 	create("perfTest") {
 		scala.srcDir("src/perfTest/scala")
-		resources.srcDir("src/perfTest/resources")
 	}
 }
 

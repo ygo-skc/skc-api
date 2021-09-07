@@ -1,12 +1,14 @@
 val springVersion = "2.5.4"
+val junitVersion = "5.7.2"
+val h2Version = "1.4.200"
 
 dependencies {
 
     "testImplementation"("org.springframework.boot:spring-boot-starter-test:$springVersion")
-    "testRuntimeOnly"("com.h2database:h2")
+    "testRuntimeOnly"("com.h2database:h2:$h2Version")
 
-    "testImplementation"("org.junit.jupiter:junit-jupiter-api")
-    "testImplementation"("org.junit.jupiter:junit-jupiter-engine")
+    "testImplementation"("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    "testImplementation"("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
 }
 
@@ -16,5 +18,5 @@ tasks.withType<Test> {
 
     minHeapSize = "256m"
     maxHeapSize = "512m"
-    maxParallelForks = Runtime.getRuntime().availableProcessors() / 3 ?: 1
+    maxParallelForks = Runtime.getRuntime().availableProcessors() / 2 ?: 1
 }

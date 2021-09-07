@@ -1,10 +1,12 @@
 val cucumberVersion = "6.11.0"
 val restAssuredVersion = "4.4.0"
 val groovyVersion = "3.0.9"
+val junitVersion = "5.7.2"
+val commonsLoggingVersion = "1.2"
 
 dependencies {
 
-    "integTestImplementation"("commons-logging:commons-logging:1.2")
+    "integTestImplementation"("commons-logging:commons-logging:$commonsLoggingVersion")
 
     "integTestImplementation"("io.cucumber:cucumber-java:${cucumberVersion}")
 
@@ -17,7 +19,7 @@ dependencies {
     "integTestImplementation"("org.codehaus.groovy:groovy:${groovyVersion}")   // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
     "integTestImplementation"("org.codehaus.groovy:groovy-xml:${groovyVersion}")   // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
 
-    "integTestImplementation"("org.junit.jupiter:junit-jupiter-api")
-    "integTestImplementation"("org.junit.jupiter:junit-jupiter-engine")
+    "integTestImplementation"("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    "integTestImplementation"("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
 }
