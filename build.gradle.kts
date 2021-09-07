@@ -79,7 +79,7 @@ dependencies {
 	implementation("com.google.guava:guava:$guavaVersion")
 
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
-	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE"s
+	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE's
 }
 
 
@@ -145,7 +145,7 @@ tasks {
 	}
 
 	register("createDockerJar", Copy::class) {
-		description = "Renames JAR (removes version number) which makes it easer to deploy via Docker"
+		description = "Renames JAR (removes version number) which makes it easier to deploy via Docker"
 		group = "Util"
 
 		from("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
