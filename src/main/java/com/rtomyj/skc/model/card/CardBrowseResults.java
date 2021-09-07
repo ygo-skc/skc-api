@@ -13,8 +13,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
