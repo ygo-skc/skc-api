@@ -51,7 +51,7 @@ public class DiffServiceTest {
 	private static BanListRemovedContent banListRemovedContent;
 
 	@BeforeAll
-	public static void before() throws JsonParseException, JsonMappingException, IOException {
+	public static void before() throws IOException {
 		final ObjectMapper mapper = new ObjectMapper();
 
 		banListNewContent = mapper.readValue(new File(TestConstants.BAN_LIST_NEW_CONTENT), BanListNewContent.class);

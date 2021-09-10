@@ -53,7 +53,7 @@ public class BannedCardsServiceTest {
 
 	// TODO: add ban list assertion that checks if forbidden, limited, etc length matches the length/num field for each associated list
 	@BeforeAll
-	public static void before() throws JsonParseException, JsonMappingException, IOException
+	public static void before() throws IOException
 	{
 		final ObjectMapper mapper = new ObjectMapper();
 		banListInstanceFullText = mapper.readValue(

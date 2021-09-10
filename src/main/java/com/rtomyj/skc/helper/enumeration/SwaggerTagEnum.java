@@ -11,10 +11,11 @@ public enum SwaggerTagEnum {
     , PRODUCT_TAG(SwaggerConstants.TAG_PRODUCT_TAG_NAME, "Request information on products: browse available products, get product info.")
     , STATISTICS_TAG(SwaggerConstants.TAG_STATS_NAME, "See information about the data currently in the Database.");
 
-    private String tagName, tagDescription;
+    private final String tagName;
+    private final String tagDescription;
 
 
-    private SwaggerTagEnum(final String tagName, final String tagDescription)
+    SwaggerTagEnum(final String tagName, final String tagDescription)
     {
 
         this.tagName = tagName;

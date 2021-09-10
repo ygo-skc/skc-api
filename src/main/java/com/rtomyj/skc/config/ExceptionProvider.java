@@ -33,7 +33,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 		{
 
 			final HttpStatus status = HttpStatus.NOT_FOUND;
-			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.toString(), status);
+			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception, status);
 			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
 
 		}

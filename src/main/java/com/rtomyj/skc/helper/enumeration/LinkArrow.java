@@ -11,8 +11,8 @@ public enum LinkArrow {
     , BOTTOM_LEFT("B-L", "Bottom Left")
     , MIDDLE_LEFT("M-L", "Middle Left");
 
-    private String arrowAbbreviated;
-    private String arrow;
+    private final String arrowAbbreviated;
+    private final String arrow;
 
 
     LinkArrow(final String arrowAbbreviated, final String arrow)

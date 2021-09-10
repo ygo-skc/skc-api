@@ -27,7 +27,7 @@ public interface Dao
 	 * Defines statuses of a card a ban list that is used by the database.
 	 * In other words, these strings are used in the database to differentiate between different statuses.
 	 */
-	public enum Status
+    enum Status
 	{
 		/**
 		 * Card cannot be used in advanced format
@@ -63,14 +63,14 @@ public interface Dao
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-	public BanListDates getBanListDates();
+    BanListDates getBanListDates();
 
 	/**
 	 * Retrieve the information about a Card given the ID.
 	 * @param cardID The ID of a Yugioh card.
 	 * @return The Card requested.
 	 */
-	public Card getCardInfo(String cardID) throws YgoException;
+    Card getCardInfo(String cardID) throws YgoException;
 
 	/**
 	 * Checks the databases and returns a list of cards in a specified ban list (date) that has the specified status (forbidden, limited, semi-limited)
@@ -78,20 +78,20 @@ public interface Dao
 	 * @param status The status
 	 * @return List of Cards that have the status wanted for the desired date.
 	 */
-	public List<Card> getBanListByBanStatus(String date, Status status);
+    List<Card> getBanListByBanStatus(String date, Status status);
 
 	/**
 	 * Checks the database for the number of ban lists stored.
 	 * @return the number of ban lists in database.
 	 */
-	public int getNumberOfBanLists();
+    int getNumberOfBanLists();
 
 	/**
 	 * todo update me
 	 * Returns an integer ([1, n]) that corresponds to the position of the banListDate when the database is sorted by banListDate ASC.
 	 * @return The position of the ban list queried in the database: -1 if not in database, 1 if it is the first ban list while database is sorted ASC.
 	 */
-	public List<String> getBanListDatesInOrder();
+    List<String> getBanListDatesInOrder();
 
 	/**
 	 * Checks the database and returns the date of the previous ban list as the one passed into the method.
@@ -101,7 +101,7 @@ public interface Dao
 	 * @param currentBanList the date of a ban list to use to find the previous sequential ban list relative to it.
 	 * @return String of the date of the previous ban list.
 	 */
-	public String getPreviousBanListDate(String currentBanList);
+    String getPreviousBanListDate(String currentBanList);
 
 	/**
 	 * Checks the database to find card(s) that where added to the ban list, ie: the card(s) was not in the previous ban list.
@@ -112,14 +112,14 @@ public interface Dao
 	 * 		id: Identifier of newly added card
 	 * 		previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	public List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status);
+    List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status);
 
 	/**
 	 *
 	 * @param newBanList
 	 * @return
 	 */
-	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
+    List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
 
 	/**
 	 *
@@ -127,41 +127,40 @@ public interface Dao
 	 * @param banListDate
 	 * @return
 	 */
-	public String getCardBanListStatusByDate(String cardId, String banListDate);
+    String getCardBanListStatusByDate(String cardId, String banListDate);
 
-	public boolean isValidBanList(final String banListDate);
+	boolean isValidBanList(final String banListDate);
 
-	public List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit, final boolean getBanInfo);
+	List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit, final boolean getBanInfo);
 
-	public Products getAllProductsByType(final ProductType productType, final String locale);
+	Products getAllProductsByType(final ProductType productType, final String locale);
 
-	public Map<String, Integer> getProductRarityCount(final String packId);
+	Map<String, Integer> getProductRarityCount(final String packId);
 
-	public Set<ProductContent> getProductContents(final String productId, final String locale);
+	Set<ProductContent> getProductContents(final String productId, final String locale);
 
-	public MonsterTypeStats getMonsterTypeStats(final String cardColor);
+	MonsterTypeStats getMonsterTypeStats(final String cardColor);
 
-	public DatabaseStats getDatabaseStats();
+	DatabaseStats getDatabaseStats();
 
-	public Set<Product> getProductDetailsForCard(final String cardId);
+	Set<Product> getProductDetailsForCard(final String cardId);
 
-	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId);
+	List<CardBanListStatus> getBanListDetailsForCard(final String cardId);
 
-	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet, final Set<String> monsterSubTypeSet
-			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet);
+	CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet, final Set<String> monsterSubTypeSet, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet);
 
-	public Set<String> getCardColors();
+	Set<String> getCardColors();
 
-	public Set<String> getMonsterAttributes();
+	Set<String> getMonsterAttributes();
 
-	public Set<String> getMonsterTypes();
+	Set<String> getMonsterTypes();
 
-	public Set<String> getMonsterSubTypes();
+	Set<String> getMonsterSubTypes();
 
-	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField);
+	Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField);
 
-	public Product getProductInfo(final String productId, final String locale);
+	Product getProductInfo(final String productId, final String locale);
 
-	public List<Product> getProductsByLocale(final String locale);
+	List<Product> getProductsByLocale(final String locale);
 
 }
