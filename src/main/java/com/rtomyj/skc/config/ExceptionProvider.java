@@ -1,13 +1,11 @@
 package com.rtomyj.skc.config;
 
-import javax.validation.ConstraintViolationException;
-
 import com.rtomyj.skc.helper.constants.ErrConstants;
 import com.rtomyj.skc.helper.constants.LogConstants;
 import com.rtomyj.skc.helper.exceptions.Error;
 import com.rtomyj.skc.helper.exceptions.YgoError;
 import com.rtomyj.skc.helper.exceptions.YgoException;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.validation.ConstraintViolationException;
 
 
 @ControllerAdvice
@@ -49,8 +47,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	{
 
 		log.error("Request did not conform to spec. Exception: {}", exception.toString());
-		YgoError ygoException = new YgoError(Error.D101.toString(), Error.D101.name());
-		return ygoException;
+		return new YgoError(Error.D101.toString(), Error.D101.name());
 
 	}
 
