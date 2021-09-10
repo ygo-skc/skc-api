@@ -33,14 +33,13 @@ public class BanServiceTest
 	private BanService banService;
 
 	private static BanListDates banListDatesInstance;
-	private static Date testBanListDate;
 
 
 	@BeforeAll
 	public static void before() throws Exception
 	{
-		final SimpleDateFormat banListSimpleDate = new SimpleDateFormat("yyyy-mm-dd");
-		testBanListDate = banListSimpleDate.parse("2020-01-20");
+		final SimpleDateFormat banListSimpleDate = new SimpleDateFormat("yyyy-MM-dd");
+		final Date testBanListDate = banListSimpleDate.parse("2020-01-20");
 
 		final List<BanListDate> banListDates = new ArrayList<>();
 		banListDates.add(BanListDate

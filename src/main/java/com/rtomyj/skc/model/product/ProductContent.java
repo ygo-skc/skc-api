@@ -1,26 +1,22 @@
 package com.rtomyj.skc.model.product;
 
-import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rtomyj.skc.helper.constants.SwaggerConstants;
 import com.rtomyj.skc.model.card.Card;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.List;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @ToString
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
-@ApiModel(
-		description = ""
-		, parent = RepresentationModel.class
-)
+@ApiModel(parent = RepresentationModel.class)
 public class ProductContent extends RepresentationModel<ProductContent>
 {
 

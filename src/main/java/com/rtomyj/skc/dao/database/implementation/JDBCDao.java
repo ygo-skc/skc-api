@@ -11,8 +11,8 @@ import com.rtomyj.skc.helper.enumeration.table.definitions.BrowseQueryDefinition
 import com.rtomyj.skc.helper.enumeration.table.definitions.ProductViewDefinition;
 import com.rtomyj.skc.helper.enumeration.table.definitions.ProductsTableDefinition;
 import com.rtomyj.skc.helper.exceptions.YgoException;
-import com.rtomyj.skc.model.Stats.DatabaseStats;
-import com.rtomyj.skc.model.Stats.MonsterTypeStats;
+import com.rtomyj.skc.model.stats.DatabaseStats;
+import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;

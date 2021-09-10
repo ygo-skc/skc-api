@@ -3,8 +3,8 @@ package com.rtomyj.skc.controller.stats;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
 import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.model.Stats.DatabaseStats;
-import com.rtomyj.skc.model.Stats.MonsterTypeStats;
+import com.rtomyj.skc.model.stats.DatabaseStats;
+import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import com.rtomyj.skc.service.stats.StatsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,27 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class CardService
 {
+	// static inner classes
+	// todo: add javadoc
+	@Getter
+	@EqualsAndHashCode
+	private static class CardRequest
+	{
+
+		private final String cardId;
+		private final boolean fetchAllInfo;
+
+		public CardRequest(final String cardId, final boolean fetchAllInfo)
+		{
+
+			this.cardId = cardId;
+			this.fetchAllInfo = fetchAllInfo;
+
+		}
+
+	}
+
+	// fields
 	private final Dao dao;
 
 	/**
@@ -65,6 +87,7 @@ public class CardService
 
 
 	// todo: add javadoc
+	@NotNull
 	public Card onCacheMiss(final CardRequest cardRequest)
 		throws YgoException
 	{
@@ -124,26 +147,6 @@ public class CardService
 		log.debug("Setting Hateoas links.");
 		HateoasLinks.setLinks(searchResults);
 		return searchResults;
-
-	}
-
-
-	// todo: add javadoc
-	@Getter
-	@EqualsAndHashCode
-	private class CardRequest
-	{
-
-		private final String cardId;
-		private final boolean fetchAllInfo;
-
-		public CardRequest(final String cardId, final boolean fetchAllInfo)
-		{
-
-			this.cardId = cardId;
-			this.fetchAllInfo = fetchAllInfo;
-
-		}
 
 	}
 

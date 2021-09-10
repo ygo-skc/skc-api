@@ -1,26 +1,18 @@
 package com.rtomyj.skc.controller.card;
 
-import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.rtomyj.skc.controller.YgoApiBaseController;
 import com.rtomyj.skc.helper.constants.SwaggerConstants;
 import com.rtomyj.skc.model.card.CardBrowseCriteria;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.service.card.CardBrowseService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 @RestController
 @RequestMapping(path = "/card/browse", produces = "application/json; charset=UTF-8")

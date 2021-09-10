@@ -1,4 +1,4 @@
-package com.rtomyj.skc.model.Stats;
+package com.rtomyj.skc.model.stats;
 
 
 import com.rtomyj.skc.controller.stats.StatsController;

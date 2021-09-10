@@ -29,7 +29,23 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = {SwaggerConstants.TEST_CALL_TAG_NAME})
 public class TestCallController extends YgoApiBaseController
 {
+	// static inner classes
+	@Getter
+	@AllArgsConstructor
+	@ApiModel(description = "Return object for test call endpoint.")
+	private static class ApiTestCall
+	{
 
+		@ApiModelProperty(
+				value = "The current status of the API."
+				, accessMode = ApiModelProperty.AccessMode.READ_ONLY
+		)
+		private final String status;
+
+	}
+
+
+	// fields
 	/**
 	 * Object containing info about the user who initiates a request
 	 */
@@ -64,21 +80,6 @@ public class TestCallController extends YgoApiBaseController
 
 		log.info("User requested API status");
 		return ResponseEntity.ok(new ApiTestCall("API is online and functional."));
-
-	}
-
-
-	@Getter
-	@AllArgsConstructor
-	@ApiModel(description = "Return object for test call endpoint.")
-	private class ApiTestCall
-	{
-
-		@ApiModelProperty(
-				value = "The current status of the API."
-				, accessMode = ApiModelProperty.AccessMode.READ_ONLY
-		)
-		private final String status;
 
 	}
 

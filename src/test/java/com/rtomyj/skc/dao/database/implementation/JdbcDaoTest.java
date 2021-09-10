@@ -20,12 +20,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -53,8 +50,6 @@ public class JdbcDaoTest
 	private static Card stratosTestCard;
 	private static Card aHeroLivesTestCard;
 	private static Card dMaliTestCard;
-
-	private final String TEST_BAN_LIST_DATE = "2015-11-09";
 
 
 	@BeforeAll
@@ -101,7 +96,7 @@ public class JdbcDaoTest
 
 	@Test
 	public void testFetchingCardById_Success()
-		throws YgoException, SQLException
+		throws YgoException
 	{
 		final Card stratosDbResult = dao.getCardInfo(stratosTestCard.getCardID());
 		final Card aHeroLivesDbResult = dao.getCardInfo(aHeroLivesTestCard.getCardID());
@@ -148,7 +143,7 @@ public class JdbcDaoTest
 
 	@Test
 	public void testFetchingCardById_Failure()
-		throws YgoException, SQLException
+		throws YgoException
 	{
 		assertThrows(NullPointerException.class, () -> dao.getCardInfo(null));
 		assertThrows(YgoException.class, () -> dao.getCardInfo("12345678"));
@@ -158,8 +153,9 @@ public class JdbcDaoTest
 
 	@Test
 	public void testFetchingBanListByStatus_Success()
-		throws YgoException, SQLException
+		throws YgoException
 	{
+		final String TEST_BAN_LIST_DATE = "2015-11-09";
 		final List<Card> forbiddenDbResult = dao.getBanListByBanStatus(TEST_BAN_LIST_DATE, Status.FORBIDDEN);
 		final List<Card> limitedDbResult = dao.getBanListByBanStatus(TEST_BAN_LIST_DATE, Status.LIMITED);
 		final List<Card> semiLimitedDbResult = dao.getBanListByBanStatus(TEST_BAN_LIST_DATE, Status.SEMI_LIMITED);
