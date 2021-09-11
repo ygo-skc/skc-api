@@ -29,7 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = {SwaggerConstants.TEST_CALL_TAG_NAME})
 public class TestCallController extends YgoApiBaseController
 {
-	// static inner classes
+	/*--------------------------------------
+		Static inner classes
+	 --------------------------------------*/
 	@Getter
 	@AllArgsConstructor
 	@ApiModel(description = "Return object for test call endpoint.")
@@ -45,7 +47,9 @@ public class TestCallController extends YgoApiBaseController
 	}
 
 
-	// fields
+	/*--------------------------------------
+		 Fields
+	 --------------------------------------*/
 	/**
 	 * Object containing info about the user who initiates a request
 	 */

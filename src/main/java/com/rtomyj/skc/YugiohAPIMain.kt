@@ -16,7 +16,6 @@ class YugiohAPIMain
 
 /**
  * Inits the program. Main method for program.
- * @param args Java arguments
  */
 fun main() {
     SpringApplication.run(YugiohAPIMain::class.java)

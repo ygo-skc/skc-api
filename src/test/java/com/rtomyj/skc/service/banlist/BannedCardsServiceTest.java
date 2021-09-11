@@ -23,9 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.rtomyj.skc.helper.constants.TestConstants.BAN_LIST_START_DATE;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
@@ -42,7 +46,6 @@ public class BannedCardsServiceTest {
 	private BannedCardsService bannedCardsService;
 
 	private static BanListInstance banListInstanceFullText;
-	//private static BanListInstance banListInstanceTrimmedText;
 	
 
 	// TODO: add ban list assertion that checks if forbidden, limited, etc length matches the length/num field for each associated list
@@ -52,8 +55,6 @@ public class BannedCardsServiceTest {
 		final ObjectMapper mapper = new ObjectMapper();
 		banListInstanceFullText = mapper.readValue(
 			new File(TestConstants.BAN_LIST_INSTANCE_JSON_FILE), BanListInstance.class);
-		// banListInstanceTrimmedText = mapper.readValue(
-		// 	new File(TestConstants.BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE), BanListInstance.class);
 	}
 
 

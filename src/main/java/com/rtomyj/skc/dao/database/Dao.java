@@ -1,22 +1,22 @@
 package com.rtomyj.skc.dao.database;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.rtomyj.skc.helper.exceptions.YgoException;
 import com.rtomyj.skc.helper.enumeration.products.ProductType;
-import com.rtomyj.skc.model.card.CardBrowseResults;
+import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
-import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.card.Card;
-import com.rtomyj.skc.model.stats.DatabaseStats;
-import com.rtomyj.skc.model.stats.MonsterTypeStats;
+import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
 import com.rtomyj.skc.model.product.Product;
 import com.rtomyj.skc.model.product.ProductContent;
 import com.rtomyj.skc.model.product.Products;
+import com.rtomyj.skc.model.stats.DatabaseStats;
+import com.rtomyj.skc.model.stats.MonsterTypeStats;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Contract for database operations.
@@ -116,16 +116,16 @@ public interface Dao
 
 	/**
 	 *
-	 * @param newBanList
-	 * @return
+	 * @param banListDate effective date of a YGO ban list.
+	 * @return the contents of the previous ban list in relation to {@code banListDate}.
 	 */
-    List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList);
+    List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String banListDate);
 
 	/**
 	 *
-	 * @param cardId
-	 * @param banListDate
-	 * @return
+	 * @param cardId unique identifier for a YGO card.
+	 * @param banListDate effective date of a YGO ban list.
+	 * @return ban status for card in a specific ban list (forbidden, limited, semi-limted).
 	 */
     String getCardBanListStatusByDate(String cardId, String banListDate);
 
