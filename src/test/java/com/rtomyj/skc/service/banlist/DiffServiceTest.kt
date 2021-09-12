@@ -19,7 +19,6 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.io.File
 
 
 @ExtendWith(SpringExtension::class)

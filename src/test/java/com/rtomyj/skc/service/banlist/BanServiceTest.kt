@@ -1,5 +1,6 @@
 package com.rtomyj.skc.service.banlist
 
+import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.dao.database.Dao
 import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
@@ -13,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.text.SimpleDateFormat
 
 
 @ExtendWith(SpringExtension::class)
@@ -34,7 +34,7 @@ class BanServiceTest {
         @BeforeAll
         @JvmStatic
         fun before() {
-            val banListSimpleDate = SimpleDateFormat("yyyy-MM-dd")
+            val banListSimpleDate = DateConfig.getDBSimpleDateFormat()
             val testBanListDate = banListSimpleDate.parse("2020-01-20")
             val banListDates: MutableList<BanListDate> = ArrayList()
 
