@@ -139,8 +139,7 @@ public class BannedCardsService
 		banListInstance.setNumLimited(banListInstance.getLimited().size());
 		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
 
-		if (banListInstance.getForbidden().size() == 0 && banListInstance.getLimited().size() == 0
-				&& banListInstance.getSemiLimited().size() == 0)
+		if (banListInstance.getForbidden().isEmpty() && banListInstance.getLimited().isEmpty() && banListInstance.getSemiLimited().isEmpty())
 		{
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
 		}

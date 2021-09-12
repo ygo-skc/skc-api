@@ -469,8 +469,6 @@ public class JDBCDao implements Dao
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("productType", productType.toString().replaceAll("_", " "));
-		System.out.println(sqlParams);
-		System.out.println(DBQueryConstants.GET_AVAILABLE_PACKS);
 
 
 		return jdbcNamedTemplate.query(DBQueryConstants.GET_AVAILABLE_PACKS, sqlParams, (ResultSet row) -> {
