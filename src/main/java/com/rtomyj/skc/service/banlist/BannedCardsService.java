@@ -1,21 +1,19 @@
 package com.rtomyj.skc.service.banlist;
 
-import java.util.concurrent.TimeUnit;
-
 import com.rtomyj.skc.dao.database.Dao;
 import com.rtomyj.skc.dao.database.Dao.Status;
 import com.rtomyj.skc.helper.constants.ErrConstants;
 import com.rtomyj.skc.helper.exceptions.YgoException;
 import com.rtomyj.skc.model.banlist.BanListInstance;
 import com.rtomyj.skc.model.card.Card;
-
+import lombok.extern.slf4j.Slf4j;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service class that allows interfacing with the contents of a ban list.
@@ -82,9 +80,7 @@ public class BannedCardsService
 	{
 
 		/* Determines which cache to use depending on user bandwidth preferences */
-		Cache<String, BanListInstance> cache;
-		if (saveBandwidth)	cache = BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE;
-		else	cache = BAN_LIST_CARDS_CACHE;
+		Cache<String, BanListInstance> cache = (saveBandwidth)? BAN_LIST_CARDS_LOW_BANDWIDTH_CACHE : BAN_LIST_CARDS_CACHE;
 
 		final BanListInstance banListInstance = cache.get(banListStartDate);
 
