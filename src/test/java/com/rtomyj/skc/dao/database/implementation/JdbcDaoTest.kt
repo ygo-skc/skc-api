@@ -25,7 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ContextConfiguration(classes = [JDBCDao::class, DateConfig::class, ObjectMapper::class])
 @DataJdbcTest
 @ActiveProfiles("test") // Loading test props with H2 in memory DB configurations
-@SqlGroup(Sql("classpath:drop.sql"), Sql("classpath:schema.sql"), Sql("classpath:data.sql"), Sql("classpath:views.sql"))
+@SqlGroup(Sql("classpath:sql/drop.sql"), Sql("classpath:sql/schema.sql"), Sql("classpath:sql/data.sql"), Sql("classpath:sql/views.sql"))
 class JdbcDaoTest {
     @Autowired
     private lateinit var jdbcNamedTemplate: NamedParameterJdbcTemplate

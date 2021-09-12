@@ -15,6 +15,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.core.io.ClassPathResource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -41,10 +42,12 @@ class DiffServiceTest {
         @JvmStatic
         fun before() {
             val mapper = ObjectMapper()
+
             banListNewContent =
-                mapper.readValue(File(TestConstants.BAN_LIST_NEW_CONTENT), BanListNewContent::class.java)
+                mapper.readValue(ClassPathResource(TestConstants.BAN_LIST_NEW_CONTENT).file, BanListNewContent::class.java)
+
             banListRemovedContent = mapper.readValue(
-                File(TestConstants.BAN_LIST_REMOVED_CONTENT),
+                ClassPathResource(TestConstants.BAN_LIST_REMOVED_CONTENT).file,
                 BanListRemovedContent::class.java
             )
         }

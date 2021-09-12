@@ -2,9 +2,9 @@ package com.rtomyj.skc.helper.constants
 
 object TestConstants {
     // JSON res files
-    const val BAN_LIST_INSTANCE_JSON_FILE = "src/test/resources/BanListInstanceTestResponse.json"
-    const val BAN_LIST_NEW_CONTENT = "src/test/resources/BanListNewContent.json"
-    const val BAN_LIST_REMOVED_CONTENT = "src/test/resources/BanListRemovedContent.json"
+    const val BAN_LIST_INSTANCE_JSON_FILE = "json-mock/BanListInstanceTestResponse.json"
+    const val BAN_LIST_NEW_CONTENT = "json-mock/BanListNewContent.json"
+    const val BAN_LIST_REMOVED_CONTENT = "json-mock/BanListRemovedContent.json"
 
     // E-HERO Stratos card info
     const val STRATOS_ID = "40044918"

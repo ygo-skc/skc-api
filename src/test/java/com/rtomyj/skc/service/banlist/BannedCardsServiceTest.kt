@@ -16,10 +16,10 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.core.io.ClassPathResource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.io.File
 
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [BannedCardsService::class, DiffService::class])
@@ -43,8 +43,9 @@ class BannedCardsServiceTest {
         @JvmStatic
         fun before() {
             val mapper = ObjectMapper()
+
             banListInstanceFullText = mapper.readValue(
-                File(TestConstants.BAN_LIST_INSTANCE_JSON_FILE), BanListInstance::class.java
+                ClassPathResource(TestConstants.BAN_LIST_INSTANCE_JSON_FILE).file, BanListInstance::class.java
             )
         }
     }
