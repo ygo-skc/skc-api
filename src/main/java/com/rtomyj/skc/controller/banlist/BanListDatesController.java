@@ -3,7 +3,7 @@ package com.rtomyj.skc.controller.banlist;
 import com.rtomyj.skc.controller.YgoApiBaseController;
 import com.rtomyj.skc.helper.constants.SwaggerConstants;
 import com.rtomyj.skc.model.banlist.BanListDates;
-import com.rtomyj.skc.service.banlist.BanService;
+import com.rtomyj.skc.service.banlist.BanListDatesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,18 +31,18 @@ public class BanListDatesController extends YgoApiBaseController
 	/**
 	 * Service object used to interface the database DAO
 	 */
-	private final BanService banListService;
+	private final BanListDatesService banListDatesService;
 
 
 	/**
 	 * Create object instance.
-	 * @param banListService Service object to use to accomplish functionality needed by this endpoint.
+	 * @param banListDatesService Service object to use to accomplish functionality needed by this endpoint.
 	 */
 	@Autowired
-	public BanListDatesController(final BanService banListService)
+	public BanListDatesController(final BanListDatesService banListDatesService)
 	{
 
-		this.banListService = banListService;
+		this.banListDatesService = banListDatesService;
 
 	}
 
@@ -61,7 +61,7 @@ public class BanListDatesController extends YgoApiBaseController
 	public ResponseEntity<BanListDates> getBanListStartDates()
 	{
 		log.info("User is retrieving all effective start dates for ban lists.");
-		final BanListDates banListDates = banListService.getBanListStartDates();
+		final BanListDates banListDates = banListDatesService.getBanListStartDates();
 
 		log.info("Successfully retrieved all effective start dates for ban list. Currently there are {} ban lists", banListDates.getBanListDates().size());
 		return ResponseEntity.ok(banListDates);

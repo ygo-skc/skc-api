@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-public class BanService
+public class BanListDatesService
 {
 
 	/**
@@ -28,7 +28,7 @@ public class BanService
 	 * @param dao object used to interface with DB.
 	 */
 	@Autowired
-	public BanService(@Qualifier("hibernate") final Dao dao)
+	public BanListDatesService(@Qualifier("hibernate") final Dao dao)
 	{
 
 		this.dao = dao;
