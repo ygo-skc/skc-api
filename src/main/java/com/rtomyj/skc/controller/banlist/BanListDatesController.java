@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path="/ban_list/dates", produces = "application/json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
 @Slf4j
 public class BanListDatesController extends YgoApiBaseController

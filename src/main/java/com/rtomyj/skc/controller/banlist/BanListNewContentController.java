@@ -29,7 +29,6 @@ import javax.validation.constraints.Pattern;
  */
 @RestController
 @RequestMapping(path="/ban_list", produces = "application/json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Validated
 @Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})

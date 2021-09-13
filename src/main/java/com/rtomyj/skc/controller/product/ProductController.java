@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/product", produces = "application/json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Api(tags = {SwaggerConstants.TAG_PRODUCT_TAG_NAME})
 public class ProductController extends YgoApiBaseController

@@ -29,7 +29,6 @@ import javax.validation.constraints.Pattern;
  */
 @RestController
 @RequestMapping(path = "/card", produces = "application/json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Validated
 @Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})

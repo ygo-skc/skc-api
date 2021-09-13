@@ -10,11 +10,6 @@ import java.text.SimpleDateFormat;
 @Lazy
 public class DateConfig
 {
-	private DateConfig() {
-		throw new UnsupportedOperationException();
-	}
-	
-
 	@Bean("dbSimpleDateFormat")
 	public static SimpleDateFormat getDBSimpleDateFormat()
 	{
