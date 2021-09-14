@@ -1,6 +1,6 @@
 package com.rtomyj.skc.service.stats;
 
-import com.rtomyj.skc.dao.database.Dao;
+import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.model.stats.DatabaseStats;
 import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import org.apache.commons.lang.WordUtils;

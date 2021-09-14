@@ -1,7 +1,7 @@
 package com.rtomyj.skc.service.card;
 
-import com.rtomyj.skc.dao.database.Dao;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.product.Product;

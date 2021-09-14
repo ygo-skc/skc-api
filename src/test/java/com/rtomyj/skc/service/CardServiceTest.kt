@@ -6,12 +6,12 @@ import org.springframework.test.context.ContextConfiguration
 import com.rtomyj.skc.service.card.CardService
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.boot.test.mock.mockito.MockBean
-import com.rtomyj.skc.dao.database.Dao
+import com.rtomyj.skc.dao.Dao
 import org.springframework.beans.factory.annotation.Autowired
 import org.mockito.Mockito
 import org.mockito.ArgumentMatchers
-import com.rtomyj.skc.helper.constants.TestConstants
-import com.rtomyj.skc.helper.exceptions.YgoException
+import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import org.cache2k.io.CacheLoaderException
 import org.junit.jupiter.api.Assertions

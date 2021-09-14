@@ -2,7 +2,7 @@ package com.rtomyj.skc.controller.card;
 
 import com.google.common.base.Suppliers;
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.card.CardBrowseCriteria;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.service.card.CardBrowseService;

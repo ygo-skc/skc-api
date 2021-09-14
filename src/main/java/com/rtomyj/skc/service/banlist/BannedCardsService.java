@@ -1,9 +1,9 @@
 package com.rtomyj.skc.service.banlist;
 
-import com.rtomyj.skc.dao.database.Dao;
-import com.rtomyj.skc.dao.database.Dao.Status;
-import com.rtomyj.skc.helper.constants.ErrConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.dao.Dao.Status;
+import com.rtomyj.skc.constant.ErrConstants;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListInstance;
 import com.rtomyj.skc.model.card.Card;
 import lombok.extern.slf4j.Slf4j;

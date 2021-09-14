@@ -1,6 +1,6 @@
 package com.rtomyj.skc.filter;
 
-import com.rtomyj.skc.helper.Logging;
+import com.rtomyj.skc.logging.Logging;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

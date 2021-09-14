@@ -1,10 +1,10 @@
 package com.rtomyj.skc.config;
 
-import com.rtomyj.skc.helper.constants.ErrConstants;
-import com.rtomyj.skc.helper.constants.LogConstants;
-import com.rtomyj.skc.helper.exceptions.Error;
-import com.rtomyj.skc.helper.exceptions.YgoError;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.ErrConstants;
+import com.rtomyj.skc.constant.LogConstants;
+import com.rtomyj.skc.exception.Error;
+import com.rtomyj.skc.exception.YgoError;
+import com.rtomyj.skc.exception.YgoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

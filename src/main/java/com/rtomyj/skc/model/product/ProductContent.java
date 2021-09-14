@@ -1,7 +1,7 @@
 package com.rtomyj.skc.model.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.card.Card;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

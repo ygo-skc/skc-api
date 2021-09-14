@@ -1,7 +1,7 @@
 package com.rtomyj.skc.service.banlist
 
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.dao.database.Dao
+import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
 import org.junit.jupiter.api.Assertions

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.controller.product.ProductController;
 
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.NonNull;
 import org.springframework.hateoas.RepresentationModel;

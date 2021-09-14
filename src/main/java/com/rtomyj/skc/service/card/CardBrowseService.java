@@ -1,7 +1,7 @@
 package com.rtomyj.skc.service.card;
 
-import com.rtomyj.skc.dao.database.Dao;
-import com.rtomyj.skc.helper.enumeration.browse.MonsterAssociationExpression;
+import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.enums.browse.MonsterAssociationExpression;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.CardBrowseCriteria;

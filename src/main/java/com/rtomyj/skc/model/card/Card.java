@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.controller.card.CardController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;

@@ -185,8 +185,8 @@ tasks {
 
 pitest {
 	targetClasses.set(listOf("com.rtomyj.skc.*"))
-	excludedClasses.set(listOf("com.rtomyj.skc.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.helper.constants.*"
-		, "com.rtomyj.skc.helper.exceptions.*", "com.rtomyj.skc.helper.enumeration.*"))
+	excludedClasses.set(listOf("com.rtomyj.skc.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.constant.*"
+		, "com.rtomyj.skc.exception.*", "com.rtomyj.skc.enums.*"))
 
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))

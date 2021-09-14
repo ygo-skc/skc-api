@@ -1,6 +1,6 @@
 package com.rtomyj.skc.controller;
 
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

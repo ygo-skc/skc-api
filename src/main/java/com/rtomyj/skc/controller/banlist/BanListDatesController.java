@@ -1,7 +1,7 @@
 package com.rtomyj.skc.controller.banlist;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.service.banlist.BanListDatesService;
 import io.swagger.annotations.Api;
@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

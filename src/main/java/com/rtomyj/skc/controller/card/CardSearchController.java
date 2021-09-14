@@ -1,8 +1,8 @@
 package com.rtomyj.skc.controller.card;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.service.card.CardService;
 import io.swagger.annotations.Api;

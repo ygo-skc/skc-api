@@ -2,7 +2,7 @@ package com.rtomyj.skc.controller.stats;
 
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.stats.DatabaseStats;
 import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import com.rtomyj.skc.service.stats.StatsService;

@@ -1,6 +1,6 @@
 package com.rtomyj.skc.service.banlist;
 
-import com.rtomyj.skc.dao.database.Dao;
+import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.model.banlist.BanListDates;
 
 import org.springframework.beans.factory.annotation.Autowired;

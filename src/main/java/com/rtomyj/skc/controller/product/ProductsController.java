@@ -1,8 +1,8 @@
 package com.rtomyj.skc.controller.product;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.enumeration.products.ProductType;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.enums.products.ProductType;
 import com.rtomyj.skc.model.product.Products;
 import com.rtomyj.skc.service.product.ProductService;
 import io.swagger.annotations.Api;
@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

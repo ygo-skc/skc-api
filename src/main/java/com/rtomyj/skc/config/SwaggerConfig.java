@@ -1,6 +1,6 @@
 package com.rtomyj.skc.config;
 
-import com.rtomyj.skc.helper.enumeration.SwaggerTagEnum;
+import com.rtomyj.skc.enums.SwaggerTagEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;

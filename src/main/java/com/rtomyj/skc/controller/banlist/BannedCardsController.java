@@ -1,9 +1,9 @@
 package com.rtomyj.skc.controller.banlist;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.RegexExpressions;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.RegexExpressions;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListInstance;
 import com.rtomyj.skc.service.banlist.BannedCardsService;
 import io.swagger.annotations.Api;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
