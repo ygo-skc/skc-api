@@ -1,7 +1,7 @@
 package com.rtomyj.skc.service.product;
 
 import com.rtomyj.skc.dao.Dao;
-import com.rtomyj.skc.enums.products.ProductType;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.product.Product;
 import com.rtomyj.skc.model.product.Products;
 

@@ -1,4 +1,4 @@
-package com.rtomyj.skc.enums.browse;
+package com.rtomyj.skc.enums;
 
 public enum MonsterAssociationExpression
 {

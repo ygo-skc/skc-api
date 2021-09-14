@@ -1,7 +1,7 @@
-package com.rtomyj.skc.exception;
+package com.rtomyj.skc.enums;
 
 
-public enum Error
+public enum ErrorTypes
 {
 
 	D101("URL requested doesn't have proper syntax.")
@@ -9,7 +9,7 @@ public enum Error
 
 	private final String error;
 
-	Error(String error) { this.error = error; }
+	ErrorTypes(String error) { this.error = error; }
 
 	@Override
 	public String toString() { return this.error; }

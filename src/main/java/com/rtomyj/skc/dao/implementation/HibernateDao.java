@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.exception.YgoException;
-import com.rtomyj.skc.enums.products.ProductType;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.banlist.BanListDate;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;

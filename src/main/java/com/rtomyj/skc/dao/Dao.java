@@ -1,6 +1,6 @@
 package com.rtomyj.skc.dao;
 
-import com.rtomyj.skc.enums.products.ProductType;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;

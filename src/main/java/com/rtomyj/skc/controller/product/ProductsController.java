@@ -2,7 +2,7 @@ package com.rtomyj.skc.controller.product;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
 import com.rtomyj.skc.constant.SwaggerConstants;
-import com.rtomyj.skc.enums.products.ProductType;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.product.Products;
 import com.rtomyj.skc.service.product.ProductService;
 import io.swagger.annotations.Api;

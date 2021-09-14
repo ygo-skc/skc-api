@@ -1,4 +1,4 @@
-package com.rtomyj.skc.enums.products;
+package com.rtomyj.skc.enums;
 
 public enum ProductType
 {

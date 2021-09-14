@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import com.rtomyj.skc.controller.product.ProductsController;
 import com.rtomyj.skc.constant.SwaggerConstants;
-import com.rtomyj.skc.enums.products.ProductType;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

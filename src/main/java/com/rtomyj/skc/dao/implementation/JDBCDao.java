@@ -6,7 +6,7 @@ import com.rtomyj.skc.constant.DBQueryConstants;
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.constant.LogConstants;
-import com.rtomyj.skc.enums.products.ProductType;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductViewDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;

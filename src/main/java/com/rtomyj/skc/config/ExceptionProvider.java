@@ -2,7 +2,7 @@ package com.rtomyj.skc.config;
 
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.constant.LogConstants;
-import com.rtomyj.skc.exception.Error;
+import com.rtomyj.skc.enums.ErrorTypes;
 import com.rtomyj.skc.exception.YgoError;
 import com.rtomyj.skc.exception.YgoException;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 
 			final HttpStatus status = HttpStatus.NOT_FOUND;
 			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception, status);
-			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
+			return new ResponseEntity<>(new YgoError(ErrorTypes.D001.toString(), ErrorTypes.D001.name()), status);
 
 		}
 		return null;
@@ -47,7 +47,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	{
 
 		log.error("Request did not conform to spec. Exception: {}", exception.toString());
-		return new YgoError(Error.D101.toString(), Error.D101.name());
+		return new YgoError(ErrorTypes.D101.toString(), ErrorTypes.D101.name());
 
 	}
 
