@@ -182,11 +182,16 @@ tasks {
 	}
 }
 
+
 pitest {
 	targetClasses.set(listOf("com.rtomyj.skc.*"))
-	excludedClasses.set(listOf("com.rtomyj.skc.model.*"))
-	threads.set(4)
+	excludedClasses.set(listOf("com.rtomyj.skc.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.helper.constants.*"
+		, "com.rtomyj.skc.helper.exceptions.*", "com.rtomyj.skc.helper.enumeration.*"))
+
+	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
 	junit5PluginVersion.set("0.12")
+
+	mutators.set(listOf("STRONGER"))
 }
