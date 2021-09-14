@@ -96,15 +96,23 @@ class BannedCardsServiceTest {
         Assertions.assertNotNull(forbidden)
         Assertions.assertNotNull(limited)
         Assertions.assertNotNull(semiLimited)
+
         Assertions.assertEquals(1, forbidden.size)
         Assertions.assertEquals(1, limited.size)
         Assertions.assertEquals(1, semiLimited.size)
+
+        Assertions.assertEquals(1, banListInstance.numForbidden)
+        Assertions.assertEquals(1, banListInstance.numLimited)
+        Assertions.assertEquals(1, banListInstance.numSemiLimited)
+
         Assertions.assertEquals(TestConstants.STRATOS_ID, forbidden[0].cardID)
         Assertions.assertEquals(TestConstants.STRATOS_NAME, forbidden[0].cardName)
         Assertions.assertEquals(TestConstants.STRATOS_FULL_EFFECT, forbidden[0].cardEffect)
+
         Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, limited[0].cardID)
         Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, limited[0].cardName)
         Assertions.assertEquals(TestConstants.A_HERO_LIVES_FULL_EFFECT, limited[0].cardEffect)
+
         Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, semiLimited[0].cardID)
         Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, semiLimited[0].cardName)
         Assertions.assertEquals(TestConstants.D_MALICIOUS_FULL_EFFECT, semiLimited[0].cardEffect)
@@ -170,21 +178,26 @@ class BannedCardsServiceTest {
         Assertions.assertNotNull(forbiddenTrimmed)
         Assertions.assertNotNull(limitedTrimmed)
         Assertions.assertNotNull(semiLimitedTrimmed)
+
         Assertions.assertEquals(1, forbiddenTrimmed.size)
         Assertions.assertEquals(1, limitedTrimmed.size)
         Assertions.assertEquals(1, semiLimitedTrimmed.size)
+
+        Assertions.assertEquals(1, banListInstance.numForbidden)
+        Assertions.assertEquals(1, banListInstance.numLimited)
+        Assertions.assertEquals(1, banListInstance.numSemiLimited)
+
         Assertions.assertEquals(TestConstants.STRATOS_ID, forbiddenTrimmed[0].cardID)
         Assertions.assertEquals(TestConstants.STRATOS_NAME, forbiddenTrimmed[0].cardName)
         Assertions.assertEquals(Card.trimEffect(TestConstants.STRATOS_FULL_EFFECT), forbiddenTrimmed[0].cardEffect)
+
         Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, limitedTrimmed[0].cardID)
         Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, limitedTrimmed[0].cardName)
         Assertions.assertEquals(Card.trimEffect(TestConstants.A_HERO_LIVES_FULL_EFFECT), limitedTrimmed[0].cardEffect)
+
         Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, semiLimitedTrimmed[0].cardID)
         Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, semiLimitedTrimmed[0].cardName)
-        Assertions.assertEquals(
-            Card.trimEffect(TestConstants.D_MALICIOUS_FULL_EFFECT),
-            semiLimitedTrimmed[0].cardEffect
-        )
+        Assertions.assertEquals(Card.trimEffect(TestConstants.D_MALICIOUS_FULL_EFFECT), semiLimitedTrimmed[0].cardEffect)
 
 
         // verify mocks are called the exact number of times expected
@@ -204,10 +217,27 @@ class BannedCardsServiceTest {
 
 
     /**
-     * Unhappy path - using Dao helper object resulted in an error. DB threw error.
+     * Unhappy path - using Dao helper object resulted in an error. Ban list not found in database .
      */
     @Test
-    fun testFetchingBanListInstance_FromDB_WithFullText_Failure() {
+    fun testFetchingBanListInstance_FromDB_WithFullText_BanListNotInDB() {
+        dbError_BanListNotInDB(false)
+    }
+
+
+    /**
+     * Unhappy path - using Dao helper object resulted in an error. Ban list not found in database .
+     */
+    @Test
+    fun testFetchingBanListInstance_FromDB_WithTrimmedText_BanListNotInDB() {
+        dbError_BanListNotInDB(true)
+    }
+
+
+    /**
+     * Utility method that will set up mocks, call getBanListByBanStatus(), and verify mock calls for unhappy path - Ban list not found in database.
+     */
+    private fun dbError_BanListNotInDB(isSaveBandwidth: Boolean) {
         // mock calls
         Mockito.`when`(
             dao.getBanListByBanStatus(
@@ -236,7 +266,7 @@ class BannedCardsServiceTest {
         val ex = Assertions.assertThrows(CacheLoaderException::class.java) {
             bannedCardsService.getBanListByBanStatus(
                 TestConstants.BAN_LIST_START_DATE,
-                false,
+                isSaveBandwidth,
                 false
             )
         }

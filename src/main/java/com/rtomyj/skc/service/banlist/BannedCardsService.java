@@ -111,11 +111,7 @@ public class BannedCardsService
 		banListInstance.setNumLimited(banListInstance.getLimited().size());
 		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
 
-		if (banListInstance.getNumForbidden() == 0 && banListInstance.getNumLimited() == 0
-				&& banListInstance.getNumSemiLimited() == 0)
-		{
-			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
-		}
+		validateDBValue(banListInstance, banListStartDate);
 
 		banListInstance.setLinks();
 		return banListInstance;
@@ -139,14 +135,20 @@ public class BannedCardsService
 		banListInstance.setNumLimited(banListInstance.getLimited().size());
 		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
 
-		if (banListInstance.getForbidden().isEmpty() && banListInstance.getLimited().isEmpty() && banListInstance.getSemiLimited().isEmpty())
-		{
-			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
-		}
+		validateDBValue(banListInstance, banListStartDate);
 
 		Card.trimEffects(banListInstance);
 		banListInstance.setLinks();
 		return banListInstance;
 
+	}
+
+
+	private void validateDBValue(final BanListInstance banListInstance, final String banListStartDate) {
+		if (banListInstance.getNumForbidden() == 0 && banListInstance.getNumLimited() == 0
+				&& banListInstance.getNumSemiLimited() == 0)
+		{
+			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
+		}
 	}
 }
