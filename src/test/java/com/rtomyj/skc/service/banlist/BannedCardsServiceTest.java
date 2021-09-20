@@ -1,5 +1,28 @@
 package com.rtomyj.skc.service.banlist;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rtomyj.skc.dao.database.Dao;
+import com.rtomyj.skc.dao.database.Dao.Status;
+import com.rtomyj.skc.helper.constants.TestConstants;
+import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.model.banlist.BanListInstance;
+import com.rtomyj.skc.model.card.Card;
+import org.cache2k.io.CacheLoaderException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.rtomyj.skc.helper.constants.TestConstants.BAN_LIST_START_DATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,56 +31,30 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rtomyj.skc.dao.database.Dao;
-import com.rtomyj.skc.dao.database.Dao.Status;
-import com.rtomyj.skc.helper.constants.TestConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
-import com.rtomyj.skc.model.banlist.BanListInstance;
-import com.rtomyj.skc.model.card.Card;
-
-import org.cache2k.integration.CacheLoaderException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@ContextConfiguration(classes = {BannedCardsService.class, DiffService.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)	// Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 public class BannedCardsServiceTest {
-	@InjectMocks
-	private BannedCardsService bannedCardsService;
-
-	@Mock
+	@MockBean(name = "jdbc")
 	private Dao dao;
 
+	@Autowired
+	private DiffService diffService;	// injected in BannedCardsService
+
+	@Autowired
+	private BannedCardsService bannedCardsService;
+
 	private static BanListInstance banListInstanceFullText;
-	//private static BanListInstance banListInstanceTrimmedText;
-
-	private final String banListStartDate = "2019-07-15";
-
-
+	
 
 	// TODO: add ban list assertion that checks if forbidden, limited, etc length matches the length/num field for each associated list
 	@BeforeAll
-	public static void before() throws JsonParseException, JsonMappingException, IOException
+	public static void before() throws IOException
 	{
 		final ObjectMapper mapper = new ObjectMapper();
 		banListInstanceFullText = mapper.readValue(
 			new File(TestConstants.BAN_LIST_INSTANCE_JSON_FILE), BanListInstance.class);
-		// banListInstanceTrimmedText = mapper.readValue(
-		// 	new File(TestConstants.BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE), BanListInstance.class);
 	}
 
 
@@ -65,15 +62,15 @@ public class BannedCardsServiceTest {
 	@Test
 	public void testFetchingBanListInstance_FromDB_WithFullText_Successfully() throws YgoException
 	{
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
 			.thenReturn(banListInstanceFullText.getForbidden());
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.LIMITED)))
 			.thenReturn(banListInstanceFullText.getLimited());
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(banListInstanceFullText.getSemiLimited());
 
 
-		final BanListInstance banListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, false, false);
+		final BanListInstance banListInstance = bannedCardsService.getBanListByBanStatus(BAN_LIST_START_DATE, false, false);
 
 		final List<Card> forbidden = banListInstance.getForbidden();
 		final List<Card> limited = banListInstance.getLimited();
@@ -102,9 +99,9 @@ public class BannedCardsServiceTest {
 		assertEquals(TestConstants.D_MALICIOUS_FULL_EFFECT, semiLimited.get(0).getCardEffect());
 
 
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED));
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
 	}
 
 
@@ -112,15 +109,15 @@ public class BannedCardsServiceTest {
 	@Test
 	public void testFetchingBanListInstance_FromDB_WithTrimmedText_Successfully() throws YgoException
 	{
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
 			.thenReturn(banListInstanceFullText.getForbidden());
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.LIMITED)))
 			.thenReturn(banListInstanceFullText.getLimited());
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(banListInstanceFullText.getSemiLimited());
 
 
-		final BanListInstance banListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, true, false);
+		final BanListInstance banListInstance = bannedCardsService.getBanListByBanStatus(BAN_LIST_START_DATE, true, false);
 
 		final List<Card> forbiddenTrimmed = banListInstance.getForbidden();
 		final List<Card> limitedTrimmed = banListInstance.getLimited();
@@ -148,9 +145,9 @@ public class BannedCardsServiceTest {
 		assertEquals(Card.trimEffect(TestConstants.D_MALICIOUS_FULL_EFFECT), semiLimitedTrimmed.get(0).getCardEffect());
 
 
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED));
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
 	}
 
 
@@ -158,19 +155,17 @@ public class BannedCardsServiceTest {
 	@Test
 	public void testFetchingBanListInstance_FromDB_WithFullText_Failure() throws YgoException
 	{
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN)))
 			.thenReturn(new ArrayList<>());
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.LIMITED)))
 			.thenReturn(new ArrayList<>());
-		when(dao.getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED)))
+		when(dao.getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED)))
 			.thenReturn(new ArrayList<>());
 
+		assertThrows(CacheLoaderException.class, () -> bannedCardsService.getBanListByBanStatus(BAN_LIST_START_DATE, false, false));
 
-		assertThrows(CacheLoaderException.class, () -> bannedCardsService.getBanListByBanStatus(banListStartDate, false, false));
-
-
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.FORBIDDEN));
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.LIMITED));
-		verify(dao, times(1)).getBanListByBanStatus(eq(banListStartDate), eq(Status.SEMI_LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.FORBIDDEN));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.LIMITED));
+		verify(dao, times(1)).getBanListByBanStatus(eq(BAN_LIST_START_DATE), eq(Status.SEMI_LIMITED));
 	}
 }

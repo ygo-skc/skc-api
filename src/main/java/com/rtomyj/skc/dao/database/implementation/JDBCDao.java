@@ -11,9 +11,8 @@ import com.rtomyj.skc.helper.enumeration.table.definitions.BrowseQueryDefinition
 import com.rtomyj.skc.helper.enumeration.table.definitions.ProductViewDefinition;
 import com.rtomyj.skc.helper.enumeration.table.definitions.ProductsTableDefinition;
 import com.rtomyj.skc.helper.exceptions.YgoException;
-import com.rtomyj.skc.helper.util.StringUtil;
-import com.rtomyj.skc.model.Stats.DatabaseStats;
-import com.rtomyj.skc.model.Stats.MonsterTypeStats;
+import com.rtomyj.skc.model.stats.DatabaseStats;
+import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
@@ -36,17 +35,7 @@ import org.springframework.util.StopWatch;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * JDBC implementation of DB DAO interface.
@@ -742,7 +731,10 @@ public class JDBCDao implements Dao
 			final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
 			final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
 			final String linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet);
-			final String monsterAssociationCriteria = StringUtil.concatenateStringsWithDelimiter("+", levelCriteria, rankCriteria, linkRatingCriteria);
+
+			final List<String> monsterAssociationCriteriaList = new ArrayList<>(Arrays.asList(levelCriteria, rankCriteria, linkRatingCriteria));
+			monsterAssociationCriteriaList.removeAll(Arrays.asList(null, ""));
+			final String monsterAssociationCriteria = String.join("+", monsterAssociationCriteriaList);
 
 			sqlParams.addValue("monsterAssociation", monsterAssociationCriteria);
 

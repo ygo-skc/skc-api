@@ -9,6 +9,10 @@ services:
        - ./build/libs/skc-api.jar:/skc-api.jar
     command: java -jar skc-api.jar
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 600M
     networks:
       - skc-network
     environment:

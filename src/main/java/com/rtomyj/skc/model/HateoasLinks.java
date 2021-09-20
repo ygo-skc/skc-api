@@ -8,7 +8,7 @@ public interface HateoasLinks
     void setSelfLink();
     void setLinks();
 
-    public static <T extends HateoasLinks> void setLinks(List<T> instances)
+    static <T extends HateoasLinks> void setLinks(List<T> instances)
     {
 
         instances.forEach(item -> item.setLinks());

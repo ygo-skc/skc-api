@@ -5,10 +5,10 @@ public enum ProductViewDefinition
     PRODUCT_CONTENT_TOTAL("product_content_total");
 
 
-    private ProductViewDefinition(final String columnName) { this.columnName = columnName; }
+    ProductViewDefinition(final String columnName) { this.columnName = columnName; }
 
 
-    private String columnName;
+    private final String columnName;
 
 
     @Override

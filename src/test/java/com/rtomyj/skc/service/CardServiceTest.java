@@ -1,5 +1,22 @@
 package com.rtomyj.skc.service;
 
+import com.rtomyj.skc.dao.database.Dao;
+import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.model.card.Card;
+import com.rtomyj.skc.service.card.CardService;
+import org.cache2k.io.CacheLoaderException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static com.rtomyj.skc.helper.constants.TestConstants.ID_THAT_CAUSES_FAILURE;
+import static com.rtomyj.skc.helper.constants.TestConstants.STRATOS_ID;
+import static com.rtomyj.skc.helper.constants.TestConstants.STRATOS_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
@@ -7,75 +24,55 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rtomyj.skc.dao.database.Dao;
-import com.rtomyj.skc.helper.exceptions.YgoException;
-import com.rtomyj.skc.model.card.Card;
-
-import com.rtomyj.skc.service.card.CardService;
-import org.cache2k.integration.CacheLoaderException;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@ContextConfiguration(classes = {CardService.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)	// Re-creates DiffService which is needed since cache will have the card info after one of the tests executes, ruining other tests
 public class CardServiceTest
 {
-	@InjectMocks
-	private CardService cardService;
-
-	@Mock
+	@MockBean(name = "jdbc")
 	private Dao dao;
 
+	@Autowired
+	private CardService cardService;
+
 	private static Card successfulCardReceived;
-	private static final String testCardId = "12345678";
-	private static final String testCardName = "E-HERO Stratos";
 
 	@BeforeAll
 	public static void before() {
 		successfulCardReceived = Card
 			.builder()
-			.cardID(testCardId)
-			.cardName(testCardName)
+			.cardID(STRATOS_ID)
+			.cardName(STRATOS_NAME)
 			.build();
 	}
 
 
-
 	@Test
 	public void testFetchingCard_FromDB_Success()
-		throws YgoException
 	{
-		when(dao.getCardInfo(eq(testCardId)))
+		when(dao.getCardInfo(eq(STRATOS_ID)))
 			.thenReturn(successfulCardReceived);
 
 
-		final Card card = cardService.getCardInfo(testCardId, false);
+		final Card card = cardService.getCardInfo(STRATOS_ID, false);
 
-		assertEquals(testCardId, card.getCardID());
-		assertEquals(testCardName, card.getCardName());
+		assertEquals(STRATOS_ID, card.getCardID());
+		assertEquals(STRATOS_NAME, card.getCardName());
 
 
-		verify(dao, times(1)).getCardInfo(eq(testCardId));
+		verify(dao, times(1)).getCardInfo(eq(STRATOS_ID));
 	}
 
 
-
 	@Test
-	public void testFetchingCardFromDB_Failure() throws YgoException
+	public void testFetchingCardFromDB_Failure()
 	{
-		when(dao.getCardInfo(eq(testCardId)))
+		when(dao.getCardInfo(eq(ID_THAT_CAUSES_FAILURE)))
 			.thenThrow(new YgoException());
 
+		assertThrows(CacheLoaderException.class, () -> cardService.getCardInfo(ID_THAT_CAUSES_FAILURE, false));
 
-		assertThrows(CacheLoaderException.class, () -> cardService.getCardInfo(testCardId, false));
-
-
-		verify(dao, times(1)).getCardInfo(eq(testCardId));
+		verify(dao, times(1)).getCardInfo(eq(ID_THAT_CAUSES_FAILURE));
 	}
 }

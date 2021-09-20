@@ -13,8 +13,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
@@ -51,11 +49,6 @@ public class CardBrowseResults extends RepresentationModel<CardBrowseResults> im
     @Override
     public void setSelfLink()
     {
-
-//        this.add(
-//                linkTo(methodOn(cardBrowseController).browse("", "", "")).withSelfRel()
-//        );
-
     }
 
 

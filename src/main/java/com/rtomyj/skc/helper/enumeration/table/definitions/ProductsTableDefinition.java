@@ -11,10 +11,10 @@ public enum ProductsTableDefinition
     , PRODUCT_SUB_TYPE("product_sub_type");
 
 
-    private ProductsTableDefinition(final String columnName) { this.columnName = columnName; }
+    ProductsTableDefinition(final String columnName) { this.columnName = columnName; }
 
 
-    private String columnName;
+    private final String columnName;
 
 
     @Override

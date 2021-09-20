@@ -1,33 +1,34 @@
 package com.rtomyj.skc.dao.database.implementation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.sql.SQLException;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rtomyj.skc.config.DateConfig;
 import com.rtomyj.skc.dao.database.Dao;
 import com.rtomyj.skc.dao.database.Dao.Status;
 import com.rtomyj.skc.helper.constants.TestConstants;
 import com.rtomyj.skc.helper.exceptions.YgoException;
 import com.rtomyj.skc.model.card.Card;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-@ActiveProfiles("test")	// Loading test props with H2 in memory DB configurations
+@ContextConfiguration(classes = {JDBCDao.class, DateConfig.class, ObjectMapper.class})
+@DataJdbcTest
+@ActiveProfiles( "test")	// Loading test props with H2 in memory DB configurations
 @SqlGroup({
 	@Sql("classpath:drop.sql")
 	, @Sql("classpath:schema.sql")
@@ -36,6 +37,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 })
 public class JdbcDaoTest
 {
+	@Autowired
+	private NamedParameterJdbcTemplate jdbcNamedTemplate;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Autowired
 	@Qualifier("jdbc")
@@ -44,8 +50,6 @@ public class JdbcDaoTest
 	private static Card stratosTestCard;
 	private static Card aHeroLivesTestCard;
 	private static Card dMaliTestCard;
-
-	private final String TEST_BAN_LIST_DATE = "2015-11-09";
 
 
 	@BeforeAll
@@ -92,7 +96,7 @@ public class JdbcDaoTest
 
 	@Test
 	public void testFetchingCardById_Success()
-		throws YgoException, SQLException
+		throws YgoException
 	{
 		final Card stratosDbResult = dao.getCardInfo(stratosTestCard.getCardID());
 		final Card aHeroLivesDbResult = dao.getCardInfo(aHeroLivesTestCard.getCardID());
@@ -139,7 +143,7 @@ public class JdbcDaoTest
 
 	@Test
 	public void testFetchingCardById_Failure()
-		throws YgoException, SQLException
+		throws YgoException
 	{
 		assertThrows(NullPointerException.class, () -> dao.getCardInfo(null));
 		assertThrows(YgoException.class, () -> dao.getCardInfo("12345678"));
@@ -149,8 +153,9 @@ public class JdbcDaoTest
 
 	@Test
 	public void testFetchingBanListByStatus_Success()
-		throws YgoException, SQLException
+		throws YgoException
 	{
+		final String TEST_BAN_LIST_DATE = "2015-11-09";
 		final List<Card> forbiddenDbResult = dao.getBanListByBanStatus(TEST_BAN_LIST_DATE, Status.FORBIDDEN);
 		final List<Card> limitedDbResult = dao.getBanListByBanStatus(TEST_BAN_LIST_DATE, Status.LIMITED);
 		final List<Card> semiLimitedDbResult = dao.getBanListByBanStatus(TEST_BAN_LIST_DATE, Status.SEMI_LIMITED);

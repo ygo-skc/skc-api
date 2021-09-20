@@ -10,12 +10,16 @@ services:
        - ./build/libs/skc-api.jar:/skc-api.jar
     command: java -jar skc-api.jar
     restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 600M
+    networks:
+      - skc-network
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker-local
-    networks:
-      - skc-network
 
 networks:
   skc-network:

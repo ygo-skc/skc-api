@@ -8,7 +8,7 @@ public class TestConstants
 
 
 	public static final String BAN_LIST_INSTANCE_JSON_FILE = "src/test/resources/BanListInstanceTestResponse.json";
-	public static final String BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE = "src/test/resources/BanListInstanceLowBandwdithTestResponse.json";
+	public static final String BAN_LIST_INSTANCE_LOW_BANDWIDTH_JSON_FILE = "src/test/resources/BanListInstanceLowBandwidthTestResponse.json";
 
 	public static final String BAN_LIST_NEW_CONTENT = "src/test/resources/BanListNewContent.json";
 	public static final String BAN_LIST_REMOVED_CONTENT = "src/test/resources/BanListRemovedContent.json";
@@ -40,4 +40,10 @@ public class TestConstants
 	public static final String D_MALICIOUS_FULL_EFFECT = "You can banish this card from your GY; Special Summon 1 \"Destiny HERO - Malicious\" from your Deck.";
 	public static final Integer D_MALICIOUS_ATK = 800;
 	public static final Integer D_MALICIOUS_DEF = 800;
+
+
+	public static final String ID_THAT_CAUSES_FAILURE = "66666666";
+
+	public final static String BAN_LIST_START_DATE = "2018-12-03";
+	public final static String PREVIOUS_BAN_LIST_START_DATE = "2018-09-17";
 }

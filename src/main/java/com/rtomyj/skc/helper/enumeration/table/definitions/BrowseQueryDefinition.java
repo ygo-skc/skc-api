@@ -9,10 +9,10 @@ public enum BrowseQueryDefinition
     , MONSTER_TYPE("monster_type")
     , CARD_EFFECT("card_effect");
 
-    private String columnName;
+    private final String columnName;
 
 
-    private BrowseQueryDefinition(final String columnName)
+    BrowseQueryDefinition(final String columnName)
     {
         this.columnName = columnName;
     }

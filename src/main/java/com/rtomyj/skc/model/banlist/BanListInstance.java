@@ -1,10 +1,5 @@
 package com.rtomyj.skc.model.banlist;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -13,19 +8,17 @@ import com.rtomyj.skc.controller.banlist.BanListRemovedContentController;
 import com.rtomyj.skc.controller.banlist.BannedCardsController;
 import com.rtomyj.skc.helper.constants.SwaggerConstants;
 import com.rtomyj.skc.helper.exceptions.YgoException;
-
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.card.Card;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @Builder
@@ -47,7 +40,6 @@ public class BanListInstance extends RepresentationModel<BanListInstance> implem
 	@ApiModelProperty(
 			value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
-			, position = 0
 	)
 	private String effectiveDate;
 
