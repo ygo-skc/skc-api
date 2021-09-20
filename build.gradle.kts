@@ -33,7 +33,7 @@ plugins {
 
 group = "com.rtomyj.skc"
 version = "1.2.6"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_16
 
 
 repositories {
@@ -111,7 +111,7 @@ tasks {
 	withType<KotlinCompile> {
 		kotlinOptions {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = JavaVersion.VERSION_11.toString()
+			jvmTarget = JavaVersion.VERSION_16.toString()
 		}
 	}
 
