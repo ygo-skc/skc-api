@@ -25,4 +25,3 @@ networks:
   skc-network:
     name: skc-network
     driver: bridge
-    
