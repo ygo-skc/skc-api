@@ -61,7 +61,7 @@ public class BanListDatesController extends YgoApiBaseController
 		log.info("User is retrieving all effective start dates for ban lists.");
 		final BanListDates banListDates = banListDatesService.getBanListStartDates();
 
-		log.info("Successfully retrieved all effective start dates for ban list. Currently there are {} ban lists", banListDates.getBanListDates().size());
+		log.info("Successfully retrieved all effective start dates for ban list. Currently there are {} ban lists", banListDates.getDates().size());
 		return ResponseEntity.ok(banListDates);
 
 	}

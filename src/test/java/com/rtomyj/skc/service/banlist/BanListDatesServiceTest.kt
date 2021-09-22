@@ -45,7 +45,7 @@ class BanListDatesServiceTest {
 
             banListDatesInstance = BanListDates
                 .builder()
-                .banListDates(banListDates)
+                .dates(banListDates)
                 .build()
         }
     }

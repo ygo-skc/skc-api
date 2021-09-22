@@ -90,7 +90,7 @@ public class BannedCardsController extends YgoApiBaseController
 			throws YgoException
 	{
 
-		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth, fetchAllInfo);
+		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, fetchAllInfo);
 		log.info("Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
 
 		return ResponseEntity.ok(reqBanListInstance);

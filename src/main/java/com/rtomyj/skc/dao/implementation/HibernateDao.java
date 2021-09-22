@@ -64,7 +64,7 @@ public class HibernateDao implements Dao
 
 		final BanListDates banListDates = BanListDates
 			.builder()
-			.banListDates(session.createQuery(criteriaQuery).getResultList())
+			.dates(session.createQuery(criteriaQuery).getResultList())
 			.build();
 
 		session.close();

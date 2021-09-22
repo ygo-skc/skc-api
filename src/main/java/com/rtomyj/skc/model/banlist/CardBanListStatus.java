@@ -73,7 +73,7 @@ public class CardBanListStatus extends RepresentationModel<CardBanListStatus> im
 	private static final Class<BanListNewContentController> BAN_LIST_NEW_CONTENT_CONTROLLER_CLASS = BanListNewContentController.class;
 	private static final Class<BanListRemovedContentController> BAN_LIST_REMOVED_CONTENT_CONTROLLER_CLASS = BanListRemovedContentController.class;
 
-	private static final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
+	private final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
 
 
 	@Override

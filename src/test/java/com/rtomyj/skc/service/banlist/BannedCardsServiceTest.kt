@@ -84,7 +84,7 @@ class BannedCardsServiceTest {
 
         // call code being tested
         val banListInstance = bannedCardsService
-            .getBanListByBanStatus(TestConstants.BAN_LIST_START_DATE, false, false)
+            .getBanListByDate(TestConstants.BAN_LIST_START_DATE, false, false)
 
         val forbidden = banListInstance.forbidden
         val limited = banListInstance.limited
@@ -166,7 +166,7 @@ class BannedCardsServiceTest {
 
 
         // call code being tested, assign certain values to vars for easier usage
-        val banListInstance = bannedCardsService.getBanListByBanStatus(TestConstants.BAN_LIST_START_DATE, true, false)
+        val banListInstance = bannedCardsService.getBanListByDate(TestConstants.BAN_LIST_START_DATE, true, false)
 
         val forbiddenTrimmed = banListInstance.forbidden
         val limitedTrimmed = banListInstance.limited
@@ -264,7 +264,7 @@ class BannedCardsServiceTest {
 
         // call code and assert throws
         val ex = Assertions.assertThrows(CacheLoaderException::class.java) {
-            bannedCardsService.getBanListByBanStatus(
+            bannedCardsService.getBanListByDate(
                 TestConstants.BAN_LIST_START_DATE,
                 isSaveBandwidth,
                 false
