@@ -21,8 +21,6 @@ import java.util.function.Supplier;
 @Slf4j
 public class CardBrowseController extends YgoApiBaseController
 {
-    //ToDo: javadoc this class
-
     private final CardBrowseService cardBrowseService;
 
     private final Supplier<CardBrowseCriteria> cardBrowseCriteriaSupplier;

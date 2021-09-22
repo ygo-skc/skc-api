@@ -63,21 +63,21 @@ class BanListDatesServiceTest {
 
 
         // assertions on returned value
-        Assertions.assertEquals(1, banListDates.banListDates.size)
+        Assertions.assertEquals(1, banListDates.dates.size)
 
-        Assertions.assertNotNull(banListDates.banListDates[0].links)
+        Assertions.assertNotNull(banListDates.dates[0].links)
 
-        Assertions.assertNotNull(banListDates.banListDates[0].links.getLink("Ban List Content"))
+        Assertions.assertNotNull(banListDates.dates[0].links.getLink("Ban List Content"))
         Assertions.assertEquals("/ban_list/2020-01-20/cards?saveBandwidth=false&allInfo=true"
-            , banListDates.banListDates[0].links.getLink("Ban List Content").get().href)
+            , banListDates.dates[0].links.getLink("Ban List Content").get().href)
 
-        Assertions.assertNotNull(banListDates.banListDates[0].links.getLink("Ban List New Content"))
+        Assertions.assertNotNull(banListDates.dates[0].links.getLink("Ban List New Content"))
         Assertions.assertEquals("/ban_list/2020-01-20/new"
-            , banListDates.banListDates[0].links.getLink("Ban List New Content").get().href)
+            , banListDates.dates[0].links.getLink("Ban List New Content").get().href)
 
-        Assertions.assertNotNull(banListDates.banListDates[0].links.getLink("Ban List Removed Content"))
+        Assertions.assertNotNull(banListDates.dates[0].links.getLink("Ban List Removed Content"))
         Assertions.assertEquals("/ban_list/2020-01-20/removed"
-            , banListDates.banListDates[0].links.getLink("Ban List Removed Content").get().href)
+            , banListDates.dates[0].links.getLink("Ban List Removed Content").get().href)
 
 
         // verify mocks are called the correct number of times

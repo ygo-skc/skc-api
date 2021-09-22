@@ -1,5 +1,6 @@
 package com.rtomyj.skc.model.banlist;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rtomyj.skc.controller.banlist.BanListDatesController;
 import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
@@ -28,6 +29,7 @@ public class BanListDates extends RepresentationModel<BanListDates> implements H
 	@ApiParam(
 			value = "Array of objects containing valid start dates of all ban lists currently in DB."
 	)
+	@JsonProperty(value = "banListDates", index = 0)
 	private List<BanListDate> dates;
 
 	private static final Class<BanListDatesController> controllerClass = BanListDatesController.class;

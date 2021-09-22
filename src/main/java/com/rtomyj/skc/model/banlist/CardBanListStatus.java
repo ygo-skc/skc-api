@@ -1,6 +1,7 @@
 package com.rtomyj.skc.model.banlist;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.config.DateConfig;
@@ -73,6 +74,7 @@ public class CardBanListStatus extends RepresentationModel<CardBanListStatus> im
 	private static final Class<BanListNewContentController> BAN_LIST_NEW_CONTENT_CONTROLLER_CLASS = BanListNewContentController.class;
 	private static final Class<BanListRemovedContentController> BAN_LIST_REMOVED_CONTENT_CONTROLLER_CLASS = BanListRemovedContentController.class;
 
+	@JsonIgnore
 	private final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
 
 

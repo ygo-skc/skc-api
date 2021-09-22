@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 public class CardService
 {
 	// static inner classes
-	// todo: add javadoc
 	@Getter
 	@EqualsAndHashCode
 	private static class CardRequest
@@ -53,7 +52,7 @@ public class CardService
 	/**
 	 * Cache used to store card data to prevent querying DB.
 	 */
-	private final Cache<CardRequest, Card> CARD_CACHE;
+	private final Cache<CardRequest, Card> cardCache;
 
 
 	@Autowired
@@ -61,7 +60,7 @@ public class CardService
 	{
 
 		this.dao = dao;
-		this.CARD_CACHE = new Cache2kBuilder<CardRequest, Card>() {}
+		this.cardCache = new Cache2kBuilder<CardRequest, Card>() {}
 			.expireAfterWrite(1, TimeUnit.DAYS)
 			.entryCapacity(1000)
 			.permitNullValues(false)
@@ -81,12 +80,11 @@ public class CardService
 		throws YgoException
 	{
 
-		return CARD_CACHE.get(new CardRequest(cardId, fetchAllInfo));
+		return cardCache.get(new CardRequest(cardId, fetchAllInfo));
 
 	}
 
 
-	// todo: add javadoc
 	@NotNull
 	public Card onCacheMiss(final CardRequest cardRequest)
 		throws YgoException
@@ -130,7 +128,6 @@ public class CardService
 	}
 
 
-	// todo: add javadoc
 	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType
 			, final int limit, final boolean saveBandwidth)
 		throws YgoException
