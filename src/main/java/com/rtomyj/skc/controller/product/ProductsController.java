@@ -43,9 +43,9 @@ public class ProductsController extends YgoApiBaseController
             , response = Products.class
             , responseContainer = "Object")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
-            , @ApiResponse(code = 400, message = SwaggerConstants.http400)
-            , @ApiResponse(code = 404, message = SwaggerConstants.http404)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
     })
     public ResponseEntity<Products> getProductsByLocale(
             @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION, example = "en") @PathVariable("locale") final String locale)
@@ -61,9 +61,9 @@ public class ProductsController extends YgoApiBaseController
             , response = Products.class
             , responseContainer = "Object")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
-            , @ApiResponse(code = 400, message = SwaggerConstants.http400)
-            , @ApiResponse(code = 404, message = SwaggerConstants.http404)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
     })
     public ResponseEntity<Products> getProductsByLocaleAndProductType(
             @ApiParam(value = "A specific product type used to limit results.") @PathVariable("productType") final ProductType productType

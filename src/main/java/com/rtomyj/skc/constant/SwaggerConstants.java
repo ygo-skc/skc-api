@@ -2,14 +2,19 @@ package com.rtomyj.skc.constant;
 
 public class SwaggerConstants
 {
+    private SwaggerConstants()
+    {
+        throw new UnsupportedOperationException("Cannot create instance for class: " + this.getClass().toString());
+    }
+
 
     // Success
-    public static final String http200 = "Request processed successfully.";
+    public static final String HTTP_200_SWAGGER_MESSAGE = "Request processed successfully.";
 
 
     // Client Error
-    public static final String http400 = "Malformed request. Look at API spec and conform to expected pattern(s).";
-    public static final String http404 = "No resource found for requested item.";
+    public static final String HTTP_400_SWAGGER_MESSAGE = "Malformed request. Look at API spec and conform to expected pattern(s).";
+    public static final String HTTP_404_SWAGGER_MESSAGE = "No resource found for requested item.";
 
 
     public static final String RESULT_LIMIT_DESCRIPTION = "Max number of records/results to return.";

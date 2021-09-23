@@ -40,7 +40,7 @@ public class CardBrowseController extends YgoApiBaseController
             , responseContainer = "Object"
     )
     @ApiResponses( value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
     })
     public CardBrowseResults browse(
             @ApiParam(
@@ -90,7 +90,7 @@ public class CardBrowseController extends YgoApiBaseController
             , responseContainer = "Object"
     )
     @ApiResponses( value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
     })
     public CardBrowseCriteria browseCriteria()
     {

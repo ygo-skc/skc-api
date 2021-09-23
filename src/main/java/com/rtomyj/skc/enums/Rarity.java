@@ -8,16 +8,16 @@ public enum Rarity
 	, R("Rarity")
 	, SR("Super Rare")
 	, UR("Ultra Rare")
-	, SCTR("Secret Rare");
+	, SCRT("Secret Rare");
 
-	private final String rarity;
+	private final String rarityName;
 
-	Rarity(final String rarity) { this.rarity = rarity; }
+	Rarity(final String rarityName) { this.rarityName = rarityName; }
 
 	@Override
 	public String toString()
 	{
-		return rarity;
+		return rarityName;
 	}
 
 }

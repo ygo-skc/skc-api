@@ -64,27 +64,31 @@ public class CardController extends YgoApiBaseController
 		, response = Card.class
 		, responseContainer = "Object")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = SwaggerConstants.http200)
-		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
-		, @ApiResponse(code = 404, message = SwaggerConstants.http404)
+		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<Card> getCard(
 			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
 					, example = "40044918"
 					, required = true
-			) @PathVariable("cardId") @Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
+			)
+			@PathVariable("cardId")
+			@Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.")
+			final String cardId
 			, @ApiParam(value = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION
 					, example = "true"
-			) @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
+			)
+			@RequestParam(value = "allInfo", defaultValue = "false")
+			final boolean fetchAllInfo
+	)
 		throws YgoException
 	{
-
 		log.info("Retrieving card info for : {}.", cardId);
 		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
 		log.info("Successfully retrieved card info for: {}, fetching all info: {}.", cardId, fetchAllInfo);
 
 		return ResponseEntity.ok(foundCard);
-
 	}
 
 }

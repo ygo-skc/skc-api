@@ -5,9 +5,18 @@ import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;
 
 public class DBQueryConstants
 {
+	private DBQueryConstants()
+	{
+		throw new UnsupportedOperationException("Cannot create instance for class: " + this.getClass().toString());
+	}
+
+
+	public static final String WHERE_CARD_NUMBER_IS_CARDID = " WHERE card_number = :cardId";
+	public static final String FROM_PRODUCT_CONTENT_TABLE = " FROM product_contents";
+
 	public static final String GET_CARD_BY_ID = "SELECT card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association" +
 			" FROM card_info" +
-			" WHERE card_number = :cardId";
+			WHERE_CARD_NUMBER_IS_CARDID;
 
 	public static final String GET_BAN_LIST_BY_STATUS = "SELECT card_name, monster_type, card_color, card_effect, card_number" +
 			" FROM ban_list_info" +
@@ -29,12 +38,12 @@ public class DBQueryConstants
 			" ORDER by card_rarity";
 
 	public static final String GET_PRODUCT_DETAILS = "SELECT DISTINCT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type" +
-			" FROM product_contents" +
+			FROM_PRODUCT_CONTENT_TABLE +
 			" WHERE product_id = :productId" +
 			" AND product_locale = :locale";
 
 	public static final String GET_PRODUCT_CONTENT = "SELECT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type, product_position, card_rarity, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association" +
-			" FROM product_contents" +
+			FROM_PRODUCT_CONTENT_TABLE +
 			" WHERE product_id = :packId" +
 			" AND product_locale = :locale" +
 			" ORDER BY product_position";
@@ -42,13 +51,13 @@ public class DBQueryConstants
 	public static final String GET_DATABASE_TOTALS = "SELECT * FROM totals";
 
 	public static final String GET_PRODUCT_INFO_FOR_CARD = "select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity" +
-			" FROM product_contents" +
-			" WHERE card_number = :cardId" +
+			FROM_PRODUCT_CONTENT_TABLE+
+			WHERE_CARD_NUMBER_IS_CARDID +
 			" ORDER BY product_release_date DESC";
 
 	public static final String GET_BAN_LIST_INFO_FOR_CARD = "SELECT ban_list_date, ban_status" +
 			" FROM ban_lists" +
-			" WHERE card_number = :cardId" +
+			WHERE_CARD_NUMBER_IS_CARDID +
 			" ORDER BY ban_list_date DESC";
 
 	public static final String SEARCH_QUERY = "SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense" +

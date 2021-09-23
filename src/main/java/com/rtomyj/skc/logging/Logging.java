@@ -14,8 +14,13 @@ import java.util.UUID;
 @Slf4j
 public class Logging
 {
+    private Logging()
+    {
+        throw new UnsupportedOperationException("Cannot create instance for class: " + this.getClass().toString());
+    }
 
-    private final static String CLIENT_ID_NAME = "CLIENT_ID";
+
+    private static final String CLIENT_ID_NAME = "CLIENT_ID";
 
 
     /**
@@ -24,7 +29,6 @@ public class Logging
      */
     public static void configureMDC(final HttpServletRequest httpServletRequest)
     {
-
         String queryParams = httpServletRequest.getQueryString() == null? "" : "?" + httpServletRequest.getQueryString();
 
         // proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
@@ -35,7 +39,5 @@ public class Logging
         MDC.put("reqUUID", UUID.randomUUID().toString());
         MDC.put("clientID", httpServletRequest.getHeader(CLIENT_ID_NAME));
         MDC.put("userAgent", httpServletRequest.getHeader(HttpHeaders.USER_AGENT));
-
     }
-
 }

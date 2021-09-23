@@ -33,7 +33,6 @@ import javax.validation.constraints.Pattern;
 @Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
 public class BanListNewContentController extends YgoApiBaseController
 {
-
 	/**
 	 * Service used to interface with dao.
 	 */
@@ -66,9 +65,9 @@ public class BanListNewContentController extends YgoApiBaseController
 		, responseContainer = "Object"
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {
-		@ApiResponse(code = 200, message = SwaggerConstants.http200)
-		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
-		, @ApiResponse(code = 404, message = SwaggerConstants.http404)
+		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<BanListNewContent> getNewlyAddedContentForBanList(
 			@ApiParam(
@@ -76,7 +75,9 @@ public class BanListNewContentController extends YgoApiBaseController
 					, example = "2020-04-01"
 					, required = true
 			)
-			@Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable final String banListStartDate)
+			@Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.")
+			@PathVariable final String banListStartDate
+	)
 			throws YgoException
 	{
 		log.info("User is requesting new content for ban list: {}", banListStartDate);

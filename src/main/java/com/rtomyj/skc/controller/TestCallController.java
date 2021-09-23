@@ -75,7 +75,7 @@ public class TestCallController extends YgoApiBaseController
 	@GetMapping()
 	@ApiOperation(value = "Simple test operation.", response = ResponseEntity.class, tags = SwaggerConstants.TEST_CALL_TAG_NAME)
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = SwaggerConstants.http200)
+			@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<ApiTestCall> testCall()
 	{

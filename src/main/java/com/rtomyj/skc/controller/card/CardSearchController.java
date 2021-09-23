@@ -48,7 +48,7 @@ public class CardSearchController extends YgoApiBaseController
 			, response = Card.class
 			, responseContainer = "List")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = SwaggerConstants.http200)
+			@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<List<Card>> searchByCriteria(
 			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
