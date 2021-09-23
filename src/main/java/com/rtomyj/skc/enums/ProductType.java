@@ -6,14 +6,14 @@ public enum ProductType
 	PACK("PACK")
 	, DECK("DECK");
 
-	private final String productType;
+	private final String product;
 
-	ProductType(final String productType) { this.productType = productType; }
+	ProductType(final String product) { this.product = product; }
 
 	@Override
 	public String toString()
 	{
-		return productType;
+		return product;
 	}
 
 }

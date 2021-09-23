@@ -10,13 +10,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Configures endpoint(s) for testing the health of the API.
@@ -41,29 +38,6 @@ public class TestCallController extends YgoApiBaseController
 				, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 		)
 		private final String status;
-
-	}
-
-
-	/*--------------------------------------
-		 Fields
-	 --------------------------------------*/
-	/**
-	 * Object containing info about the user who initiates a request
-	 */
-	private final HttpServletRequest httpServletRequest;
-
-	/**
-	 * Base endpoint for this class.
-	 */
-	private final String END_POINT = BASE_ENDPOINT + "/testcall";
-
-
-	@Autowired
-	public TestCallController(final HttpServletRequest httpServletRequest)
-	{
-
-		this.httpServletRequest = httpServletRequest;
 
 	}
 

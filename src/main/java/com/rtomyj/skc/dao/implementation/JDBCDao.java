@@ -266,20 +266,20 @@ public class JDBCDao implements Dao
 
 
 		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			final List<CardsPreviousBanListStatus> REMOVED_CARDS = new ArrayList<>();
+			final List<CardsPreviousBanListStatus> removedCards = new ArrayList<>();
 
 			while(row.next())
 			{
-				final CardsPreviousBanListStatus REMOVED_CARD = new CardsPreviousBanListStatus();
+				final CardsPreviousBanListStatus removedCard = new CardsPreviousBanListStatus();
 
-				REMOVED_CARD.setCardId(row.getString(1));
-				REMOVED_CARD.setPreviousBanStatus(row.getString(2));
-				REMOVED_CARD.setCardName(row.getString(3));
+				removedCard.setCardId(row.getString(1));
+				removedCard.setPreviousBanStatus(row.getString(2));
+				removedCard.setCardName(row.getString(3));
 
-				REMOVED_CARDS.add(REMOVED_CARD);
+				removedCards.add(removedCard);
 			}
 
-			return REMOVED_CARDS;
+			return removedCards;
 		});
 	}
 
