@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "2.5.4"
+val springBootVersion = "2.5.5"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.2.0" // 3.3.0
 val cache2kVersion = "2.2.1.Final"
