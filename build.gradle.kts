@@ -54,11 +54,10 @@ sourceSets {
 
 
 dependencies {
-	implementation("javax.validation:validation-api:$validationAPIVersion")
-
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
 	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")

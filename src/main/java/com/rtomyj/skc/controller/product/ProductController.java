@@ -57,16 +57,16 @@ public class ProductController extends YgoApiBaseController
 			)
 			@PathVariable("productId")
 			@NotNull
-			@Size(min = 3, max = 4, message = "Product ID uses between 3-4 characters")
-			@Pattern(regexp = "[a-zA-Z0-9]", message = "Product ID is formatted incorrectly")
+			@Size(min = 3, max = 4, message = "Product ID must be between 3-4 characters long")
+			@Pattern(regexp = "[a-zA-Z0-9]+", message = "Product ID is formatted incorrectly")
 			String productId
 			, @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
 					, example = "en"
 			)
 			@PathVariable("locale")
 			@NotNull
-			@Size(min = 2, max = 2, message = "Locale uses 2 characters")
-			@Pattern(regexp = "[a-zA-Z]", message = "Locale value can only use letters")
+			@Size(min = 2, max = 2, message = "Locale must be 2 characters long")
+			@Pattern(regexp = "[a-zA-Z]+", message = "Locale is formatted incorrectly")
 			String locale
 	)
 	{

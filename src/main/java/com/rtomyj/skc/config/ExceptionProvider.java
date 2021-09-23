@@ -21,12 +21,10 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class ExceptionProvider extends ResponseEntityExceptionHandler
 {
-
 	@ResponseBody
 	@ExceptionHandler(YgoException.class)
 	public final ResponseEntity<YgoError> test(final YgoException exception)
 	{
-
 		if (exception.getCode().equals(ErrConstants.NOT_FOUND_DAO_ERR))
 		{
 
@@ -36,7 +34,6 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 
 		}
 		return null;
-
 	}
 
 
@@ -45,10 +42,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	@ExceptionHandler(ConstraintViolationException.class)
 	public YgoError onValidationFail(final ConstraintViolationException exception)
 	{
-
-		log.error("Request did not conform to spec. Exception: {}", exception.toString());
+		log.error("Request did not conform to spec. Constraints violated: {}", exception.toString());
 		return new YgoError(ErrorTypes.D101.toString(), ErrorTypes.D101.name());
-
 	}
-
 }

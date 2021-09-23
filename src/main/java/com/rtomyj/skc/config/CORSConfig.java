@@ -16,7 +16,7 @@ public class CORSConfig
             @Override
             public void addCorsMappings(@NotNull final CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "https://thesupremekingscastle.com", "https://www.thesupremekingscastle.com")
+                        .allowedOrigins("http://localhost:3000", "https://thesupremekingscastle.com", "https://www.thesupremekingscastle.com", "https://dev.thesupremekingscastle.com")
                         .allowedMethods("GET")
                         .maxAge(21600); // 6 hours
             }
