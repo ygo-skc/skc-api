@@ -55,12 +55,10 @@ public class DiffService
 
 
 
-	public BanListNewContent getNewContentOfBanList(final String banListStartDate)
+	public BanListNewContent getNewContentForGivenBanList(final String banListStartDate)
 		throws YgoException
 	{
-
 		return newContentCache.get(banListStartDate);
-
 	}
 
 
@@ -68,7 +66,6 @@ public class DiffService
 	private BanListNewContent onNewContentCacheMiss(final String banListStartDate)
 		throws YgoException
 	{
-
 		log.info("New content for ban list w/ start date: ({}) not found in cache. Using DB.", banListStartDate);
 
 		if ( !dao.isValidBanList(banListStartDate) )
@@ -97,7 +94,7 @@ public class DiffService
 	}
 
 
-	public BanListRemovedContent getRemovedContentOfBanList(final String banListStartDate) throws YgoException
+	public BanListRemovedContent getRemovedContentForGivenBanList(final String banListStartDate) throws YgoException
 	{
 		return removedContentCache.get(banListStartDate);
 	}

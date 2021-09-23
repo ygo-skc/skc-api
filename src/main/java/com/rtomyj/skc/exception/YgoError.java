@@ -13,8 +13,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class YgoError
 {
-
 	String message;
 	String status;
-
 }

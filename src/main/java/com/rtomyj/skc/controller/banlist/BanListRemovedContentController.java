@@ -72,7 +72,7 @@ public class BanListRemovedContentController extends YgoApiBaseController
 			throws YgoException
 	{
 
-		final BanListRemovedContent banListRemovedContent = banListDiffService.getRemovedContentOfBanList(banListStartDate);
+		final BanListRemovedContent banListRemovedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate);
 		log.info("Successfully retrieved removed content for banlist: ( {} ).", banListStartDate);
 
 		return ResponseEntity.ok(banListRemovedContent);

@@ -81,7 +81,7 @@ public class BanListNewContentController extends YgoApiBaseController
 			throws YgoException
 	{
 		log.info("User is requesting new content for ban list: {}", banListStartDate);
-		final BanListNewContent banListNewContent = banListDiffService.getNewContentOfBanList(banListStartDate);
+		final BanListNewContent banListNewContent = banListDiffService.getNewContentForGivenBanList(banListStartDate);
 
 		log.info("Successfully retrieved new content for ban list ({}) using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})"
 				, banListNewContent.getListRequested(), banListNewContent.getComparedTo(), banListNewContent.getNumNewForbidden(), banListNewContent.getNumNewLimited()

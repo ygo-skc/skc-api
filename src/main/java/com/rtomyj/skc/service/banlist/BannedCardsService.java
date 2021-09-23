@@ -88,8 +88,8 @@ public class BannedCardsService
 
 		if (fetchAllInfo)
 		{
-			banListInstance.setNewContent(diffService.getNewContentOfBanList(banListStartDate));
-			banListInstance.setRemovedContent(diffService.getRemovedContentOfBanList(banListStartDate));
+			banListInstance.setNewContent(diffService.getNewContentForGivenBanList(banListStartDate));
+			banListInstance.setRemovedContent(diffService.getRemovedContentForGivenBanList(banListStartDate));
 		}
 
 		return banListInstance;
