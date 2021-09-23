@@ -311,7 +311,6 @@ public class JDBCDao implements Dao
 
 	private void prepSearchParams(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final MapSqlParameterSource sqlParams)
 	{
-
 		cardId = '%' + cardId + '%';
 		cardName = '%' + cardName + '%';
 		cardAttribute = (cardAttribute.isEmpty())? ".*" : cardAttribute;
@@ -324,7 +323,6 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardColor", cardColor);
 		sqlParams.addValue("monsterType", monsterType);
 		sqlParams.addValue("limit", limit);
-
 	}
 
 

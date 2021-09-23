@@ -55,17 +55,19 @@ public class ProductController extends YgoApiBaseController
 			@ApiParam(value = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card."
 					, example = "LOB"
 			)
+			@PathVariable("productId")
 			@NotNull
 			@Size(min = 3, max = 4, message = "Product ID uses between 3-4 characters")
 			@Pattern(regexp = "[a-zA-Z0-9]", message = "Product ID is formatted incorrectly")
-			@PathVariable("productId")
-			final String productId
+			String productId
 			, @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION
 					, example = "en"
 			)
-			@Size(min = 3, max = 4, message = "Locale uses 2 characters")
+			@PathVariable("locale")
+			@NotNull
+			@Size(min = 2, max = 2, message = "Locale uses 2 characters")
 			@Pattern(regexp = "[a-zA-Z]", message = "Locale value can only use letters")
-			@PathVariable("locale") final String locale
+			String locale
 	)
 	{
 		return ResponseEntity.ok(availablePacksService.getProductByLocale(productId, locale.toUpperCase()));

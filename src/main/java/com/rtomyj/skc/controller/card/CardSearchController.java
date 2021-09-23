@@ -30,7 +30,6 @@ import java.util.List;
 @Slf4j
 public class CardSearchController extends YgoApiBaseController
 {
-
 	private final CardService cardService;
 
 
@@ -67,23 +66,20 @@ public class CardSearchController extends YgoApiBaseController
 					, example = "war"
 			) @RequestParam(name = "mType", required = false, defaultValue="") final String monsterType
 			, @ApiParam(value = SwaggerConstants.RESULT_LIMIT_DESCRIPTION
-					, example = "5"
-					, defaultValue = "-1"
-			) @RequestParam(name = "limit", required = false, defaultValue = "-1") final int limit
+					, example = "10"
+					, defaultValue = "5"
+			) @RequestParam(name = "limit", required = false, defaultValue = "5") final int limit
 			, @ApiParam(value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION
 					, example = "false"
 					, defaultValue = "true"
 			) @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth)
 			throws YgoException
 	{
-
 		log.info("User is searching for card.");
 		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth);
 		log.info("Successfully retrieved search results using the following criteria: [ cardId={}, cardName={}, cardAttribute={}, cardColor={}, monsterType={}, limit={}, saveBandwidth={} ]. Found {} matching results."
 				, cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth, searchResult.size());
 
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
-
 	}
-
 }
