@@ -1,22 +1,23 @@
 package com.rtomyj.skc.service
 
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.context.ContextConfiguration
-import com.rtomyj.skc.service.card.CardService
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.boot.test.mock.mockito.MockBean
-import com.rtomyj.skc.dao.Dao
-import org.springframework.beans.factory.annotation.Autowired
-import org.mockito.Mockito
-import org.mockito.ArgumentMatchers
+import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
+import com.rtomyj.skc.service.card.CardService
 import org.cache2k.io.CacheLoaderException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 
 @ExtendWith(SpringExtension::class)
@@ -77,7 +78,10 @@ class CardServiceTest {
     fun testFetchingCardFromDB_Failure() {
         // mock calls
         Mockito.`when`(dao.getCardInfo(ArgumentMatchers.eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
-            .thenThrow(YgoException())
+            .thenThrow(YgoException(
+                ErrConstants.NOT_FOUND_DAO_ERR,
+                String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE)
+            ))
 
 
         // call code and assert throws

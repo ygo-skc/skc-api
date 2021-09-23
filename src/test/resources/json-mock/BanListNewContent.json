@@ -2,8 +2,8 @@
 	"listRequested": "2018-12-03",
 	"comparedTo": "2018-09-17",
 	"numNewForbidden": 1,
-	"numNewLimited": 1,
-	"numNewSemiLimited": 1,
+	"numNewLimited": 2,
+	"numNewSemiLimited": 0,
 	"newForbidden": [
 		{
 			"cardId": "40044918",
@@ -17,12 +17,12 @@
 			"cardName": "A Hero Lives",
 			"previousBanStatus": "Unlimited"
 		}
-	],
-	"newSemiLimited": [
+		,
 		{
 			"cardId": "09411399",
 			"cardName": "Destiny HERO - Malicious",
 			"previousBanStatus": "Forbidden"
 		}
-	]
+	],
+	"newSemiLimited": []
 }
