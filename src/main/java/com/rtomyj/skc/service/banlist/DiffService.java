@@ -1,39 +1,36 @@
 package com.rtomyj.skc.service.banlist;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import com.rtomyj.skc.dao.database.Dao;
-import com.rtomyj.skc.dao.database.Dao.Status;
-import com.rtomyj.skc.helper.constants.ErrConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
-import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
+import com.rtomyj.skc.constant.ErrConstants;
+import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.dao.Dao.Status;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListNewContent;
 import com.rtomyj.skc.model.banlist.BanListRemovedContent;
-
+import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.cache2k.Cache;
 import org.cache2k.Cache2kBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 public class DiffService
 {
-
 	private final Dao dao;
 
 	/**
 	 * Cache for requests/data produced by requests.
 	 */
 
-	private final Cache<String, BanListNewContent> NEW_CARDS_CACHE;
+	private final Cache<String, BanListNewContent> newContentCache;
 
-	private final Cache<String, BanListRemovedContent> REMOVED_CARDS_CACHE;
-
+	private final Cache<String, BanListRemovedContent> removedContentCache;
 
 
 	@Autowired
@@ -41,14 +38,14 @@ public class DiffService
 	{
 		this.dao = dao;
 
-		this.NEW_CARDS_CACHE = new Cache2kBuilder<String, BanListNewContent>() {}
+		this.newContentCache = new Cache2kBuilder<String, BanListNewContent>() {}
 			.expireAfterWrite(7, TimeUnit.DAYS)
 			.entryCapacity(1000)
 			.permitNullValues(false)
 			.loader(this::onNewContentCacheMiss)
 			.build();
 
-		this.REMOVED_CARDS_CACHE = new Cache2kBuilder<String, BanListRemovedContent>() {}
+		this.removedContentCache = new Cache2kBuilder<String, BanListRemovedContent>() {}
 			.expireAfterWrite(7, TimeUnit.DAYS)
 			.entryCapacity(1000)
 			.permitNullValues(false)
@@ -58,21 +55,17 @@ public class DiffService
 
 
 
-
-	public BanListNewContent getNewContentOfBanList(final String banListStartDate)
+	public BanListNewContent getNewContentForGivenBanList(final String banListStartDate)
 		throws YgoException
 	{
-
-		return NEW_CARDS_CACHE.get(banListStartDate);
-
+		return newContentCache.get(banListStartDate);
 	}
 
 
-
+	@NotNull
 	private BanListNewContent onNewContentCacheMiss(final String banListStartDate)
 		throws YgoException
 	{
-
 		log.info("New content for ban list w/ start date: ({}) not found in cache. Using DB.", banListStartDate);
 
 		if ( !dao.isValidBanList(banListStartDate) )
@@ -101,17 +94,13 @@ public class DiffService
 	}
 
 
-
-	public BanListRemovedContent getRemovedContentOfBanList(final String banListStartDate) throws YgoException
+	public BanListRemovedContent getRemovedContentForGivenBanList(final String banListStartDate) throws YgoException
 	{
-
-		return REMOVED_CARDS_CACHE.get(banListStartDate);
-
+		return removedContentCache.get(banListStartDate);
 	}
 
 
-
-
+	@NotNull
 	private BanListRemovedContent onRemovedContentCacheMiss(final String banListStartDate)
 		throws YgoException
 	{
@@ -120,7 +109,6 @@ public class DiffService
 
 		if ( !dao.isValidBanList(banListStartDate) )
 			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate));
-
 
 
 		final List<CardsPreviousBanListStatus> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
@@ -138,7 +126,6 @@ public class DiffService
 		return removedCardsMeta;
 
 	}
-
 
 
 	private String getPreviousBanListDate(final String banList)	{ return dao.getPreviousBanListDate(banList); }

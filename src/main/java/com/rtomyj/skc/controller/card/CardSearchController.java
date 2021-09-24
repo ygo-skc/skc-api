@@ -1,8 +1,8 @@
 package com.rtomyj.skc.controller.card;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.service.card.CardService;
 import io.swagger.annotations.Api;
@@ -30,7 +30,6 @@ import java.util.List;
 @Slf4j
 public class CardSearchController extends YgoApiBaseController
 {
-
 	private final CardService cardService;
 
 
@@ -48,7 +47,7 @@ public class CardSearchController extends YgoApiBaseController
 			, response = Card.class
 			, responseContainer = "List")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = SwaggerConstants.http200)
+			@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<List<Card>> searchByCriteria(
 			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
@@ -67,23 +66,20 @@ public class CardSearchController extends YgoApiBaseController
 					, example = "war"
 			) @RequestParam(name = "mType", required = false, defaultValue="") final String monsterType
 			, @ApiParam(value = SwaggerConstants.RESULT_LIMIT_DESCRIPTION
-					, example = "5"
-					, defaultValue = "-1"
-			) @RequestParam(name = "limit", required = false, defaultValue = "-1") final int limit
+					, example = "10"
+					, defaultValue = "5"
+			) @RequestParam(name = "limit", required = false, defaultValue = "5") final int limit
 			, @ApiParam(value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION
 					, example = "false"
 					, defaultValue = "true"
 			) @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true") final boolean saveBandwidth)
 			throws YgoException
 	{
-
 		log.info("User is searching for card.");
 		final List<Card> searchResult = cardService.getCardSearchResults(cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth);
 		log.info("Successfully retrieved search results using the following criteria: [ cardId={}, cardName={}, cardAttribute={}, cardColor={}, monsterType={}, limit={}, saveBandwidth={} ]. Found {} matching results."
 				, cardId, cardName, cardAttribute, cardColor, monsterType, limit, saveBandwidth, searchResult.size());
 
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
-
 	}
-
 }

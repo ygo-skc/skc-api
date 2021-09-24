@@ -1,24 +1,16 @@
 package com.rtomyj.skc.model.card;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.controller.card.CardController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-
 import com.rtomyj.skc.model.HateoasLinks;
-import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.banlist.BanListInstance;
+import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.product.Product;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.hateoas.RepresentationModel;
-
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +18,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.With;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.RepresentationModel;
+
+import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * Class defines properties a Yugioh card can contain.
@@ -80,10 +78,10 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks
 	private List<Product> foundIn;
 
 	@JsonIgnore
-	private static final int maxCardEffectLength = 120;
+	private static final int MAX_CARD_EFFECT_LENGTH = 120;
 
 	@JsonIgnore
-	private static final String cardEffectTrimTermination = "...";
+	private static final String CARD_EFFECT_TRIM_TERMINATION = "...";
 
 	private static final Class<CardController> cardController = CardController.class;
 
@@ -91,8 +89,8 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks
 
 	public static String trimEffect(final String effect)
 	{
-		if (effect.length() > maxCardEffectLength)
-			return effect.substring(0, maxCardEffectLength) + cardEffectTrimTermination;
+		if (effect.length() > MAX_CARD_EFFECT_LENGTH)
+			return effect.substring(0, MAX_CARD_EFFECT_LENGTH) + CARD_EFFECT_TRIM_TERMINATION;
 
 		return effect;
 	}

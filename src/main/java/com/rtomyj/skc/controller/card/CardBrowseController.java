@@ -2,7 +2,7 @@ package com.rtomyj.skc.controller.card;
 
 import com.google.common.base.Suppliers;
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.card.CardBrowseCriteria;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.service.card.CardBrowseService;
@@ -21,8 +21,6 @@ import java.util.function.Supplier;
 @Slf4j
 public class CardBrowseController extends YgoApiBaseController
 {
-    //ToDo: javadoc this class
-
     private final CardBrowseService cardBrowseService;
 
     private final Supplier<CardBrowseCriteria> cardBrowseCriteriaSupplier;
@@ -42,7 +40,7 @@ public class CardBrowseController extends YgoApiBaseController
             , responseContainer = "Object"
     )
     @ApiResponses( value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
     })
     public CardBrowseResults browse(
             @ApiParam(
@@ -92,7 +90,7 @@ public class CardBrowseController extends YgoApiBaseController
             , responseContainer = "Object"
     )
     @ApiResponses( value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
     })
     public CardBrowseCriteria browseCriteria()
     {

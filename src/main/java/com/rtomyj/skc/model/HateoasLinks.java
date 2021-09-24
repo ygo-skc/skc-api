@@ -10,9 +10,7 @@ public interface HateoasLinks
 
     static <T extends HateoasLinks> void setLinks(List<T> instances)
     {
-
-        instances.forEach(item -> item.setLinks());
-
+        instances.forEach(T::setLinks);
     }
 
 }

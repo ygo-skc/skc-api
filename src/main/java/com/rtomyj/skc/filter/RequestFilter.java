@@ -1,6 +1,7 @@
 package com.rtomyj.skc.filter;
 
-import com.rtomyj.skc.helper.Logging;
+import com.rtomyj.skc.logging.Logging;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,9 +15,8 @@ import java.io.IOException;
 
 @Component
 public class RequestFilter extends OncePerRequestFilter {
-
     @Override
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
+    protected void doFilterInternal(@NotNull final HttpServletRequest request, @NotNull final HttpServletResponse response, final FilterChain chain)
             throws ServletException, IOException
     {
         try
@@ -28,5 +28,4 @@ public class RequestFilter extends OncePerRequestFilter {
             MDC.clear();
         }
     }
-
 }

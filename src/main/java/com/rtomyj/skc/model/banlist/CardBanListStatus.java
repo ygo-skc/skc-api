@@ -1,13 +1,14 @@
 package com.rtomyj.skc.model.banlist;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.config.DateConfig;
 import com.rtomyj.skc.controller.banlist.BanListNewContentController;
 import com.rtomyj.skc.controller.banlist.BanListRemovedContentController;
 import com.rtomyj.skc.controller.banlist.BannedCardsController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -73,7 +74,8 @@ public class CardBanListStatus extends RepresentationModel<CardBanListStatus> im
 	private static final Class<BanListNewContentController> BAN_LIST_NEW_CONTENT_CONTROLLER_CLASS = BanListNewContentController.class;
 	private static final Class<BanListRemovedContentController> BAN_LIST_REMOVED_CONTENT_CONTROLLER_CLASS = BanListRemovedContentController.class;
 
-	private static final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
+	@JsonIgnore
+	private final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
 
 
 	@Override

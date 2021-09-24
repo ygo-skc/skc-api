@@ -1,10 +1,10 @@
 package com.rtomyj.skc.config;
 
-import com.rtomyj.skc.helper.constants.ErrConstants;
-import com.rtomyj.skc.helper.constants.LogConstants;
-import com.rtomyj.skc.helper.exceptions.Error;
-import com.rtomyj.skc.helper.exceptions.YgoError;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.ErrConstants;
+import com.rtomyj.skc.constant.LogConstants;
+import com.rtomyj.skc.enums.ErrorTypes;
+import com.rtomyj.skc.exception.YgoError;
+import com.rtomyj.skc.exception.YgoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +21,19 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class ExceptionProvider extends ResponseEntityExceptionHandler
 {
-
 	@ResponseBody
 	@ExceptionHandler(YgoException.class)
 	public final ResponseEntity<YgoError> test(final YgoException exception)
 	{
-
 		if (exception.getCode().equals(ErrConstants.NOT_FOUND_DAO_ERR))
 		{
 
 			final HttpStatus status = HttpStatus.NOT_FOUND;
 			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception, status);
-			return new ResponseEntity<>(new YgoError(Error.D001.toString(), Error.D001.name()), status);
+			return new ResponseEntity<>(new YgoError(ErrorTypes.D001.toString(), ErrorTypes.D001.name()), status);
 
 		}
 		return null;
-
 	}
 
 
@@ -45,10 +42,7 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	@ExceptionHandler(ConstraintViolationException.class)
 	public YgoError onValidationFail(final ConstraintViolationException exception)
 	{
-
-		log.error("Request did not conform to spec. Exception: {}", exception.toString());
-		return new YgoError(Error.D101.toString(), Error.D101.name());
-
+		log.error("Request did not conform to spec. Constraints violated: {}", exception.toString());
+		return new YgoError(ErrorTypes.D101.toString(), ErrorTypes.D101.name());
 	}
-
 }

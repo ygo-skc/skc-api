@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "2.5.4"
+val springBootVersion = "2.5.5"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.2.0" // 3.3.0
 val cache2kVersion = "2.2.1.Final"
@@ -19,9 +19,9 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.5.4"
+	id("org.springframework.boot") version "2.5.5"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	id("info.solidsoft.pitest") version "1.6.0"
+	id("info.solidsoft.pitest") version "1.7.0"
 	id("com.adarshr.test-logger") version "3.0.0"	// printing for JUnits
 	kotlin("jvm") version "1.5.31"
 	kotlin("plugin.spring") version "1.5.31"
@@ -32,8 +32,8 @@ plugins {
 
 
 group = "com.rtomyj.skc"
-version = "1.2.5"
-java.sourceCompatibility = JavaVersion.VERSION_11
+version = "1.2.6"
+java.sourceCompatibility = JavaVersion.VERSION_16
 
 
 repositories {
@@ -54,11 +54,10 @@ sourceSets {
 
 
 dependencies {
-	implementation("javax.validation:validation-api:$validationAPIVersion")
-
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
 	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
@@ -111,7 +110,7 @@ tasks {
 	withType<KotlinCompile> {
 		kotlinOptions {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = JavaVersion.VERSION_11.toString()
+			jvmTarget = JavaVersion.VERSION_16.toString()
 		}
 	}
 
@@ -182,11 +181,16 @@ tasks {
 	}
 }
 
+
 pitest {
 	targetClasses.set(listOf("com.rtomyj.skc.*"))
-	excludedClasses.set(listOf("com.rtomyj.skc.model.*"))
-	threads.set(4)
+	excludedClasses.set(listOf("com.rtomyj.skc.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.constant.*"
+		, "com.rtomyj.skc.exception.*", "com.rtomyj.skc.enums.*"))
+
+	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
 	junit5PluginVersion.set("0.12")
+
+	mutators.set(listOf("STRONGER"))
 }

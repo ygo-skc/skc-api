@@ -1,9 +1,9 @@
 package com.rtomyj.skc.controller.banlist;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.RegexExpressions;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.RegexExpressions;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListInstance;
 import com.rtomyj.skc.service.banlist.BannedCardsService;
 import io.swagger.annotations.Api;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,6 @@ import javax.validation.constraints.Pattern;
  */
 @RestController
 @RequestMapping(path="/ban_list", produces = "application/hal+json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Validated
 @Api(tags = {SwaggerConstants.BAN_LIST_TAG_NAME})
@@ -73,9 +71,9 @@ public class BannedCardsController extends YgoApiBaseController
 		, responseContainer = "Object"
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = SwaggerConstants.http200)
-		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
-		, @ApiResponse(code = 404, message = SwaggerConstants.http404)
+		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<BanListInstance> getBannedCards(
 			@ApiParam(
@@ -92,7 +90,7 @@ public class BannedCardsController extends YgoApiBaseController
 			throws YgoException
 	{
 
-		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByBanStatus(banListStartDate, saveBandwidth, fetchAllInfo);
+		final BanListInstance reqBanListInstance = bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, fetchAllInfo);
 		log.info("Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ).", banListStartDate, saveBandwidth);
 
 		return ResponseEntity.ok(reqBanListInstance);

@@ -1,8 +1,8 @@
 package com.rtomyj.skc.controller.product;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.enumeration.products.ProductType;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.product.Products;
 import com.rtomyj.skc.service.product.ProductService;
 import io.swagger.annotations.Api;
@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/products", produces = "application/json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Api(tags = {SwaggerConstants.TAG_PRODUCT_TAG_NAME})
 public class ProductsController extends YgoApiBaseController
@@ -45,9 +43,9 @@ public class ProductsController extends YgoApiBaseController
             , response = Products.class
             , responseContainer = "Object")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
-            , @ApiResponse(code = 400, message = SwaggerConstants.http400)
-            , @ApiResponse(code = 404, message = SwaggerConstants.http404)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
     })
     public ResponseEntity<Products> getProductsByLocale(
             @ApiParam(value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION, example = "en") @PathVariable("locale") final String locale)
@@ -63,9 +61,9 @@ public class ProductsController extends YgoApiBaseController
             , response = Products.class
             , responseContainer = "Object")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = SwaggerConstants.http200)
-            , @ApiResponse(code = 400, message = SwaggerConstants.http400)
-            , @ApiResponse(code = 404, message = SwaggerConstants.http404)
+            @ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+            , @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
     })
     public ResponseEntity<Products> getProductsByLocaleAndProductType(
             @ApiParam(value = "A specific product type used to limit results.") @PathVariable("productType") final ProductType productType

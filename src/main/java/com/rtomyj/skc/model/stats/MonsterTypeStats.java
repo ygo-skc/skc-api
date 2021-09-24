@@ -5,6 +5,7 @@ import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -19,9 +20,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
         description = "Statistics for monster types stored in Database."
         , parent = RepresentationModel.class
 )
+@EqualsAndHashCode(callSuper = true)
 public class MonsterTypeStats extends RepresentationModel<MonsterTypeStats> implements HateoasLinks
 {
-
     @ApiModelProperty(
             value = "The scope or filter used when retrieving monster type stats."
             , accessMode = ApiModelProperty.AccessMode.READ_ONLY
@@ -55,6 +56,4 @@ public class MonsterTypeStats extends RepresentationModel<MonsterTypeStats> impl
         this.setSelfLink();
 
     }
-
-
 }

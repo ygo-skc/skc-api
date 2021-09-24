@@ -1,30 +1,28 @@
 package com.rtomyj.skc.model.product;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.controller.product.ProductController;
-
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.NonNull;
-import org.springframework.hateoas.RepresentationModel;
-
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
+import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @Data
@@ -114,12 +112,9 @@ public class Product extends RepresentationModel<Product>
 	}
 
 
-	public static void setLinks(@NonNull final List<Product> packs)
+	public static void setLinks(@NonNull final List<Product> products)
 	{
-
-		packs
-			.stream()
-			.forEach(pack -> pack.setLinks());
+		products
+			.forEach(Product::setLinks);
 	}
-
 }

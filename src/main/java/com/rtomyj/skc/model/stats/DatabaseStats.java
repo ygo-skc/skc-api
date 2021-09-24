@@ -6,6 +6,7 @@ import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -18,6 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
         description = "High level stats for data in the database."
         , parent = RepresentationModel.class
 )
+@EqualsAndHashCode(callSuper = true)
 public class DatabaseStats extends RepresentationModel<DatabaseStats> implements HateoasLinks
 {
 

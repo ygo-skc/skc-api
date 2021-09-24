@@ -1,9 +1,9 @@
 package com.rtomyj.skc.controller.card;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.helper.constants.RegexExpressions;
-import com.rtomyj.skc.helper.constants.SwaggerConstants;
-import com.rtomyj.skc.helper.exceptions.YgoException;
+import com.rtomyj.skc.constant.RegexExpressions;
+import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.service.card.CardService;
 import io.swagger.annotations.Api;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +28,6 @@ import javax.validation.constraints.Pattern;
  */
 @RestController
 @RequestMapping(path = "/card", produces = "application/json; charset=UTF-8")
-@CrossOrigin(origins = "*")
 @Slf4j
 @Validated
 @Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
@@ -66,27 +64,31 @@ public class CardController extends YgoApiBaseController
 		, response = Card.class
 		, responseContainer = "Object")
 	@ApiResponses(value = {
-		@ApiResponse(code = 200, message = SwaggerConstants.http200)
-		, @ApiResponse(code = 400, message = SwaggerConstants.http400)
-		, @ApiResponse(code = 404, message = SwaggerConstants.http404)
+		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<Card> getCard(
 			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
 					, example = "40044918"
 					, required = true
-			) @PathVariable("cardId") @Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.") final String cardId
+			)
+			@PathVariable("cardId")
+			@Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.")
+			final String cardId
 			, @ApiParam(value = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION
 					, example = "true"
-			) @RequestParam(value = "allInfo", defaultValue = "false") final boolean fetchAllInfo)
+			)
+			@RequestParam(value = "allInfo", defaultValue = "false")
+			final boolean fetchAllInfo
+	)
 		throws YgoException
 	{
-
 		log.info("Retrieving card info for : {}.", cardId);
 		final Card foundCard = cardService.getCardInfo(cardId, fetchAllInfo);
 		log.info("Successfully retrieved card info for: {}, fetching all info: {}.", cardId, fetchAllInfo);
 
 		return ResponseEntity.ok(foundCard);
-
 	}
 
 }
