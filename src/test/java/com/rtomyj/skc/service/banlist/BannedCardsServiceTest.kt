@@ -22,8 +22,8 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)    // allows usage of init as opposed to static context
 @ContextConfiguration(classes = [BannedCardsService::class, DiffService::class])
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)    // allows usage of init as opposed to static context
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 class BannedCardsServiceTest {
     @MockBean(name = "jdbc")
@@ -64,7 +64,7 @@ class BannedCardsServiceTest {
          *  , and client doesn't want removed and new cards for the Ban List.
          */
         @Test
-        fun testFetchingBanListInstance_FromDB_WithSaveBandwidthAsFalse_AndFetchAllInfoAsFalse_Successfully() {
+        fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As False, And Fetch All Info As False, Successfully`() {
             happyPath(false, false)
         }
 
@@ -76,7 +76,7 @@ class BannedCardsServiceTest {
          *  , and client doesn't want removed and new cards for the Ban List.
          */
         @Test
-        fun testFetchingBanListInstance_FromDB_WithSaveBandwidthAsTrue_AndFetchAllInfoAsFalse_Successfully() {
+        fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As True, And Fetch All Info As False, Successfully`() {
             happyPath(true, false)
         }
 
@@ -88,7 +88,7 @@ class BannedCardsServiceTest {
          *  , and client requested removed and new cards for the Ban List.
          */
         @Test
-        fun testFetchingBanListInstance_FromDB_WithSaveBandwidthAsFalse_AndFetchAllInfoAsTrue_Successfully() {
+        fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As False, And Fetch All Info As True, Successfully`() {
             happyPath(false, true)
         }
 
@@ -100,7 +100,7 @@ class BannedCardsServiceTest {
          *  , and client requested removed and new cards for the Ban List.
          */
         @Test
-        fun testFetchingBanListInstance_FromDB_WithSaveBandwidthAsTrue_AndFetchAllInfoAsTrue_Successfully() {
+        fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As True, And Fetch All Info As True, Successfully`() {
             happyPath(saveBandwidth = true, fetchAllInfo = true)
         }
 
@@ -268,12 +268,12 @@ class BannedCardsServiceTest {
 
 
     @Nested
-    inner class UnhappyClass {
+    inner class UnhappyPath {
         /**
          * Unhappy path - using Dao helper object resulted in an error. Ban list not found in database .
          */
         @Test
-        fun testFetchingBanListInstance_FromDB_WithFullText_BanListNotInDB() {
+        fun `Test Fetching BanList Instance, From DB, With Full Text, Ban List Not In DB`() {
             dbError_BanListNotInDB(false)
         }
 
@@ -282,7 +282,7 @@ class BannedCardsServiceTest {
          * Unhappy path - using Dao helper object resulted in an error. Ban list not found in database .
          */
         @Test
-        fun testFetchingBanListInstance_FromDB_WithTrimmedText_BanListNotInDB() {
+        fun `Test Fetching BanList Instance, From DB, With Trimmed Text, Ban List Not In DB`() {
             dbError_BanListNotInDB(true)
         }
 
