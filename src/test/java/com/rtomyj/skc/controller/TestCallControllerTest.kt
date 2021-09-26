@@ -1,6 +1,7 @@
 package com.rtomyj.skc.controller
 
 import org.hamcrest.Matchers.`is`
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,11 +19,14 @@ class TestCallControllerTest {
     private lateinit var mockMvc: MockMvc
 
 
-    @Test
-    fun `Calling Test Call Endpoint With Get Method Success`() {
-        this.mockMvc
-            .perform(get("/testcall"))
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.status", `is`("API is online and functional.")))
+    @Nested
+    inner class HappyPath {
+        @Test
+        fun `Calling Test Call Endpoint With Get Method Success`() {
+            this.mockMvc
+                .perform(get("/testcall"))
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.status", `is`("API is online and functional.")))
+        }
     }
 }
