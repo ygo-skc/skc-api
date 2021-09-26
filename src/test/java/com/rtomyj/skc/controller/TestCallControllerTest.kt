@@ -3,6 +3,7 @@ package com.rtomyj.skc.controller
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(TestCallController::class)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class TestCallControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -22,8 +24,8 @@ class TestCallControllerTest {
     @Nested
     inner class HappyPath {
         @Test
-        fun `Calling Test Call Endpoint With Get Method Success`() {
-            this.mockMvc
+        fun `Calling Test Call Endpoint With Get Method - Success`() {
+            mockMvc
                 .perform(get("/testcall"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.status", `is`("API is online and functional.")))
