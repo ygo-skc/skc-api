@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class BanListDatesController extends YgoApiBaseController
 {
-
 	/**
 	 * Service object used to interface the database DAO
 	 */
@@ -59,11 +58,10 @@ public class BanListDatesController extends YgoApiBaseController
 	public ResponseEntity<BanListDates> getBanListStartDates()
 	{
 		log.info("User is retrieving all effective start dates for ban lists.");
-		final BanListDates banListDates = banListDatesService.getBanListStartDates();
+		final BanListDates banListDates = banListDatesService.retrieveBanListStartDates();
 
 		log.info("Successfully retrieved all effective start dates for ban list. Currently there are {} ban lists", banListDates.getDates().size());
 		return ResponseEntity.ok(banListDates);
 
 	}
-
 }
