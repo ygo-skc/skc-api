@@ -6,6 +6,7 @@ import com.rtomyj.skc.constant.DBQueryConstants;
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.constant.LogConstants;
+import com.rtomyj.skc.enums.ErrorType;
 import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductViewDefinition;
@@ -26,6 +27,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -116,7 +118,8 @@ public class JDBCDao implements Dao
 			return null;
 		});
 
-		if (card == null) throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format("Unable to find card in DB with ID: %s", cardID));
+		if (card == null) throw new YgoException(String.format("Unable to find card in DB with ID: %s", cardID)
+				, HttpStatus.NOT_FOUND, ErrorType.D001);
 
 		return card;
 

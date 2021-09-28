@@ -1,37 +1,40 @@
 package com.rtomyj.skc.dao.implementation;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
+import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.dao.Dao;
-import com.rtomyj.skc.exception.YgoException;
+import com.rtomyj.skc.enums.ErrorType;
 import com.rtomyj.skc.enums.ProductType;
+import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListDate;
-import com.rtomyj.skc.model.card.CardBrowseResults;
+import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
-import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.card.Card;
-import com.rtomyj.skc.model.stats.DatabaseStats;
-import com.rtomyj.skc.model.stats.MonsterTypeStats;
+import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
 import com.rtomyj.skc.model.hibernate.BanListTable;
 import com.rtomyj.skc.model.product.Product;
 import com.rtomyj.skc.model.product.ProductContent;
 import com.rtomyj.skc.model.product.Products;
-
+import com.rtomyj.skc.model.stats.DatabaseStats;
+import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StopWatch;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -47,34 +50,43 @@ public class HibernateDao implements Dao
 
 
 	@Override
-	public BanListDates getBanListDates()
+	public BanListDates getBanListDates() throws YgoException
 	{
-
 		final StopWatch stopwatch = new StopWatch();
 		stopwatch.start();
 
+		try (final Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession())
+		{
+			CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
 
-		Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession();
-		CriteriaBuilder criteriaBuilder = entityManagerFactory.getCriteriaBuilder();
+			CriteriaQuery<BanListDate> criteriaQuery = criteriaBuilder.createQuery(BanListDate.class);
+			Root<BanListTable> root = criteriaQuery.from(BanListTable.class);
+			criteriaQuery.select(criteriaBuilder.construct(BanListDate.class, root.get("banListDate"))).distinct(true);
+			criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
 
-		CriteriaQuery<BanListDate> criteriaQuery = criteriaBuilder.createQuery(BanListDate.class);
-		Root<BanListTable> root = criteriaQuery.from(BanListTable.class);
-		criteriaQuery.select(criteriaBuilder.construct(BanListDate.class, root.get("banListDate"))).distinct(true);
-		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("banListDate")));
-
-		final BanListDates banListDates = BanListDates
-			.builder()
-			.dates(session.createQuery(criteriaQuery).getResultList())
-			.build();
-
-		session.close();
+			final BanListDates banListDates = BanListDates
+					.builder()
+					.dates(
+							session.createQuery(criteriaQuery)
+									.getResultList()
+					)
+					.build();
 
 
-		stopwatch.stop();
-		log.debug("Time taken to fetch ban list effective start dates from DB: {}", stopwatch.getTotalTimeMillis());
+			stopwatch.stop();
+			log.debug("Time taken to fetch ban list effective start dates from DB: {}", stopwatch.getTotalTimeMillis());
 
-		return banListDates;
+			return banListDates;
+		} catch (PersistenceException exception)
+		{
+			String causeMessage = exception.getCause().getCause().getMessage();
+			if (causeMessage.contains("Table") && causeMessage.contains("doesn't exist"))
+			{
+				throw new YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002);
+			}
+		}
 
+		return null;
 	}
 
 

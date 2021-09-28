@@ -3,6 +3,7 @@ package com.rtomyj.skc.service.banlist;
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.dao.Dao.Status;
 import com.rtomyj.skc.constant.ErrConstants;
+import com.rtomyj.skc.enums.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListInstance;
 import com.rtomyj.skc.model.card.Card;
@@ -12,6 +13,7 @@ import org.cache2k.Cache2kBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -152,7 +154,8 @@ public class BannedCardsService
 		if (banListInstance.getNumForbidden() == 0 && banListInstance.getNumLimited() == 0
 				&& banListInstance.getNumSemiLimited() == 0)
 		{
-			throw new YgoException(ErrConstants.NOT_FOUND_DAO_ERR, String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate));
+			throw new YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate)
+					, HttpStatus.NOT_FOUND, ErrorType.D001);
 		}
 	}
 }

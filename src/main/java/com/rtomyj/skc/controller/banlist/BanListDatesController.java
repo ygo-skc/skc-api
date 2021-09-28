@@ -53,7 +53,8 @@ public class BanListDatesController extends YgoApiBaseController
 		, response = BanListDates.class
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {
-		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+			@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+			, @ApiResponse(code = 500, message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<BanListDates> getBanListStartDates()
 	{

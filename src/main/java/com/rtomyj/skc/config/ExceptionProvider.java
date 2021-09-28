@@ -1,8 +1,7 @@
 package com.rtomyj.skc.config;
 
-import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.constant.LogConstants;
-import com.rtomyj.skc.enums.ErrorTypes;
+import com.rtomyj.skc.enums.ErrorType;
 import com.rtomyj.skc.exception.YgoError;
 import com.rtomyj.skc.exception.YgoException;
 import lombok.extern.slf4j.Slf4j;
@@ -25,15 +24,9 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	@ExceptionHandler(YgoException.class)
 	public final ResponseEntity<YgoError> test(final YgoException exception)
 	{
-		if (exception.getCode().equals(ErrConstants.NOT_FOUND_DAO_ERR))
-		{
-
-			final HttpStatus status = HttpStatus.NOT_FOUND;
-			log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception, status);
-			return new ResponseEntity<>(new YgoError(ErrorTypes.D001.toString(), ErrorTypes.D001.name()), status);
-
-		}
-		return null;
+		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception, exception.getHttpStatus());
+		return new ResponseEntity<>(new YgoError(exception.getErrorType().toString(), exception.getErrorType().name())
+				, exception.getHttpStatus());
 	}
 
 
@@ -43,6 +36,6 @@ public class ExceptionProvider extends ResponseEntityExceptionHandler
 	public YgoError onValidationFail(final ConstraintViolationException exception)
 	{
 		log.error("Request did not conform to spec. Constraints violated: {}", exception.toString());
-		return new YgoError(ErrorTypes.D101.toString(), ErrorTypes.D101.name());
+		return new YgoError(ErrorType.G001.toString(), ErrorType.G001.name());
 	}
 }

@@ -14,5 +14,5 @@ import lombok.ToString;
 public class YgoError
 {
 	String message;
-	String status;
+	String code;
 }
