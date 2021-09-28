@@ -1,9 +1,10 @@
 package com.rtomyj.skc.service.banlist
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.BanListNewContent
@@ -17,6 +18,7 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.core.io.ClassPathResource
+import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -65,7 +67,7 @@ class BannedCardsServiceTest {
          */
         @Test
         fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As False, And Fetch All Info As False, Successfully`() {
-            happyPath(false, false)
+            happyPath(saveBandwidth = false, fetchAllInfo = false)
         }
 
 
@@ -77,7 +79,7 @@ class BannedCardsServiceTest {
          */
         @Test
         fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As True, And Fetch All Info As False, Successfully`() {
-            happyPath(true, false)
+            happyPath(saveBandwidth = true, fetchAllInfo = false)
         }
 
 
@@ -89,7 +91,7 @@ class BannedCardsServiceTest {
          */
         @Test
         fun `Test Fetching Ban List Instance, From DB, With Save Bandwidth As False, And Fetch All Info As True, Successfully`() {
-            happyPath(false, true)
+            happyPath(saveBandwidth = false, fetchAllInfo = true)
         }
 
 
@@ -326,8 +328,9 @@ class BannedCardsServiceTest {
 
             Assertions.assertTrue(ex.cause is YgoException)
             val exCause = ex.cause as YgoException  // previous assertion passed, we know the type of ex
-            Assertions.assertEquals(ErrConstants.NOT_FOUND_DAO_ERR, exCause.code)
             Assertions.assertEquals(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE), exCause.message)
+            Assertions.assertEquals(HttpStatus.NOT_FOUND, exCause.httpStatus)
+            Assertions.assertEquals(ErrorType.D001, exCause.errorType)
 
 
             // verify mocks are called the exact number of times expected
