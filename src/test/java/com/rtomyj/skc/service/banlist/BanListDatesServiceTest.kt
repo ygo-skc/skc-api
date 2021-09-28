@@ -54,7 +54,7 @@ class BanListDatesServiceTest {
 
 
             // call code to test
-            val banListDates = banService.banListStartDates
+            val banListDates = banService.retrieveBanListStartDates()
 
 
             // assertions on returned value

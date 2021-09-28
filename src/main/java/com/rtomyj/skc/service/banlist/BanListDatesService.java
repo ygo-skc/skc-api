@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BanListDatesService
 {
-
 	/**
 	 * Object used to interface with DB.
 	 */
@@ -30,9 +29,7 @@ public class BanListDatesService
 	@Autowired
 	public BanListDatesService(@Qualifier("hibernate") final Dao dao)
 	{
-
 		this.dao = dao;
-
 	}
 
 
@@ -40,14 +37,11 @@ public class BanListDatesService
 	 * Uses dao helper object to retrieve start dates of all ban lists in the database.
 	 * @return List of BanList objects
 	 */
-	public BanListDates getBanListStartDates()
+	public BanListDates retrieveBanListStartDates()
 	{
-
 		final BanListDates banListDates = dao.getBanListDates();
 		banListDates.setLinks();
 
 		return banListDates;
-
 	}
-
 }

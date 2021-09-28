@@ -58,7 +58,8 @@ class CardServiceTest {
 
 
             // verify mocks are called the exact number of times expected
-            Mockito.verify(dao, Mockito.times(1)).getCardInfo(ArgumentMatchers.eq(TestConstants.STRATOS_ID))
+            Mockito.verify(dao, Mockito.times(1))
+                .getCardInfo(ArgumentMatchers.eq(TestConstants.STRATOS_ID))
         }
     }
 
