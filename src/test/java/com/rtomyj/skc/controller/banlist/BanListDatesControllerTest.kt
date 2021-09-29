@@ -7,26 +7,21 @@ import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.service.banlist.BanListDatesService
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpStatus
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.text.SimpleDateFormat
 
-@ExtendWith(SpringExtension::class)
 @WebMvcTest(BanListDatesController::class, DateConfig::class)
 class BanListDatesControllerTest {
     @MockBean
@@ -62,13 +57,13 @@ class BanListDatesControllerTest {
                 .perform(get(BAN_LIST_DATES_ENDPOINT))
                 .andExpect(status().isOk)
                 .andExpect(
-                    jsonPath("$.banListDates.length()", Matchers.`is`(2))
+                    jsonPath("$.banListDates.length()", `is`(2))
                 )
                 .andExpect(
-                    jsonPath("$.banListDates[0].effectiveDate", Matchers.`is`("2021-07-01"))
+                    jsonPath("$.banListDates[0].effectiveDate", `is`("2021-07-01"))
                 )
                 .andExpect(
-                    jsonPath("$.banListDates[1].effectiveDate", Matchers.`is`("2021-04-14"))
+                    jsonPath("$.banListDates[1].effectiveDate", `is`("2021-04-14"))
                 )
 
 
@@ -107,9 +102,14 @@ class BanListDatesControllerTest {
     inner class UnhappyPath {
         @Test
         fun `Getting Ban List Dates Using Controller, But The Ban List Table Isn't Setup - Server Error`() {
+            // mock retrieval of ban list dates - error occurred - table ban list table DNE
             `when`(banListDatesService.retrieveBanListStartDates())
-                .thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002))
-            
+                .thenThrow(
+                    YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
+                )
+
+
+            // call endpoint to retrieve ban list dates
             mockMvc
                 .perform(get(BAN_LIST_DATES_ENDPOINT))
                 .andExpect(status().isInternalServerError)
@@ -119,6 +119,11 @@ class BanListDatesControllerTest {
                 .andExpect(
                     jsonPath("$.code", `is`("D002"))
                 )
+
+
+            // ensure methods are called correct number of times
+            verify(banListDatesService)
+                .retrieveBanListStartDates()
         }
     }
 
