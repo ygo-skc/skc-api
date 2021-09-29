@@ -8,9 +8,9 @@ import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.service.banlist.BanListDatesService
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -22,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.text.SimpleDateFormat
 
@@ -60,9 +61,15 @@ class BanListDatesControllerTest {
             mockMvc
                 .perform(get(BAN_LIST_DATES_ENDPOINT))
                 .andExpect(status().isOk)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.banListDates.length()", Matchers.`is`(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.banListDates[0].effectiveDate", Matchers.`is`("2021-07-01")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.banListDates[1].effectiveDate", Matchers.`is`("2021-04-14")))
+                .andExpect(
+                    jsonPath("$.banListDates.length()", Matchers.`is`(2))
+                )
+                .andExpect(
+                    jsonPath("$.banListDates[0].effectiveDate", Matchers.`is`("2021-07-01"))
+                )
+                .andExpect(
+                    jsonPath("$.banListDates[1].effectiveDate", Matchers.`is`("2021-04-14"))
+                )
 
 
             // ensure methods are called correct number of times
@@ -106,6 +113,12 @@ class BanListDatesControllerTest {
             mockMvc
                 .perform(get(BAN_LIST_DATES_ENDPOINT))
                 .andExpect(status().isInternalServerError)
+                .andExpect(
+                    jsonPath("$.message", `is`("Error occurred interfacing with resource(s)"))
+                )
+                .andExpect(
+                    jsonPath("$.code", `is`("D002"))
+                )
         }
     }
 
