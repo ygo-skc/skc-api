@@ -1,6 +1,5 @@
 package com.rtomyj.skc.service
 
-import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.enums.ErrorType
