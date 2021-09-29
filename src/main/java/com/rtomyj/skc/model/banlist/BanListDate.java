@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.config.DateConfig;
-import com.rtomyj.skc.controller.banlist.BanListNewContentController;
-import com.rtomyj.skc.controller.banlist.BanListRemovedContentController;
+import com.rtomyj.skc.controller.banlist.BanListDiffController;
 import com.rtomyj.skc.controller.banlist.BannedCardsController;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.HateoasLinks;
@@ -50,8 +49,7 @@ public class BanListDate extends RepresentationModel<BanListDate> implements Hat
 	private Date effectiveDate;
 
 	private static final Class<BannedCardsController> BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController.class;
-	private static final Class<BanListNewContentController> BAN_LIST_NEW_CONTENT_CONTROLLER_CLASS = BanListNewContentController.class;
-	private static final Class<BanListRemovedContentController> BAN_LIST_REMOVED_CONTENT_CONTROLLER_CLASS = BanListRemovedContentController.class;
+	private static final Class<BanListDiffController> BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController.class;
 
 	@JsonIgnore
 	private final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
@@ -74,11 +72,11 @@ public class BanListDate extends RepresentationModel<BanListDate> implements Hat
 						.getBannedCards(banListDateStr, false, true))
 						.withRel("Ban List Content"));
 		this.add(
-				linkTo(methodOn(BAN_LIST_NEW_CONTENT_CONTROLLER_CLASS)
+				linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
 						.getNewlyAddedContentForBanList(banListDateStr))
 						.withRel("Ban List New Content"));
 		this.add(
-				linkTo(methodOn(BAN_LIST_REMOVED_CONTENT_CONTROLLER_CLASS)
+				linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
 						.getNewlyRemovedContentForBanList(banListDateStr))
 						.withRel("Ban List Removed Content"));
 	}

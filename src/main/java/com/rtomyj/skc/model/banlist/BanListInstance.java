@@ -3,8 +3,7 @@ package com.rtomyj.skc.model.banlist;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.rtomyj.skc.controller.banlist.BanListNewContentController;
-import com.rtomyj.skc.controller.banlist.BanListRemovedContentController;
+import com.rtomyj.skc.controller.banlist.BanListDiffController;
 import com.rtomyj.skc.controller.banlist.BannedCardsController;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.exception.YgoException;
@@ -100,8 +99,7 @@ public class BanListInstance extends RepresentationModel<BanListInstance> implem
 	private BanListRemovedContent removedContent;
 
 	private static final Class<BannedCardsController> banListController = BannedCardsController.class;
-	private static final Class<BanListRemovedContentController> removedController = BanListRemovedContentController.class;
-	private static final Class<BanListNewContentController> newController = BanListNewContentController.class;
+	private static final Class<BanListDiffController> BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController.class;
 
 
 	@Override
@@ -123,10 +121,10 @@ public class BanListInstance extends RepresentationModel<BanListInstance> implem
 		this.setSelfLink();
 
 		this.add(
-				linkTo(methodOn(newController).getNewlyAddedContentForBanList(effectiveDate)).withRel("Ban List New Content")
+				linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS).getNewlyAddedContentForBanList(effectiveDate)).withRel("Ban List New Content")
 		);
 		this.add(
-				linkTo(methodOn(removedController).getNewlyRemovedContentForBanList(effectiveDate)).withRel("Ban List Removed Content")
+				linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS).getNewlyRemovedContentForBanList(effectiveDate)).withRel("Ban List Removed Content")
 		);
 
 		HateoasLinks.setLinks(forbidden);
