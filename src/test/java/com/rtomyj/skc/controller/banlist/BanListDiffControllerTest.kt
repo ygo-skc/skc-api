@@ -154,10 +154,10 @@ class BanListDiffControllerTest {
                 .perform(get("/ban_list/incorrect-date-format/new"))
                 .andExpect(status().isBadRequest)
                 .andExpect(
-                    jsonPath("$.message", `is`("URL requested doesn't have proper syntax"))
+                    jsonPath("$.message", `is`(ErrorType.G001.toString()))
                 )
                 .andExpect(
-                    jsonPath("$.code", `is`("G001"))
+                    jsonPath("$.code", `is`(ErrorType.G001.name))
                 )
         }
 
@@ -169,8 +169,12 @@ class BanListDiffControllerTest {
                 banListDiffService.getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
             )
                 .thenThrow(
-                    YgoException(String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE)
-                        , HttpStatus.NOT_FOUND, ErrorType.D001)
+                    YgoException(
+                        String.format(
+                            ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
+                            REQUESTED_BAN_LIST_MOCK_DATE
+                        ), HttpStatus.NOT_FOUND, ErrorType.D001
+                    )
                 )
 
 
@@ -179,8 +183,8 @@ class BanListDiffControllerTest {
                 .perform(get(NEW_CONTENT_ENDPOINT))
                 .andExpect(status().isNotFound)
                 .andExpect(
-                    jsonPath("$.message"
-                        , `is`(ErrorType.D001.toString())
+                    jsonPath(
+                        "$.message", `is`(ErrorType.D001.toString())
                     )
                 )
                 .andExpect(
@@ -196,81 +200,6 @@ class BanListDiffControllerTest {
 
         @Test
         fun `Getting Newly Added Cards For A Ban List - Ban List Table Is Missing - 500 HTTP Exception`() {
-            // mock exception when Service is called
-            `when`(
-                banListDiffService.getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
-            )
-                .thenThrow(
-                    YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
-                )
-
-
-            // call controller
-            mockMvc
-                .perform(get(NEW_CONTENT_ENDPOINT))
-                .andExpect(status().isInternalServerError)
-                .andExpect(
-                    jsonPath("$.message", `is`(ErrorType.D002.toString()))
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`(ErrorType.D002.name))
-                )
-
-
-            // ensure mocks are called the correct number of times
-            verify(banListDiffService)
-                .getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
-        }
-
-
-        @Test
-        fun `Getting Cards Removed From A Ban List - Date Used Isn't In Correct Format - 400 HTTP Exception`() {
-            mockMvc
-                .perform(get("/ban_list/incorrect-date-format/removed"))
-                .andExpect(status().isBadRequest)
-                .andExpect(
-                    jsonPath("$.message", `is`("URL requested doesn't have proper syntax"))
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`("G001"))
-                )
-        }
-
-
-        @Test
-        fun `Getting Cards Removed From A Ban List - No Ban List Info For Given Date - 404 HTTP Exception`() {
-            // mock exception when Service is called
-            `when`(
-                banListDiffService.getRemovedContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
-            )
-                .thenThrow(
-                    YgoException(String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE)
-                        , HttpStatus.NOT_FOUND, ErrorType.D001)
-                )
-
-
-            // call controller
-            mockMvc
-                .perform(get(REMOVED_CONTENT_ENDPOINT))
-                .andExpect(status().isNotFound)
-                .andExpect(
-                    jsonPath("$.message"
-                        , `is`(ErrorType.D001.toString())
-                    )
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`(ErrorType.D001.name))
-                )
-
-
-            // ensure mocks are called the correct number of times
-            verify(banListDiffService)
-                .getRemovedContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
-        }
-
-
-        @Test
-        fun `Getting Cards Removed From A Ban List - Ban List Table Is Missing - 500 HTTP Exception`() {
             // mock exception when Service is called
             `when`(
                 banListDiffService.getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
