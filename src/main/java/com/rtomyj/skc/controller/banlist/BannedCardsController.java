@@ -74,6 +74,7 @@ public class BannedCardsController extends YgoApiBaseController
 		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
 		, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
 		, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+		, @ApiResponse(code = 500, message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<BanListInstance> getBannedCards(
 			@ApiParam(

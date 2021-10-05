@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class BannedCardsService
 {
-
 	/**
 	 * Dao for DB;
 	 */
@@ -82,7 +81,6 @@ public class BannedCardsService
 	public BanListInstance getBanListByDate(final String banListStartDate, final boolean saveBandwidth, final boolean fetchAllInfo)
 		throws YgoException
 	{
-
 		// Determines which cache to use depending on user bandwidth preferences
 		Cache<String, BanListInstance> cache = (saveBandwidth)? banListInstanceLowBandwidthCache : banListInstanceCache;
 
@@ -95,7 +93,6 @@ public class BannedCardsService
 		}
 
 		return banListInstance;
-
 	}
 
 
@@ -116,7 +113,7 @@ public class BannedCardsService
 		banListInstance.setNumLimited(banListInstance.getLimited().size());
 		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
 
-		validateDBValue(banListInstance, banListStartDate);
+		validateBanListInstance(banListInstance, banListStartDate);
 
 		banListInstance.setLinks();
 		return banListInstance;
@@ -128,7 +125,6 @@ public class BannedCardsService
 	private BanListInstance onLowBandwidthCacheMiss(final String banListStartDate)
 		throws YgoException
 	{
-
 		log.info("Ban list w/ start date: ( {} ) not found in low bandwidth cache. Using DB.", banListStartDate);
 		final BanListInstance banListInstance = BanListInstance.builder()
 			.forbidden(dao.getBanListByBanStatus(banListStartDate, Status.FORBIDDEN))
@@ -141,16 +137,16 @@ public class BannedCardsService
 		banListInstance.setNumLimited(banListInstance.getLimited().size());
 		banListInstance.setNumSemiLimited(banListInstance.getSemiLimited().size());
 
-		validateDBValue(banListInstance, banListStartDate);
+		validateBanListInstance(banListInstance, banListStartDate);
 
 		Card.trimEffects(banListInstance);
 		banListInstance.setLinks();
 		return banListInstance;
-
 	}
 
 
-	private void validateDBValue(final BanListInstance banListInstance, final String banListStartDate) {
+	private void validateBanListInstance(final BanListInstance banListInstance, final String banListStartDate)
+	{
 		if (banListInstance.getNumForbidden() == 0 && banListInstance.getNumLimited() == 0
 				&& banListInstance.getNumSemiLimited() == 0)
 		{
