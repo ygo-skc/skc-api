@@ -1,9 +1,7 @@
-package com.rtomyj.skc.config;
+package com.rtomyj.skc.exception;
 
 import com.rtomyj.skc.constant.LogConstants;
 import com.rtomyj.skc.enums.ErrorType;
-import com.rtomyj.skc.exception.YgoError;
-import com.rtomyj.skc.exception.YgoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
