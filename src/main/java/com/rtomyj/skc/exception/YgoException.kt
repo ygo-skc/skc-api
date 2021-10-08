@@ -11,5 +11,4 @@ import java.lang.RuntimeException
 @EqualsAndHashCode(callSuper = false)
 @Builder
 class YgoException(override val message: String, val httpStatus: HttpStatus, val errorType: ErrorType)
-	: RuntimeException() {
-}
+	: RuntimeException()

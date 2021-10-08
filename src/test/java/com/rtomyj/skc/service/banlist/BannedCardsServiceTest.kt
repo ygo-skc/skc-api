@@ -152,9 +152,9 @@ class BannedCardsServiceTest {
             val banListInstance = bannedCardsService
                 .getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, fetchAllInfo)
 
-            val forbidden = banListInstance.forbidden
-            val limited = banListInstance.limited
-            val semiLimited = banListInstance.semiLimited
+            val forbidden = banListInstance.forbidden!!
+            val limited = banListInstance.limited!!
+            val semiLimited = banListInstance.semiLimited!!
 
 
             // ensure objects are not null as expected
@@ -318,7 +318,7 @@ class BannedCardsServiceTest {
 
 
             // call code and assert throws
-            val ex = Assertions.assertThrows(CacheLoaderException::class.java) {
+            val ex = Assertions.assertThrows(YgoException::class.java) {
                 bannedCardsService.getBanListByDate(
                     TestConstants.BAN_LIST_START_DATE,
                     isSaveBandwidth,
@@ -326,11 +326,9 @@ class BannedCardsServiceTest {
                 )
             }
 
-            Assertions.assertTrue(ex.cause is YgoException)
-            val exCause = ex.cause as YgoException  // previous assertion passed, we know the type of ex
-            Assertions.assertEquals(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE), exCause.message)
-            Assertions.assertEquals(HttpStatus.NOT_FOUND, exCause.httpStatus)
-            Assertions.assertEquals(ErrorType.D001, exCause.errorType)
+            Assertions.assertEquals(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE), ex.message)
+            Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.httpStatus)
+            Assertions.assertEquals(ErrorType.D001, ex.errorType)
 
 
             // verify mocks are called the exact number of times expected

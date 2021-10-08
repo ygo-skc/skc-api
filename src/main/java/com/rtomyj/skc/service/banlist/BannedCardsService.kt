@@ -22,7 +22,7 @@ class BannedCardsService @Autowired constructor(
 	, private val diffService: DiffService
 ) {
 	companion object {
-		val log: Logger = LoggerFactory.getLogger(this::class.java)
+		private val log: Logger = LoggerFactory.getLogger(this::class.java)
 	}
 
 
