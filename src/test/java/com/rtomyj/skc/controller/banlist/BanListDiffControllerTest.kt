@@ -1,12 +1,12 @@
 package com.rtomyj.skc.controller.banlist
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.enums.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
-import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus
 import com.rtomyj.skc.service.banlist.DiffService
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
@@ -16,6 +16,7 @@ import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -32,37 +33,16 @@ class BanListDiffControllerTest {
 
 
     companion object {
-        const val REQUESTED_BAN_LIST_MOCK_DATE = "2021-10-01"
-        const val REQUESTED_PREVIOUS_BAN_LIST_MOCK_DATE = "2021-07-01"
+        private const val NEW_CONTENT_ENDPOINT = "/ban_list/2018-12-03/new"
+        private const val REMOVED_CONTENT_ENDPOINT = "/ban_list/2018-12-03/removed"
 
-        const val NEW_CONTENT_ENDPOINT = "/ban_list/2021-10-01/new"
-        const val REMOVED_CONTENT_ENDPOINT = "/ban_list/2021-10-01/removed"
+        private val mapper = ObjectMapper()
 
-        val NEW_FORBIDDEN = listOf(
-            CardsPreviousBanListStatus().apply {
-                this.cardId = TestConstants.A_HERO_LIVES_ID
-                this.cardName = TestConstants.A_HERO_LIVES_NAME
-                this.previousBanStatus = "Limited"
-            }
-            , CardsPreviousBanListStatus().apply {
-                this.cardId = TestConstants.STRATOS_ID
-                this.cardName = TestConstants.STRATOS_NAME
-                this.previousBanStatus = "Unlimited"
-            }
-        )
+        private val banListNewContent = mapper
+            .readValue(ClassPathResource(TestConstants.BAN_LIST_NEW_CONTENT).file, BanListNewContent::class.java)
 
-        val REMOVED_CARDS = listOf(
-            CardsPreviousBanListStatus().apply {
-                this.cardId = TestConstants.A_HERO_LIVES_ID
-                this.cardName = TestConstants.A_HERO_LIVES_NAME
-                this.previousBanStatus = "Limited"
-            }
-            , CardsPreviousBanListStatus().apply {
-                this.cardId = TestConstants.STRATOS_ID
-                this.cardName = TestConstants.STRATOS_NAME
-                this.previousBanStatus = "Forbidden"
-            }
-        )
+        private val banListRemovedContent = mapper
+            .readValue(ClassPathResource(TestConstants.BAN_LIST_REMOVED_CONTENT).file, BanListRemovedContent::class.java)
     }
 
 
@@ -72,22 +52,9 @@ class BanListDiffControllerTest {
         fun `Getting Newly Added Cards For A Ban List  - Success`() {
             // mock exception when Service is called
             `when`(
-                banListDiffService.getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
             )
-                .thenReturn(
-                    BanListNewContent().apply {
-                        this.listRequested = REQUESTED_BAN_LIST_MOCK_DATE
-                        this.comparedTo = REQUESTED_PREVIOUS_BAN_LIST_MOCK_DATE
-
-                        this.numNewForbidden = NEW_FORBIDDEN.size
-                        this.numNewLimited = 0
-                        this.numNewSemiLimited = 0
-
-                        this.newForbidden = NEW_FORBIDDEN
-                        this.newLimited = emptyList()
-                        this.newSemiLimited = emptyList()
-                    }
-                )
+                .thenReturn(banListNewContent)
 
 
             // call controller
@@ -95,17 +62,17 @@ class BanListDiffControllerTest {
                 .perform(get(NEW_CONTENT_ENDPOINT))
                 .andExpect(status().isOk)
                 .andExpect(
-                    jsonPath("$.listRequested", `is`(REQUESTED_BAN_LIST_MOCK_DATE)
+                    jsonPath("$.listRequested", `is`(TestConstants.BAN_LIST_START_DATE)
                     )
                 )
                 .andExpect(
-                    jsonPath("$.comparedTo", `is`(REQUESTED_PREVIOUS_BAN_LIST_MOCK_DATE))
+                    jsonPath("$.comparedTo", `is`(TestConstants.PREVIOUS_BAN_LIST_START_DATE))
                 )
 
 
             // ensure mocks are called the correct number of times
             verify(banListDiffService)
-                .getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                .getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
         }
 
 
@@ -113,17 +80,9 @@ class BanListDiffControllerTest {
         fun `Getting Removed Cards For A Ban List  - Success`() {
             // mock exception when Service is called
             `when`(
-                banListDiffService.getRemovedContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
             )
-                .thenReturn(
-                    BanListRemovedContent().apply {
-                        this.listRequested = REQUESTED_BAN_LIST_MOCK_DATE
-                        this.comparedTo = REQUESTED_PREVIOUS_BAN_LIST_MOCK_DATE
-
-                        this.numRemoved = REMOVED_CARDS.size
-                        this.removedCards = REMOVED_CARDS
-                    }
-                )
+                .thenReturn(banListRemovedContent)
 
 
             // call controller
@@ -131,17 +90,17 @@ class BanListDiffControllerTest {
                 .perform(get(REMOVED_CONTENT_ENDPOINT))
                 .andExpect(status().isOk)
                 .andExpect(
-                    jsonPath("$.listRequested", `is`(REQUESTED_BAN_LIST_MOCK_DATE)
+                    jsonPath("$.listRequested", `is`(TestConstants.BAN_LIST_START_DATE)
                     )
                 )
                 .andExpect(
-                    jsonPath("$.comparedTo", `is`(REQUESTED_PREVIOUS_BAN_LIST_MOCK_DATE))
+                    jsonPath("$.comparedTo", `is`(TestConstants.PREVIOUS_BAN_LIST_START_DATE))
                 )
 
 
             // ensure mocks are called the correct number of times
             verify(banListDiffService)
-                .getRemovedContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                .getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
         }
     }
 
@@ -166,13 +125,13 @@ class BanListDiffControllerTest {
         fun `Getting Newly Added Cards For A Ban List - No Ban List Info For Given Date - 404 HTTP Exception`() {
             // mock exception when Service is called
             `when`(
-                banListDiffService.getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
             )
                 .thenThrow(
                     YgoException(
                         String.format(
                             ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
-                            REQUESTED_BAN_LIST_MOCK_DATE
+                            TestConstants.BAN_LIST_START_DATE
                         ), HttpStatus.NOT_FOUND, ErrorType.D001
                     )
                 )
@@ -194,7 +153,7 @@ class BanListDiffControllerTest {
 
             // ensure mocks are called the correct number of times
             verify(banListDiffService)
-                .getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                .getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
         }
 
 
@@ -202,7 +161,7 @@ class BanListDiffControllerTest {
         fun `Getting Newly Added Cards For A Ban List - Ban List Table Is Missing - 500 HTTP Exception`() {
             // mock exception when Service is called
             `when`(
-                banListDiffService.getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
             )
                 .thenThrow(
                     YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
@@ -223,7 +182,7 @@ class BanListDiffControllerTest {
 
             // ensure mocks are called the correct number of times
             verify(banListDiffService)
-                .getNewContentForGivenBanList(REQUESTED_BAN_LIST_MOCK_DATE)
+                .getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
         }
     }
 }
