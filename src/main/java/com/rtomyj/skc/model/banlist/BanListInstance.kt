@@ -21,7 +21,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonTypeName("banListInstance")
-@JsonPropertyOrder("startDate", "numForbidden", "numLimited", "numSemiLimited", "forbidden", "limited", "semiLimited")
+@JsonPropertyOrder("effectiveDate", "comparedTo", "numForbidden", "numLimited", "numSemiLimited", "forbidden", "limited", "semiLimited")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ApiModel(
@@ -34,6 +34,12 @@ class BanListInstance : RepresentationModel<BanListInstance>(), HateoasLinks {
 		accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
 	var effectiveDate: String? = null
+
+	@ApiModelProperty(
+		value = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
+		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	)
+	var comparedTo: String? = null
 
 	@ApiModelProperty(
 		value = "Total number of cards forbidden in this ban list instance; ie size of forbidden list.",

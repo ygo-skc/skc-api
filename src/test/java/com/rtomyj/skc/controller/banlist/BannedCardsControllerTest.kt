@@ -55,15 +55,18 @@ class BannedCardsControllerTest {
 	inner class HappyPath {
 		@Test
 		fun `Getting All Banned Cards For A Ban List - Success`() {
+			// build mock response
 			banListInstanceFullText.newContent = banListNewContent
 			banListInstanceFullText.removedContent = banListRemovedContent
 
+			// setup mocks
 			`when`(bannedCardsServiceMock.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE,
 				saveBandwidth = false, fetchAllInfo = true
 			))
 				.thenReturn(banListInstanceFullText)
 
 
+			// perform operation on endpoint
 			mockMvc
 				.perform(
 					get(BAN_LIST_CONTENT_ENDPOINT)
@@ -77,6 +80,7 @@ class BannedCardsControllerTest {
 				.andExpect(jsonPath("$.banListInstance.numSemiLimited", `is`(1)))
 
 
+			// ensure mocks are called
 			verify(bannedCardsServiceMock)
 				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = true)
 		}

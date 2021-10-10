@@ -44,6 +44,7 @@ class BannedCardsService @Autowired constructor(
 			limited = dao.getBanListByBanStatus(banListStartDate, Dao.Status.LIMITED)
 			semiLimited = dao.getBanListByBanStatus(banListStartDate, Dao.Status.SEMI_LIMITED)
 			effectiveDate = banListStartDate
+			comparedTo = dao.getPreviousBanListDate(banListStartDate)
 
 			numForbidden = forbidden!!.size
 			numLimited = limited!!.size

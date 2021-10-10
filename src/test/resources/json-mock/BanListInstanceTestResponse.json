@@ -1,6 +1,7 @@
 {
    "banListInstance": {
 	   "effectiveDate": "2018-12-03"
+	   , "comparedTo": "2018-09-17"
 	   , "numForbidden": 1
 	   , "numLimited": 1
 	   , "numSemiLimited": 1
