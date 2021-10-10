@@ -1,8 +1,13 @@
 package com.rtomyj.skc.controller.banlist
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.enums.ErrorType
 import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.model.banlist.BanListInstance
+import com.rtomyj.skc.model.banlist.BanListNewContent
+import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.service.banlist.BannedCardsService
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
@@ -12,6 +17,7 @@ import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -28,16 +34,52 @@ class BannedCardsControllerTest {
 
 
 	companion object {
-		const val REQUESTED_BAN_LIST_MOCK_DATE = "2021-10-01"
-		const val REQUESTED_PREVIOUS_BAN_LIST_MOCK_DATE = "2021-07-01"
+		private const val REQUESTED_BAN_LIST_MOCK_DATE = "2018-12-03"
 
-		const val BAN_LIST_CONTENT_ENDPOINT = "/ban_list/2021-10-01/cards"
+		private const val BAN_LIST_CONTENT_ENDPOINT = "/ban_list/2018-12-03/cards"
+
+		private val mapper = ObjectMapper()
+
+		private val banListInstanceFullText = mapper
+			.readValue(ClassPathResource(TestConstants.BAN_LIST_INSTANCE_JSON_FILE).file, BanListInstance::class.java)
+
+		private val banListNewContent = mapper
+			.readValue(ClassPathResource(TestConstants.BAN_LIST_NEW_CONTENT).file, BanListNewContent::class.java)
+
+		private val banListRemovedContent = mapper
+			.readValue(ClassPathResource(TestConstants.BAN_LIST_REMOVED_CONTENT).file, BanListRemovedContent::class.java)
 	}
 
 
 	@Nested
 	inner class HappyPath {
+		@Test
+		fun `Getting All Banned Cards For A Ban List - Success`() {
+			banListInstanceFullText.newContent = banListNewContent
+			banListInstanceFullText.removedContent = banListRemovedContent
 
+			`when`(bannedCardsServiceMock.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE,
+				saveBandwidth = false, fetchAllInfo = true
+			))
+				.thenReturn(banListInstanceFullText)
+
+
+			mockMvc
+				.perform(
+					get(BAN_LIST_CONTENT_ENDPOINT)
+						.param("saveBandwidth", "false")
+						.param("allInfo", "true")
+				)
+				.andExpect(status().isOk)
+				.andExpect(jsonPath("$.banListInstance.effectiveDate", `is`(REQUESTED_BAN_LIST_MOCK_DATE)))
+				.andExpect(jsonPath("$.banListInstance.numForbidden", `is`(1)))
+				.andExpect(jsonPath("$.banListInstance.numLimited", `is`(1)))
+				.andExpect(jsonPath("$.banListInstance.numSemiLimited", `is`(1)))
+
+
+			verify(bannedCardsServiceMock)
+				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = true)
+		}
 	}
 
 
@@ -62,13 +104,14 @@ class BannedCardsControllerTest {
 		fun `Getting All Banned Cards For A Ban List - Date Requested Is Not A Valid Ban List - 404 HTTP Exception`() {
 			// mock call and return exception - ban list requested not in DB
 			`when`(
-				bannedCardsServiceMock.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, false, false)
+				bannedCardsServiceMock.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE,
+					saveBandwidth = false, fetchAllInfo = false
+				)
 			)
 				.thenThrow(
 					YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE)
 					, HttpStatus.NOT_FOUND, ErrorType.D001)
 				)
-
 
 
 			// ensure calling endpoint fails with expected status and body
@@ -80,6 +123,36 @@ class BannedCardsControllerTest {
 				)
 				.andExpect(
 					jsonPath("$.code", `is`(ErrorType.D001.name))
+				)
+
+
+			// ensure mocks are called the correct number of times
+			verify(bannedCardsServiceMock)
+				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = false)
+		}
+
+
+		@Test
+		fun `Getting All Banned Cards For A Ban List - DB Is Missing Tables - 500 HTTP Exception`() {
+			// mock call and return exception - ban list requested not in DB
+			`when`(
+				bannedCardsServiceMock.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = false
+				)
+			)
+				.thenThrow(
+					YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
+				)
+
+
+			// ensure calling endpoint fails with expected status and body
+			mockMvc
+				.perform(get("${BAN_LIST_CONTENT_ENDPOINT}?saveBandwidth=false&allInfo=false"))
+				.andExpect(status().isInternalServerError)
+				.andExpect(
+					jsonPath("$.message", `is`(ErrorType.D002.toString()))
+				)
+				.andExpect(
+					jsonPath("$.code", `is`(ErrorType.D002.name))
 				)
 
 

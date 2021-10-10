@@ -10,7 +10,6 @@ import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.model.card.Card
-import org.cache2k.io.CacheLoaderException
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers

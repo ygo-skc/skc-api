@@ -1,21 +1,23 @@
 package com.rtomyj.skc.model.banlist;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.controller.banlist.BanListDiffController;
 import com.rtomyj.skc.controller.banlist.BannedCardsController;
-
-import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.HateoasLinks;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import io.swagger.annotations.ApiModel;
-
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -110,5 +112,4 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 		HateoasLinks.setLinks(newSemiLimited);
 
 	}
-
 }
