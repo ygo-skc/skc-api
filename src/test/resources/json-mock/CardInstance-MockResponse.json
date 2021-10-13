@@ -1,0 +1,31 @@
+{
+  "cardID": "18094166",
+  "cardName": "Vision HERO Faris",
+  "cardColor": "Effect",
+  "cardAttribute": "Dark",
+  "monsterType": "Warrior/Effect",
+  "monsterAssociation": {
+    "level": 5
+  },
+  "monsterAttack": 1600,
+  "monsterDefense": 1800,
+  "cardEffect": "You can discard 1 other \"HERO\" monster; Special Summon this card from your hand. If this card is Normal or Special Summoned: You can place 1 \"Vision HERO\" monster from your Deck, except \"Vision HERO Faris\", in your Spell & Trap Zone as a face-up Continuous Trap, also you cannot Special Summon monsters from the Extra Deck for the rest of this turn, except \"HERO\" monsters. You can only use each effect of \"Vision HERO Faris\" once per turn.",
+  "foundIn": [
+    {
+      "productId": "BLHR",
+      "productLocale": "EN",
+      "productName": "Battles of Legend: Hero's Revenge",
+      "productType": "Pack",
+      "productSubType": "Battle of Legends",
+      "productReleaseDate": "2019-07-12",
+      "productContent": [
+        {
+          "productPosition": "010",
+          "rarities": [
+            "Secret Rare"
+          ]
+        }
+      ]
+    }
+  ]
+}

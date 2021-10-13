@@ -6,6 +6,8 @@ object TestConstants {
     const val BAN_LIST_NEW_CONTENT = "json-mock/BanListNewContent.json"
     const val BAN_LIST_REMOVED_CONTENT = "json-mock/BanListRemovedContent.json"
 
+    const val CARD_INSTANCE_JSON_FILE = "json-mock/CardInstance-MockResponse.json"
+
     // E-HERO Stratos card info
     const val STRATOS_ID = "40044918"
     const val STRATOS_NAME = "Elemental HERO Stratos"
