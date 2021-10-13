@@ -3,7 +3,7 @@ package com.rtomyj.skc.enums;
 
 public enum ErrorType
 {
-	G001("URL requested doesn't have proper syntax")
+	G001("URL or data in body doesn't use proper syntax")
 	, D001("Requested resource was not found")
 	, D002("Error occurred interfacing with resource(s)");
 

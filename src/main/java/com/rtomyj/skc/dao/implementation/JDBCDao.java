@@ -118,7 +118,7 @@ public class JDBCDao implements Dao
 			return null;
 		});
 
-		if (card == null) throw new YgoException(String.format("Unable to find card in DB with ID: %s", cardID)
+		if (card == null) throw new YgoException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID)
 				, HttpStatus.NOT_FOUND, ErrorType.D001);
 
 		return card;
