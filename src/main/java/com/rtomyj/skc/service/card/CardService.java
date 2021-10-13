@@ -32,18 +32,14 @@ public class CardService
 	@EqualsAndHashCode
 	private static class CardRequest
 	{
-
 		private final String cardId;
 		private final boolean fetchAllInfo;
 
 		public CardRequest(final String cardId, final boolean fetchAllInfo)
 		{
-
 			this.cardId = cardId;
 			this.fetchAllInfo = fetchAllInfo;
-
 		}
-
 	}
 
 	// fields
@@ -58,7 +54,6 @@ public class CardService
 	@Autowired
 	public CardService(@Qualifier("jdbc") final Dao dao)
 	{
-
 		this.dao = dao;
 		this.cardCache = new Cache2kBuilder<CardRequest, Card>() {}
 			.expireAfterWrite(1, TimeUnit.DAYS)
@@ -66,7 +61,6 @@ public class CardService
 			.permitNullValues(false)
 			.loader(this::onCacheMiss)
 			.build();
-
 	}
 
 
@@ -79,9 +73,7 @@ public class CardService
 	public Card getCardInfo(final String cardId, final boolean fetchAllInfo)
 		throws YgoException
 	{
-
 		return cardCache.get(new CardRequest(cardId, fetchAllInfo));
-
 	}
 
 
@@ -89,7 +81,6 @@ public class CardService
 	public Card onCacheMiss(final CardRequest cardRequest)
 		throws YgoException
 	{
-
 		log.info("Card w/ id: ( {} ) not found in cache. Using DB.", cardRequest.cardId);
 
 		final Card foundCard = dao.getCardInfo(cardRequest.cardId);
@@ -124,7 +115,6 @@ public class CardService
 
 		foundCard.setLinks();
 		return foundCard;
-
 	}
 
 
@@ -132,7 +122,6 @@ public class CardService
 			, final int limit, final boolean saveBandwidth)
 		throws YgoException
 	{
-
 		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
 
 		if (saveBandwidth)
@@ -144,7 +133,5 @@ public class CardService
 		log.debug("Setting Hateoas links.");
 		HateoasLinks.setLinks(searchResults);
 		return searchResults;
-
 	}
-
 }

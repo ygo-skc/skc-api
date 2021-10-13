@@ -1,16 +1,90 @@
 {
-  "cardID": "18094166",
-  "cardName": "Vision HERO Faris",
+  "cardID": "40044918",
+  "cardName": "Elemental HERO Stratos",
   "cardColor": "Effect",
-  "cardAttribute": "Dark",
+  "cardAttribute": "Wind",
   "monsterType": "Warrior/Effect",
   "monsterAssociation": {
-    "level": 5
+    "level": 4
   },
-  "monsterAttack": 1600,
-  "monsterDefense": 1800,
-  "cardEffect": "You can discard 1 other \"HERO\" monster; Special Summon this card from your hand. If this card is Normal or Special Summoned: You can place 1 \"Vision HERO\" monster from your Deck, except \"Vision HERO Faris\", in your Spell & Trap Zone as a face-up Continuous Trap, also you cannot Special Summon monsters from the Extra Deck for the rest of this turn, except \"HERO\" monsters. You can only use each effect of \"Vision HERO Faris\" once per turn.",
+  "monsterAttack": 1800,
+  "monsterDefense": 300,
+  "cardEffect": "When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; Destroy Spells/Traps on the field, up to the number of \"HERO\" monsters you control, except this card.\n&bull; Add 1 \"HERO\" monster from your Deck to your hand.",
+  "restrictedIn": [
+    {
+      "banListDate": "2019-07-15",
+      "banStatus": "Semi-Limited"
+    },
+    {
+      "banListDate": "2019-04-29",
+      "banStatus": "Limited"
+    },
+    {
+      "banListDate": "2019-01-28",
+      "banStatus": "Limited"
+    },
+    {
+      "banListDate": "2018-12-03",
+      "banStatus": "Limited"
+    },
+    {
+      "banListDate": "2018-09-17",
+      "banStatus": "Limited"
+    },
+    {
+      "banListDate": "2018-05-21",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2018-02-05",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2017-11-06",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2017-09-18",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2017-06-12",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2017-03-31",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2016-08-29",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2016-04-11",
+      "banStatus": "Forbidden"
+    },
+    {
+      "banListDate": "2015-11-09",
+      "banStatus": "Forbidden"
+    }
+  ],
   "foundIn": [
+    {
+      "productId": "MAGO",
+      "productLocale": "EN",
+      "productName": "Maximum Gold",
+      "productType": "Set",
+      "productSubType": "Gold Series",
+      "productReleaseDate": "2020-11-13",
+      "productContent": [
+        {
+          "productPosition": "004",
+          "rarities": [
+            "Premium Gold Rare"
+          ]
+        }
+      ]
+    },
     {
       "productId": "BLHR",
       "productLocale": "EN",
@@ -20,9 +94,57 @@
       "productReleaseDate": "2019-07-12",
       "productContent": [
         {
-          "productPosition": "010",
+          "productPosition": "061",
           "rarities": [
-            "Secret Rare"
+            "Ultra Rare"
+          ]
+        }
+      ]
+    },
+    {
+      "productId": "OP09",
+      "productLocale": "EN",
+      "productName": "OTS Tournament Pack 9",
+      "productType": "Pack",
+      "productSubType": "Tournament",
+      "productReleaseDate": "2018-12-07",
+      "productContent": [
+        {
+          "productPosition": "001",
+          "rarities": [
+            "Ultimate Rare"
+          ]
+        }
+      ]
+    },
+    {
+      "productId": "LCGX",
+      "productLocale": "EN",
+      "productName": "Legendary Collection 2: The Duel Academy Years Mega Pack",
+      "productType": "Pack",
+      "productSubType": "Mega Pack",
+      "productReleaseDate": "2011-10-04",
+      "productContent": [
+        {
+          "productPosition": "024",
+          "rarities": [
+            "Common"
+          ]
+        }
+      ]
+    },
+    {
+      "productId": "CP06",
+      "productLocale": "EN",
+      "productName": "Champion Pack: Game Six",
+      "productType": "Pack",
+      "productSubType": "Tournament",
+      "productReleaseDate": "2008-05-12",
+      "productContent": [
+        {
+          "productPosition": "009",
+          "rarities": [
+            "Rare"
           ]
         }
       ]
