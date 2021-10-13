@@ -11,6 +11,7 @@ import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.service.banlist.BannedCardsService
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(BannedCardsController::class)
+@Tag("Controller")
 class BannedCardsControllerTest {
 	@MockBean
 	private lateinit var bannedCardsServiceMock: BannedCardsService

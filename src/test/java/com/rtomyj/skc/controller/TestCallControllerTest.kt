@@ -2,6 +2,7 @@ package com.rtomyj.skc.controller
 
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(TestCallController::class)
+@Tag("Controller")
 class TestCallControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc

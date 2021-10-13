@@ -10,6 +10,7 @@ import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.service.banlist.DiffService
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(BanListDiffController::class)
+@Tag("Controller")
 class BanListDiffControllerTest {
     @MockBean
     private lateinit var banListDiffService: DiffService

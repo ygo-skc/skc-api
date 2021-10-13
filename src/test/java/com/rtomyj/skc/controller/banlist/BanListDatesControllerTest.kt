@@ -9,6 +9,7 @@ import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.service.banlist.BanListDatesService
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
@@ -23,6 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.text.SimpleDateFormat
 
 @WebMvcTest(BanListDatesController::class, DateConfig::class)
+@Tag("Controller")
 class BanListDatesControllerTest {
     @MockBean
     private lateinit var banListDatesService: BanListDatesService
