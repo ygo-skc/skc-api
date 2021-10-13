@@ -13,9 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@ExtendWith(SpringExtension::class)
 @WebMvcTest(TestCallController::class)
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class TestCallControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
