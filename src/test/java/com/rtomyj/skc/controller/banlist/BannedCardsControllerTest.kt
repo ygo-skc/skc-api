@@ -9,6 +9,7 @@ import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.service.banlist.BannedCardsService
+import com.rtomyj.skc.testingutil.ControllerTestUtil
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -150,15 +151,10 @@ class BannedCardsControllerTest {
 
 
 			// ensure calling endpoint fails with expected status and body
-			mockMvc
-				.perform(get("${BAN_LIST_CONTENT_ENDPOINT}?saveBandwidth=false&allInfo=false"))
-				.andExpect(status().isInternalServerError)
-				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D002.error))
-				)
-				.andExpect(
-					jsonPath("$.code", `is`(ErrorType.D002.name))
-				)
+			ControllerTestUtil.validateSTableNotCreatedHelper(
+				mockMvc
+					.perform(get("${BAN_LIST_CONTENT_ENDPOINT}?saveBandwidth=false&allInfo=false"))
+			)
 
 
 			// ensure mocks are called the correct number of times

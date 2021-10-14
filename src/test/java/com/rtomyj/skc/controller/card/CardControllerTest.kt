@@ -7,6 +7,7 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
+import com.rtomyj.skc.testingutil.ControllerTestUtil
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -117,19 +118,15 @@ class CardControllerTest {
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true))
 				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002))
 
+
 			// call controller and verify correct status, code and message are returned
-			mockMvc
-				.perform(
-					get("/card/${TestConstants.STRATOS_ID}")
-						.param("allInfo", "true")
-				)
-				.andExpect(status().isInternalServerError)
-				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D002.error))
-				)
-				.andExpect(
-					jsonPath("$.code", `is`(ErrorType.D002.name))
-				)
+			ControllerTestUtil.validateSTableNotCreatedHelper(
+				mockMvc
+					.perform(
+						get("/card/${TestConstants.STRATOS_ID}")
+							.param("allInfo", "true")
+					)
+			)
 
 
 			// verify mocks are called

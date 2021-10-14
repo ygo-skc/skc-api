@@ -8,6 +8,7 @@ import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.service.banlist.DiffService
+import com.rtomyj.skc.testingutil.ControllerTestUtil
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -171,15 +172,7 @@ class BanListDiffControllerTest {
 
 
             // call controller
-            mockMvc
-                .perform(get(NEW_CONTENT_ENDPOINT))
-                .andExpect(status().isInternalServerError)
-                .andExpect(
-                    jsonPath("$.message", `is`(ErrorType.D002.error))
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`(ErrorType.D002.name))
-                )
+            ControllerTestUtil.validateSTableNotCreatedHelper(mockMvc.perform(get(NEW_CONTENT_ENDPOINT)))
 
 
             // ensure mocks are called the correct number of times

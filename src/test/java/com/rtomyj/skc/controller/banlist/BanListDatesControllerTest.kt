@@ -7,6 +7,7 @@ import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.service.banlist.BanListDatesService
+import com.rtomyj.skc.testingutil.ControllerTestUtil
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -112,15 +113,9 @@ class BanListDatesControllerTest {
 
 
             // call endpoint to retrieve ban list dates
-            mockMvc
-                .perform(get(BAN_LIST_DATES_ENDPOINT))
-                .andExpect(status().isInternalServerError)
-                .andExpect(
-                    jsonPath("$.message", `is`(ErrorType.D002.error))
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`(ErrorType.D002.name))
-                )
+            ControllerTestUtil.validateSTableNotCreatedHelper(
+                mockMvc.perform(get(BAN_LIST_DATES_ENDPOINT))
+            )
 
 
             // ensure methods are called correct number of times
