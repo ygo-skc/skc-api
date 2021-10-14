@@ -27,7 +27,7 @@ class ExceptionProvider : ResponseEntityExceptionHandler() {
 		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.errorType, exception.errorType.httpStatus)
 
 		return ResponseEntity(
-			YgoError(exception.errorType.toString(), exception.errorType.name), exception.errorType.httpStatus
+			YgoError(exception.errorType.error, exception.errorType.name), exception.errorType.httpStatus
 		)
 	}
 
@@ -38,6 +38,6 @@ class ExceptionProvider : ResponseEntityExceptionHandler() {
 	fun onValidationFail(exception: ConstraintViolationException): YgoError {
 		log.error("Request did not conform to spec. Constraints violated: {}", exception.toString())
 
-		return YgoError(ErrorType.G001.toString(), ErrorType.G001.name)
+		return YgoError(ErrorType.G001.error, ErrorType.G001.name)
 	}
 }
