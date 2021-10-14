@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.core.io.ClassPathResource
-import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -112,15 +111,11 @@ class BanListDiffControllerTest {
     inner class UnhappyPath {
         @Test
         fun `Getting Newly Added Cards For A Ban List - Date Used Isn't In Correct Format - 400 HTTP Exception`() {
-            mockMvc
-                .perform(get("/ban_list/incorrect-date-format/new"))
-                .andExpect(status().isBadRequest)
-                .andExpect(
-                    jsonPath("$.message", `is`(ErrorType.G001.error))
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`(ErrorType.G001.name))
-                )
+
+            ControllerTestUtil.validateBadRequestHelper(
+                mockMvc
+                    .perform(get("/ban_list/incorrect-date-format/new"))
+            )
         }
 
 
@@ -141,17 +136,10 @@ class BanListDiffControllerTest {
 
 
             // call controller
-            mockMvc
-                .perform(get(NEW_CONTENT_ENDPOINT))
-                .andExpect(status().isNotFound)
-                .andExpect(
-                    jsonPath(
-                        "$.message", `is`(ErrorType.D001.error)
-                    )
-                )
-                .andExpect(
-                    jsonPath("$.code", `is`(ErrorType.D001.name))
-                )
+            ControllerTestUtil.validateNotFoundHelper(
+                mockMvc
+                    .perform(get(NEW_CONTENT_ENDPOINT))
+            )
 
 
             // ensure mocks are called the correct number of times

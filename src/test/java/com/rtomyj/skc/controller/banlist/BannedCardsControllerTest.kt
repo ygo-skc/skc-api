@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.core.io.ClassPathResource
-import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -95,15 +94,10 @@ class BannedCardsControllerTest {
 		@Test
 		fun `Getting All Banned Cards For A Ban List - Date Used Isn't In Correct Format - 400 HTTP Exception`() {
 			// ensure calling endpoint fails with expected status and body
-			mockMvc
-				.perform(get("/ban_list/2020-04-0/cards"))
-				.andExpect(status().isBadRequest)
-				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.G001.error))
-				)
-				.andExpect(
-					jsonPath("$.code", `is`(ErrorType.G001.name))
-				)
+			ControllerTestUtil.validateBadRequestHelper(
+				mockMvc
+					.perform(get("/ban_list/2020-04-0/cards"))
+			)
 		}
 
 
@@ -121,15 +115,14 @@ class BannedCardsControllerTest {
 
 
 			// ensure calling endpoint fails with expected status and body
-			mockMvc
-				.perform(get("${BAN_LIST_CONTENT_ENDPOINT}?saveBandwidth=false&allInfo=false"))
-				.andExpect(status().isNotFound)
-				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D001.error))
-				)
-				.andExpect(
-					jsonPath("$.code", `is`(ErrorType.D001.name))
-				)
+			ControllerTestUtil.validateNotFoundHelper(
+				mockMvc
+					.perform(
+						get(BAN_LIST_CONTENT_ENDPOINT)
+							.param("saveBandwidth", "false")
+							.param("allInfo", "false")
+					)
+			)
 
 
 			// ensure mocks are called the correct number of times

@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.core.io.ClassPathResource
-import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -72,14 +71,13 @@ class CardControllerTest {
 		@Test
 		fun `Fetching Card Information Using Card ID - Card ID Is Not Formatted Correctly - HTTP 400 Error`() {
 			// call controller with incorrectly formatted card ID
-			mockMvc
-				.perform(
-					get("/card/123")
-						.param("allInfo", "true")
-				)
-				.andExpect(status().isBadRequest)
-				.andExpect(jsonPath("$.code", `is`(ErrorType.G001.name)))
-				.andExpect(jsonPath("$.message", `is`(ErrorType.G001.error)))
+			ControllerTestUtil.validateBadRequestHelper(
+				mockMvc
+					.perform(
+						get("/card/123")
+							.param("allInfo", "true")
+					)
+			)
 		}
 
 
@@ -92,18 +90,13 @@ class CardControllerTest {
 
 
 			// call controller and verify correct status, code and message are returned
-			mockMvc
-				.perform(
-					get("/card/${TestConstants.STRATOS_ID}")
-						.param("allInfo", "true")
-				)
-				.andExpect(status().isNotFound)
-				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D001.error))
-				)
-				.andExpect(
-					jsonPath("$.code", `is`(ErrorType.D001.name))
-				)
+			ControllerTestUtil.validateNotFoundHelper(
+				mockMvc
+					.perform(
+						get("/card/${TestConstants.STRATOS_ID}")
+							.param("allInfo", "true")
+					)
+			)
 
 
 			// verify mocks are called
