@@ -116,10 +116,10 @@ class BanListDatesControllerTest {
                 .perform(get(BAN_LIST_DATES_ENDPOINT))
                 .andExpect(status().isInternalServerError)
                 .andExpect(
-                    jsonPath("$.message", `is`("Error occurred interfacing with resource(s)"))
+                    jsonPath("$.message", `is`(ErrorType.D002.error))
                 )
                 .andExpect(
-                    jsonPath("$.code", `is`("D002"))
+                    jsonPath("$.code", `is`(ErrorType.D002.name))
                 )
 
 

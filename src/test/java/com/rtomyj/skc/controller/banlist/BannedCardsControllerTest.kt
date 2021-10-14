@@ -98,7 +98,7 @@ class BannedCardsControllerTest {
 				.perform(get("/ban_list/2020-04-0/cards"))
 				.andExpect(status().isBadRequest)
 				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.G001.toString()))
+					jsonPath("$.message", `is`(ErrorType.G001.error))
 				)
 				.andExpect(
 					jsonPath("$.code", `is`(ErrorType.G001.name))
@@ -124,7 +124,7 @@ class BannedCardsControllerTest {
 				.perform(get("${BAN_LIST_CONTENT_ENDPOINT}?saveBandwidth=false&allInfo=false"))
 				.andExpect(status().isNotFound)
 				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D001.toString()))
+					jsonPath("$.message", `is`(ErrorType.D001.error))
 				)
 				.andExpect(
 					jsonPath("$.code", `is`(ErrorType.D001.name))
@@ -154,7 +154,7 @@ class BannedCardsControllerTest {
 				.perform(get("${BAN_LIST_CONTENT_ENDPOINT}?saveBandwidth=false&allInfo=false"))
 				.andExpect(status().isInternalServerError)
 				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D002.toString()))
+					jsonPath("$.message", `is`(ErrorType.D002.error))
 				)
 				.andExpect(
 					jsonPath("$.code", `is`(ErrorType.D002.name))

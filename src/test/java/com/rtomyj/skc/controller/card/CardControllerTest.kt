@@ -78,7 +78,7 @@ class CardControllerTest {
 				)
 				.andExpect(status().isBadRequest)
 				.andExpect(jsonPath("$.code", `is`(ErrorType.G001.name)))
-				.andExpect(jsonPath("$.message", `is`(ErrorType.G001.toString())))
+				.andExpect(jsonPath("$.message", `is`(ErrorType.G001.error)))
 		}
 
 
@@ -98,7 +98,7 @@ class CardControllerTest {
 				)
 				.andExpect(status().isNotFound)
 				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D001.toString()))
+					jsonPath("$.message", `is`(ErrorType.D001.error))
 				)
 				.andExpect(
 					jsonPath("$.code", `is`(ErrorType.D001.name))
@@ -125,7 +125,7 @@ class CardControllerTest {
 				)
 				.andExpect(status().isInternalServerError)
 				.andExpect(
-					jsonPath("$.message", `is`(ErrorType.D002.toString()))
+					jsonPath("$.message", `is`(ErrorType.D002.error))
 				)
 				.andExpect(
 					jsonPath("$.code", `is`(ErrorType.D002.name))

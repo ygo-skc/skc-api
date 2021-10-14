@@ -115,7 +115,7 @@ class BanListDiffControllerTest {
                 .perform(get("/ban_list/incorrect-date-format/new"))
                 .andExpect(status().isBadRequest)
                 .andExpect(
-                    jsonPath("$.message", `is`(ErrorType.G001.toString()))
+                    jsonPath("$.message", `is`(ErrorType.G001.error))
                 )
                 .andExpect(
                     jsonPath("$.code", `is`(ErrorType.G001.name))
@@ -145,7 +145,7 @@ class BanListDiffControllerTest {
                 .andExpect(status().isNotFound)
                 .andExpect(
                     jsonPath(
-                        "$.message", `is`(ErrorType.D001.toString())
+                        "$.message", `is`(ErrorType.D001.error)
                     )
                 )
                 .andExpect(
@@ -175,7 +175,7 @@ class BanListDiffControllerTest {
                 .perform(get(NEW_CONTENT_ENDPOINT))
                 .andExpect(status().isInternalServerError)
                 .andExpect(
-                    jsonPath("$.message", `is`(ErrorType.D002.toString()))
+                    jsonPath("$.message", `is`(ErrorType.D002.error))
                 )
                 .andExpect(
                     jsonPath("$.code", `is`(ErrorType.D002.name))
