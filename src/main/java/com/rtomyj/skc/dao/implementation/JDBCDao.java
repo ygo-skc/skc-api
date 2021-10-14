@@ -3,17 +3,15 @@ package com.rtomyj.skc.dao.implementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.skc.constant.DBQueryConstants;
-import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.constant.LogConstants;
-import com.rtomyj.skc.enums.ErrorType;
+import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductViewDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;
+import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
-import com.rtomyj.skc.model.stats.DatabaseStats;
-import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
@@ -23,11 +21,12 @@ import com.rtomyj.skc.model.card.MonsterAssociation;
 import com.rtomyj.skc.model.product.Product;
 import com.rtomyj.skc.model.product.ProductContent;
 import com.rtomyj.skc.model.product.Products;
+import com.rtomyj.skc.model.stats.DatabaseStats;
+import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -37,7 +36,18 @@ import org.springframework.util.StopWatch;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * JDBC implementation of DB DAO interface.
@@ -118,8 +128,7 @@ public class JDBCDao implements Dao
 			return null;
 		});
 
-		if (card == null) throw new YgoException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID)
-				, HttpStatus.NOT_FOUND, ErrorType.D001);
+		if (card == null) throw new YgoException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID), ErrorType.D001);
 
 		return card;
 

@@ -3,7 +3,7 @@ package com.rtomyj.skc.controller.banlist
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
@@ -134,7 +134,7 @@ class BanListDiffControllerTest {
                         String.format(
                             ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
                             TestConstants.BAN_LIST_START_DATE
-                        ), HttpStatus.NOT_FOUND, ErrorType.D001
+                        ), ErrorType.D001
                     )
                 )
 
@@ -166,7 +166,7 @@ class BanListDiffControllerTest {
                 banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
             )
                 .thenThrow(
-                    YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
+                    YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
                 )
 
 

@@ -2,7 +2,7 @@ package com.rtomyj.skc.controller.banlist
 
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.ErrConstants
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
@@ -107,7 +107,7 @@ class BanListDatesControllerTest {
             // mock retrieval of ban list dates - error occurred - table ban list table DNE
             `when`(banListDatesService.retrieveBanListStartDates())
                 .thenThrow(
-                    YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
+                    YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
                 )
 
 

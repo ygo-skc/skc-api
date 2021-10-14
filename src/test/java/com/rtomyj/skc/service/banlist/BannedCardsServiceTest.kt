@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.Dao
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.BanListNewContent
@@ -342,7 +342,7 @@ class BannedCardsServiceTest {
             }
 
             Assertions.assertEquals(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE), ex.message)
-            Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.httpStatus)
+            Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.errorType.httpStatus)
             Assertions.assertEquals(ErrorType.D001, ex.errorType)
 
 

@@ -3,7 +3,7 @@ package com.rtomyj.skc.service.banlist;
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.dao.Dao.Status;
-import com.rtomyj.skc.enums.ErrorType;
+import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListNewContent;
 import com.rtomyj.skc.model.banlist.BanListRemovedContent;
@@ -14,7 +14,6 @@ import org.cache2k.Cache2kBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,8 +70,7 @@ public class DiffService
 		log.info("New content for ban list w/ start date: ({}) not found in cache. Using DB.", banListStartDate);
 
 		if ( !dao.isValidBanList(banListStartDate) )
-			throw new YgoException(String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate)
-					, HttpStatus.NOT_FOUND, ErrorType.D001);
+			throw new YgoException(String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate), ErrorType.D001);
 
 
 		// builds meta data object for new cards request
@@ -111,8 +109,7 @@ public class DiffService
 		log.info("Ban list removed content w/ start date: ( {} ) not found in cache. Using DB.", banListStartDate);
 
 		if ( !dao.isValidBanList(banListStartDate) )
-			throw new YgoException(String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate)
-					, HttpStatus.NOT_FOUND, ErrorType.D001);
+			throw new YgoException(String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate), ErrorType.D001);
 
 
 		final List<CardsPreviousBanListStatus> removedCards = dao.getRemovedContentOfBanList(banListStartDate);

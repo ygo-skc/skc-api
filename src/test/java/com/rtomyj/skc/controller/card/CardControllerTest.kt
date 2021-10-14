@@ -3,7 +3,7 @@ package com.rtomyj.skc.controller.card
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
@@ -87,7 +87,7 @@ class CardControllerTest {
 			// setup mocks - throw NOT FOUND (card not in DB) exception when particular card is requested
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true))
 				.thenThrow(YgoException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, TestConstants.STRATOS_ID)
-					, HttpStatus.NOT_FOUND, ErrorType.D001))
+					, ErrorType.D001))
 
 
 			// call controller and verify correct status, code and message are returned
@@ -115,7 +115,7 @@ class CardControllerTest {
 		fun `Fetching Card Information Using Card ID - Required Database Tables Are Missing - HTTP 500 Error`() {
 			// setup mocks - throw DB table missing exception when particular card is requested
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true))
-				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002))
+				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002))
 
 			// call controller and verify correct status, code and message are returned
 			mockMvc

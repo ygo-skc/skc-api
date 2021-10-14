@@ -3,7 +3,7 @@ package com.rtomyj.skc.controller.banlist
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.BanListNewContent
@@ -115,8 +115,7 @@ class BannedCardsControllerTest {
 				)
 			)
 				.thenThrow(
-					YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE)
-					, HttpStatus.NOT_FOUND, ErrorType.D001)
+					YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE), ErrorType.D001)
 				)
 
 
@@ -146,7 +145,7 @@ class BannedCardsControllerTest {
 				)
 			)
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002)
+					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
 				)
 
 

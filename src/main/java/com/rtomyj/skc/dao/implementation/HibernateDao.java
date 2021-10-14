@@ -2,8 +2,8 @@ package com.rtomyj.skc.dao.implementation;
 
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.dao.Dao;
-import com.rtomyj.skc.enums.ErrorType;
 import com.rtomyj.skc.enums.ProductType;
+import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListDate;
 import com.rtomyj.skc.model.banlist.BanListDates;
@@ -21,9 +21,7 @@ import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StopWatch;
 
@@ -82,7 +80,7 @@ public class HibernateDao implements Dao
 			String causeMessage = exception.getCause().getCause().getMessage();
 			if (causeMessage.contains("Table") && causeMessage.contains("doesn't exist"))
 			{
-				throw new YgoException(ErrConstants.DB_MISSING_TABLE, HttpStatus.INTERNAL_SERVER_ERROR, ErrorType.D002);
+				throw new YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002);
 			}
 		}
 

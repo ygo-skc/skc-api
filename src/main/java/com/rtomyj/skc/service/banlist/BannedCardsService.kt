@@ -2,7 +2,7 @@ package com.rtomyj.skc.service.banlist
 
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.dao.Dao
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.card.Card
@@ -10,7 +10,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 /**
@@ -71,9 +70,7 @@ class BannedCardsService @Autowired constructor(
 	private fun validateBanListInstance(banListInstance: BanListInstance, banListStartDate: String) {
 		if (banListInstance.numForbidden == 0 && banListInstance.numLimited == 0 && banListInstance.numSemiLimited == 0) {
 			throw YgoException(
-				String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate),
-				HttpStatus.NOT_FOUND,
-				ErrorType.D001
+				String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.D001
 			)
 		}
 	}

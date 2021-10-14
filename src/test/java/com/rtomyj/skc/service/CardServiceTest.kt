@@ -2,7 +2,7 @@ package com.rtomyj.skc.service
 
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.Dao
-import com.rtomyj.skc.enums.ErrorType
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
@@ -75,8 +75,7 @@ class CardServiceTest {
             // mock calls
             Mockito.`when`(dao.getCardInfo(ArgumentMatchers.eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
                 .thenThrow(YgoException(
-                    String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE)
-                    , HttpStatus.NOT_FOUND, ErrorType.D001
+                    String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.D001
                 ))
 
 

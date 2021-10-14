@@ -1,7 +1,6 @@
 package com.rtomyj.skc.exception
 
 import com.rtomyj.skc.constant.LogConstants
-import com.rtomyj.skc.enums.ErrorType
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,10 +24,10 @@ class ExceptionProvider : ResponseEntityExceptionHandler() {
 	@ResponseBody
 	@ExceptionHandler(YgoException::class)
 	fun onYgoException(exception: YgoException): ResponseEntity<YgoError> {
-		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception, exception.httpStatus)
+		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.errorType, exception.errorType.httpStatus)
 
 		return ResponseEntity(
-			YgoError(exception.errorType.toString(), exception.errorType.name), exception.httpStatus
+			YgoError(exception.errorType.toString(), exception.errorType.name), exception.errorType.httpStatus
 		)
 	}
 
