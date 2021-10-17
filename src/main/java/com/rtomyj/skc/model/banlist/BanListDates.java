@@ -25,7 +25,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @ApiModel(description = "Start dates of ban lists.", parent = RepresentationModel.class, discriminator = "links")
 public class BanListDates extends RepresentationModel<BanListDates> implements HateoasLinks
 {
-
 	@ApiParam(
 			value = "Array of objects containing valid start dates of all ban lists currently in DB."
 	)
@@ -38,21 +37,17 @@ public class BanListDates extends RepresentationModel<BanListDates> implements H
 	@Override
 	public void setSelfLink()
 	{
-
 		this.add(
 			linkTo(methodOn(controllerClass).getBanListStartDates()).withSelfRel()
 		);
-
 	}
 
 
 	@Override
 	public void setLinks()
 	{
-
 		this.setSelfLink();
 		HateoasLinks.setLinks(this.dates);
-
 	}
 
 }

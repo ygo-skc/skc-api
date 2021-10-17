@@ -3,7 +3,6 @@ package com.rtomyj.skc.service.banlist
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.constant.TestConstants
-import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import org.cache2k.io.CacheLoaderException
@@ -235,7 +234,7 @@ class DiffServiceTest {
 
 
     @Nested
-    inner class UnhappyPath() {
+    inner class UnhappyPath {
         @Test
         fun testFetchingBanListNewContent_FromDB_Failure() {
             Mockito.`when`(

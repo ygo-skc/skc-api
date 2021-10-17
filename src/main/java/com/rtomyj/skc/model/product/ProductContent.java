@@ -14,6 +14,8 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)	// serializes non null fields - ie returns non null fields from REST request
 @ApiModel(parent = RepresentationModel.class)

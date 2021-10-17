@@ -13,6 +13,7 @@ import com.rtomyj.skc.model.product.ProductContent;
 import com.rtomyj.skc.model.product.Products;
 import com.rtomyj.skc.model.stats.DatabaseStats;
 import com.rtomyj.skc.model.stats.MonsterTypeStats;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public interface Dao
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-    BanListDates getBanListDates();
+    BanListDates getBanListDates() throws YgoException;
 
 	/**
 	 * Retrieve the information about a Card given the ID.

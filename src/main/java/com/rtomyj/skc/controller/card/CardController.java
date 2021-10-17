@@ -33,7 +33,6 @@ import javax.validation.constraints.Pattern;
 @Api(tags = {SwaggerConstants.TAG_CAR_TAG_NAMED})
 public class CardController extends YgoApiBaseController
 {
-
 	/**
 	 * Service object used to interface with DB DAO.
 	 */
@@ -65,8 +64,9 @@ public class CardController extends YgoApiBaseController
 		, responseContainer = "Object")
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-		, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-		, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+			, @ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+			, @ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+			, @ApiResponse(code = 500, message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<Card> getCard(
 			@ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION
@@ -90,5 +90,4 @@ public class CardController extends YgoApiBaseController
 
 		return ResponseEntity.ok(foundCard);
 	}
-
 }

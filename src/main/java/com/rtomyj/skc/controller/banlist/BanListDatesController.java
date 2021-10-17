@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class BanListDatesController extends YgoApiBaseController
 {
-
 	/**
 	 * Service object used to interface the database DAO
 	 */
@@ -54,16 +53,16 @@ public class BanListDatesController extends YgoApiBaseController
 		, response = BanListDates.class
 		, tags = SwaggerConstants.BAN_LIST_TAG_NAME)
 	@ApiResponses( value = {
-		@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+			@ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+			, @ApiResponse(code = 500, message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
 	})
 	public ResponseEntity<BanListDates> getBanListStartDates()
 	{
 		log.info("User is retrieving all effective start dates for ban lists.");
-		final BanListDates banListDates = banListDatesService.getBanListStartDates();
+		final BanListDates banListDates = banListDatesService.retrieveBanListStartDates();
 
 		log.info("Successfully retrieved all effective start dates for ban list. Currently there are {} ban lists", banListDates.getDates().size());
 		return ResponseEntity.ok(banListDates);
 
 	}
-
 }

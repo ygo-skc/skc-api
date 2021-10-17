@@ -1,22 +1,23 @@
 package com.rtomyj.skc.model.banlist;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.rtomyj.skc.controller.banlist.BannedCardsController;
-import com.rtomyj.skc.controller.banlist.BanListNewContentController;
-import com.rtomyj.skc.controller.banlist.BanListRemovedContentController;
-
 import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.controller.banlist.BanListDiffController;
+import com.rtomyj.skc.controller.banlist.BannedCardsController;
 import com.rtomyj.skc.model.HateoasLinks;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import io.swagger.annotations.ApiModel;
-
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
@@ -79,9 +80,8 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 	)
 	private List<CardsPreviousBanListStatus> newSemiLimited;
 
-	private static final Class<BanListNewContentController> controllerClass = BanListNewContentController.class;
+	private static final Class<BanListDiffController> BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController.class;
 	private static final Class<BannedCardsController> banListController = BannedCardsController.class;
-	private static final Class<BanListRemovedContentController> removedController = BanListRemovedContentController.class;
 
 
 	@Override
@@ -89,7 +89,7 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 	{
 
 		this.add(
-			linkTo(methodOn(controllerClass).getNewlyAddedContentForBanList(listRequested)).withSelfRel()
+			linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS).getNewlyAddedContentForBanList(listRequested)).withSelfRel()
 		);
 
 	}
@@ -104,7 +104,7 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 				linkTo(methodOn(banListController).getBannedCards(listRequested, false, true)).withRel("Ban List Content")
 		);
 		this.add(
-				linkTo(methodOn(removedController).getNewlyRemovedContentForBanList(listRequested)).withRel("Ban List Removed Content")
+				linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS).getNewlyRemovedContentForBanList(listRequested)).withRel("Ban List Removed Content")
 		);
 
 		HateoasLinks.setLinks(newForbidden);
@@ -112,5 +112,4 @@ public class BanListNewContent extends RepresentationModel<BanListNewContent> im
 		HateoasLinks.setLinks(newSemiLimited);
 
 	}
-
 }

@@ -34,7 +34,7 @@ public class CardBrowseController extends YgoApiBaseController
     }
 
 
-    @GetMapping()
+    @GetMapping
     @ApiOperation(value = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
             , response = CardBrowseResults.class
             , responseContainer = "Object"
@@ -68,19 +68,17 @@ public class CardBrowseController extends YgoApiBaseController
                     , example = "4,7,8"
             ) @RequestParam(value = "ranks", defaultValue = "") final String monsterRanks
                     , @ApiParam(
-                    value = "Desired set of monster ranks to include in browse results  ."
+                    value = "Desired set of monster ranks to include in browse results."
                     , example = "4,7,8"
             ) @RequestParam(value = "linkRatings", defaultValue = "") final String monsterLinkRatings
     )
     {
-
         log.info("Retrieving browse results.");
         final CardBrowseResults cardBrowseResults = cardBrowseService.getBrowseResults(cardColors, attributes, monsterTypes, monsterSubTypes, monsterLevels, monsterRanks, monsterLinkRatings);
         log.info("Successfully retrieved card browse results using criteria: [ cardColors={}, attributes={}, monsterTypes={}, monsterLevels={}, monsterRanks={}, monsterLinkRatings={} ]. Found {} matching results."
                 , cardColors, attributes, monsterTypes, monsterLevels, monsterRanks, monsterLinkRatings, cardBrowseResults.getNumResults());
 
         return cardBrowseResults;
-
     }
 
 
@@ -100,5 +98,4 @@ public class CardBrowseController extends YgoApiBaseController
 
         return cardBrowseCriteria;
     }
-
 }

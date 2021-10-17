@@ -142,5 +142,4 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks
 			HateoasLinks.setLinks(restrictedIn);
 
 	}
-
 }

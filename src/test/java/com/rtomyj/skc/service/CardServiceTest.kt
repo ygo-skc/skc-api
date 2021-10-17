@@ -1,8 +1,8 @@
 package com.rtomyj.skc.service
 
-import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
@@ -13,6 +13,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -58,7 +59,8 @@ class CardServiceTest {
 
 
             // verify mocks are called the exact number of times expected
-            Mockito.verify(dao, Mockito.times(1)).getCardInfo(ArgumentMatchers.eq(TestConstants.STRATOS_ID))
+            Mockito.verify(dao, Mockito.times(1))
+                .getCardInfo(ArgumentMatchers.eq(TestConstants.STRATOS_ID))
         }
     }
 
@@ -73,8 +75,7 @@ class CardServiceTest {
             // mock calls
             Mockito.`when`(dao.getCardInfo(ArgumentMatchers.eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
                 .thenThrow(YgoException(
-                    ErrConstants.NOT_FOUND_DAO_ERR,
-                    String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE)
+                    String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.D001
                 ))
 
 

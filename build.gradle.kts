@@ -5,14 +5,14 @@ val springBootVersion = "2.5.5"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.2.0" // 3.3.0
 val cache2kVersion = "2.2.1.Final"
-val lombokVersion = "1.18.20"
+val lombokVersion = "1.18.22"
 val mysqlVersion = "8.0.26"
 val jacksonVersion = "2.12.5"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
-val guavaVersion = "30.1.1-jre"
+val guavaVersion = "31.0.1-jre"
 val validationAPIVersion = "2.0.1.Final"
 
 val archivesBaseName = "skc-api"
@@ -32,7 +32,7 @@ plugins {
 
 
 group = "com.rtomyj.skc"
-version = "1.2.6"
+version = "1.2.7"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 

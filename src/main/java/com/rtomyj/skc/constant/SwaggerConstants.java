@@ -16,6 +16,9 @@ public class SwaggerConstants
     public static final String HTTP_400_SWAGGER_MESSAGE = "Malformed request. Look at API spec and conform to expected pattern(s).";
     public static final String HTTP_404_SWAGGER_MESSAGE = "No resource found for requested item.";
 
+    // Server Error
+    public static final String HTTP_500_SWAGGER_MESSAGE = "Server encountered an exception.";
+
 
     public static final String RESULT_LIMIT_DESCRIPTION = "Max number of records/results to return.";
     public static final String SAVE_BANDWIDTH_DESCRIPTION = "If true, certain data values retrieved from DB will be truncated to save bandwidth on transit.";
