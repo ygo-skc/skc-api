@@ -53,7 +53,7 @@ public class SwaggerConfig
 		return new ApiInfoBuilder()
 				.title("YuGiOh API")
 				.description("Application Programming Interface for interfacing with a Database that contains information such as Ban List dates/content, Yu-Gi-Oh! product information, card information, etc.")
-				.version("v1.2.7")
+				.version("v1.2.8")
 				.termsOfServiceUrl("Terms")
 				.contact(new Contact("Javi Gomez", "https://github.com/rtomyj", "rtomyj@gmail.com"))
 				.license("Apache License Version 2.0")
