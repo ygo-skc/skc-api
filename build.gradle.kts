@@ -4,7 +4,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 val springBootVersion = "2.5.6"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.2.0" // 3.3.0
-val cache2kVersion = "2.4.0.Final"
+val cache2kVersion = "2.4.1.Final"
 val lombokVersion = "1.18.22"
 val mysqlVersion = "8.0.27"
 val jacksonVersion = "2.12.5"
