@@ -31,9 +31,9 @@ spring:
 server:
   port: 8443
   ssl:
-    key-store: classpath:skc-api-keystore.jks
+    key-store: classpath:skc-api.jks
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
-    key-alias: ygoapi
+    key-alias: skcapi
 
 ---
 spring:
@@ -46,6 +46,6 @@ spring:
 server:
   port: 8443
   ssl:
-    key-store: classpath:skc-api-keystore.jks
+    key-store: classpath:skc-api.jks
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
-    key-alias: ygoapi
+    key-alias: skcapi
