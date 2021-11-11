@@ -93,14 +93,14 @@ public class CardService
 			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardRequest.cardId)));
 			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardRequest.cardId));
 
-			if (!foundCard.getMonsterAssociation().getLinkArrows().isEmpty()) {
+			if (foundCard.getMonsterAssociation().getLinkArrows() != null && !foundCard.getMonsterAssociation().getLinkArrows().isEmpty()) {
 				foundCard.getMonsterAssociation().setLinkArrows(
 						foundCard
 								.getMonsterAssociation()
 								.getLinkArrows()
 								.stream()
 								.map(dbArrowString -> LinkArrow.transformDBStringToEnum(dbArrowString).toString())
-								.collect(Collectors.toList())
+								.collect(Collectors.toUnmodifiableList())
 				);
 			}
 
