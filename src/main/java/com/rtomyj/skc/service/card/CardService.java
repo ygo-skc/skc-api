@@ -93,7 +93,9 @@ public class CardService
 			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardRequest.cardId)));
 			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardRequest.cardId));
 
-			if (foundCard.getMonsterAssociation().getLinkArrows() != null && !foundCard.getMonsterAssociation().getLinkArrows().isEmpty()) {
+			if (foundCard.getMonsterAssociation() != null
+					&& foundCard.getMonsterAssociation().getLinkArrows() != null
+					&& !foundCard.getMonsterAssociation().getLinkArrows().isEmpty()) {
 				foundCard.getMonsterAssociation().setLinkArrows(
 						foundCard
 								.getMonsterAssociation()
