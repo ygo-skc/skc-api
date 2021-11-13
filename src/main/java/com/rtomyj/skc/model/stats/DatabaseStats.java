@@ -53,11 +53,9 @@ public class DatabaseStats extends RepresentationModel<DatabaseStats> implements
     @Override
     public void setSelfLink()
     {
-
         this.add(
                 linkTo(methodOn(statsControllerClass).getDatabaseStats()).withSelfRel()
         );
-
     }
 
 

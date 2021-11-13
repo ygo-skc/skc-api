@@ -41,19 +41,15 @@ public class MonsterTypeStats extends RepresentationModel<MonsterTypeStats> impl
     @Override
     public void setSelfLink()
     {
-
         this.add(
                 linkTo(methodOn(statsControllerClass).getMonsterTypeByColor(scope)).withSelfRel()
         );
-
     }
 
 
     @Override
     public void setLinks()
     {
-
         this.setSelfLink();
-
     }
 }

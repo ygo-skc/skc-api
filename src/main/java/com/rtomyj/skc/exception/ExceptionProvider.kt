@@ -24,7 +24,7 @@ class ExceptionProvider : ResponseEntityExceptionHandler() {
 	@ResponseBody
 	@ExceptionHandler(YgoException::class)
 	fun onYgoException(exception: YgoException): ResponseEntity<YgoError> {
-		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.errorType, exception.errorType.httpStatus)
+		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.message, exception.errorType, exception.errorType.httpStatus)
 
 		return ResponseEntity(
 			YgoError(exception.errorType.error, exception.errorType.name), exception.errorType.httpStatus
