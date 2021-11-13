@@ -42,7 +42,7 @@ import java.util.Set;
 @Slf4j
 public class HibernateDao implements Dao
 {
-
+	private static final String UNSUPPORTED_OPERATION_MESSAGE = "HibernateDao not able to execute method.";
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
@@ -91,48 +91,51 @@ public class HibernateDao implements Dao
 	@Override
 	public Card getCardInfo(String cardID) throws YgoException
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	@Override
 	public List<Card> getBanListByBanStatus(String date, Status status)
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public int getNumberOfBanLists()
 	{
-		return 0;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public List<String> getBanListDatesInOrder()
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public String getPreviousBanListDate(String currentBanList)
 	{
-		return "";
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
-	public List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status){
-		return null;
+	public List<CardsPreviousBanListStatus> getNewContentOfBanList(String banListDate, Status status)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	@Override
-	public String getCardBanListStatusByDate(String cardId, String banListDate) {
-		return null;
-	}
-
-	@Override
-	public List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit, final boolean getBanInfo)
+	public String getCardBanListStatusByDate(String cardId, String banListDate)
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
+
+	@Override
+	public List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute
+			, final String cardColor, final String monsterType, final int limit, final boolean getBanInfo)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 	public boolean isValidBanList(final String banListDate)
 	{
@@ -141,47 +144,83 @@ public class HibernateDao implements Dao
 
 	public List<Product> getAllPackDetails()
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public Products getAllProductsByType(final ProductType productType, final String locale)
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public Map<String, Integer> getProductRarityCount(final String packId)
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
 	public Set<ProductContent> getProductContents(final String packId, final String locale)
 	{
-		return null;
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
 	}
 
-	public MonsterTypeStats getMonsterTypeStats(final String cardColor){ return null; }
+	public MonsterTypeStats getMonsterTypeStats(final String cardColor)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public DatabaseStats getDatabaseStats()	{ return null; }
+	public DatabaseStats getDatabaseStats()
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Set<Product> getProductDetailsForCard(final String cardId) { return null; }
+	public Set<Product> getProductDetailsForCard(final String cardId)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId) { return null; }
+	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
 	public CardBrowseResults getBrowseResults(final Set<String> cardColors, final Set<String> attributeSet, final Set<String> monsterTypeSet, final Set<String> monsterSubTypeSet
-			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet){ return null; }
+			, final Set<String> monsterLevels, Set<String> monsterRankSet, Set<String> monsterLinkRatingsSet)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Set<String> getCardColors(){ return null; }
+	public Set<String> getCardColors()
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Set<String> getMonsterAttributes(){ return null; }
+	public Set<String> getMonsterAttributes()
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Set<String> getMonsterTypes(){ return null; }
+	public Set<String> getMonsterTypes()
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Set<String> getMonsterSubTypes(){ return null; }
+	public Set<String> getMonsterSubTypes()
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField){ return null; }
+	public Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public Product getProductInfo(final String productId, final String locale) { return null; }
+	public Product getProductInfo(final String productId, final String locale)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
-	public List<Product> getProductsByLocale(final String locale) { return null; }
+	public List<Product> getProductsByLocale(final String locale)
+	{
+		throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE);
+	}
 
 }

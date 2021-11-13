@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Service that is used to access card info from DB.
@@ -102,7 +101,7 @@ public class CardService
 								.getLinkArrows()
 								.stream()
 								.map(dbArrowString -> LinkArrow.transformDBStringToEnum(dbArrowString).toString())
-								.collect(Collectors.toUnmodifiableList())
+								.toList()
 				);
 			}
 

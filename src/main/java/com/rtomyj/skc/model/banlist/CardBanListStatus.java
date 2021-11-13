@@ -40,7 +40,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 )
 public class CardBanListStatus extends RepresentationModel<CardBanListStatus> implements HateoasLinks
 {
-
 	/**
 	 * Start date of ban list.
 	 */
@@ -86,7 +85,6 @@ public class CardBanListStatus extends RepresentationModel<CardBanListStatus> im
 	@Override
 	public void setLinks()
 	{
-
 		final String banListDateStr = banListSimpleDateFormat.format(banListDate);
 
 		this.add(
@@ -101,7 +99,6 @@ public class CardBanListStatus extends RepresentationModel<CardBanListStatus> im
 				linkTo(methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
 						.getNewlyRemovedContentForBanList(banListDateStr))
 						.withRel("Ban List Removed Content"));
-
 	}
 
 
@@ -111,5 +108,4 @@ public class CardBanListStatus extends RepresentationModel<CardBanListStatus> im
 		this.banListDate = banListDate;
 
 	}
-
 }

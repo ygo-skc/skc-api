@@ -21,7 +21,6 @@ import java.util.Set;
 @ApiModel(parent = RepresentationModel.class)
 public class ProductContent extends RepresentationModel<ProductContent>
 {
-
 	@ApiModelProperty(value = "Information about card.")
 	private Card card;
 
@@ -41,7 +40,6 @@ public class ProductContent extends RepresentationModel<ProductContent>
 	public static void setLinks(@NonNull final List<ProductContent> packContents)
 	{
 		packContents
-			.forEach(packContent -> packContent.setLinks());
+			.forEach(ProductContent::setLinks);
 	}
-
 }
