@@ -24,7 +24,7 @@ plugins {
 	id("info.solidsoft.pitest") version "1.7.0"
 	id("com.adarshr.test-logger") version "3.1.0"	// printing for JUnits
 	kotlin("jvm") version "1.6.0"
-	kotlin("plugin.spring") version "1.5.31"
+	kotlin("plugin.spring") version "1.6.0"
 	jacoco
 	java
 	scala
