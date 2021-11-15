@@ -23,7 +23,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.0"
 	id("com.adarshr.test-logger") version "3.1.0"	// printing for JUnits
-	kotlin("jvm") version "1.5.31"
+	kotlin("jvm") version "1.6.0"
 	kotlin("plugin.spring") version "1.5.31"
 	jacoco
 	java
