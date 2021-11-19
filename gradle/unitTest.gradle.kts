@@ -1,4 +1,4 @@
-val springVersion = "2.5.6"
+val springVersion = "2.6.0"
 val h2Version = "1.4.200"
 
 dependencies {
