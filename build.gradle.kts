@@ -71,6 +71,7 @@ dependencies {
 	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
 	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 
 	implementation("org.cache2k:cache2k-api:$cache2kVersion")
 	implementation("org.cache2k:cache2k-core:$cache2kVersion")
