@@ -1,7 +1,6 @@
 package com.rtomyj.skc.service.card;
 
 import com.rtomyj.skc.dao.Dao;
-import com.rtomyj.skc.enums.LinkArrow;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.card.Card;
@@ -92,18 +91,7 @@ public class CardService
 			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardRequest.cardId)));
 			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardRequest.cardId));
 
-			if (foundCard.getMonsterAssociation() != null
-					&& foundCard.getMonsterAssociation().getLinkArrows() != null
-					&& !foundCard.getMonsterAssociation().getLinkArrows().isEmpty()) {
-				foundCard.getMonsterAssociation().setLinkArrows(
-						foundCard
-								.getMonsterAssociation()
-								.getLinkArrows()
-								.stream()
-								.map(dbArrowString -> LinkArrow.transformDBStringToEnum(dbArrowString).toString())
-								.toList()
-				);
-			}
+			foundCard.transformMonsterLinkRating();
 
 			/*
 				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
