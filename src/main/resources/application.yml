@@ -7,6 +7,9 @@ spring:
     password:
   hateoas:
     use-hal-as-default-json-media-type: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher # fixes spring-fox error on spring-boot >= v2.6
 
 server:
   port: 9999

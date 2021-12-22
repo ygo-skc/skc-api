@@ -20,7 +20,7 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.6.1"
+	id("org.springframework.boot") version "2.6.2"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.0"
 	id("com.adarshr.test-logger") version "3.1.0"	// printing for JUnits
@@ -43,10 +43,7 @@ repositories {
 
 
 sourceSets {
-	create("integTest") {
-		java.srcDir("src/integTest/java")
-		resources.srcDir("src/integTest/resources")
-	}
+	create("integTest")
 
 	create("perfTest") {
 		scala.srcDir("src/perfTest/scala")
