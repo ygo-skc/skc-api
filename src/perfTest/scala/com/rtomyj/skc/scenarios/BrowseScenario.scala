@@ -10,7 +10,7 @@ import scala.language.postfixOps
 
 object BrowseScenario
 {
-  val cardBrowseFeed: BatchableFeederBuilder[String]#F#F = ssv("gatling/browse_cards_three_or_more_criteria.ssv").random.circular
+  val cardBrowseFeed: BatchableFeederBuilder[String] = ssv("gatling/browse_cards_three_or_more_criteria.ssv").random.circular
 
   val getBrowseResultsScenario: ScenarioBuilder = scenario("Card Browse Details Scenario")
     .feed(cardBrowseFeed)

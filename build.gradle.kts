@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
+val scalaLibraryVersion = "2.13.7"
 val springBootVersion = "2.6.2"
 val swagger2Version = "3.0.0"
 val javadocVersion = "3.2.0" // 3.3.0
@@ -54,6 +55,8 @@ sourceSets {
 
 
 dependencies {
+	compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
+
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
