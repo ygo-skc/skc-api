@@ -4,7 +4,6 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 val scalaLibraryVersion = "2.13.7"
 val springBootVersion = "2.6.2"
 val swagger2Version = "3.0.0"
-val javadocVersion = "3.2.0" // 3.3.0
 val cache2kVersion = "2.4.1.Final"
 val lombokVersion = "1.18.22"
 val mysqlVersion = "8.0.27"
@@ -63,8 +62,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
 	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server")
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
-
-	compileOnly("org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion")
 
 	implementation("io.springfox:springfox-boot-starter:$swagger2Version")
 
