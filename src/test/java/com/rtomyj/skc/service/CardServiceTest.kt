@@ -6,14 +6,15 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
-import org.cache2k.io.CacheLoaderException
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -80,7 +81,7 @@ class CardServiceTest {
 
 
             // call code and assert throws
-            Assertions.assertThrows(CacheLoaderException::class.java) {
+            Assertions.assertThrows(YgoException::class.java) {
                 cardService.getCardInfo(
                     TestConstants.ID_THAT_CAUSES_FAILURE
                     , false

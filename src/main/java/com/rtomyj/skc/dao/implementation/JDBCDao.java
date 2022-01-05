@@ -470,7 +470,7 @@ public class JDBCDao implements Dao
 
 
 		final List<Object> results = Collections.singletonList(jdbcNamedTemplate.queryForList(query, sqlParams, Object.class));
-		return results.size() == 1;
+		return !results.isEmpty();
 
 	}
 
@@ -478,7 +478,7 @@ public class JDBCDao implements Dao
 	public Products getAllProductsByType(final ProductType productType, final String locale)
 	{
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("productType", productType.toString().replaceAll("_", " "));
+		sqlParams.addValue("productType", productType.toString().replace("_", " "));
 
 
 		return jdbcNamedTemplate.query(DBQueryConstants.GET_AVAILABLE_PACKS, sqlParams, (ResultSet row) -> {

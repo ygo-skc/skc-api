@@ -5,12 +5,7 @@ import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.product.Product;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.cache2k.Cache;
-import org.cache2k.Cache2kBuilder;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,49 +13,20 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Service that is used to access card info from DB.
  */
 @Service
 @Slf4j
-public class CardService
-{
-	// static inner classes
-	@Getter
-	@EqualsAndHashCode
-	private static class CardRequest
-	{
-		private final String cardId;
-		private final boolean fetchAllInfo;
-
-		public CardRequest(final String cardId, final boolean fetchAllInfo)
-		{
-			this.cardId = cardId;
-			this.fetchAllInfo = fetchAllInfo;
-		}
-	}
-
+public class CardService {
 	// fields
 	private final Dao dao;
 
-	/**
-	 * Cache used to store card data to prevent querying DB.
-	 */
-	private final Cache<CardRequest, Card> cardCache;
-
 
 	@Autowired
-	public CardService(@Qualifier("jdbc") final Dao dao)
-	{
+	public CardService(@Qualifier("jdbc") final Dao dao) {
 		this.dao = dao;
-		this.cardCache = new Cache2kBuilder<CardRequest, Card>() {}
-			.expireAfterWrite(1, TimeUnit.DAYS)
-			.entryCapacity(1000)
-			.permitNullValues(false)
-			.loader(this::onCacheMiss)
-			.build();
 	}
 
 
@@ -71,25 +37,15 @@ public class CardService
 	 * @return Card object containing the information of the card desired.
 	 */
 	public Card getCardInfo(final String cardId, final boolean fetchAllInfo)
-		throws YgoException
-	{
-		return cardCache.get(new CardRequest(cardId, fetchAllInfo));
-	}
+		throws YgoException {
+		log.info("Fetching info for card w/ ID: ( {} )", cardId);
+
+		final Card foundCard = dao.getCardInfo(cardId);
 
 
-	@NotNull
-	public Card onCacheMiss(final CardRequest cardRequest)
-		throws YgoException
-	{
-		log.info("Card w/ id: ( {} ) not found in cache. Using DB.", cardRequest.cardId);
-
-		final Card foundCard = dao.getCardInfo(cardRequest.cardId);
-
-
-		if (cardRequest.fetchAllInfo)
-		{
-			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardRequest.cardId)));
-			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardRequest.cardId));
+		if (fetchAllInfo) {
+			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardId)));
+			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardId));
 
 			foundCard.transformMonsterLinkRating();
 
@@ -100,13 +56,11 @@ public class CardService
 			Product firstOccurrenceOfProduct = null;
 			final Iterator<Product> it = foundCard.getFoundIn().iterator();
 
-			while (it.hasNext())
-			{
+			while (it.hasNext()) {
 				final Product currentProduct = it.next();
 
 				if ( firstOccurrenceOfProduct != null && firstOccurrenceOfProduct.getProductId().equals(currentProduct.getProductId())
-						&& firstOccurrenceOfProduct.getProductContent().get(0).getProductPosition().equals(currentProduct.getProductContent().get(0).getProductPosition()) )
-				{
+						&& firstOccurrenceOfProduct.getProductContent().get(0).getProductPosition().equals(currentProduct.getProductContent().get(0).getProductPosition()) ) {
 					firstOccurrenceOfProduct.getProductContent().addAll(currentProduct.getProductContent());
 					it.remove();
 				}
@@ -122,12 +76,10 @@ public class CardService
 
 	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType
 			, final int limit, final boolean saveBandwidth)
-		throws YgoException
-	{
+		throws YgoException {
 		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
 
-		if (saveBandwidth)
-		{
+		if (saveBandwidth) {
 			log.debug("Trimming card effects to save bandwidth.");
 			Card.trimEffects(searchResults);
 		}
