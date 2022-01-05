@@ -1,6 +1,6 @@
 package com.rtomyj.skc.service.product;
 
-import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.dao.ProductDao;
 import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.card.MonsterAssociation;
 import com.rtomyj.skc.model.product.Product;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
 	@Autowired
-	@Qualifier("jdbc")
-	private Dao dao;
+	@Qualifier("jdbc-product")
+	private ProductDao dao;
 
 
 	public Products getProductsByLocale(final String locale) {

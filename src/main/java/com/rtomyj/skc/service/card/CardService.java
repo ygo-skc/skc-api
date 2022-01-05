@@ -1,6 +1,7 @@
 package com.rtomyj.skc.service.card;
 
 import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.dao.ProductDao;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.card.Card;
@@ -21,12 +22,15 @@ import java.util.List;
 @Slf4j
 public class CardService {
 	// fields
-	private final Dao dao;
+	private final ProductDao productDao;
+
+	private final Dao cardDao;
 
 
 	@Autowired
-	public CardService(@Qualifier("jdbc") final Dao dao) {
-		this.dao = dao;
+	public CardService(@Qualifier("jdbc-product") final ProductDao productDao, @Qualifier("jdbc") final Dao cardDao) {
+		this.productDao = productDao;
+		this.cardDao = cardDao;
 	}
 
 
@@ -40,12 +44,12 @@ public class CardService {
 		throws YgoException {
 		log.info("Fetching info for card w/ ID: ( {} )", cardId);
 
-		final Card foundCard = dao.getCardInfo(cardId);
+		final Card foundCard = cardDao.getCardInfo(cardId);
 
 
 		if (fetchAllInfo) {
-			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardId)));
-			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardId));
+			foundCard.setFoundIn(new ArrayList<>(productDao.getProductDetailsForCard(cardId)));
+			foundCard.setRestrictedIn(cardDao.getBanListDetailsForCard(cardId));
 
 			foundCard.getMonsterAssociation().transformMonsterLinkRating();
 
@@ -77,7 +81,7 @@ public class CardService {
 	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType
 			, final int limit, final boolean saveBandwidth)
 		throws YgoException {
-		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
+		final List<Card> searchResults = cardDao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
 
 		if (saveBandwidth) {
 			log.debug("Trimming card effects to save bandwidth.");

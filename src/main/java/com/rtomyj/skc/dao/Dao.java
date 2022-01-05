@@ -1,6 +1,5 @@
 package com.rtomyj.skc.dao;
 
-import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
@@ -8,15 +7,10 @@ import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
-import com.rtomyj.skc.model.product.Product;
-import com.rtomyj.skc.model.product.ProductContent;
-import com.rtomyj.skc.model.product.Products;
 import com.rtomyj.skc.model.stats.DatabaseStats;
 import com.rtomyj.skc.model.stats.MonsterTypeStats;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -134,17 +128,9 @@ public interface Dao
 
 	List<Card> searchForCardWithCriteria(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType, final int limit, final boolean getBanInfo);
 
-	Products getAllProductsByType(final ProductType productType, final String locale);
-
-	Map<String, Integer> getProductRarityCount(final String packId);
-
-	Set<ProductContent> getProductContents(final String productId, final String locale);
-
 	MonsterTypeStats getMonsterTypeStats(final String cardColor);
 
 	DatabaseStats getDatabaseStats();
-
-	Set<Product> getProductDetailsForCard(final String cardId);
 
 	List<CardBanListStatus> getBanListDetailsForCard(final String cardId);
 
@@ -159,9 +145,5 @@ public interface Dao
 	Set<String> getMonsterSubTypes();
 
 	Set<MonsterAssociation> getMonsterAssociationField(final String monsterAssociationField);
-
-	Product getProductInfo(final String productId, final String locale);
-
-	List<Product> getProductsByLocale(final String locale);
 
 }
