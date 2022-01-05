@@ -79,4 +79,10 @@ public class DBQueryConstants
 			" AND IFNULL(monster_type, '') REGEXP :monsterType" +
 			" ORDER BY color_id, card_name ASC" +
 			" LIMIT :limit";
+
+	public static final String GET_CARD_BROWSE_RESULTS = "SELECT card_number, card_name, card_color, monster_type, card_effect, card_attribute, monster_association" +
+			" FROM card_info" +
+			" WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes" +
+			" AND IFNULL(monster_type, '') REGEXP :monsterTypes" +
+			" AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s ORDER BY card_name";
 }

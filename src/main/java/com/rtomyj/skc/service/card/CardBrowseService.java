@@ -69,6 +69,7 @@ public class CardBrowseService
         cardBrowseResults.setLinks();
         watch.stop();
         Card.trimEffects(cardBrowseResults.getResults());
+        Card.transformMonsterLinkRating(cardBrowseResults.getResults());
 
         log.debug("Time taken to build card browse results {}ms", watch.getTotalTimeMillis());
         return cardBrowseResults;

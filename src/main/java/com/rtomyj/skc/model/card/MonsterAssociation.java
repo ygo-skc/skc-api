@@ -2,6 +2,8 @@ package com.rtomyj.skc.model.card;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -21,6 +24,7 @@ import java.util.List;
 @ApiModel(
         description = "Information about various properties only monster cards have that usually associate distinct monster cards (not in the same archetype) together."
 )
+@Slf4j
 public class MonsterAssociation
 {
 
@@ -54,4 +58,16 @@ public class MonsterAssociation
     )
     private List<String> linkArrows;
 
+
+    public static MonsterAssociation parseDBString(final String dbMonsterAssociationJson, final ObjectMapper objectMapper) {
+        try {
+            if (dbMonsterAssociationJson != null)
+                return objectMapper.readValue(dbMonsterAssociationJson, MonsterAssociation.class);
+        } catch (JsonProcessingException e) {
+            log.error("Exception occurred when parsing monster association column, {}", e.toString());
+            return null;
+        }
+
+        return null;
+    }
 }

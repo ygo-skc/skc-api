@@ -7,7 +7,9 @@ public enum BrowseQueryDefinition
     , CARD_NAME("card_name")
     , CARD_COLOR("card_color")
     , MONSTER_TYPE("monster_type")
-    , CARD_EFFECT("card_effect");
+    , CARD_EFFECT("card_effect")
+    , CARD_ATTRIBUTE("card_attribute")
+    , MONSTER_ASSOCIATION("monster_association");
 
     private final String columnName;
 

@@ -1,10 +1,8 @@
 package com.rtomyj.skc.dao.implementation;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.skc.constant.DBQueryConstants;
 import com.rtomyj.skc.constant.ErrConstants;
-import com.rtomyj.skc.constant.LogConstants;
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition;
@@ -100,17 +98,6 @@ public class JDBCDao implements Dao
 		{
 			if (row.next())
 			{
-				MonsterAssociation monsterAssociation = null;
-				try
-				{
-					if (row.getString(8) != null)  monsterAssociation = objectMapper.readValue(row.getString(8), MonsterAssociation.class);
-				} catch (JsonProcessingException e)
-				{
-					log.error("Exception occurred when parsing monster association column, {}", e.toString());
-					return null;
-				}
-
-
 				return Card
 						.builder()
 						.cardID(cardID)
@@ -121,7 +108,7 @@ public class JDBCDao implements Dao
 						.monsterType(row.getString(5))
 						.monsterAttack(row.getObject(6, Integer.class))
 						.monsterDefense(row.getObject(7, Integer.class))
-						.monsterAssociation(monsterAssociation)
+						.monsterAssociation(MonsterAssociation.parseDBString(row.getString(8), objectMapper))
 						.build();
 			}
 
@@ -543,14 +530,6 @@ public class JDBCDao implements Dao
 			rarities.computeIfAbsent(row.getString(10), k -> new HashSet<>());
 			rarities.get(row.getString(10)).add(row.getString(9));
 
-			MonsterAssociation monsterAssociation = null;
-			try {
-				if (row.getString(18) != null)
-					monsterAssociation = objectMapper.readValue(row.getString(18), MonsterAssociation.class);
-			} catch (JsonProcessingException e) {
-				log.error("Exception occurred when parsing monster association column, {}", e.toString());
-				return null;
-			}
 
 			final Card card = Card
 					.builder()
@@ -562,7 +541,7 @@ public class JDBCDao implements Dao
 					.monsterType(row.getString(15))
 					.monsterAttack(row.getObject(16, Integer.class))
 					.monsterDefense(row.getObject(17, Integer.class))
-					.monsterAssociation(monsterAssociation)
+					.monsterAssociation(MonsterAssociation.parseDBString(row.getString(18), objectMapper))
 					.build();
 
 			return ProductContent
@@ -708,10 +687,7 @@ public class JDBCDao implements Dao
 		final StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
-		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info" +
-				" WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes" +
-				" AND IFNULL(monster_type, '') REGEXP :monsterTypes" +
-				" AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s ORDER BY card_name";
+		final String SQL_TEMPLATE = DBQueryConstants.GET_CARD_BROWSE_RESULTS;
 
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
@@ -734,7 +710,6 @@ public class JDBCDao implements Dao
 			monsterAssociationWhereClause = "";
 		} else
 		{
-
 			monsterAssociationWhereClause = " AND monster_association REGEXP :monsterAssociation ";
 			final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
 			final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
@@ -760,6 +735,11 @@ public class JDBCDao implements Dao
 						.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
 						.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
 						.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
+						.cardAttribute(row.getString(BrowseQueryDefinition.CARD_ATTRIBUTE.toString()))
+						.monsterAssociation(
+								MonsterAssociation.parseDBString(
+										row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), objectMapper)
+						)
 						.build()))
 				.build();
 
@@ -832,12 +812,7 @@ public class JDBCDao implements Dao
 
 
 		final Set<MonsterAssociation> result = new HashSet<>(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
-			try {
-				return objectMapper.readValue(row.getString(1), MonsterAssociation.class);
-			} catch (JsonProcessingException e) {
-				log.error(LogConstants.ERROR_READING_OBJECT_USING_OBJECT_MAPPER, e);
-				return null;
-			}
+			return MonsterAssociation.parseDBString(row.getString(1), objectMapper);
 		}));
 
 		stopWatch.stop();
@@ -916,5 +891,4 @@ public class JDBCDao implements Dao
 		});
 
 	}
-
 }
