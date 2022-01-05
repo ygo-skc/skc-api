@@ -47,7 +47,7 @@ public class CardService {
 			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardId)));
 			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardId));
 
-			foundCard.transformMonsterLinkRating();
+			foundCard.getMonsterAssociation().transformMonsterLinkRating();
 
 			/*
 				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)

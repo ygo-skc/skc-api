@@ -4,6 +4,7 @@ package com.rtomyj.skc.model.card;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rtomyj.skc.enums.LinkArrow;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -69,5 +71,34 @@ public class MonsterAssociation
         }
 
         return null;
+    }
+
+
+    /**
+     * Takes monster link rating retrieved from DB (constants denoting position of arrow, eg: T-L (top left), T-R (top right)... etc) and converts them to emojis.
+     */
+    public void transformMonsterLinkRating() {
+        if (this.getLinkArrows() != null && !this.getLinkArrows().isEmpty()) {
+            this.setLinkArrows(
+                    this
+                            .getLinkArrows()
+                            .stream()
+                            .map(dbArrowString -> LinkArrow.transformDBStringToEnum(dbArrowString).toString())
+                            .toList()
+            );
+        }
+    }
+
+
+    /**
+     * Calls {@link #transformMonsterLinkRating()} on a list of Cards
+     * @param cards list of cards whose link rating should be transformed
+     */
+    public static void transformMonsterLinkRating(final List<Card> cards) {
+        cards
+                .stream()
+                .map(Card::getMonsterAssociation)
+                .filter(Objects::nonNull)
+                .forEach(MonsterAssociation::transformMonsterLinkRating);
     }
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.controller.card.CardController;
-import com.rtomyj.skc.enums.LinkArrow;
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.banlist.BanListInstance;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
@@ -131,34 +130,5 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks {
 
 		if (restrictedIn != null)
 			HateoasLinks.setLinks(restrictedIn);
-	}
-
-
-	/**
-	 * Takes monster link rating retrieved from DB (constants denoting position of arrow, eg: T-L (top left), T-R (top right)... etc) and converts them to emojis.
-	 */
-	public void transformMonsterLinkRating() {
-		if (this.getMonsterAssociation() != null
-				&& this.getMonsterAssociation().getLinkArrows() != null
-				&& !this.getMonsterAssociation().getLinkArrows().isEmpty()) {
-			this.getMonsterAssociation().setLinkArrows(
-					this
-							.getMonsterAssociation()
-							.getLinkArrows()
-							.stream()
-							.map(dbArrowString -> LinkArrow.transformDBStringToEnum(dbArrowString).toString())
-							.toList()
-			);
-		}
-	}
-
-
-	/**
-	 * Calls {@link #transformMonsterLinkRating()} on a list of Cards
-	 * @param cards list of cards whose link rating should be transformed
-	 */
-	public static void transformMonsterLinkRating(final List<Card> cards) {
-		cards
-				.forEach(Card::transformMonsterLinkRating);
 	}
 }

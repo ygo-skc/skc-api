@@ -2,7 +2,7 @@ package com.rtomyj.skc.service.product;
 
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.enums.ProductType;
-import com.rtomyj.skc.model.card.Card;
+import com.rtomyj.skc.model.card.MonsterAssociation;
 import com.rtomyj.skc.model.product.Product;
 import com.rtomyj.skc.model.product.ProductContent;
 import com.rtomyj.skc.model.product.Products;
@@ -41,7 +41,7 @@ public class ProductService {
 		product.getProductContent().addAll(dao.getProductContents(packId, locale));
 		product.setLinks();
 
-		Card
+		MonsterAssociation
 				.transformMonsterLinkRating(
 						product
 								.getProductContent()
