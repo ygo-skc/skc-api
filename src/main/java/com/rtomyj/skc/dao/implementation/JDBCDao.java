@@ -811,7 +811,7 @@ public class JDBCDao implements Dao
 		final Set<String> cardColors = this.getCardColors();
 
 		monsterSubTypes.removeAll(cardColors);
-		monsterSubTypes.remove("Pendulum");	// removing pendulum individually as pendulum monster color/name is categorized by cards other color: eg  Pendulum-Normal, Pendulum-Fusion, etc
+		monsterSubTypes.remove("Pendulum");	// removing pendulum individually as pendulum monster color/name is categorized by cards other color: e.g.  Pendulum-Normal, Pendulum-Fusion, etc
 		return monsterSubTypes;
 	}
 
