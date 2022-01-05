@@ -1,5 +1,5 @@
 val springVersion = "2.6.2"
-val h2Version = "2.0.204"
+val h2Version = "2.0.206"
 
 dependencies {
     "testImplementation"(kotlin("test"))
