@@ -4,7 +4,6 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 val scalaLibraryVersion = "2.13.7"
 val springBootVersion = "2.6.2"
 val swagger2Version = "3.0.0"
-val cache2kVersion = "2.4.1.Final"
 val lombokVersion = "1.18.22"
 val mysqlVersion = "8.0.27"
 val jacksonVersion = "2.13.1"
@@ -69,9 +68,6 @@ dependencies {
 
 	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
-
-	implementation("org.cache2k:cache2k-api:$cache2kVersion")
-	implementation("org.cache2k:cache2k-core:$cache2kVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
 

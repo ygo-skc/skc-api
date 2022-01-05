@@ -3,9 +3,9 @@ package com.rtomyj.skc.service.banlist
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
-import org.cache2k.io.CacheLoaderException
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers
@@ -260,7 +260,7 @@ class DiffServiceTest {
                 .thenReturn(ArrayList())
 
 
-            Assertions.assertThrows(CacheLoaderException::class.java) {
+            Assertions.assertThrows(YgoException::class.java) {
                 diffService.getNewContentForGivenBanList(
                     TestConstants.BAN_LIST_START_DATE
                 )
@@ -298,7 +298,7 @@ class DiffServiceTest {
 
 
             // call code w/ above mocks, expecting an exception
-            Assertions.assertThrows(CacheLoaderException::class.java) {
+            Assertions.assertThrows(YgoException::class.java) {
                 diffService.getRemovedContentForGivenBanList(
                     TestConstants.BAN_LIST_START_DATE
                 )
