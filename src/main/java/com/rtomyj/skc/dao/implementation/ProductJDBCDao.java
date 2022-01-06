@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.skc.constant.DBQueryConstants;
 import com.rtomyj.skc.dao.ProductDao;
 import com.rtomyj.skc.enums.ProductType;
-import com.rtomyj.skc.enums.table.definitions.ProductViewDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.MonsterAssociation;
@@ -40,6 +39,17 @@ public class ProductJDBCDao implements ProductDao {
 
     private final ObjectMapper objectMapper;
 
+    private static final String DATE_PARSE_EXCEPTION_LOGGER = "Cannot parse date retrieved from DB when retrieving product {}. Exception: {}";
+
+    private static final String PRODUCT_ID = "productId";
+    private static final String LOCALE = "locale";
+
+    private static final String FROM_PRODUCT_CONTENT_TABLE = " FROM product_contents";
+    private static final String GET_PRODUCT_DETAILS = "SELECT DISTINCT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type" +
+            FROM_PRODUCT_CONTENT_TABLE +
+            " WHERE product_id = :" + PRODUCT_ID +
+            " AND product_locale = :" + LOCALE;
+
 
     @Autowired
     public ProductJDBCDao(final NamedParameterJdbcTemplate jdbcNamedTemplate
@@ -49,59 +59,64 @@ public class ProductJDBCDao implements ProductDao {
         this.objectMapper = objectMapper;
     }
 
+
     public Product getProductInfo(final String productId, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-        sqlParams.addValue("productId", productId);
-        sqlParams.addValue("locale", locale);
+        sqlParams.addValue(PRODUCT_ID, productId);
+        sqlParams.addValue(LOCALE, locale);
 
 
-        return jdbcNamedTemplate.queryForObject(DBQueryConstants.GET_PRODUCT_DETAILS, sqlParams, (ResultSet row, int rowNum) -> {
-
+        return jdbcNamedTemplate.queryForObject(GET_PRODUCT_DETAILS, sqlParams, (ResultSet row, int rowNum) -> {
             try {
                 return Product
                         .builder()
-                        .productId(row.getString(1))
-                        .productLocale(row.getString(2))
-                        .productName(row.getString(3))
-                        .productReleaseDate(dateFormat.parse(row.getString(4)))
-                        .productTotal(row.getInt(5))
-                        .productType(row.getString(6))
-                        .productSubType(row.getString(7))
-                        .productRarityStats(this.getProductRarityCount(row.getString(1)))
+                        .productId(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
+                        .productLocale(row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
+                        .productName(row.getString(ProductsTableDefinition.PRODUCT_NAME.toString()))
+                        .productReleaseDate(
+                                dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
+                        )
+                        .productTotal(row.getInt(ProductsTableDefinition.PRODUCT_CONTENT_TOTAL.toString()))
+                        .productType(row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString()))
+                        .productSubType(row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString()))
+                        .productRarityStats(
+                                this.getProductRarityCount(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
+                        )
                         .productContent(new ArrayList<>())
                         .build();
             } catch (Exception e) {
-
-                log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", productId, e.toString());
+                log.error(DATE_PARSE_EXCEPTION_LOGGER, productId, e.toString());
                 return null;
-
             }
-
         });
     }
 
 
     public List<Product> getProductsByLocale(final String locale) {
-
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-        sqlParams.addValue("locale", locale);
+        sqlParams.addValue(LOCALE, locale);
 
         return jdbcNamedTemplate.query(DBQueryConstants.GET_AVAILABLE_PRODUCTS_BY_LOCALE, sqlParams, (ResultSet row, int rowNum) -> {
-
-            Product product = Product.builder().productId(row.getString(ProductsTableDefinition.PRODUCT_ID.toString())).productLocale(row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString())).productName(row.getString(ProductsTableDefinition.PRODUCT_NAME.toString())).productType(row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString())).productSubType(row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString())).productTotal(row.getInt(ProductViewDefinition.PRODUCT_CONTENT_TOTAL.toString())).build();
+            Product product = Product
+                    .builder()
+                    .productId(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
+                    .productLocale(row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
+                    .productName(row.getString(ProductsTableDefinition.PRODUCT_NAME.toString()))
+                    .productType(row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString()))
+                    .productSubType(row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString()))
+                    .productTotal(row.getInt(ProductsTableDefinition.PRODUCT_CONTENT_TOTAL.toString()))
+                    .build();
             try {
-                product.setProductReleaseDate(dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString())));
+                product.setProductReleaseDate(
+                        dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
+                );
             } catch (ParseException e) {
-
-                log.error("Cannot parse date from DB when retrieving product {} with exception: {}", product.getProductId(), e.toString());
+                log.error(DATE_PARSE_EXCEPTION_LOGGER, product.getProductId(), e.toString());
                 return null;
-
             }
 
             return product;
-
         });
-
     }
 
 
@@ -112,7 +127,7 @@ public class ProductJDBCDao implements ProductDao {
 
         final Map<String, Map<String, Set<String>>> rarities = new HashMap<>();
         final Set<Product> products = new LinkedHashSet<>(jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
-            final String productId = row.getString(1);
+            final String productId = row.getString(ProductsTableDefinition.PRODUCT_ID.toString());
             final String cardPosition = row.getString(7);
 
             rarities.computeIfAbsent(productId, k -> new HashMap<>());
@@ -122,8 +137,17 @@ public class ProductJDBCDao implements ProductDao {
 
 
             try {
-                // TODO: Need to update code block to make sure packContent list contains all occurrences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
-                return Product.builder().productId(productId).productLocale(row.getString(2)).productName(row.getString(3)).productReleaseDate(dateFormat.parse(row.getString(4))).productType((row.getString(5))).productSubType(row.getString(6)).build();
+                return Product
+                        .builder()
+                        .productId(productId)
+                        .productLocale(row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
+                        .productName(row.getString(ProductsTableDefinition.PRODUCT_NAME.toString()))
+                        .productReleaseDate(
+                                dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
+                        )
+                        .productType((row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString())))
+                        .productSubType(row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString()))
+                        .build();
             } catch (ParseException e) {
                 log.error("Cannot parse date from DB when retrieving product info for card {} with exception: {}", cardId, e.toString());
                 return null;
@@ -134,7 +158,15 @@ public class ProductJDBCDao implements ProductDao {
         for (Product product : products) {
             product.setProductContent(new ArrayList<>());
             for (Map.Entry<String, Set<String>> cardPositionAndRarityMap : rarities.get(product.getProductId()).entrySet()) {
-                product.getProductContent().add(ProductContent.builder().productPosition(cardPositionAndRarityMap.getKey()).rarities(cardPositionAndRarityMap.getValue()).build());
+                product
+                        .getProductContent()
+                        .add(
+                                ProductContent
+                                        .builder()
+                                        .productPosition(cardPositionAndRarityMap.getKey())
+                                        .rarities(cardPositionAndRarityMap.getValue())
+                                        .build()
+                        );
             }
         }
         return products;
@@ -144,7 +176,7 @@ public class ProductJDBCDao implements ProductDao {
     public Set<ProductContent> getProductContents(final String packId, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("packId", packId);
-        sqlParams.addValue("locale", locale);
+        sqlParams.addValue(LOCALE, locale);
 
 
         final Map<String, Set<String>> rarities = new HashMap<>();
@@ -153,9 +185,24 @@ public class ProductJDBCDao implements ProductDao {
             rarities.get(row.getString(10)).add(row.getString(9));
 
 
-            final Card card = Card.builder().cardID(row.getString(10)).cardColor(row.getString(11)).cardName(row.getString(12)).cardAttribute(row.getString(13)).cardEffect(row.getString(14)).monsterType(row.getString(15)).monsterAttack(row.getObject(16, Integer.class)).monsterDefense(row.getObject(17, Integer.class)).monsterAssociation(MonsterAssociation.parseDBString(row.getString(18), objectMapper)).build();
+            final Card card = Card
+                    .builder()
+                    .cardID(row.getString(10))
+                    .cardColor(row.getString(11))
+                    .cardName(row.getString(12))
+                    .cardAttribute(row.getString(13))
+                    .cardEffect(row.getString(14))
+                    .monsterType(row.getString(15))
+                    .monsterAttack(row.getObject(16, Integer.class))
+                    .monsterDefense(row.getObject(17, Integer.class))
+                    .monsterAssociation(MonsterAssociation.parseDBString(row.getString(18), objectMapper))
+                    .build();
 
-            return ProductContent.builder().productPosition(row.getString(8)).card(card).build();
+            return ProductContent
+                    .builder()
+                    .productPosition(row.getString(8))
+                    .card(card)
+                    .build();
         }));
 
         for (ProductContent content : productContents) {
@@ -175,7 +222,18 @@ public class ProductJDBCDao implements ProductDao {
 
             while (row.next()) {
                 try {
-                    availableProductsList.add(Product.builder().productId(row.getString(1)).productLocale(row.getString(2)).productName(row.getString(3)).productReleaseDate(dateFormat.parse(row.getString(4))).productTotal(row.getInt(5)).productType(row.getString(6)).productSubType(row.getString(7)).productRarityStats(this.getProductRarityCount(row.getString(1))).build());
+                    availableProductsList.add(
+                            Product
+                                    .builder()
+                                    .productId(row.getString(1))
+                                    .productLocale(row.getString(2))
+                                    .productName(row.getString(3))
+                                    .productReleaseDate(dateFormat.parse(row.getString(4)))
+                                    .productTotal(row.getInt(5))
+                                    .productType(row.getString(6))
+                                    .productSubType(row.getString(7))
+                                    .productRarityStats(this.getProductRarityCount(row.getString(1)))
+                                    .build());
                 } catch (ParseException e) {
                     log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
                 }
@@ -188,7 +246,7 @@ public class ProductJDBCDao implements ProductDao {
 
     public Map<String, Integer> getProductRarityCount(final String productId) {
         final MapSqlParameterSource queryParams = new MapSqlParameterSource();
-        queryParams.addValue("productId", productId);
+        queryParams.addValue(PRODUCT_ID, productId);
 
         return jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_RARITY_INFO, queryParams, (ResultSet row) -> {
             final Map<String, Integer> rarities = new HashMap<>();

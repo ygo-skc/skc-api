@@ -1,6 +1,5 @@
 package com.rtomyj.skc.constant;
 
-import com.rtomyj.skc.enums.table.definitions.ProductViewDefinition;
 import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;
 
 public class DBQueryConstants
@@ -30,17 +29,12 @@ public class DBQueryConstants
 
 	public static final String GET_AVAILABLE_PRODUCTS_BY_LOCALE = String.format("SELECT %S, %S, %S, %S, %S, %S, %S" +
 			" FROM product_info" +
-			" WHERE product_locale = :locale", ProductsTableDefinition.PRODUCT_ID, ProductsTableDefinition.PRODUCT_LOCALE, ProductsTableDefinition.PRODUCT_NAME, ProductsTableDefinition.PRODUCT_RELEASE_DATE , ProductViewDefinition.PRODUCT_CONTENT_TOTAL, ProductsTableDefinition.PRODUCT_TYPE, ProductsTableDefinition.PRODUCT_SUB_TYPE);
+			" WHERE product_locale = :locale", ProductsTableDefinition.PRODUCT_ID, ProductsTableDefinition.PRODUCT_LOCALE, ProductsTableDefinition.PRODUCT_NAME, ProductsTableDefinition.PRODUCT_RELEASE_DATE , ProductsTableDefinition.PRODUCT_CONTENT_TOTAL, ProductsTableDefinition.PRODUCT_TYPE, ProductsTableDefinition.PRODUCT_SUB_TYPE);
 
 	public static final String GET_PRODUCT_RARITY_INFO = "SELECT card_rarity, count(*) FROM product_details" +
 			" WHERE product_id = :productId" +
 			" GROUP BY card_rarity" +
 			" ORDER by card_rarity";
-
-	public static final String GET_PRODUCT_DETAILS = "SELECT DISTINCT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type" +
-			FROM_PRODUCT_CONTENT_TABLE +
-			" WHERE product_id = :productId" +
-			" AND product_locale = :locale";
 
 	public static final String GET_PRODUCT_CONTENT = "SELECT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type, product_position, card_rarity, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association" +
 			FROM_PRODUCT_CONTENT_TABLE +
