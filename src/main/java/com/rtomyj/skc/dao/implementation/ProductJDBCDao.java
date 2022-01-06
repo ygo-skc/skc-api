@@ -44,11 +44,22 @@ public class ProductJDBCDao implements ProductDao {
     private static final String PRODUCT_ID = "productId";
     private static final String LOCALE = "locale";
 
+    // SQL queries
     private static final String FROM_PRODUCT_CONTENT_TABLE = " FROM product_contents";
+    private static final String WHERE_CARD_NUMBER_IS_CARD_ID = " WHERE card_number = :cardId";
     private static final String GET_PRODUCT_DETAILS = "SELECT DISTINCT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type" +
             FROM_PRODUCT_CONTENT_TABLE +
             " WHERE product_id = :" + PRODUCT_ID +
             " AND product_locale = :" + LOCALE;
+    private static final String GET_AVAILABLE_PRODUCTS_BY_LOCALE = String.format("SELECT %S, %S, %S, %S, %S, %S, %S" +
+            " FROM product_info" +
+            " WHERE product_locale = :" + LOCALE, ProductsTableDefinition.PRODUCT_ID, ProductsTableDefinition.PRODUCT_LOCALE
+            , ProductsTableDefinition.PRODUCT_NAME, ProductsTableDefinition.PRODUCT_RELEASE_DATE , ProductsTableDefinition.PRODUCT_CONTENT_TOTAL
+            , ProductsTableDefinition.PRODUCT_TYPE, ProductsTableDefinition.PRODUCT_SUB_TYPE);
+    private static final String GET_PRODUCT_INFO_FOR_CARD = "select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity" +
+            FROM_PRODUCT_CONTENT_TABLE +
+            WHERE_CARD_NUMBER_IS_CARD_ID +
+            " ORDER BY product_release_date DESC";
 
 
     @Autowired
@@ -60,7 +71,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public Product getProductInfo(final String productId, final String locale) {
+    public final Product getProductInfo(final String productId, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue(PRODUCT_ID, productId);
         sqlParams.addValue(LOCALE, locale);
@@ -92,11 +103,11 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public List<Product> getProductsByLocale(final String locale) {
+    public final List<Product> getProductsByLocale(final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue(LOCALE, locale);
 
-        return jdbcNamedTemplate.query(DBQueryConstants.GET_AVAILABLE_PRODUCTS_BY_LOCALE, sqlParams, (ResultSet row, int rowNum) -> {
+        return jdbcNamedTemplate.query(GET_AVAILABLE_PRODUCTS_BY_LOCALE, sqlParams, (ResultSet row, int rowNum) -> {
             Product product = Product
                     .builder()
                     .productId(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
@@ -120,13 +131,13 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public Set<Product> getProductDetailsForCard(final String cardId) {
+    public final Set<Product> getProductDetailsForCard(final String cardId) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("cardId", cardId);
 
 
         final Map<String, Map<String, Set<String>>> rarities = new HashMap<>();
-        final Set<Product> products = new LinkedHashSet<>(jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
+        final Set<Product> products = new LinkedHashSet<>(jdbcNamedTemplate.query(GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
             final String productId = row.getString(ProductsTableDefinition.PRODUCT_ID.toString());
             final String cardPosition = row.getString(7);
 
@@ -173,7 +184,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public Set<ProductContent> getProductContents(final String packId, final String locale) {
+    public final Set<ProductContent> getProductContents(final String packId, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("packId", packId);
         sqlParams.addValue(LOCALE, locale);
@@ -212,7 +223,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public Products getAllProductsByType(final ProductType productType, final String locale) {
+    public final Products getAllProductsByType(final ProductType productType, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("productType", productType.toString().replace("_", " "));
 
@@ -244,7 +255,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public Map<String, Integer> getProductRarityCount(final String productId) {
+    public final Map<String, Integer> getProductRarityCount(final String productId) {
         final MapSqlParameterSource queryParams = new MapSqlParameterSource();
         queryParams.addValue(PRODUCT_ID, productId);
 

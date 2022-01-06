@@ -16,9 +16,9 @@ public interface ProductDao {
 
     Set<Product> getProductDetailsForCard(final String cardId);
 
-    Map<String, Integer> getProductRarityCount(final String packId);
-
     Set<ProductContent> getProductContents(final String productId, final String locale);
 
     Products getAllProductsByType(final ProductType productType, final String locale);
+
+    Map<String, Integer> getProductRarityCount(final String packId);
 }

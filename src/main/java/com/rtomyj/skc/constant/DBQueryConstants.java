@@ -1,7 +1,5 @@
 package com.rtomyj.skc.constant;
 
-import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;
-
 public class DBQueryConstants
 {
 	private DBQueryConstants()
@@ -27,10 +25,6 @@ public class DBQueryConstants
 			" FROM product_info" +
 			" WHERE product_type = :productType";
 
-	public static final String GET_AVAILABLE_PRODUCTS_BY_LOCALE = String.format("SELECT %S, %S, %S, %S, %S, %S, %S" +
-			" FROM product_info" +
-			" WHERE product_locale = :locale", ProductsTableDefinition.PRODUCT_ID, ProductsTableDefinition.PRODUCT_LOCALE, ProductsTableDefinition.PRODUCT_NAME, ProductsTableDefinition.PRODUCT_RELEASE_DATE , ProductsTableDefinition.PRODUCT_CONTENT_TOTAL, ProductsTableDefinition.PRODUCT_TYPE, ProductsTableDefinition.PRODUCT_SUB_TYPE);
-
 	public static final String GET_PRODUCT_RARITY_INFO = "SELECT card_rarity, count(*) FROM product_details" +
 			" WHERE product_id = :productId" +
 			" GROUP BY card_rarity" +
@@ -43,11 +37,6 @@ public class DBQueryConstants
 			" ORDER BY product_position";
 
 	public static final String GET_DATABASE_TOTALS = "SELECT * FROM totals";
-
-	public static final String GET_PRODUCT_INFO_FOR_CARD = "select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity" +
-			FROM_PRODUCT_CONTENT_TABLE+
-			WHERE_CARD_NUMBER_IS_CARDID +
-			" ORDER BY product_release_date DESC";
 
 	public static final String GET_BAN_LIST_INFO_FOR_CARD = "SELECT ban_list_date, ban_status" +
 			" FROM ban_lists" +
