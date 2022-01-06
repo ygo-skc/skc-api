@@ -29,7 +29,7 @@ class CardServiceTest {
     @MockBean(name = "jdbc")
     private lateinit var cardDao: Dao
 
-    @MockBean(name = "jdbc-product")
+    @MockBean(name = "product-jdbc")
     private lateinit var productDao: ProductDao
 
     @Autowired

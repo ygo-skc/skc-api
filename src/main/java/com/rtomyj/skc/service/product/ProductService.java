@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
 	@Autowired
-	@Qualifier("jdbc-product")
+	@Qualifier("product-jdbc")
 	private ProductDao dao;
 
 

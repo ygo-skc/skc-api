@@ -28,7 +28,7 @@ public class CardService {
 
 
 	@Autowired
-	public CardService(@Qualifier("jdbc-product") final ProductDao productDao, @Qualifier("jdbc") final Dao cardDao) {
+	public CardService(@Qualifier("product-jdbc") final ProductDao productDao, @Qualifier("jdbc") final Dao cardDao) {
 		this.productDao = productDao;
 		this.cardDao = cardDao;
 	}

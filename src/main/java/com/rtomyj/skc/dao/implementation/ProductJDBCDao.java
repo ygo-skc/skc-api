@@ -31,9 +31,9 @@ import java.util.Set;
 
 
 @Repository
-@Qualifier("jdbc-product")
+@Qualifier("product-jdbc")
 @Slf4j
-public class JDBCProductDao implements ProductDao {
+public class ProductJDBCDao implements ProductDao {
     private final NamedParameterJdbcTemplate jdbcNamedTemplate;
 
     private final SimpleDateFormat dateFormat;
@@ -42,7 +42,7 @@ public class JDBCProductDao implements ProductDao {
 
 
     @Autowired
-    public JDBCProductDao(final NamedParameterJdbcTemplate jdbcNamedTemplate
+    public ProductJDBCDao(final NamedParameterJdbcTemplate jdbcNamedTemplate
             , @Qualifier("dbSimpleDateFormat") final SimpleDateFormat dateFormat, final ObjectMapper objectMapper) {
         this.jdbcNamedTemplate = jdbcNamedTemplate;
         this.dateFormat = dateFormat;
