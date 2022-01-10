@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val scalaLibraryVersion = "2.13.7"
+val scalaLibraryVersion = "2.13.8"
 val springBootVersion = "2.6.2"
 val swagger2Version = "3.0.0"
 val lombokVersion = "1.18.22"
