@@ -1,6 +1,7 @@
 package com.rtomyj.skc.service.banlist
 
 import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class BannedCardsService @Autowired constructor(
-	@Qualifier("jdbc") private val dao: Dao
+	@Qualifier("ban-list-jdbc") private val banListDao: BanListDao
 	, private val diffService: DiffService
 ) {
 	companion object {
@@ -39,11 +40,11 @@ class BannedCardsService @Autowired constructor(
 		log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
 
 		val banListInstance: BanListInstance = BanListInstance().apply {
-			forbidden = dao.getBanListByBanStatus(banListStartDate, Dao.Status.FORBIDDEN)
-			limited = dao.getBanListByBanStatus(banListStartDate, Dao.Status.LIMITED)
-			semiLimited = dao.getBanListByBanStatus(banListStartDate, Dao.Status.SEMI_LIMITED)
+			forbidden = banListDao.getBanListByBanStatus(banListStartDate, Dao.Status.FORBIDDEN)
+			limited = banListDao.getBanListByBanStatus(banListStartDate, Dao.Status.LIMITED)
+			semiLimited = banListDao.getBanListByBanStatus(banListStartDate, Dao.Status.SEMI_LIMITED)
 			effectiveDate = banListStartDate
-			comparedTo = dao.getPreviousBanListDate(banListStartDate)
+			comparedTo = banListDao.getPreviousBanListDate(banListStartDate)
 
 			numForbidden = forbidden!!.size
 			numLimited = limited!!.size

@@ -1,8 +1,8 @@
 package com.rtomyj.skc.service.banlist;
 
 import com.rtomyj.skc.constant.ErrConstants;
+import com.rtomyj.skc.dao.BanListDao;
 import com.rtomyj.skc.dao.Dao;
-import com.rtomyj.skc.dao.Dao.Status;
 import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListNewContent;
@@ -19,12 +19,12 @@ import java.util.List;
 @Slf4j
 public class DiffService
 {
-	private final Dao dao;
+	private final BanListDao banListDao;
 
 
 	@Autowired
-	public DiffService(@Qualifier("jdbc") final Dao dao) {
-		this.dao = dao;
+	public DiffService(@Qualifier("ban-list-jdbc") final BanListDao banListDao) {
+		this.banListDao = banListDao;
 	}
 
 
@@ -33,14 +33,14 @@ public class DiffService
 		throws YgoException {
 		log.info("Fetching new content for ban list from DB w/ start date: ({}).", banListStartDate);
 
-		if ( !dao.isValidBanList(banListStartDate) )
+		if ( !banListDao.isValidBanList(banListStartDate) )
 			throw new YgoException(String.format(ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate), ErrorType.D001);
 
 
 		// builds meta data object for new cards request
-		final List<CardsPreviousBanListStatus> forbidden = dao.getNewContentOfBanList(banListStartDate, Status.FORBIDDEN);
-		final List<CardsPreviousBanListStatus> limited = dao.getNewContentOfBanList(banListStartDate, Status.LIMITED);
-		final List<CardsPreviousBanListStatus> semiLimited = dao.getNewContentOfBanList(banListStartDate, Status.SEMI_LIMITED);
+		final List<CardsPreviousBanListStatus> forbidden = banListDao.getNewContentOfBanList(banListStartDate, Dao.Status.FORBIDDEN);
+		final List<CardsPreviousBanListStatus> limited = banListDao.getNewContentOfBanList(banListStartDate, Dao.Status.LIMITED);
+		final List<CardsPreviousBanListStatus> semiLimited = banListDao.getNewContentOfBanList(banListStartDate, Dao.Status.SEMI_LIMITED);
 
 		final BanListNewContent newCardsMeta = BanListNewContent.builder()
 				.listRequested(banListStartDate)
@@ -63,11 +63,11 @@ public class DiffService
 			throws YgoException {
 		log.info("Fetching removed content for ban list from DB w/ start date: ( {} ).", banListStartDate);
 
-		if ( !dao.isValidBanList(banListStartDate) )
+		if ( !banListDao.isValidBanList(banListStartDate) )
 			throw new YgoException(String.format(ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE, banListStartDate), ErrorType.D001);
 
 
-		final List<CardsPreviousBanListStatus> removedCards = dao.getRemovedContentOfBanList(banListStartDate);
+		final List<CardsPreviousBanListStatus> removedCards = banListDao.getRemovedContentOfBanList(banListStartDate);
 
 		// builds meta data object for removed cards request
 		final BanListRemovedContent removedCardsMeta = BanListRemovedContent.builder()
@@ -83,5 +83,5 @@ public class DiffService
 	}
 
 
-	private String getPreviousBanListDate(final String banList)	{ return dao.getPreviousBanListDate(banList); }
+	private String getPreviousBanListDate(final String banList)	{ return banListDao.getPreviousBanListDate(banList); }
 }
