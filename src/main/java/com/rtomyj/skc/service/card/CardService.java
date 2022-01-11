@@ -1,5 +1,6 @@
 package com.rtomyj.skc.service.card;
 
+import com.rtomyj.skc.dao.BanListDao;
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.dao.ProductDao;
 import com.rtomyj.skc.exception.YgoException;
@@ -24,12 +25,16 @@ public class CardService {
 	// fields
 	private final ProductDao productDao;
 
+	private final BanListDao banListDao;
+
 	private final Dao cardDao;
 
 
 	@Autowired
-	public CardService(@Qualifier("product-jdbc") final ProductDao productDao, @Qualifier("jdbc") final Dao cardDao) {
+	public CardService(@Qualifier("product-jdbc") final ProductDao productDao, @Qualifier("ban-list-jdbc") final BanListDao banListDao
+			, @Qualifier("jdbc") final Dao cardDao) {
 		this.productDao = productDao;
+		this.banListDao = banListDao;
 		this.cardDao = cardDao;
 	}
 
@@ -49,7 +54,7 @@ public class CardService {
 
 		if (fetchAllInfo) {
 			foundCard.setFoundIn(new ArrayList<>(productDao.getProductDetailsForCard(cardId)));
-			foundCard.setRestrictedIn(cardDao.getBanListDetailsForCard(cardId));
+			foundCard.setRestrictedIn(banListDao.getBanListDetailsForCard(cardId));
 
 			foundCard.getMonsterAssociation().transformMonsterLinkRating();
 

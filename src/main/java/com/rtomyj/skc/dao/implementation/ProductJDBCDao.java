@@ -71,7 +71,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public final Product getProductInfo(final String productId, final String locale) {
+    public Product getProductInfo(final String productId, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue(PRODUCT_ID, productId);
         sqlParams.addValue(LOCALE, locale);
@@ -103,7 +103,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public final List<Product> getProductsByLocale(final String locale) {
+    public List<Product> getProductsByLocale(final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue(LOCALE, locale);
 
@@ -131,7 +131,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public final Set<Product> getProductDetailsForCard(final String cardId) {
+    public Set<Product> getProductDetailsForCard(final String cardId) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("cardId", cardId);
 
@@ -184,7 +184,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public final Set<ProductContent> getProductContents(final String packId, final String locale) {
+    public Set<ProductContent> getProductContents(final String packId, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("packId", packId);
         sqlParams.addValue(LOCALE, locale);
@@ -223,7 +223,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public final Products getAllProductsByType(final ProductType productType, final String locale) {
+    public Products getAllProductsByType(final ProductType productType, final String locale) {
         final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
         sqlParams.addValue("productType", productType.toString().replace("_", " "));
 
@@ -255,7 +255,7 @@ public class ProductJDBCDao implements ProductDao {
     }
 
 
-    public final Map<String, Integer> getProductRarityCount(final String productId) {
+    public Map<String, Integer> getProductRarityCount(final String productId) {
         final MapSqlParameterSource queryParams = new MapSqlParameterSource();
         queryParams.addValue(PRODUCT_ID, productId);
 

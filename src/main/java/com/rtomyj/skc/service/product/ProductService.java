@@ -12,22 +12,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-
 	@Autowired
 	@Qualifier("product-jdbc")
-	private ProductDao dao;
+	private ProductDao productDao;
 
 
 	public Products getProductsByLocale(final String locale) {
 		final Products allProductsByLocale = new Products();
-		allProductsByLocale.setProducts(dao.getProductsByLocale(locale));
+		allProductsByLocale.setProducts(productDao.getProductsByLocale(locale));
 		allProductsByLocale.setLinks();
 
 		return allProductsByLocale;
 	}
 
 	public Products getProductsByLocaleAndProductType(final ProductType productType, final String locale) {
-		final Products products = dao.getAllProductsByType(productType, locale);
+		final Products products = productDao.getAllProductsByType(productType, locale);
 		products.setLocale(locale);
 		products.setProductType(productType);
 		products.setLinks();
@@ -37,8 +36,8 @@ public class ProductService {
 
 
 	public Product getProductByLocale(final String packId, final String locale) {
-		final Product product = dao.getProductInfo(packId, locale);
-		product.getProductContent().addAll(dao.getProductContents(packId, locale));
+		final Product product = productDao.getProductInfo(packId, locale);
+		product.getProductContent().addAll(productDao.getProductContents(packId, locale));
 		product.setLinks();
 
 		MonsterAssociation
