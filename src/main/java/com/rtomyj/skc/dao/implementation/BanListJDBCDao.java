@@ -70,7 +70,7 @@ public class BanListJDBCDao implements BanListDao {
     }
 
 
-    public int getNumberOfBanLists() {
+    public int numberOfBanLists() {
         String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
         final Integer numBanLists = jdbcNamedTemplate.query(query, (ResultSet row) ->  {
             if (row.next())	return row.getInt(1);
@@ -83,7 +83,7 @@ public class BanListJDBCDao implements BanListDao {
     }
 
 
-    public List<String> getBanListDatesInOrder() {
+    public List<String> banListDatesInOrder() {
         final String query = "select distinct ban_list_date from ban_lists order by ban_list_date";
 
         return jdbcNamedTemplate.queryForList(query, (SqlParameterSource) null, String.class);
@@ -91,7 +91,7 @@ public class BanListJDBCDao implements BanListDao {
 
 
     public String getPreviousBanListDate(String currentBanList) {
-        final List<String> sortedBanListDates = this.getBanListDatesInOrder();
+        final List<String> sortedBanListDates = this.banListDatesInOrder();
         final int currentBanListPosition = sortedBanListDates.indexOf(currentBanList);
 
         if (currentBanListPosition == 0)	return "";

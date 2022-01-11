@@ -106,13 +106,14 @@ public class JDBCDao implements Dao
 	}
 
 
-
+	@Override
 	public List<Card> searchForCardWithCriteria(
 			String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final boolean getBanInfo
 	)
 	{
 		return (getBanInfo)? this.searchForCardsIncludeBanInfo(cardId, cardName, cardAttribute, cardColor, monsterType, limit) : this.searchForCards(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
 	}
+
 
 	private void prepSearchParams(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final MapSqlParameterSource sqlParams)
 	{
