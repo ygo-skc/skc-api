@@ -1,33 +1,50 @@
 package com.rtomyj.skc.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum LinkArrow {
 
-    TOP_LEFT("T-L", "Top Left")
-    , TOP_CENTER("T-C", "Top Center")
-    , TOP_RIGHT("T-R", "Top Right")
-    , MIDDLE_RIGHT("M-R", "Middle Right")
-    , BOTTOM_RIGHT("B-R", "Bottom Right")
-    , BOTTOM_CENTER("B-C", "Bottom Center")
-    , BOTTOM_LEFT("B-L", "Bottom Left")
-    , MIDDLE_LEFT("M-L", "Middle Left");
+    TOP_LEFT("↖️", "Top Left")
+    , TOP_CENTER("⬆️", "Top Center")
+    , TOP_RIGHT("↗️", "Top Right")
+    , MIDDLE_RIGHT("➡️", "Middle Right")
+    , BOTTOM_RIGHT("↘️", "Bottom Right")
+    , BOTTOM_CENTER("⬇️", "Bottom Center")
+    , BOTTOM_LEFT("↙️", "Bottom Left")
+    , MIDDLE_LEFT("⬅️", "Middle Left");
 
-    private final String arrowAbbreviated;
+    private final String arrowEmoji;
     private final String arrow;
 
+    private static final Map<String, LinkArrow> dbStringToEnumMap;
 
-    LinkArrow(final String arrowAbbreviated, final String arrow)
+
+    LinkArrow(final String arrowEmoji, final String arrow)
     {
-
-        this.arrowAbbreviated = arrowAbbreviated;
+        this.arrowEmoji = arrowEmoji;
         this.arrow = arrow;
-
     }
 
 
     @Override
-    public String toString() { return this.arrow; }
+    public String toString() { return this.arrowEmoji; }
 
 
-    public String getArrowAbbreviated() { return this.arrowAbbreviated; }
+    static {
+        dbStringToEnumMap = new HashMap<>();
+        dbStringToEnumMap.put("T-L", LinkArrow.TOP_LEFT);
+        dbStringToEnumMap.put("T-C", LinkArrow.TOP_CENTER);
+        dbStringToEnumMap.put("T-R", LinkArrow.TOP_RIGHT);
+        dbStringToEnumMap.put("M-R", LinkArrow.MIDDLE_RIGHT);
+        dbStringToEnumMap.put("B-R", LinkArrow.BOTTOM_RIGHT);
+        dbStringToEnumMap.put("B-C", LinkArrow.BOTTOM_CENTER);
+        dbStringToEnumMap.put("B-L", LinkArrow.BOTTOM_LEFT);
+        dbStringToEnumMap.put("M-L", LinkArrow.MIDDLE_LEFT);
+    }
 
+
+    public static LinkArrow transformDBStringToEnum(final String dbString) {
+        return dbStringToEnumMap.get(dbString.toUpperCase());
+    }
 }

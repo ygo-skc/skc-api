@@ -1,11 +1,10 @@
-val cucumberVersion = "7.0.0"
+val cucumberVersion = "7.2.2"
 val restAssuredVersion = "4.4.0"
 val groovyVersion = "3.0.9"
-val junitVersion = "5.8.1"
+val junitVersion = "5.8.2"
 val commonsLoggingVersion = "1.2"
 
 dependencies {
-
     "integTestImplementation"("commons-logging:commons-logging:$commonsLoggingVersion")
 
     "integTestImplementation"("io.cucumber:cucumber-java:${cucumberVersion}")
@@ -21,5 +20,4 @@ dependencies {
 
     "integTestImplementation"("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     "integTestImplementation"("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-
 }

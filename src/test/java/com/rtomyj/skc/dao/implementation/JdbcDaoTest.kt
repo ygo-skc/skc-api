@@ -107,26 +107,6 @@ class JdbcDaoTest {
             Assertions.assertEquals(dMaliTestCard.monsterDefense, dMaliDbResult.monsterDefense)
             Assertions.assertEquals(dMaliTestCard.cardEffect, dMaliDbResult.cardEffect)
         }
-
-
-        @Test
-        fun testFetchingBanListByStatus_Success() {
-            val banListDate = "2015-11-09"
-            val forbiddenDbResult = dao.getBanListByBanStatus(banListDate, Dao.Status.FORBIDDEN)
-            val limitedDbResult = dao.getBanListByBanStatus(banListDate, Dao.Status.LIMITED)
-            val semiLimitedDbResult = dao.getBanListByBanStatus(banListDate, Dao.Status.SEMI_LIMITED)
-
-
-            Assertions.assertNotEquals(null, forbiddenDbResult)
-            Assertions.assertNotEquals(null, limitedDbResult)
-            Assertions.assertNotEquals(null, semiLimitedDbResult)
-            Assertions.assertEquals(1, forbiddenDbResult.size)
-            Assertions.assertEquals(2, limitedDbResult.size)
-            Assertions.assertEquals(0, semiLimitedDbResult.size)
-            Assertions.assertEquals(stratosTestCard.cardName, forbiddenDbResult[0].cardName)
-            Assertions.assertEquals(dMaliTestCard.cardName, limitedDbResult[0].cardName)
-            Assertions.assertEquals(aHeroLivesTestCard.cardName, limitedDbResult[1].cardName)
-        }
     }
 
     

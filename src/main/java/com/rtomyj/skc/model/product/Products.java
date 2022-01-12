@@ -1,23 +1,21 @@
 package com.rtomyj.skc.model.product;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-import com.rtomyj.skc.controller.product.ProductsController;
 import com.rtomyj.skc.constant.SwaggerConstants;
+import com.rtomyj.skc.controller.product.ProductsController;
 import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import lombok.Builder;
-import lombok.Data;
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -34,7 +32,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 )
 public class Products extends RepresentationModel<Products> implements HateoasLinks
 {
-
 	@ApiModelProperty(
 			value = "List of Yu-Gi-Oh! products."
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
@@ -59,23 +56,18 @@ public class Products extends RepresentationModel<Products> implements HateoasLi
 	@Override
 	public void setSelfLink()
 	{
-
 		this.add(
 				linkTo(methodOn(controllerClass)
 						.getProductsByLocaleAndProductType(productType, locale))
 						.withSelfRel()
 		);
-
 	}
 
 
 	@Override
 	public void setLinks()
 	{
-
 		this.setSelfLink();
 		Product.setLinks(products);
-
 	}
-
 }

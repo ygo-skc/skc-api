@@ -5,8 +5,13 @@ spring:
     url: jdbc:mysql://localhost:3306/skc_api_db
     username: root
     password:
+  jpa:
+    open-in-view: false
   hateoas:
     use-hal-as-default-json-media-type: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher # fixes spring-fox error on spring-boot >= v2.6
 
 server:
   port: 9999
@@ -22,7 +27,8 @@ server:
 
 ---
 spring:
-  profiles: docker-local
+  config:
+    activate.on-profile: docker-local
   datasource:
     url: jdbc:mysql://skc-api-db:3306/skc_api_db
     username: root
@@ -37,7 +43,8 @@ server:
 
 ---
 spring:
-  profiles: docker-remote
+  config:
+    activate.on-profile: docker-remote
   datasource:
     url: jdbc:mysql://skc-api-db:3306/skc_api_db
     username: root

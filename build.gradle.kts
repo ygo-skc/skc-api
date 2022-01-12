@@ -1,13 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "2.5.5"
+val scalaLibraryVersion = "2.13.8"
+val springBootVersion = "2.6.2"
 val swagger2Version = "3.0.0"
-val javadocVersion = "3.2.0" // 3.3.0
-val cache2kVersion = "2.2.1.Final"
 val lombokVersion = "1.18.22"
-val mysqlVersion = "8.0.26"
-val jacksonVersion = "2.12.5"
+val mysqlVersion = "8.0.27"
+val jacksonVersion = "2.13.1"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
@@ -19,12 +18,12 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.5.5"
+	id("org.springframework.boot") version "2.6.2"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.0"
-	id("com.adarshr.test-logger") version "3.0.0"	// printing for JUnits
-	kotlin("jvm") version "1.5.31"
-	kotlin("plugin.spring") version "1.5.31"
+	id("com.adarshr.test-logger") version "3.1.0"	// printing for JUnits
+	kotlin("jvm") version "1.6.10"
+	kotlin("plugin.spring") version "1.6.10"
 	jacoco
 	java
 	scala
@@ -32,7 +31,7 @@ plugins {
 
 
 group = "com.rtomyj.skc"
-version = "1.2.7"
+version = "1.2.8"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 
@@ -42,10 +41,7 @@ repositories {
 
 
 sourceSets {
-	create("integTest") {
-		java.srcDir("src/integTest/java")
-		resources.srcDir("src/integTest/resources")
-	}
+	create("integTest")
 
 	create("perfTest") {
 		scala.srcDir("src/perfTest/scala")
@@ -54,6 +50,8 @@ sourceSets {
 
 
 dependencies {
+	compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
+
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
@@ -64,16 +62,12 @@ dependencies {
 	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server")
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
-	compileOnly("org.apache.maven.plugins:maven-javadoc-plugin:$javadocVersion")
-
 	implementation("io.springfox:springfox-boot-starter:$swagger2Version")
 
 	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
 	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-
-	implementation("org.cache2k:cache2k-api:$cache2kVersion")
-	implementation("org.cache2k:cache2k-core:$cache2kVersion")
+	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
 

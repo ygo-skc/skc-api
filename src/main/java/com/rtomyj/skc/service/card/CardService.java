@@ -1,16 +1,13 @@
 package com.rtomyj.skc.service.card;
 
+import com.rtomyj.skc.dao.BanListDao;
 import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.dao.ProductDao;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.HateoasLinks;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.product.Product;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.cache2k.Cache;
-import org.cache2k.Cache2kBuilder;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,49 +15,27 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Service that is used to access card info from DB.
  */
 @Service
 @Slf4j
-public class CardService
-{
-	// static inner classes
-	@Getter
-	@EqualsAndHashCode
-	private static class CardRequest
-	{
-		private final String cardId;
-		private final boolean fetchAllInfo;
-
-		public CardRequest(final String cardId, final boolean fetchAllInfo)
-		{
-			this.cardId = cardId;
-			this.fetchAllInfo = fetchAllInfo;
-		}
-	}
-
+public class CardService {
 	// fields
-	private final Dao dao;
+	private final ProductDao productDao;
 
-	/**
-	 * Cache used to store card data to prevent querying DB.
-	 */
-	private final Cache<CardRequest, Card> cardCache;
+	private final BanListDao banListDao;
+
+	private final Dao cardDao;
 
 
 	@Autowired
-	public CardService(@Qualifier("jdbc") final Dao dao)
-	{
-		this.dao = dao;
-		this.cardCache = new Cache2kBuilder<CardRequest, Card>() {}
-			.expireAfterWrite(1, TimeUnit.DAYS)
-			.entryCapacity(1000)
-			.permitNullValues(false)
-			.loader(this::onCacheMiss)
-			.build();
+	public CardService(@Qualifier("product-jdbc") final ProductDao productDao, @Qualifier("ban-list-jdbc") final BanListDao banListDao
+			, @Qualifier("jdbc") final Dao cardDao) {
+		this.productDao = productDao;
+		this.banListDao = banListDao;
+		this.cardDao = cardDao;
 	}
 
 
@@ -71,25 +46,17 @@ public class CardService
 	 * @return Card object containing the information of the card desired.
 	 */
 	public Card getCardInfo(final String cardId, final boolean fetchAllInfo)
-		throws YgoException
-	{
-		return cardCache.get(new CardRequest(cardId, fetchAllInfo));
-	}
+		throws YgoException {
+		log.info("Fetching info for card w/ ID: ( {} )", cardId);
+
+		final Card foundCard = cardDao.getCardInfo(cardId);
 
 
-	@NotNull
-	public Card onCacheMiss(final CardRequest cardRequest)
-		throws YgoException
-	{
-		log.info("Card w/ id: ( {} ) not found in cache. Using DB.", cardRequest.cardId);
+		if (fetchAllInfo) {
+			foundCard.setFoundIn(new ArrayList<>(productDao.getProductDetailsForCard(cardId)));
+			foundCard.setRestrictedIn(banListDao.getBanListDetailsForCard(cardId));
 
-		final Card foundCard = dao.getCardInfo(cardRequest.cardId);
-
-
-		if (cardRequest.fetchAllInfo)
-		{
-			foundCard.setFoundIn(new ArrayList<>(dao.getProductDetailsForCard(cardRequest.cardId)));
-			foundCard.setRestrictedIn(dao.getBanListDetailsForCard(cardRequest.cardId));
+			foundCard.getMonsterAssociation().transformMonsterLinkRating();
 
 			/*
 				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
@@ -98,13 +65,11 @@ public class CardService
 			Product firstOccurrenceOfProduct = null;
 			final Iterator<Product> it = foundCard.getFoundIn().iterator();
 
-			while (it.hasNext())
-			{
+			while (it.hasNext()) {
 				final Product currentProduct = it.next();
 
 				if ( firstOccurrenceOfProduct != null && firstOccurrenceOfProduct.getProductId().equals(currentProduct.getProductId())
-						&& firstOccurrenceOfProduct.getProductContent().get(0).getProductPosition().equals(currentProduct.getProductContent().get(0).getProductPosition()) )
-				{
+						&& firstOccurrenceOfProduct.getProductContent().get(0).getProductPosition().equals(currentProduct.getProductContent().get(0).getProductPosition()) ) {
 					firstOccurrenceOfProduct.getProductContent().addAll(currentProduct.getProductContent());
 					it.remove();
 				}
@@ -120,12 +85,10 @@ public class CardService
 
 	public List<Card> getCardSearchResults(final String cardId, final String cardName, final String cardAttribute, final String cardColor, final String monsterType
 			, final int limit, final boolean saveBandwidth)
-		throws YgoException
-	{
-		final List<Card> searchResults = dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
+		throws YgoException {
+		final List<Card> searchResults = cardDao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false);
 
-		if (saveBandwidth)
-		{
+		if (saveBandwidth) {
 			log.debug("Trimming card effects to save bandwidth.");
 			Card.trimEffects(searchResults);
 		}

@@ -1,9 +1,11 @@
-val springVersion = "2.5.5"
-val h2Version = "1.4.200"
+val springVersion = "2.6.2"
+val h2Version = "2.0.206"
+val mockitKotlinVersion = "1.6.0"
 
 dependencies {
     "testImplementation"(kotlin("test"))
 
+    "testImplementation"("com.nhaarman:mockito-kotlin:$mockitKotlinVersion")
     "testImplementation"("org.springframework.boot:spring-boot-starter-test:$springVersion")
     "testRuntimeOnly"("com.h2database:h2:$h2Version")
 }

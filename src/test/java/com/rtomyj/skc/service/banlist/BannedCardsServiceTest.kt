@@ -1,8 +1,10 @@
 package com.rtomyj.skc.service.banlist
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
@@ -12,7 +14,6 @@ import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.model.card.Card
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -27,8 +28,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)    // allows usage of init as opposed to static context
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 class BannedCardsServiceTest {
-    @MockBean(name = "jdbc")
-    private lateinit var dao: Dao
+    @MockBean(name = "ban-list-jdbc")
+    private lateinit var banListDao: BanListDao
 
     @MockBean
     private lateinit var diffService: DiffService
@@ -109,29 +110,29 @@ class BannedCardsServiceTest {
         private fun happyPath(saveBandwidth: Boolean, fetchAllInfo: Boolean) {
             // create mocks
             Mockito.`when`(
-                dao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+                banListDao.getBanListByBanStatus(
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.FORBIDDEN)
                 )
             )
                 .thenReturn(banListInstanceFullText.forbidden)
             Mockito.`when`(
-                dao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.LIMITED)
+                banListDao.getBanListByBanStatus(
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.LIMITED)
                 )
             )
                 .thenReturn(banListInstanceFullText.limited)
             Mockito.`when`(
-                dao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+                banListDao.getBanListByBanStatus(
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.SEMI_LIMITED)
                 )
             )
                 .thenReturn(banListInstanceFullText.semiLimited)
             Mockito.`when`(
-                dao.getPreviousBanListDate(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                banListDao.getPreviousBanListDate(
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
             )
                 .thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
@@ -139,14 +140,14 @@ class BannedCardsServiceTest {
             if (fetchAllInfo) {
                 Mockito.`when`(
                     diffService.getNewContentForGivenBanList(
-                        ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                        eq(TestConstants.BAN_LIST_START_DATE)
                     )
                 )
                     .thenReturn(banListNewContent)
 
                 Mockito.`when`(
                     diffService.getRemovedContentForGivenBanList(
-                        ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                        eq(TestConstants.BAN_LIST_START_DATE)
                     )
                 )
                     .thenReturn(banListRemovedContent)
@@ -157,9 +158,9 @@ class BannedCardsServiceTest {
             val banListInstance = bannedCardsService
                 .getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, fetchAllInfo)
 
-            val forbidden = banListInstance.forbidden!!
-            val limited = banListInstance.limited!!
-            val semiLimited = banListInstance.semiLimited!!
+            var forbidden = banListInstance.forbidden
+            var limited = banListInstance.limited
+            var semiLimited = banListInstance.semiLimited
 
 
             // ensure objects are not null as expected
@@ -167,6 +168,11 @@ class BannedCardsServiceTest {
             Assertions.assertNotNull(forbidden)
             Assertions.assertNotNull(limited)
             Assertions.assertNotNull(semiLimited)
+
+            // we know these values are not null from previous checks
+            forbidden = forbidden!!
+            limited = limited!!
+            semiLimited = semiLimited!!
 
             // ensure dates returned are correct
             Assertions.assertEquals(TestConstants.BAN_LIST_START_DATE, banListInstance.effectiveDate)
@@ -250,28 +256,28 @@ class BannedCardsServiceTest {
 
 
             // verify mocks are called the exact number of times expected
-            Mockito.verify(dao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.FORBIDDEN)
             )
-            Mockito.verify(dao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.LIMITED)
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.LIMITED)
             )
-            Mockito.verify(dao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.SEMI_LIMITED)
             )
-            Mockito.verify(dao, Mockito.times(1)).getPreviousBanListDate(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+            Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
+                eq(TestConstants.BAN_LIST_START_DATE)
             )
 
             if (fetchAllInfo) {
                 Mockito.verify(diffService, Mockito.times(1)).getNewContentForGivenBanList(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
                 Mockito.verify(diffService, Mockito.times(1)).getRemovedContentForGivenBanList(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
             }
         }
@@ -304,29 +310,29 @@ class BannedCardsServiceTest {
         private fun dbError_BanListNotInDB(isSaveBandwidth: Boolean) {
             // mock calls
             Mockito.`when`(
-                dao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+                banListDao.getBanListByBanStatus(
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.FORBIDDEN)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
-                dao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.LIMITED)
+                banListDao.getBanListByBanStatus(
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.LIMITED)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
-                dao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+                banListDao.getBanListByBanStatus(
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.SEMI_LIMITED)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
-                dao.getPreviousBanListDate(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                banListDao.getPreviousBanListDate(
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
             )
                 .thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
@@ -347,20 +353,20 @@ class BannedCardsServiceTest {
 
 
             // verify mocks are called the exact number of times expected
-            Mockito.verify(dao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.FORBIDDEN)
             )
-            Mockito.verify(dao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.LIMITED)
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.LIMITED)
             )
-            Mockito.verify(dao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.SEMI_LIMITED)
             )
-            Mockito.verify(dao, Mockito.times(1)).getPreviousBanListDate(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+            Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
+                eq(TestConstants.BAN_LIST_START_DATE)
             )
         }
     }

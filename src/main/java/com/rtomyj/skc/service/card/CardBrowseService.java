@@ -2,9 +2,9 @@ package com.rtomyj.skc.service.card;
 
 import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.enums.MonsterAssociationExpression;
-import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.CardBrowseCriteria;
+import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +69,7 @@ public class CardBrowseService
         cardBrowseResults.setLinks();
         watch.stop();
         Card.trimEffects(cardBrowseResults.getResults());
+        MonsterAssociation.transformMonsterLinkRating(cardBrowseResults.getResults());
 
         log.debug("Time taken to build card browse results {}ms", watch.getTotalTimeMillis());
         return cardBrowseResults;

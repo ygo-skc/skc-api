@@ -1,26 +1,16 @@
 package com.rtomyj.skc.dao.implementation;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.skc.constant.DBQueryConstants;
 import com.rtomyj.skc.constant.ErrConstants;
-import com.rtomyj.skc.constant.LogConstants;
 import com.rtomyj.skc.dao.Dao;
-import com.rtomyj.skc.enums.ProductType;
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition;
-import com.rtomyj.skc.enums.table.definitions.ProductViewDefinition;
-import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition;
 import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
-import com.rtomyj.skc.model.banlist.BanListDates;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
-import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
-import com.rtomyj.skc.model.product.Product;
-import com.rtomyj.skc.model.product.ProductContent;
-import com.rtomyj.skc.model.product.Products;
 import com.rtomyj.skc.model.stats.DatabaseStats;
 import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import lombok.NonNull;
@@ -39,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -79,13 +68,6 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public BanListDates getBanListDates()
-	{
-		return null;
-	}
-
-
-	@Override
 	public Card getCardInfo(@NonNull String cardID) throws YgoException
 	{
 
@@ -100,17 +82,6 @@ public class JDBCDao implements Dao
 		{
 			if (row.next())
 			{
-				MonsterAssociation monsterAssociation = null;
-				try
-				{
-					if (row.getString(8) != null)  monsterAssociation = objectMapper.readValue(row.getString(8), MonsterAssociation.class);
-				} catch (JsonProcessingException e)
-				{
-					log.error("Exception occurred when parsing monster association column, {}", e.toString());
-					return null;
-				}
-
-
 				return Card
 						.builder()
 						.cardID(cardID)
@@ -121,7 +92,7 @@ public class JDBCDao implements Dao
 						.monsterType(row.getString(5))
 						.monsterAttack(row.getObject(6, Integer.class))
 						.monsterDefense(row.getObject(7, Integer.class))
-						.monsterAssociation(monsterAssociation)
+						.monsterAssociation(MonsterAssociation.parseDBString(row.getString(8), objectMapper))
 						.build();
 			}
 
@@ -135,191 +106,14 @@ public class JDBCDao implements Dao
 	}
 
 
-
 	@Override
-	public List<Card> getBanListByBanStatus(@NonNull final String date, @NonNull final Status status)
-	{
-		final String query = DBQueryConstants.GET_BAN_LIST_BY_STATUS;
-
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("date", date);
-		sqlParams.addValue("status", status.toString());
-
-
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			final List<Card> cardList = new ArrayList<>();
-			while (row.next())
-			{
-				cardList.add(
-					Card
-						.builder()
-						.cardName(row.getString(1))
-						.monsterType(row.getString(2))
-						.cardColor(row.getString(3))
-						.cardEffect(row.getString(4))
-						.cardID(row.getString(5))
-						.build()
-					);
-			}
-			return cardList;
-		});
-	}
-
-
-
-	public int getNumberOfBanLists() {
-
-		String query = "SELECT COUNT(DISTINCT ban_list_date) AS 'Total Ban Lists' FROM ban_lists";
-		final Integer numBanLists = jdbcNamedTemplate.query(query, (ResultSet row) ->  {
-			if (row.next())	return row.getInt(1);
-
-			return null;
-		});
-
-		if (numBanLists == null)	return 0;
-		return numBanLists;
-
-	}
-
-
-
-	public List<String> getBanListDatesInOrder()
-	{
-		final String query = "select distinct ban_list_date from ban_lists order by ban_list_date";
-
-		return jdbcNamedTemplate.queryForList(query, (SqlParameterSource) null, String.class);
-
-	}
-
-
-
-	public String getPreviousBanListDate(String currentBanList)
-	{
-		final List<String> sortedBanListDates = this.getBanListDatesInOrder();
-		final int currentBanListPosition = sortedBanListDates.indexOf(currentBanList);
-
-		if (currentBanListPosition == 0)	return "";
-		final int previousBanListPosition = currentBanListPosition - 1;
-
-		return sortedBanListDates.get(previousBanListPosition);
-	}
-
-
-
-	// TODO: make sure you write a test for the instance where the last ban list is selected
-	public List<CardsPreviousBanListStatus> getNewContentOfBanList(final String newBanList, final Status status)
-	{
-		final StopWatch stopwatch = new StopWatch();
-		stopwatch.start();
-
-
-		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList.equals(""))	return new ArrayList<>();
-
-		String query = "select new_cards.card_number, cards.card_name from (select new_list.card_number" +
-				" from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)" +
-				" as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList" +
-				" and ban_status = :status) as old_list on new_list.card_number = old_list.card_number" +
-				" where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number" +
-				" ORDER BY cards.card_name";
-
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("status", status.toString());
-		sqlParams.addValue("newBanList", newBanList);
-		sqlParams.addValue("oldBanList", oldBanList);
-
-		log.debug("Fetching new {} cards in ban list from DB using query ({}) with sql params ({}).", status, query, sqlParams);
-
-		final List<CardsPreviousBanListStatus> newCardList =  jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			final List<CardsPreviousBanListStatus> newCards = new ArrayList<>();
-
-			while (row.next())
-			{
-				CardsPreviousBanListStatus cardsPreviousBanListStatus = new CardsPreviousBanListStatus();
-				final String cardID = row.getString(1);
-				String previousStatus = this.getCardBanListStatusByDate(cardID, oldBanList);
-				previousStatus = ( previousStatus == null ) ? "Unlimited" : previousStatus;
-
-
-				cardsPreviousBanListStatus.setCardId(cardID);
-				cardsPreviousBanListStatus.setPreviousBanStatus(previousStatus);
-				cardsPreviousBanListStatus.setCardName(row.getString(2));
-
-				newCards.add(cardsPreviousBanListStatus);
-			}
-
-			return newCards;
-		});
-
-		stopwatch.stop();
-		log.debug("Time taken to fetch new {} cards ({}ms)", status, stopwatch.getTotalTimeMillis());
-
-		return newCardList;
-	}
-
-
-
-	// TODO: make sure you write a test for the instance where the last ban list is selected
-	public List<CardsPreviousBanListStatus> getRemovedContentOfBanList(String newBanList)
-	{
-		String oldBanList = this.getPreviousBanListDate(newBanList);
-		if (oldBanList.equals(""))	return new ArrayList<>();
-
-		String query = "select removed_cards.card_number, removed_cards.ban_status, cards.card_name" +
-				" from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists" +
-				" where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status" +
-				" from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number" +
-				" where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number" +
-				" ORDER BY cards.card_name";
-
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("newBanList", newBanList);
-		sqlParams.addValue("oldBanList", oldBanList);
-
-
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			final List<CardsPreviousBanListStatus> removedCards = new ArrayList<>();
-
-			while(row.next())
-			{
-				final CardsPreviousBanListStatus removedCard = new CardsPreviousBanListStatus();
-
-				removedCard.setCardId(row.getString(1));
-				removedCard.setPreviousBanStatus(row.getString(2));
-				removedCard.setCardName(row.getString(3));
-
-				removedCards.add(removedCard);
-			}
-
-			return removedCards;
-		});
-	}
-
-
-
-	public String getCardBanListStatusByDate(String cardId, String banListDate)
-	{
-		String query = "select ban_status from ban_lists where card_number = :cardId and ban_list_date = :banListDate";
-
-		MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("cardId", cardId);
-		sqlParams.addValue("banListDate", banListDate);
-
-
-		return jdbcNamedTemplate.query(query, sqlParams, (ResultSet row) -> {
-			if (row.next())	return row.getString(1);
-			return null;
-		});
-	}
-
-
-
 	public List<Card> searchForCardWithCriteria(
 			String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final boolean getBanInfo
 	)
 	{
 		return (getBanInfo)? this.searchForCardsIncludeBanInfo(cardId, cardName, cardAttribute, cardColor, monsterType, limit) : this.searchForCards(cardId, cardName, cardAttribute, cardColor, monsterType, limit);
 	}
+
 
 	private void prepSearchParams(String cardId, String cardName, String cardAttribute, String cardColor, String monsterType, final int limit, final MapSqlParameterSource sqlParams)
 	{
@@ -434,17 +228,16 @@ public class JDBCDao implements Dao
 
 				}
 
-				try {
-					if (row.getString(9) != null) {
-						card.getRestrictedIn()
-								.add(CardBanListStatus
-										.builder()
-										.banListDate(dateFormat.parse(row.getString(9)))
-										.banStatus(row.getString(10))
-										.build());
+				if (row.getString(9) != null) {
+					try {
+						final CardBanListStatus cardBanListStatus = new CardBanListStatus();
+						cardBanListStatus.setBanStatus(row.getString(10));
+						cardBanListStatus.setBanListDate(dateFormat.parse(row.getString(9)));
+
+						card.getRestrictedIn().add(cardBanListStatus);
+					} catch (ParseException e) {
+						log.error("Error occurred while parsing date for ban list, date: {}.", row.getString(9));
 					}
-				} catch (ParseException e) {
-					log.error("Error occurred while parsing date for ban list, date: {}.", row.getString(9));
 				}
 				numUniqueCardsParsed++;
 			}
@@ -456,127 +249,6 @@ public class JDBCDao implements Dao
 		log.debug("Time taken to fetch search results from DB: {}ms", stopwatch.getTotalTimeMillis());
 
 		return searchResults;
-	}
-
-
-
-	public boolean isValidBanList(final String banListDate)
-	{
-
-		final String query = "select distinct ban_list_date from ban_lists where ban_list_date = :banListDate";
-
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("banListDate", banListDate);
-
-
-		final List<Object> results = Collections.singletonList(jdbcNamedTemplate.queryForList(query, sqlParams, Object.class));
-		return results.size() == 1;
-
-	}
-
-
-	public Products getAllProductsByType(final ProductType productType, final String locale)
-	{
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("productType", productType.toString().replaceAll("_", " "));
-
-
-		return jdbcNamedTemplate.query(DBQueryConstants.GET_AVAILABLE_PACKS, sqlParams, (ResultSet row) -> {
-			final List<Product> availableProductsList = new ArrayList<>();
-
-			while (row.next())
-			{
-				try {
-					availableProductsList.add( Product
-							.builder()
-							.productId(row.getString(1))
-							.productLocale(row.getString(2))
-							.productName(row.getString(3))
-							.productReleaseDate(dateFormat.parse(row.getString(4)))
-							.productTotal(row.getInt(5))
-							.productType(row.getString(6))
-							.productSubType(row.getString(7))
-							.productRarityStats(this.getProductRarityCount(row.getString(1)))
-							.build());
-				} catch (ParseException e) {
-					log.error("Cannot parse date from DB when retrieving all packs with exception: {}", e.toString());
-				}
-			}
-
-			return Products
-					.builder()
-					.products(availableProductsList)
-					.build();
-		});
-	}
-
-
-
-	public Map<String, Integer> getProductRarityCount(final String productId)
-	{
-		final MapSqlParameterSource queryParams = new MapSqlParameterSource();
-		queryParams.addValue("productId", productId);
-
-		return jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_RARITY_INFO, queryParams, (ResultSet row) -> {
-			final Map<String, Integer> rarities = new HashMap<>();
-
-			while (row.next())
-			{
-				rarities.put(row.getString(1), row.getInt(2));
-			}
-
-			return rarities;
-		});
-	}
-
-
-
-	public Set<ProductContent> getProductContents(final String packId, final String locale)
-	{
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("packId", packId);
-		sqlParams.addValue("locale", locale);
-
-
-		final Map<String, Set<String>> rarities = new HashMap<>();
-		final Set<ProductContent> productContents = new LinkedHashSet<>(jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_CONTENT, sqlParams, (ResultSet row, int rowNum) -> {
-			rarities.computeIfAbsent(row.getString(10), k -> new HashSet<>());
-			rarities.get(row.getString(10)).add(row.getString(9));
-
-			MonsterAssociation monsterAssociation = null;
-			try {
-				if (row.getString(18) != null)
-					monsterAssociation = objectMapper.readValue(row.getString(18), MonsterAssociation.class);
-			} catch (JsonProcessingException e) {
-				log.error("Exception occurred when parsing monster association column, {}", e.toString());
-				return null;
-			}
-
-			final Card card = Card
-					.builder()
-					.cardID(row.getString(10))
-					.cardColor(row.getString(11))
-					.cardName(row.getString(12))
-					.cardAttribute(row.getString(13))
-					.cardEffect(row.getString(14))
-					.monsterType(row.getString(15))
-					.monsterAttack(row.getObject(16, Integer.class))
-					.monsterDefense(row.getObject(17, Integer.class))
-					.monsterAssociation(monsterAssociation)
-					.build();
-
-			return ProductContent
-					.builder()
-					.productPosition(row.getString(8))
-					.card(card)
-					.build();
-		}));
-
-		for (ProductContent content: productContents)
-		{
-			content.setRarities(rarities.get(content.getCard().getCardID()));
-		}
-		return productContents;
 	}
 
 
@@ -615,77 +287,6 @@ public class JDBCDao implements Dao
 	}
 
 
-	public Set<Product> getProductDetailsForCard(final String cardId)
-	{
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("cardId", cardId);
-
-
-		final Map<String, Map<String, Set<String>>> rarities = new HashMap<>();
-		final Set<Product> products = new LinkedHashSet<>(jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
-			final String productId = row.getString(1);
-			final String cardPosition = row.getString(7);
-
-			rarities.computeIfAbsent(productId, k -> new HashMap<>());
-
-			rarities.get(productId).computeIfAbsent(cardPosition, k -> new HashSet<>());
-			rarities.get(productId).get(cardPosition).add(row.getString(8));
-
-
-			try {
-				// TODO: Need to update code block to make sure packContent list contains all occurrences of the specified card, for instance a card can be found in the same pack more than once if it has different rarities within the same set.
-				return Product
-						.builder()
-						.productId(productId)
-						.productLocale(row.getString(2))
-						.productName(row.getString(3))
-						.productReleaseDate(dateFormat.parse(row.getString(4)))
-						.productType((row.getString(5)))
-						.productSubType(row.getString(6))
-						.build();
-			} catch (ParseException e) {
-				log.error("Cannot parse date from DB when retrieving product info for card {} with exception: {}", cardId, e.toString());
-				return null;
-			}
-		}));
-
-
-		for (Product product: products)
-		{
-			product.setProductContent(new ArrayList<>());
-			for(Map.Entry<String, Set<String>> cardPositionAndRarityMap: rarities.get(product.getProductId()).entrySet())
-			{
-				product.getProductContent().add(ProductContent
-						.builder()
-						.productPosition(cardPositionAndRarityMap.getKey())
-						.rarities(cardPositionAndRarityMap.getValue())
-						.build());
-			}
-		}
-		return products;
-	}
-
-
-	public List<CardBanListStatus> getBanListDetailsForCard(final String cardId)
-	{
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("cardId", cardId);
-
-		return jdbcNamedTemplate.query(DBQueryConstants.GET_BAN_LIST_INFO_FOR_CARD, sqlParams, (ResultSet row, int rowNum) -> {
-			try {
-				return CardBanListStatus
-						.builder()
-						.banListDate(dateFormat.parse(row.getString(1)))
-						.banStatus(row.getString(2))
-						.build();
-			} catch (ParseException e) {
-				log.error("Cannot parse date from DB when retrieving ban list info for card {} with exception: {}", cardId, e.toString());
-				return null;
-			}
-		});
-	}
-
-
 	private String transformCollectionToSQLOr(final Collection<String> monsterAssociationValueSet)
 	{
 
@@ -708,10 +309,7 @@ public class JDBCDao implements Dao
 		final StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
-		final String SQL_TEMPLATE = "SELECT card_number, card_name, card_color, monster_type, card_effect FROM card_info" +
-				" WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes" +
-				" AND IFNULL(monster_type, '') REGEXP :monsterTypes" +
-				" AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s ORDER BY card_name";
+		final String SQL_TEMPLATE = DBQueryConstants.GET_CARD_BROWSE_RESULTS;
 
 		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
 		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
@@ -734,7 +332,6 @@ public class JDBCDao implements Dao
 			monsterAssociationWhereClause = "";
 		} else
 		{
-
 			monsterAssociationWhereClause = " AND monster_association REGEXP :monsterAssociation ";
 			final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
 			final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
@@ -760,6 +357,11 @@ public class JDBCDao implements Dao
 						.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
 						.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
 						.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
+						.cardAttribute(row.getString(BrowseQueryDefinition.CARD_ATTRIBUTE.toString()))
+						.monsterAssociation(
+								MonsterAssociation.parseDBString(
+										row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), objectMapper)
+						)
 						.build()))
 				.build();
 
@@ -811,7 +413,7 @@ public class JDBCDao implements Dao
 		final Set<String> cardColors = this.getCardColors();
 
 		monsterSubTypes.removeAll(cardColors);
-		monsterSubTypes.remove("Pendulum");	// removing pendulum individually as pendulum monster color/name is categorized by cards other color: eg  Pendulum-Normal, Pendulum-Fusion, etc
+		monsterSubTypes.remove("Pendulum");	// removing pendulum individually as pendulum monster color/name is categorized by cards other color: e.g.  Pendulum-Normal, Pendulum-Fusion, etc
 		return monsterSubTypes;
 	}
 
@@ -832,12 +434,7 @@ public class JDBCDao implements Dao
 
 
 		final Set<MonsterAssociation> result = new HashSet<>(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> {
-			try {
-				return objectMapper.readValue(row.getString(1), MonsterAssociation.class);
-			} catch (JsonProcessingException e) {
-				log.error(LogConstants.ERROR_READING_OBJECT_USING_OBJECT_MAPPER, e);
-				return null;
-			}
+			return MonsterAssociation.parseDBString(row.getString(1), objectMapper);
 		}));
 
 		stopWatch.stop();
@@ -846,75 +443,4 @@ public class JDBCDao implements Dao
 		return result;
 
 	}
-
-
-	public Product getProductInfo(final String productId, final String locale)
-	{
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("productId", productId);
-		sqlParams.addValue("locale", locale);
-
-
-		return jdbcNamedTemplate.queryForObject(DBQueryConstants.GET_PRODUCT_DETAILS, sqlParams, (ResultSet row, int rowNum) -> {
-
-			try
-			{
-				return Product
-						.builder()
-						.productId(row.getString(1))
-						.productLocale(row.getString(2))
-						.productName(row.getString(3))
-						.productReleaseDate(dateFormat.parse(row.getString(4)))
-						.productTotal(row.getInt(5))
-						.productType(row.getString(6))
-						.productSubType(row.getString(7))
-						.productRarityStats(this.getProductRarityCount(row.getString(1)))
-						.productContent(new ArrayList<>())
-						.build();
-			} catch (Exception e)
-			{
-
-				log.error("Cannot parse date from DB when retrieving pack {} with exception: {}", productId, e.toString());
-				return null;
-
-			}
-
-		});
-	}
-
-
-	public List<Product> getProductsByLocale(final String locale)
-	{
-
-		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
-		sqlParams.addValue("locale", locale);
-
-		return jdbcNamedTemplate.query(DBQueryConstants.GET_AVAILABLE_PRODUCTS_BY_LOCALE, sqlParams, (ResultSet row, int rowNum) -> {
-
-			Product product = Product
-					.builder()
-					.productId(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
-					.productLocale(row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
-					.productName(row.getString(ProductsTableDefinition.PRODUCT_NAME.toString()))
-					.productType(row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString()))
-					.productSubType(row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString()))
-					.productTotal(row.getInt(ProductViewDefinition.PRODUCT_CONTENT_TOTAL.toString()))
-					.build();
-			try
-			{
-				product.setProductReleaseDate(dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString())));
-			} catch(ParseException e)
-			{
-
-				log.error("Cannot parse date from DB when retrieving product {} with exception: {}", product.getProductId(), e.toString());
-				return null;
-
-			}
-
-			return product;
-
-		});
-
-	}
-
 }

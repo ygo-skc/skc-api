@@ -8,7 +8,7 @@ public class LogConstants
 	}
 
 
-	public static final String EXCEPTION_PROVIDER_LOG = "Exception occurred: {}, responding with: {}";
+	public static final String EXCEPTION_PROVIDER_LOG = "Exception occurred w/ message: {}, with ErrorType: {}, responding with: {}";
 
 	public static final String ERROR_READING_OBJECT_USING_OBJECT_MAPPER = "Could not de-serialize object. Exception occurred: {}";
 }

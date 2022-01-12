@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller.stats;
 
-
 import com.rtomyj.skc.controller.YgoApiBaseController;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.stats.DatabaseStats;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = SwaggerConstants.TAG_STATS_NAME)
 public class StatsController extends YgoApiBaseController
 {
-
     private final StatsService statsService;
 
 
@@ -61,10 +59,8 @@ public class StatsController extends YgoApiBaseController
             ) @NonNull @PathVariable("cardColor") final String cardColor
     )
     {
-
         // TODO: add loggers
         return ResponseEntity.ok(statsService.getMonsterTypeStats(cardColor));
-
     }
 
 
@@ -79,10 +75,7 @@ public class StatsController extends YgoApiBaseController
     })
     public ResponseEntity<DatabaseStats> getDatabaseStats()
     {
-
         // TODO: add loggers
         return ResponseEntity.ok(statsService.getDatabaseStats());
-
     }
-
 }

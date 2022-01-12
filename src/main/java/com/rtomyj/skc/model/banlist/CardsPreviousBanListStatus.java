@@ -27,19 +27,19 @@ public class CardsPreviousBanListStatus extends RepresentationModel<CardsPreviou
 			value = SwaggerConstants.CARD_NAME_DESCRIPTION
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
-	private String cardName;
+	public String cardName;
 
 	@ApiModelProperty(
 			value = SwaggerConstants.CARD_ID_DESCRIPTION
 			, accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
-	private String cardId;
+	public String cardId;
 
 	@ApiModelProperty(
 			value = "The previous ban status the card had when compared to current ban list."
 			,  accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
-	private String previousBanStatus;
+	public String previousBanStatus;
 
 	private static final Class<CardController> controllerClass = CardController.class;
 
