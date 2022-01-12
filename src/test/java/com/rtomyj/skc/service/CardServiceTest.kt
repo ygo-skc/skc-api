@@ -1,6 +1,7 @@
 package com.rtomyj.skc.service
 
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.dao.ProductDao
 import com.rtomyj.skc.exception.ErrorType
@@ -31,6 +32,9 @@ class CardServiceTest {
 
     @MockBean(name = "product-jdbc")
     private lateinit var productDao: ProductDao
+
+    @MockBean(name = "ban-list-jdbc")
+    private lateinit var banListDao: BanListDao
 
     @Autowired
     private lateinit var cardService: CardService
