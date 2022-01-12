@@ -228,17 +228,16 @@ public class JDBCDao implements Dao
 
 				}
 
-				try {
-					if (row.getString(9) != null) {
-						card.getRestrictedIn()
-								.add(CardBanListStatus
-										.builder()
-										.banListDate(dateFormat.parse(row.getString(9)))
-										.banStatus(row.getString(10))
-										.build());
+				if (row.getString(9) != null) {
+					try {
+						final CardBanListStatus cardBanListStatus = new CardBanListStatus();
+						cardBanListStatus.setBanStatus(row.getString(10));
+						cardBanListStatus.setBanListDate(dateFormat.parse(row.getString(9)));
+
+						card.getRestrictedIn().add(cardBanListStatus);
+					} catch (ParseException e) {
+						log.error("Error occurred while parsing date for ban list, date: {}.", row.getString(9));
 					}
-				} catch (ParseException e) {
-					log.error("Error occurred while parsing date for ban list, date: {}.", row.getString(9));
 				}
 				numUniqueCardsParsed++;
 			}

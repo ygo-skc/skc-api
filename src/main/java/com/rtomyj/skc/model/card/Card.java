@@ -43,38 +43,38 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class Card extends RepresentationModel<Card> implements HateoasLinks {
 
 	@ApiModelProperty(value = SwaggerConstants.CARD_ID_DESCRIPTION)
-	private String cardID;
+	public String cardID;
 
 	@ApiModelProperty(value = SwaggerConstants.CARD_NAME_DESCRIPTION)
-	private String cardName;
+	public String cardName;
 
 	@ApiModelProperty(value = SwaggerConstants.CARD_COLOR_DESCRIPTION)
-	private String cardColor;
+	public String cardColor;
 
 	@ApiModelProperty(value = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION)
-	private String cardAttribute;
+	public String cardAttribute;
 
 	@ApiModelProperty(value = SwaggerConstants.MONSTER_TYPE_DESCRIPTION)
-	private String monsterType;
+	public String monsterType;
 
 	@ApiModelProperty(value = SwaggerConstants.MONSTER_ASSOCIATION_DESCRIPTION)
-	private MonsterAssociation monsterAssociation;
+	public MonsterAssociation monsterAssociation;
 
 //	Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
 	@ApiModelProperty(value = SwaggerConstants.MONSTER_ATK_DESCRIPTION)
-	private Integer monsterAttack;
+	public Integer monsterAttack;
 
 	@ApiModelProperty(value = SwaggerConstants.MONSTER_DEF_DESCRIPTION)
-	private Integer monsterDefense;
+	public Integer monsterDefense;
 
 	@ApiModelProperty(value = SwaggerConstants.CARD_EFFECT_DESCRIPTION)
-	private String cardEffect;
+	public String cardEffect;
 
 	@ApiModelProperty(value = SwaggerConstants.RESTRICTED_IN_DESCRIPTION)
-	private List<CardBanListStatus> restrictedIn;
+	public List<CardBanListStatus> restrictedIn;
 
 	@ApiModelProperty(value = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION)
-	private List<Product> foundIn;
+	public List<Product> foundIn;
 
 	@JsonIgnore
 	private static final int MAX_CARD_EFFECT_LENGTH = 120;
