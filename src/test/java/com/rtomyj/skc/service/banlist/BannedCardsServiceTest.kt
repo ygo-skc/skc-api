@@ -1,6 +1,7 @@
 package com.rtomyj.skc.service.banlist
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.BanListDao
@@ -13,7 +14,6 @@ import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.model.card.Card
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -31,7 +31,7 @@ class BannedCardsServiceTest {
     @MockBean(name = "ban-list-jdbc")
     private lateinit var banListDao: BanListDao
 
-    @Autowired
+    @MockBean
     private lateinit var diffService: DiffService
 
     @Autowired
@@ -111,28 +111,28 @@ class BannedCardsServiceTest {
             // create mocks
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.FORBIDDEN)
                 )
             )
                 .thenReturn(banListInstanceFullText.forbidden)
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.LIMITED)
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.LIMITED)
                 )
             )
                 .thenReturn(banListInstanceFullText.limited)
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.SEMI_LIMITED)
                 )
             )
                 .thenReturn(banListInstanceFullText.semiLimited)
             Mockito.`when`(
                 banListDao.getPreviousBanListDate(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
             )
                 .thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
@@ -140,14 +140,14 @@ class BannedCardsServiceTest {
             if (fetchAllInfo) {
                 Mockito.`when`(
                     diffService.getNewContentForGivenBanList(
-                        ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                        eq(TestConstants.BAN_LIST_START_DATE)
                     )
                 )
                     .thenReturn(banListNewContent)
 
                 Mockito.`when`(
                     diffService.getRemovedContentForGivenBanList(
-                        ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                        eq(TestConstants.BAN_LIST_START_DATE)
                     )
                 )
                     .thenReturn(banListRemovedContent)
@@ -257,27 +257,27 @@ class BannedCardsServiceTest {
 
             // verify mocks are called the exact number of times expected
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.FORBIDDEN)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.LIMITED)
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.SEMI_LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                eq(TestConstants.BAN_LIST_START_DATE)
             )
 
             if (fetchAllInfo) {
                 Mockito.verify(diffService, Mockito.times(1)).getNewContentForGivenBanList(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
                 Mockito.verify(diffService, Mockito.times(1)).getRemovedContentForGivenBanList(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
             }
         }
@@ -311,28 +311,28 @@ class BannedCardsServiceTest {
             // mock calls
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.FORBIDDEN)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.LIMITED)
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.LIMITED)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                    ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+                    eq(TestConstants.BAN_LIST_START_DATE),
+                    eq(Dao.Status.SEMI_LIMITED)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
                 banListDao.getPreviousBanListDate(
-                    ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                    eq(TestConstants.BAN_LIST_START_DATE)
                 )
             )
                 .thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
@@ -354,19 +354,19 @@ class BannedCardsServiceTest {
 
             // verify mocks are called the exact number of times expected
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.FORBIDDEN)
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.FORBIDDEN)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.LIMITED)
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE),
-                ArgumentMatchers.eq(Dao.Status.SEMI_LIMITED)
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(Dao.Status.SEMI_LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
-                ArgumentMatchers.eq(TestConstants.BAN_LIST_START_DATE)
+                eq(TestConstants.BAN_LIST_START_DATE)
             )
         }
     }
