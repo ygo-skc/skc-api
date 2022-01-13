@@ -55,15 +55,14 @@ class CardBanListStatus: RepresentationModel<CardBanListStatus>(), HateoasLinks 
 	)
 	var banStatus: String? = null
 
-	@JsonIgnore
-	private val banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat()
-
 
 	override fun setSelfLink() {}
 
 
 	override fun setLinks() {
-		val banListDateStr = banListSimpleDateFormat.format(banListDate)
+		val dateConfig = DateConfig()
+		val banListDateStr = dateConfig.dBSimpleDateFormat().format(banListDate)
+
 		this.add(
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)

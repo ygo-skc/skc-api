@@ -1,13 +1,12 @@
 package com.rtomyj.skc.model.banlist;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.rtomyj.skc.config.DateConfig;
+import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.controller.banlist.BanListDiffController;
 import com.rtomyj.skc.controller.banlist.BannedCardsController;
-import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.model.HateoasLinks;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,7 +16,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -51,9 +49,6 @@ public class BanListDate extends RepresentationModel<BanListDate> implements Hat
 	private static final Class<BannedCardsController> BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController.class;
 	private static final Class<BanListDiffController> BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController.class;
 
-	@JsonIgnore
-	private final SimpleDateFormat banListSimpleDateFormat = DateConfig.getDBSimpleDateFormat();
-
 
 	@Override
 	public void setSelfLink()
@@ -65,7 +60,8 @@ public class BanListDate extends RepresentationModel<BanListDate> implements Hat
 	@Override
 	public void setLinks()
 	{
-		final String banListDateStr = banListSimpleDateFormat.format(effectiveDate);
+		final DateConfig dateConfig = new DateConfig();
+		final String banListDateStr = dateConfig.dBSimpleDateFormat().format(effectiveDate);
 
 		this.add(
 				linkTo(methodOn(BANNED_CARDS_CONTROLLER_CLASS)

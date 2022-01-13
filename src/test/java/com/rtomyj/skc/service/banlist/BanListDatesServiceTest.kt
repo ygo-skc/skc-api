@@ -29,7 +29,7 @@ class BanListDatesServiceTest {
 
 
     init {
-        val banListSimpleDate = DateConfig.getDBSimpleDateFormat()
+        val banListSimpleDate = DateConfig.dBSimpleDateFormat
         val testBanListDate = banListSimpleDate.parse("2020-01-20")
         val banListDates = listOf(
             BanListDate
