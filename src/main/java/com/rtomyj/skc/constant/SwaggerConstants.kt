@@ -16,7 +16,7 @@ object SwaggerConstants {
 
 	// Common Ban List endpoint Swagger descriptions
 	const val BAN_LIST_FETCH_ALL_DESCRIPTION =
-		"If true, compares desired ban list with the ban list it replaced (previous logical ban list) and returns the new cards added and the cards removed in the ban list transition. This option is equivalant to calling three endpoints - Banned Cards endpoint, Newly Banned endpoint and Removed endpoint."
+		"If true, compares desired ban list with the ban list it replaced (previous logical ban list) and returns the new cards added and the cards removed in the ban list transition. This option is equivalent to calling three endpoints - Banned Cards endpoint, Newly Banned endpoint and Removed endpoint."
 	const val BAN_LIST_START_DATE_DESCRIPTION =
 		"Valid start date of a ban list stored in database. Must conform to yyyy-mm-dd format (use /api/v1/ban/dates to see a valid list of start dates)."
 	const val RESTRICTED_IN_DESCRIPTION =

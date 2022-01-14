@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(path = ["/status"], produces = ["application/json; charset=UTF-8"])
 @Api(tags = [SwaggerConstants.TEST_CALL_TAG_NAME])
-class TestCallController : YgoApiBaseController() {
+class StatusController : YgoApiBaseController() {
 
 	companion object {
 		private val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -38,7 +38,7 @@ class TestCallController : YgoApiBaseController() {
 		tags = [SwaggerConstants.TEST_CALL_TAG_NAME]
 	)
 	@ApiResponses(value = [ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)])
-	fun testCall(): ResponseEntity<StatusResponse> {
+	fun status(): ResponseEntity<StatusResponse> {
 		log.info("Status of API was requested")
 		return ResponseEntity.ok(StatusResponse("API is online and functional.", AppConstants.APP_VERSION))
 	}
