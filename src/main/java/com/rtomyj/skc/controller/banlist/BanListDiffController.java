@@ -1,7 +1,7 @@
 package com.rtomyj.skc.controller.banlist;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.constant.RegexExpressions;
+import com.rtomyj.skc.constant.SKCRegex;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListNewContent;
@@ -77,7 +77,7 @@ public class BanListDiffController extends YgoApiBaseController
 					, example = "2020-04-01"
 					, required = true
 			)
-			@Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.")
+			@Pattern(regexp = SKCRegex.DB_DATE, message = "Date doesn't have correct format.")
 			@PathVariable final String banListStartDate
 	)
 			throws YgoException
@@ -110,7 +110,7 @@ public class BanListDiffController extends YgoApiBaseController
 					, example = "2020-04-01"
 					, required = true
 			)
-			@Pattern(regexp = RegexExpressions.DB_DATE_PATTERN, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
+			@Pattern(regexp = SKCRegex.DB_DATE, message = "Date doesn't have correct format.") @PathVariable(name = "banListStartDate") final String banListStartDate)
 			throws YgoException
 	{
 		final BanListRemovedContent banListRemovedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate);

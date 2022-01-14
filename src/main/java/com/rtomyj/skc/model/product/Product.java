@@ -100,7 +100,7 @@ public class Product extends RepresentationModel<Product>
 	private void setLink()
 	{
 		this.add(
-			linkTo(methodOn(controllerClass).getProduct(productId, productLocale)).withSelfRel()
+			linkTo(methodOn(controllerClass).productInfo(productId, productLocale)).withSelfRel()
 		);
 	}
 

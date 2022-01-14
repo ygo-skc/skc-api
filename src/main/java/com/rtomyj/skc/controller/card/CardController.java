@@ -1,7 +1,7 @@
 package com.rtomyj.skc.controller.card;
 
 import com.rtomyj.skc.controller.YgoApiBaseController;
-import com.rtomyj.skc.constant.RegexExpressions;
+import com.rtomyj.skc.constant.SKCRegex;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.card.Card;
@@ -74,7 +74,7 @@ public class CardController extends YgoApiBaseController
 					, required = true
 			)
 			@PathVariable("cardId")
-			@Pattern(regexp = RegexExpressions.CARD_ID_PATTERN, message = "Card ID doesn't have correct format.")
+			@Pattern(regexp = SKCRegex.CARD_ID, message = "Card ID doesn't have correct format.")
 			final String cardId
 			, @ApiParam(value = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION
 					, example = "true"
