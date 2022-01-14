@@ -54,7 +54,7 @@ public class DatabaseStats extends RepresentationModel<DatabaseStats> implements
     public void setSelfLink()
     {
         this.add(
-                linkTo(methodOn(statsControllerClass).getDatabaseStats()).withSelfRel()
+                linkTo(methodOn(statsControllerClass).databaseStats()).withSelfRel()
         );
     }
 

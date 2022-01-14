@@ -42,7 +42,7 @@ public class MonsterTypeStats extends RepresentationModel<MonsterTypeStats> impl
     public void setSelfLink()
     {
         this.add(
-                linkTo(methodOn(statsControllerClass).getMonsterTypeByColor(scope)).withSelfRel()
+                linkTo(methodOn(statsControllerClass).monsterTypesForgivenCardColor(scope)).withSelfRel()
         );
     }
 
