@@ -31,7 +31,7 @@ plugins {
 
 
 group = "com.rtomyj.skc"
-version = "1.2.8"
+version = "1.3.0"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 
@@ -114,6 +114,7 @@ tasks {
 
 		manifest.attributes.apply {
 			put("Implementation-Title", archivesBaseName)
+			put("Implementation-Version", project.version)
 		}
 	}
 

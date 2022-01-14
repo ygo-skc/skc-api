@@ -1,5 +1,6 @@
 package com.rtomyj.skc.controller
 
+import com.rtomyj.skc.constant.AppConstants
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.model.StatusResponse
 import io.swagger.annotations.Api
@@ -39,6 +40,6 @@ class TestCallController : YgoApiBaseController() {
 	@ApiResponses(value = [ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)])
 	fun testCall(): ResponseEntity<StatusResponse> {
 		log.info("Status of API was requested")
-		return ResponseEntity.ok(StatusResponse("API is online and functional.", "v1.3.0"))
+		return ResponseEntity.ok(StatusResponse("API is online and functional.", AppConstants.APP_VERSION))
 	}
 }
