@@ -4,7 +4,8 @@ public enum ProductType
 {
 
 	PACK("PACK")
-	, DECK("DECK");
+	, DECK("DECK")
+	, SET("SET");
 
 	private final String product;
 

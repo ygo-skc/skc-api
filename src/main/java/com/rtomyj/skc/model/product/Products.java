@@ -58,7 +58,7 @@ public class Products extends RepresentationModel<Products> implements HateoasLi
 	{
 		this.add(
 				linkTo(methodOn(controllerClass)
-						.getProductsByLocaleAndProductType(productType, locale))
+						.getAllProductsFromProductTypeForLocale(productType, locale))
 						.withSelfRel()
 		);
 	}
