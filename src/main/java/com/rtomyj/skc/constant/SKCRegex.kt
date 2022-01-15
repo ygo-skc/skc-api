@@ -5,5 +5,5 @@ object SKCRegex {
 	const val CARD_ID = "[0-9]{8}"
 	const val PRODUCT_ID= "[a-zA-Z0-9]{3,4}"
 	const val PRODUCT_TYPE = "[a-zA-Z]+"
-	const val LOCAL = "[a-zA-Z]{2}"
+	const val LOCALE = "[a-zA-Z]{2}"
 }
