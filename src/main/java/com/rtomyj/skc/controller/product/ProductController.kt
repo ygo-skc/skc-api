@@ -58,7 +58,7 @@ class ProductController @Autowired constructor(private val availablePacksService
 			value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
 			example = "en"
 		) @Pattern(
-			regexp = SKCRegex.LOCAL,
+			regexp = SKCRegex.LOCALE,
 			message = "Locale is formatted incorrectly"
 		) @NotNull @PathVariable("locale") locale: String
 	): ResponseEntity<Product> {
