@@ -1,8 +1,11 @@
 package com.rtomyj.skc.enums
 
 import com.rtomyj.skc.constant.SwaggerConstants
+import springfox.documentation.service.Tag
 
-enum class SwaggerTagEnum(val tagName: String, val tagDescription: String) {
+enum class SwaggerTagEnum(
+	val tagName: String, val tagDescription: String
+) {
 	TEST_CALL_TAG(
 		SwaggerConstants.TEST_CALL_TAG_NAME,
 		"Simple test to see if api is up and running."
@@ -23,4 +26,7 @@ enum class SwaggerTagEnum(val tagName: String, val tagDescription: String) {
 		SwaggerConstants.TAG_STATS_NAME,
 		"See information about the data currently in the Database."
 	);
+
+
+	fun tag(): Tag = Tag(this.tagName, this.tagDescription)
 }

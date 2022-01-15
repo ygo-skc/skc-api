@@ -31,11 +31,11 @@ class SwaggerConfig {
 			.paths(PathSelectors.any())
 			.build()
 			.apiInfo(infoSection())
-			.tags(Tag(SwaggerTagEnum.TEST_CALL_TAG.tagName, SwaggerTagEnum.TEST_CALL_TAG.tagDescription))
-			.tags(Tag(SwaggerTagEnum.BAN_LIST_TAG.tagName, SwaggerTagEnum.BAN_LIST_TAG.tagDescription))
-			.tags(Tag(SwaggerTagEnum.CARD_TAG.tagName, SwaggerTagEnum.CARD_TAG.tagDescription))
-			.tags(Tag(SwaggerTagEnum.PRODUCT_TAG.tagName, SwaggerTagEnum.PRODUCT_TAG.tagDescription))
-			.tags(Tag(SwaggerTagEnum.STATISTICS_TAG.tagName, SwaggerTagEnum.STATISTICS_TAG.tagDescription))
+			.tags(SwaggerTagEnum.TEST_CALL_TAG.tag())
+			.tags(SwaggerTagEnum.BAN_LIST_TAG.tag())
+			.tags(SwaggerTagEnum.CARD_TAG.tag())
+			.tags(SwaggerTagEnum.PRODUCT_TAG.tag())
+			.tags(SwaggerTagEnum.STATISTICS_TAG.tag())
 	}
 
 	/**
