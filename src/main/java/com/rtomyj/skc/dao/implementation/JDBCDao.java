@@ -260,11 +260,7 @@ public class JDBCDao implements Dao
 		sqlParams.addValue("cardColor", cardColor);
 
 
-		MonsterTypeStats monsterType = MonsterTypeStats.builder()
-				.scope(cardColor)
-				.monsterTypes(new HashMap<>())
-				.build();
-
+		MonsterTypeStats monsterType = new MonsterTypeStats(cardColor, new HashMap<>());
 		jdbcNamedTemplate.query(query, sqlParams, (ResultSet row, int rowNum) -> {
 			monsterType.getMonsterTypes().put(row.getString(1), row.getInt(2));
 
@@ -277,13 +273,11 @@ public class JDBCDao implements Dao
 
 	public DatabaseStats getDatabaseStats()
 	{
-		return jdbcNamedTemplate.queryForObject(DBQueryConstants.GET_DATABASE_TOTALS, (SqlParameterSource) null, (ResultSet row, int rowNum) -> DatabaseStats
-				.builder()
-				.productTotal(row.getInt(1))
-				.cardTotal(row.getInt(2))
-				.banListTotal(row.getInt(3))
-				.yearsOfBanListCoverage(row.getInt(4))
-				.build());
+		return jdbcNamedTemplate
+				.queryForObject(DBQueryConstants.GET_DATABASE_TOTALS, (SqlParameterSource) null,
+						(ResultSet row, int rowNum)
+								-> new DatabaseStats(row.getInt(1), row.getInt(2), row.getInt(3), row.getInt(4))
+				);
 	}
 
 

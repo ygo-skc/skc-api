@@ -66,6 +66,6 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 	@GetMapping
 	fun databaseStats(): ResponseEntity<DatabaseStats> {
 		log.info("Retrieving high level overview of info stored in DB.")
-		return ResponseEntity.ok(statsService.databaseStats)
+		return ResponseEntity.ok(statsService.databaseStats())
 	}
 }
