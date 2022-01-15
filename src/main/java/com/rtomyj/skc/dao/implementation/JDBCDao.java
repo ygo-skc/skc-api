@@ -7,6 +7,7 @@ import com.rtomyj.skc.dao.Dao;
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition;
 import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
+import com.rtomyj.skc.model.DownstreamStatus;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.CardBrowseResults;
@@ -17,6 +18,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -53,6 +55,8 @@ public class JDBCDao implements Dao
 
 	private final ObjectMapper objectMapper;
 
+	private final String VERSION_QUERY = "select version() as version";
+
 
 	@Autowired
 	public JDBCDao(final NamedParameterJdbcTemplate jdbcNamedTemplate
@@ -64,6 +68,31 @@ public class JDBCDao implements Dao
 		this.dateFormat = dateFormat;
 		this.objectMapper = objectMapper;
 
+	}
+
+
+	@Override
+	public DownstreamStatus dbConection() throws YgoException {
+		final String dbName = "SKC DB";
+		String versionMajor = "---";
+		String status = "down";
+		DownstreamStatus downstreamStatus;
+
+		try {
+			final String version = jdbcNamedTemplate.queryForObject(this.VERSION_QUERY, (SqlParameterSource) null, String.class);
+			status = "up";
+
+			assert version != null;
+			final String[] versionStringTokens = version.split("\\.");
+			versionMajor = (versionStringTokens.length != 0)? versionStringTokens[0] : "---";
+
+			downstreamStatus = new DownstreamStatus(dbName, versionMajor, status);
+		} catch(final DataAccessException | AssertionError e) {
+			log.error("Could not get version of the DB. Exception occured: {}", e.toString());
+			downstreamStatus = new DownstreamStatus(dbName, versionMajor, status);
+		}
+
+		return downstreamStatus;
 	}
 
 

@@ -1,6 +1,7 @@
 package com.rtomyj.skc.dao;
 
 import com.rtomyj.skc.exception.YgoException;
+import com.rtomyj.skc.model.DownstreamStatus;
 import com.rtomyj.skc.model.card.Card;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
@@ -50,6 +51,8 @@ public interface Dao
 			return status;
 		}
 	}
+
+	DownstreamStatus dbConection() throws YgoException;
 
 	/**
 	 * Retrieve the information about a Card given the ID.
