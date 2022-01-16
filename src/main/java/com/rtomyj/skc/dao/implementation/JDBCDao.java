@@ -10,12 +10,14 @@ import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.DownstreamStatus;
 import com.rtomyj.skc.model.banlist.CardBanListStatus;
 import com.rtomyj.skc.model.card.Card;
+import com.rtomyj.skc.model.card.CardBrowseCriteria;
 import com.rtomyj.skc.model.card.CardBrowseResults;
 import com.rtomyj.skc.model.card.MonsterAssociation;
 import com.rtomyj.skc.model.stats.DatabaseStats;
 import com.rtomyj.skc.model.stats.MonsterTypeStats;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -324,8 +326,10 @@ public class JDBCDao implements Dao {
 	}
 
 
-	public CardBrowseResults getBrowseResults(@NonNull final Set<String> cardColors, @NonNull final Set<String> attributeSet, @NonNull final Set<String> monsterTypeSet
-			, @NonNull final Set<String> monsterSubTypeSet, @NonNull final Set<String> monsterLevels, @NonNull Set<String> monsterRankSet, @NonNull Set<String> monsterLinkRatingsSet)
+	@NotNull
+	public CardBrowseResults getBrowseResults(@NotNull CardBrowseCriteria criteria,
+											  @NotNull Set<String> monsterLevelSet, @NotNull Set<String> monsterRankSet,
+											  @NotNull Set<String> monsterLinkRatingsSet)
 	{
 
 		final StopWatch stopWatch = new StopWatch();
@@ -333,10 +337,10 @@ public class JDBCDao implements Dao {
 
 		final String SQL_TEMPLATE = DBQueryConstants.GET_CARD_BROWSE_RESULTS;
 
-		final String cardColorCriteria = (cardColors.isEmpty())? ".*" : String.join("|", cardColors);
-		final String attributeCriteria = (attributeSet.isEmpty())? ".*" : String.join("|", attributeSet);
-		final String monsterTypeCriteria = (monsterTypeSet.isEmpty())? ".*" : "^" + String.join("|", monsterTypeSet).replace("?", "\\?");
-		final String monsterSubTypeCriteria = (monsterSubTypeSet.isEmpty())? ".*" : ".+/" + String.join("|", monsterSubTypeSet).replace("?", "\\?");
+		final String cardColorCriteria = (criteria.getCardColors().isEmpty())? ".*" : String.join("|", criteria.getCardColors());
+		final String attributeCriteria = (criteria.getAttributes().isEmpty())? ".*" : String.join("|", criteria.getAttributes());
+		final String monsterTypeCriteria = (criteria.getMonsterTypes().isEmpty())? ".*" : "^" + String.join("|", criteria.getMonsterTypes()).replace("?", "\\?");
+		final String monsterSubTypeCriteria = (criteria.getMonsterSubTypes().isEmpty())? ".*" : ".+/" + String.join("|", criteria.getMonsterSubTypes()).replace("?", "\\?");
 
 		final MapSqlParameterSource sqlParams = new MapSqlParameterSource();
 		sqlParams.addValue("cardColors", cardColorCriteria);
@@ -349,13 +353,13 @@ public class JDBCDao implements Dao {
 			Unlike other criteria, using the REGEX .* will not work as it will clash with other monster association JSON fields in DB.
 		 */
 		String monsterAssociationWhereClause;
-		if (monsterLevels.isEmpty() && monsterRankSet.isEmpty() && monsterLinkRatingsSet.isEmpty())
+		if (monsterLevelSet.isEmpty() && monsterRankSet.isEmpty() && monsterLinkRatingsSet.isEmpty())
 		{
 			monsterAssociationWhereClause = "";
 		} else
 		{
 			monsterAssociationWhereClause = " AND monster_association REGEXP :monsterAssociation ";
-			final String levelCriteria = transformCollectionToSQLOr(monsterLevels);
+			final String levelCriteria = transformCollectionToSQLOr(monsterLevelSet);
 			final String rankCriteria = transformCollectionToSQLOr(monsterRankSet);
 			final String linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet);
 
@@ -370,22 +374,21 @@ public class JDBCDao implements Dao {
 		final String sql = String.format(SQL_TEMPLATE, monsterAssociationWhereClause);
 		log.debug("Fetching card browse results from DB using query: ( {} ) with sql params ( {} ).", sql, sqlParams);
 
-		final CardBrowseResults cardBrowseResults =  CardBrowseResults
+		final List<Card> results = jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> Card
 				.builder()
-				.results(jdbcNamedTemplate.query(sql, sqlParams, (ResultSet row, int rowNum) -> Card
-						.builder()
-						.cardID(row.getString(BrowseQueryDefinition.CARD_ID.toString()))
-						.cardName(row.getString(BrowseQueryDefinition.CARD_NAME.toString()))
-						.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
-						.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
-						.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
-						.cardAttribute(row.getString(BrowseQueryDefinition.CARD_ATTRIBUTE.toString()))
-						.monsterAssociation(
-								MonsterAssociation.parseDBString(
-										row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), objectMapper)
-						)
-						.build()))
-				.build();
+				.cardID(row.getString(BrowseQueryDefinition.CARD_ID.toString()))
+				.cardName(row.getString(BrowseQueryDefinition.CARD_NAME.toString()))
+				.cardColor(row.getString(BrowseQueryDefinition.CARD_COLOR.toString()))
+				.monsterType(row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString()))
+				.cardEffect(row.getString(BrowseQueryDefinition.CARD_EFFECT.toString()))
+				.cardAttribute(row.getString(BrowseQueryDefinition.CARD_ATTRIBUTE.toString()))
+				.monsterAssociation(
+						MonsterAssociation.parseDBString(
+								row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), objectMapper)
+				)
+				.build());
+
+		final CardBrowseResults cardBrowseResults =  new CardBrowseResults(results, results.size());
 
 		stopWatch.stop();
 		log.debug("Time taken to retrieve card browse results: {}ms", stopWatch.getTotalTimeMillis());

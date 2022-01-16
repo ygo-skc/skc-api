@@ -22,7 +22,7 @@ class CardBrowseController @Autowired constructor(
     private val cardBrowseService: CardBrowseService
     ) : YgoApiBaseController() {
 
-    private val cardBrowseCriteriaSupplier = Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria }, 10, TimeUnit.MINUTES)
+    private val cardBrowseCriteriaSupplier = Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria() }, 10, TimeUnit.MINUTES)
 
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -73,23 +73,33 @@ class CardBrowseController @Autowired constructor(
         ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = ""
     ): CardBrowseResults {
         log.info("Retrieving browse results.")
-        val cardBrowseResults = cardBrowseService.getBrowseResults(
-            cardColors,
-            attributes,
-            monsterTypes,
-            monsterSubTypes,
-            monsterLevels,
-            monsterRanks,
-            monsterLinkRatings
+
+
+
+        val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
+        val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
+        val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
+        val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
+
+        val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
+        val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
+        val linkRatingSet =
+            CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
+
+        val criteria = CardBrowseCriteria(
+            cardColorsSet,
+            attributeSet,
+            monsterTypeSet,
+            monsterSubTypeSet,
+            levelSet,
+            rankSet,
+            linkRatingSet
         )
+
+        val cardBrowseResults = cardBrowseService.getBrowseResults(criteria)
         log.info(
-            "Successfully retrieved card browse results using criteria: [ cardColors={}, attributes={}, monsterTypes={}, monsterLevels={}, monsterRanks={}, monsterLinkRatings={} ]. Found {} matching results.",
-            cardColors,
-            attributes,
-            monsterTypes,
-            monsterLevels,
-            monsterRanks,
-            monsterLinkRatings,
+            "Successfully retrieved card browse results using criteria: [ {} ]. Found {} matching results.",
+            criteria.toString(),
             cardBrowseResults
         )
 

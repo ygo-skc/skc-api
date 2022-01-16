@@ -34,31 +34,31 @@ public class MonsterAssociation
             value = "The star rating of a monster card - determines tribute count."
             , accessMode = ApiModelProperty.AccessMode.READ_ONLY
     )
-    private Integer level;
+    public Integer level;
 
     @ApiModelProperty(
             value = "Like level, except it determines which monsters can be used to summon the card."
             , accessMode = ApiModelProperty.AccessMode.READ_ONLY
     )
-    private Integer rank;
+    public Integer rank;
 
     @ApiModelProperty(
             value = "Pendulum rating used to perform pendulum summoning."
             , accessMode = ApiModelProperty.AccessMode.READ_ONLY
     )
-    private Integer scaleRating;
+    public Integer scaleRating;
 
     @ApiModelProperty(
             value = "Number value determining link cost in summoning Link monster."
             , accessMode = ApiModelProperty.AccessMode.READ_ONLY
     )
-    private Integer linkRating;
+    public Integer linkRating;
 
     @ApiModelProperty(
             value = "Positions of Link arrows for link monster."
             , accessMode = ApiModelProperty.AccessMode.READ_ONLY
     )
-    private List<String> linkArrows;
+    public List<String> linkArrows;
 
 
     public static MonsterAssociation parseDBString(final String dbMonsterAssociationJson, final ObjectMapper objectMapper) {
