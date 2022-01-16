@@ -32,7 +32,7 @@ plugins {
 
 group = "com.rtomyj.skc"
 version = "1.3.0"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 
 repositories {
@@ -105,8 +105,7 @@ apply(from = "gradle/perfTest.gradle.kts")
 tasks {
 	withType<KotlinCompile> {
 		kotlinOptions {
-			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = JavaVersion.VERSION_16.toString()
+			jvmTarget = JavaVersion.VERSION_17.toString()
 		}
 	}
 
