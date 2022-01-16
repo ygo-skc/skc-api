@@ -11,5 +11,5 @@ interface ProductDao {
 	fun getProductDetailsForCard(cardId: String): Set<Product>
 	fun getProductContents(productId: String, locale: String): Set<ProductContent>
 	fun getAllProductsByType(productType: ProductType, locale: String): Products
-	fun getProductRarityCount(packId: String): Map<String, Int>
+	fun getProductRarityCount(productId: String): Map<String, Int>
 }

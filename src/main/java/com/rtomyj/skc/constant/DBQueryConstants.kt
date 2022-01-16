@@ -28,7 +28,7 @@ object DBQueryConstants {
 	const val GET_PRODUCT_CONTENT =
 		"SELECT product_id, product_locale, product_name, product_release_date, product_content_total, product_type, product_sub_type, product_position, card_rarity, card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, monster_association" +
 				FROM_PRODUCT_CONTENT_TABLE +
-				" WHERE product_id = :packId" +
+				" WHERE product_id = :productId" +
 				" AND product_locale = :locale" +
 				" ORDER BY product_position"
 

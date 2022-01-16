@@ -56,7 +56,7 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 	): ResponseEntity<Products> {
 		log.info("Retrieving all products for given locale: {}", locale)
 
-		return ResponseEntity.ok(availableProductsService.getProductsByLocale(locale))
+		return ResponseEntity.ok(availableProductsService.getAllProductsWithLocale(locale))
 	}
 
 
@@ -73,7 +73,7 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 			ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 		]
 	)
-	fun getAllProductsFromProductTypeForLocale(
+	fun getAllProductsForProductTypeAndLocale(
 		@ApiParam(
 			value = "A specific product type used to limit results.",
 			example = "pack"
@@ -97,6 +97,6 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 	): ResponseEntity<Products> {
 		log.info("Retrieving all products categorized as {} product type for locale {}", productType, locale)
 
-		return ResponseEntity.ok(availableProductsService.getProductsByLocaleAndProductType(productType, locale))
+		return ResponseEntity.ok(availableProductsService.getProductsWithLocaleAndProductType(productType, locale))
 	}
 }

@@ -1,6 +1,7 @@
 package com.rtomyj.skc.controller.card
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
@@ -38,7 +39,7 @@ class CardControllerTest {
 		@Test
 		fun `Fetching Card Information Using Card ID - Success`() {
 			// setup mocks - throw NOT FOUND (card not in DB) exception when particular card is requested
-			val mapper = ObjectMapper()
+			val mapper = jacksonObjectMapper()
 			val mockCardData: Card = mapper
 				.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_JSON_FILE).file, Card::class.java)
 

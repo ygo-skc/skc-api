@@ -3,6 +3,7 @@ package com.rtomyj.skc.model.card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rtomyj.skc.constant.SwaggerConstants;
 import com.rtomyj.skc.controller.card.CardController;
 import com.rtomyj.skc.model.HateoasLinks;
@@ -20,6 +21,8 @@ import lombok.With;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -130,5 +133,21 @@ public class Card extends RepresentationModel<Card> implements HateoasLinks {
 
 		if (restrictedIn != null)
 			HateoasLinks.setLinks(restrictedIn);
+	}
+
+
+	public static Card productContent(final ResultSet row, final ObjectMapper objectMapper) throws SQLException {
+		return Card
+				.builder()
+				.cardID(row.getString(10))
+				.cardColor(row.getString(11))
+				.cardName(row.getString(12))
+				.cardAttribute(row.getString(13))
+				.cardEffect(row.getString(14))
+				.monsterType(row.getString(15))
+				.monsterAttack(row.getObject(16, Integer.class))
+                    .monsterDefense(row.getObject(17, Integer.class))
+                    .monsterAssociation(MonsterAssociation.parseDBString(row.getString(18), objectMapper))
+				.build();
 	}
 }
