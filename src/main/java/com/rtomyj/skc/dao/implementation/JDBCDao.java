@@ -260,9 +260,11 @@ public class JDBCDao implements Dao {
 
 				if (row.getString(9) != null) {
 					try {
-						final CardBanListStatus cardBanListStatus = new CardBanListStatus();
-						cardBanListStatus.setBanStatus(row.getString(10));
-						cardBanListStatus.setBanListDate(dateFormat.parse(row.getString(9)));
+						final CardBanListStatus cardBanListStatus = new CardBanListStatus(
+								dateFormat.parse(row.getString(9)),
+								cardId,
+								row.getString(10)
+						);
 
 						card.getRestrictedIn().add(cardBanListStatus);
 					} catch (ParseException e) {

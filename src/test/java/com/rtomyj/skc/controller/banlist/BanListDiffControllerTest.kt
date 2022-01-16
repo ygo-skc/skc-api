@@ -1,6 +1,6 @@
 package com.rtomyj.skc.controller.banlist
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
@@ -38,7 +38,7 @@ class BanListDiffControllerTest {
         private const val NEW_CONTENT_ENDPOINT = "/ban_list/2018-12-03/new"
         private const val REMOVED_CONTENT_ENDPOINT = "/ban_list/2018-12-03/removed"
 
-        private val mapper = ObjectMapper()
+        private val mapper = jacksonObjectMapper()
 
         private val banListNewContent = mapper
             .readValue(ClassPathResource(TestConstants.BAN_LIST_NEW_CONTENT).file, BanListNewContent::class.java)

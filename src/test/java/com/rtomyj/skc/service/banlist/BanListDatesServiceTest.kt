@@ -2,10 +2,12 @@ package com.rtomyj.skc.service.banlist
 
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.model.banlist.BanListDate
 import com.rtomyj.skc.model.banlist.BanListDates
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,16 +34,10 @@ class BanListDatesServiceTest {
         val banListSimpleDate = DateConfig().dBSimpleDateFormat()
         val testBanListDate = banListSimpleDate.parse("2020-01-20")
         val banListDates = listOf(
-            BanListDate
-                .builder()
-                .effectiveDate(testBanListDate)
-                .build()
+            BanListDate(testBanListDate)
         )
 
-        banListDatesInstance = BanListDates()
-            .apply {
-                dates = banListDates
-            }
+        banListDatesInstance = BanListDates(banListDates)
     }
 
 
@@ -59,7 +55,7 @@ class BanListDatesServiceTest {
             Assertions.assertNotNull(banListDates)
             Assertions.assertNotNull(banListDates.dates)
 
-            val dates = banListDates.dates!!
+            val dates = banListDates.dates
 
             // assertions on returned value
             Assertions.assertEquals(1, dates.size)

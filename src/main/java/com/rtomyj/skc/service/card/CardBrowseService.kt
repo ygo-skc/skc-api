@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
-import java.util.*
 import java.util.stream.Collectors
 
 @Service
@@ -68,12 +67,20 @@ class CardBrowseService @Autowired constructor(
             dao.getMonsterAttributes(),
             dao.getMonsterTypes(),
             dao.getMonsterSubTypes(),
-            uniqueMonsterAssociationField("level").stream().map { obj: MonsterAssociation -> obj.level }
+            uniqueMonsterAssociationField("level")
+                .stream()
+                .filter { it.level != null }
+                .map { obj: MonsterAssociation -> obj.level!! }
                 .collect(Collectors.toSet()),
-            uniqueMonsterAssociationField("rank").stream().map { obj: MonsterAssociation -> obj.rank }
+            uniqueMonsterAssociationField("rank")
+                .stream()
+                .filter { it.rank != null }
+                .map { obj: MonsterAssociation -> obj.rank!! }
                 .collect(Collectors.toSet()),
-            uniqueMonsterAssociationField("linkRating").stream()
-                .map { obj: MonsterAssociation -> obj.linkRating }
+            uniqueMonsterAssociationField("linkRating")
+                .stream()
+                .filter {it.linkRating != null}
+                .map { obj: MonsterAssociation -> obj.linkRating!! }
                 .collect(Collectors.toSet())
         )
 

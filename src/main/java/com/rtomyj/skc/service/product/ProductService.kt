@@ -48,7 +48,8 @@ class ProductService @Autowired constructor(
                 product
                     .productContent
                     .stream()
-                    .map { productContent: ProductContent -> productContent.card }
+                    .filter {it.card != null}
+                    .map { productContent: ProductContent -> productContent.card!! }
                     .toList()
             )
         return product

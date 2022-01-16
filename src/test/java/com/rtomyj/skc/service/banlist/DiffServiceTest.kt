@@ -1,16 +1,18 @@
 package com.rtomyj.skc.service.banlist
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +39,7 @@ class DiffServiceTest {
 
 
     init {
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
 
         banListNewContent = mapper
             .readValue(ClassPathResource(TestConstants.BAN_LIST_NEW_CONTENT).file, BanListNewContent::class.java)

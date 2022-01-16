@@ -1,6 +1,6 @@
 package com.rtomyj.skc.controller.banlist
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
@@ -40,7 +40,7 @@ class BannedCardsControllerTest {
 
 		private const val BAN_LIST_CONTENT_ENDPOINT = "/ban_list/2018-12-03/cards"
 
-		private val mapper = ObjectMapper()
+		private val mapper = jacksonObjectMapper()
 
 		private val banListInstanceFullText = mapper
 			.readValue(ClassPathResource(TestConstants.BAN_LIST_INSTANCE_JSON_FILE).file, BanListInstance::class.java)

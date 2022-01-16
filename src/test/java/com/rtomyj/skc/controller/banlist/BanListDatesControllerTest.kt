@@ -17,7 +17,6 @@ import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -48,10 +47,7 @@ class BanListDatesControllerTest {
         fun `Getting Ban List Dates Using Controller, DB Has Databases - Success`() {
             `when`(banListDatesService.retrieveBanListStartDates())
                 .thenReturn(
-                    BanListDates()
-                        .apply {
-                            this.dates = getMockBanListDates()
-                        }
+                    BanListDates(getMockBanListDates())
                 )
 
 
@@ -81,10 +77,7 @@ class BanListDatesControllerTest {
             // mock retrieval of ban list dates - return an empty array (na dates found in DB)
             `when`(banListDatesService.retrieveBanListStartDates())
                 .thenReturn(
-                    BanListDates()
-                        .apply {
-                        this.dates = emptyList()
-                    }
+                    BanListDates(emptyList())
                 )
 
 
@@ -129,11 +122,7 @@ class BanListDatesControllerTest {
      * Helper method used to create a list of BanListDate objects.
      */
     private fun getMockBanListDates(): List<BanListDate> = listOf(
-        BanListDate().apply {
-            this.effectiveDate = banListDateFormat.parse("2021-07-01")
-        }
-        , BanListDate().apply {
-            this.effectiveDate = banListDateFormat.parse("2021-04-14")
-        }
+        BanListDate(banListDateFormat.parse("2021-07-01"))
+        , BanListDate(banListDateFormat.parse("2021-04-14"))
     )
 }

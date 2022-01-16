@@ -1,6 +1,7 @@
 package com.rtomyj.skc.service.banlist
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
@@ -44,7 +45,7 @@ class BannedCardsServiceTest {
 
 
     init {
-        val mapper = ObjectMapper()
+        val mapper = jacksonObjectMapper()
 
         banListInstanceFullText = mapper.readValue(
             ClassPathResource(TestConstants.BAN_LIST_INSTANCE_JSON_FILE).file, BanListInstance::class.java
@@ -169,11 +170,6 @@ class BannedCardsServiceTest {
             Assertions.assertNotNull(forbidden)
             Assertions.assertNotNull(limited)
             Assertions.assertNotNull(semiLimited)
-
-            // we know these values are not null from previous checks
-            forbidden = forbidden!!
-            limited = limited!!
-            semiLimited = semiLimited!!
 
             // ensure dates returned are correct
             Assertions.assertEquals(TestConstants.BAN_LIST_START_DATE, banListInstance.effectiveDate)

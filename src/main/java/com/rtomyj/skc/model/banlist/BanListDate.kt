@@ -2,7 +2,6 @@ package com.rtomyj.skc.model.banlist
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.Open
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.banlist.BanListDiffController
@@ -18,40 +17,19 @@ import java.util.*
  * Model containing information about a Ban List.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
-@ApiModel(
-    description = "Each object instance describes a particular card, a start date of a ban list it was a part of, and the specific status (forbidden, limited, semi-limited).",
-    parent = RepresentationModel::class
-)
-@Open
-data class CardBanListStatus(
+@ApiModel(description = "Information about a ban lists effective date.", parent = RepresentationModel::class)
+data class BanListDate(
     /**
      * Start date of ban list.
      */
     @ApiModelProperty(
         value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
         accessMode = ApiModelProperty.AccessMode.READ_ONLY
-    )
-    @JsonFormat(
+    ) @JsonFormat(
         shape = JsonFormat.Shape.STRING,
         pattern = "yyyy-MM-dd"
-    )
-    val banListDate: Date,
-
-    /**
-     * The ID of the card.
-     */
-    @ApiModelProperty(value = SwaggerConstants.CARD_ID_DESCRIPTION, accessMode = ApiModelProperty.AccessMode.READ_ONLY)
-    val cardID: String,
-
-    /**
-     * Whether card is forbidden, limited, or semi-limited
-     */
-    @ApiModelProperty(
-        value = "The ban status for the card (forbidden, limited, semi-limited).",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
-    )
-    val banStatus: String
-) : RepresentationModel<CardBanListStatus>(), HateoasLinks {
+    ) val effectiveDate: Date
+) : RepresentationModel<BanListDate?>(), HateoasLinks {
 
     companion object {
         private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
@@ -66,8 +44,7 @@ data class CardBanListStatus(
 
     override fun setLinks() {
         val dateConfig = DateConfig()
-        val banListDateStr = dateConfig.dBSimpleDateFormat().format(banListDate)
-
+        val banListDateStr = dateConfig.dBSimpleDateFormat().format(effectiveDate)
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)

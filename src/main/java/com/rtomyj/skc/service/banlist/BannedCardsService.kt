@@ -40,17 +40,13 @@ class BannedCardsService @Autowired constructor(
 	fun getBanListByDate(banListStartDate: String, saveBandwidth: Boolean, fetchAllInfo: Boolean): BanListInstance {
 		log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
 
-		val banListInstance: BanListInstance = BanListInstance().apply {
-			forbidden = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN)
-			limited = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED)
-			semiLimited = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED)
-			effectiveDate = banListStartDate
-			comparedTo = banListDao.getPreviousBanListDate(banListStartDate)
-
-			numForbidden = forbidden!!.size
-			numLimited = limited!!.size
-			numSemiLimited = semiLimited!!.size
-
+		val banListInstance: BanListInstance = BanListInstance(
+			banListStartDate,
+			banListDao.getPreviousBanListDate(banListStartDate),
+			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN),
+			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED),
+			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED)
+		).apply {
 			validateBanListInstance(this, banListStartDate)
 			setLinks()
 
