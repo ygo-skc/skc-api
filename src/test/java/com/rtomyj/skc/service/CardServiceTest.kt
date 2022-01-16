@@ -1,5 +1,6 @@
 package com.rtomyj.skc.service
 
+import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -54,7 +54,7 @@ class CardServiceTest {
         @Test
         fun `Test Fetching Card From DB, Success`() {
             // mock calls
-            Mockito.`when`(cardDao.getCardInfo(ArgumentMatchers.eq(TestConstants.STRATOS_ID)))
+            Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.STRATOS_ID)))
                 .thenReturn(successfulCardReceived)
 
 
@@ -69,7 +69,7 @@ class CardServiceTest {
 
             // verify mocks are called the exact number of times expected
             Mockito.verify(cardDao, Mockito.times(1))
-                .getCardInfo(ArgumentMatchers.eq(TestConstants.STRATOS_ID))
+                .getCardInfo(eq(TestConstants.STRATOS_ID))
         }
     }
 
@@ -82,7 +82,7 @@ class CardServiceTest {
         @Test
         fun `Test Fetching Card From DB, Failure`() {
             // mock calls
-            Mockito.`when`(cardDao.getCardInfo(ArgumentMatchers.eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
+            Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
                 .thenThrow(YgoException(
                     String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.D001
                 ))
@@ -101,7 +101,7 @@ class CardServiceTest {
             Mockito.verify(
                 cardDao
                 , Mockito.times(1)
-            ).getCardInfo(ArgumentMatchers.eq(TestConstants.ID_THAT_CAUSES_FAILURE))
+            ).getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))
         }
     }
 }

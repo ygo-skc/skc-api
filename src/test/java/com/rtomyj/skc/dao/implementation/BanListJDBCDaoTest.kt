@@ -5,6 +5,7 @@ import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.model.card.Card
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
@@ -73,9 +74,9 @@ class BanListJDBCDaoTest {
         @Test
         fun testFetchingBanListByStatus_Success() {
             val banListDate = "2015-11-09"
-            val forbiddenDbResult = banListDao.getBanListByBanStatus(banListDate, Dao.Status.FORBIDDEN)
-            val limitedDbResult = banListDao.getBanListByBanStatus(banListDate, Dao.Status.LIMITED)
-            val semiLimitedDbResult = banListDao.getBanListByBanStatus(banListDate, Dao.Status.SEMI_LIMITED)
+            val forbiddenDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.FORBIDDEN)
+            val limitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.LIMITED)
+            val semiLimitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.SEMI_LIMITED)
 
 
             Assertions.assertNotNull(forbiddenDbResult)

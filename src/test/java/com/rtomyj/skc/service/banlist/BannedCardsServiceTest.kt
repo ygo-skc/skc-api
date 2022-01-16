@@ -6,6 +6,7 @@ import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
@@ -112,21 +113,21 @@ class BannedCardsServiceTest {
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
                     eq(TestConstants.BAN_LIST_START_DATE),
-                    eq(Dao.Status.FORBIDDEN)
+                    eq(BanListCardStatus.FORBIDDEN)
                 )
             )
                 .thenReturn(banListInstanceFullText.forbidden)
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
                     eq(TestConstants.BAN_LIST_START_DATE),
-                    eq(Dao.Status.LIMITED)
+                    eq(BanListCardStatus.LIMITED)
                 )
             )
                 .thenReturn(banListInstanceFullText.limited)
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
                     eq(TestConstants.BAN_LIST_START_DATE),
-                    eq(Dao.Status.SEMI_LIMITED)
+                    eq(BanListCardStatus.SEMI_LIMITED)
                 )
             )
                 .thenReturn(banListInstanceFullText.semiLimited)
@@ -258,15 +259,15 @@ class BannedCardsServiceTest {
             // verify mocks are called the exact number of times expected
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
                 eq(TestConstants.BAN_LIST_START_DATE),
-                eq(Dao.Status.FORBIDDEN)
+                eq(BanListCardStatus.FORBIDDEN)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
                 eq(TestConstants.BAN_LIST_START_DATE),
-                eq(Dao.Status.LIMITED)
+                eq(BanListCardStatus.LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
                 eq(TestConstants.BAN_LIST_START_DATE),
-                eq(Dao.Status.SEMI_LIMITED)
+                eq(BanListCardStatus.SEMI_LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
                 eq(TestConstants.BAN_LIST_START_DATE)
@@ -312,21 +313,21 @@ class BannedCardsServiceTest {
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
                     eq(TestConstants.BAN_LIST_START_DATE),
-                    eq(Dao.Status.FORBIDDEN)
+                    eq(BanListCardStatus.FORBIDDEN)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
                     eq(TestConstants.BAN_LIST_START_DATE),
-                    eq(Dao.Status.LIMITED)
+                    eq(BanListCardStatus.LIMITED)
                 )
             )
                 .thenReturn(ArrayList())
             Mockito.`when`(
                 banListDao.getBanListByBanStatus(
                     eq(TestConstants.BAN_LIST_START_DATE),
-                    eq(Dao.Status.SEMI_LIMITED)
+                    eq(BanListCardStatus.SEMI_LIMITED)
                 )
             )
                 .thenReturn(ArrayList())
@@ -355,15 +356,15 @@ class BannedCardsServiceTest {
             // verify mocks are called the exact number of times expected
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
                 eq(TestConstants.BAN_LIST_START_DATE),
-                eq(Dao.Status.FORBIDDEN)
+                eq(BanListCardStatus.FORBIDDEN)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
                 eq(TestConstants.BAN_LIST_START_DATE),
-                eq(Dao.Status.LIMITED)
+                eq(BanListCardStatus.LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
                 eq(TestConstants.BAN_LIST_START_DATE),
-                eq(Dao.Status.SEMI_LIMITED)
+                eq(BanListCardStatus.SEMI_LIMITED)
             )
             Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
                 eq(TestConstants.BAN_LIST_START_DATE)

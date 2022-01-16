@@ -114,7 +114,6 @@ class JdbcDaoTest {
     inner class UnhappyPath {
         @Test
         fun testFetchingCardById_Failure() {
-            Assertions.assertThrows(NullPointerException::class.java) { dao.getCardInfo(null) }
             Assertions.assertThrows(YgoException::class.java) { dao.getCardInfo("12345678") }
         }
     }
