@@ -31,7 +31,7 @@ plugins {
 
 
 group = "com.rtomyj.skc"
-version = "1.2.9"
+version = "1.3.0"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 
