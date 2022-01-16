@@ -2,7 +2,7 @@ package com.rtomyj.skc.service.banlist;
 
 import com.rtomyj.skc.constant.ErrConstants;
 import com.rtomyj.skc.dao.BanListDao;
-import com.rtomyj.skc.dao.Dao;
+import com.rtomyj.skc.enums.BanListCardStatus;
 import com.rtomyj.skc.exception.ErrorType;
 import com.rtomyj.skc.exception.YgoException;
 import com.rtomyj.skc.model.banlist.BanListNewContent;
@@ -38,9 +38,9 @@ public class DiffService
 
 
 		// builds meta data object for new cards request
-		final List<CardsPreviousBanListStatus> forbidden = banListDao.getNewContentOfBanList(banListStartDate, Dao.Status.FORBIDDEN);
-		final List<CardsPreviousBanListStatus> limited = banListDao.getNewContentOfBanList(banListStartDate, Dao.Status.LIMITED);
-		final List<CardsPreviousBanListStatus> semiLimited = banListDao.getNewContentOfBanList(banListStartDate, Dao.Status.SEMI_LIMITED);
+		final List<CardsPreviousBanListStatus> forbidden = banListDao.getNewContentOfBanList(banListStartDate, BanListCardStatus.FORBIDDEN);
+		final List<CardsPreviousBanListStatus> limited = banListDao.getNewContentOfBanList(banListStartDate, BanListCardStatus.LIMITED);
+		final List<CardsPreviousBanListStatus> semiLimited = banListDao.getNewContentOfBanList(banListStartDate, BanListCardStatus.SEMI_LIMITED);
 
 		final BanListNewContent newCardsMeta = BanListNewContent.builder()
 				.listRequested(banListStartDate)

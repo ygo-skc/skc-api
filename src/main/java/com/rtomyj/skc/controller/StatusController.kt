@@ -3,7 +3,6 @@ package com.rtomyj.skc.controller
 import com.rtomyj.skc.constant.AppConstants
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.dao.Dao
-import com.rtomyj.skc.model.DownstreamStatus
 import com.rtomyj.skc.model.StatusResponse
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -48,7 +47,7 @@ class StatusController @Autowired constructor(
 		log.info("Status of API was requested")
 
 		// get status of downstream services
-		val downstreamStatus = listOf<DownstreamStatus>(dao.dbConection())
+		val downstreamStatus = listOf(dao.dbConnection())
 
 		return ResponseEntity.ok(
 			StatusResponse("API is online and functional.", AppConstants.APP_VERSION, downstreamStatus)

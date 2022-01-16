@@ -40,7 +40,7 @@ class StatusControllerTest {
         fun `Calling Test Call Endpoint With Get Method - Success`() {
             val downstream = DownstreamStatus(DB_NAME, DB_VERSION, DB_STATUS)
             Mockito
-                .`when`(dao.dbConection())
+                .`when`(dao.dbConnection())
                 .thenReturn(downstream)
 
             mockMvc

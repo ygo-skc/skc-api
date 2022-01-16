@@ -3,6 +3,7 @@ package com.rtomyj.skc.dao.implementation
 import com.rtomyj.skc.constant.DBQueryConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.model.banlist.CardBanListStatus
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus
@@ -34,7 +35,7 @@ class BanListJDBCDao @Autowired constructor(
 	}
 
 
-	override fun getBanListByBanStatus(date: String, status: Dao.Status): List<Card> {
+	override fun getBanListByBanStatus(date: String, status: BanListCardStatus): List<Card> {
 		val query = DBQueryConstants.GET_BAN_LIST_BY_STATUS
 
 		val sqlParams = MapSqlParameterSource()
@@ -150,7 +151,7 @@ class BanListJDBCDao @Autowired constructor(
 	}
 
 	// TODO: make sure you write a test for the instance where the last ban list is selected
-	override fun getNewContentOfBanList(banListDate: String, status: Dao.Status): List<CardsPreviousBanListStatus> {
+	override fun getNewContentOfBanList(banListDate: String, status: BanListCardStatus): List<CardsPreviousBanListStatus> {
 		val stopwatch = StopWatch()
 		stopwatch.start()
 

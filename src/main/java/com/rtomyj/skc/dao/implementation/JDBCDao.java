@@ -46,8 +46,7 @@ import java.util.Set;
 @Repository
 @Qualifier("jdbc")
 @Slf4j
-public class JDBCDao implements Dao
-{
+public class JDBCDao implements Dao {
 
 	private final NamedParameterJdbcTemplate jdbcNamedTemplate;
 
@@ -72,7 +71,7 @@ public class JDBCDao implements Dao
 
 
 	@Override
-	public DownstreamStatus dbConection() throws YgoException {
+	public DownstreamStatus dbConnection() throws YgoException {
 		final String dbName = "SKC DB";
 		String versionMajor = "---";
 		String status = "down";

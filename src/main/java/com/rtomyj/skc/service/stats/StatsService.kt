@@ -32,7 +32,7 @@ class StatsService @Autowired constructor(@Qualifier("jdbc") val dao: Dao) {
 
 
 	fun databaseStats(): DatabaseStats {
-		val databaseStats = dao.databaseStats
+		val databaseStats = dao.getDatabaseStats()
 
 		databaseStats.setLinks()
 		log.info("Successfully retrieved database stats: {}", databaseStats.toString())

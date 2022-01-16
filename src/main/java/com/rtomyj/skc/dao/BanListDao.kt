@@ -1,5 +1,6 @@
 package com.rtomyj.skc.dao
 
+import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.model.banlist.CardBanListStatus
@@ -13,7 +14,7 @@ interface BanListDao {
 	 * @param status The status
 	 * @return List of Cards that have the status wanted for the desired date.
 	 */
-	fun getBanListByBanStatus(date: String, status: Dao.Status): List<Card>
+	fun getBanListByBanStatus(date: String, status: BanListCardStatus): List<Card>
 
 	/**
 	 * Checks the database for the number of ban lists stored.
@@ -47,7 +48,7 @@ interface BanListDao {
 	 * id: Identifier of newly added card
 	 * previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	fun getNewContentOfBanList(banListDate: String, status: Dao.Status): List<CardsPreviousBanListStatus>
+	fun getNewContentOfBanList(banListDate: String, status: BanListCardStatus): List<CardsPreviousBanListStatus>
 
 	/**
 	 *

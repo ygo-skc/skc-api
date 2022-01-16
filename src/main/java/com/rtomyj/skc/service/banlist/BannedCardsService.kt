@@ -3,6 +3,7 @@ package com.rtomyj.skc.service.banlist
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
@@ -40,9 +41,9 @@ class BannedCardsService @Autowired constructor(
 		log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
 
 		val banListInstance: BanListInstance = BanListInstance().apply {
-			forbidden = banListDao.getBanListByBanStatus(banListStartDate, Dao.Status.FORBIDDEN)
-			limited = banListDao.getBanListByBanStatus(banListStartDate, Dao.Status.LIMITED)
-			semiLimited = banListDao.getBanListByBanStatus(banListStartDate, Dao.Status.SEMI_LIMITED)
+			forbidden = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN)
+			limited = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED)
+			semiLimited = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED)
 			effectiveDate = banListStartDate
 			comparedTo = banListDao.getPreviousBanListDate(banListStartDate)
 

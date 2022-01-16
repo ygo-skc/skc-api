@@ -3,6 +3,7 @@ package com.rtomyj.skc.dao.implementation
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListDate
@@ -93,7 +94,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
 	}
 
 
-	override fun getBanListByBanStatus(date: String, status: Dao.Status): List<Card> {
+	override fun getBanListByBanStatus(date: String, status: BanListCardStatus): List<Card> {
 		throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
 	}
 
@@ -109,7 +110,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
 		throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
 	}
 
-	override fun getNewContentOfBanList(banListDate: String, status: Dao.Status): List<CardsPreviousBanListStatus> {
+	override fun getNewContentOfBanList(banListDate: String, status: BanListCardStatus): List<CardsPreviousBanListStatus> {
 		throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
 	}
 
