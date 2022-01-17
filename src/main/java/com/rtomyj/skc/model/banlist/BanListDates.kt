@@ -25,7 +25,7 @@ data class BanListDates(
 				.linkTo(
 					WebMvcLinkBuilder
 						.methodOn(controllerClass)
-						.banListStartDates
+						.banListStartDates()
 				)
 				.withSelfRel()
 		)
