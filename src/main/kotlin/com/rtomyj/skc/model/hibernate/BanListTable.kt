@@ -2,7 +2,6 @@ package com.rtomyj.skc.model.hibernate
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
-import lombok.EqualsAndHashCode
 import java.io.Serializable
 import java.util.*
 import javax.persistence.*

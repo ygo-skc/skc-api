@@ -4,7 +4,6 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 val scalaLibraryVersion = "2.13.8"
 val springBootVersion = "2.6.2"
 val swagger2Version = "3.0.0"
-val lombokVersion = "1.18.22"
 val mysqlVersion = "8.0.27"
 val jacksonVersion = "2.13.1"
 val cucumberVersion = "6.7.0"
@@ -38,7 +37,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "1.3.0"
+version = "2.0.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -79,9 +78,6 @@ dependencies {
 
 
 	implementation("com.google.guava:guava:$guavaVersion")
-
-	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
-	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE's
 }
 
 

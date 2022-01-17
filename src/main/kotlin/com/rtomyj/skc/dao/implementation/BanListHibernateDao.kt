@@ -11,7 +11,6 @@ import com.rtomyj.skc.model.banlist.CardBanListStatus
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.model.hibernate.BanListTable
-import lombok.extern.slf4j.Slf4j
 import org.hibernate.SessionFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,7 +24,6 @@ import javax.persistence.PersistenceException
  * Hibernate implementation of DB DAO interface.
  */
 @Repository("ban-list-hibernate")
-@Slf4j
 class BanListHibernateDao @Autowired constructor(private var entityManagerFactory: EntityManagerFactory) : BanListDao {
 
     companion object {

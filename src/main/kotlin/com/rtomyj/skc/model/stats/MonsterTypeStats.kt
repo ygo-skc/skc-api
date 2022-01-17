@@ -4,12 +4,10 @@ import com.rtomyj.skc.controller.stats.StatsController
 import com.rtomyj.skc.model.HateoasLinks
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import lombok.EqualsAndHashCode
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
 @ApiModel(description = "Statistics for monster types stored in Database.", parent = RepresentationModel::class)
-@EqualsAndHashCode(callSuper = true)
 data class MonsterTypeStats(
 	@ApiModelProperty(
 		value = "The scope or filter used when retrieving monster type stats.",

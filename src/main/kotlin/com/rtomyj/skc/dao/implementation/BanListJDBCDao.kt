@@ -7,7 +7,6 @@ import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.model.banlist.CardBanListStatus
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.card.Card
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +21,6 @@ import java.text.SimpleDateFormat
 
 @Repository
 @Qualifier("ban-list-jdbc")
-@Slf4j
 class BanListJDBCDao @Autowired constructor(
     private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
     @Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
