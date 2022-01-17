@@ -39,10 +39,8 @@
 				},
 				"Policies": {
 					"TimeBasedTriggeringPolicy": {
-						"size":"10 MB"
 					}
-				},
-				"disableAnsi": true
+				}
 			}
 		},
 		"loggers": {
