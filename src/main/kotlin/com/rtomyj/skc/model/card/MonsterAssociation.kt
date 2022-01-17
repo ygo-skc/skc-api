@@ -72,7 +72,7 @@ class MonsterAssociation(
                 .stream()
                 .map { it.monsterAssociation }
                 .filter { it != null }
-                .forEach { obj: MonsterAssociation -> obj.transformMonsterLinkRating() }
+                .forEach { it!!.transformMonsterLinkRating() }
         }
     }
 

@@ -40,7 +40,7 @@ class CardService @Autowired constructor(
         val card = cardDao.getCardInfo(cardId)
         if (fetchAllInfo) {
             card.foundIn = ArrayList(productDao.getProductDetailsForCard(cardId))
-            card.restrictedIn = banListDao.getBanListDetailsForCard(cardId)
+            card.restrictedIn = banListDao.getBanListDetailsForCard(cardId).toMutableList()
             card.monsterAssociation?.transformMonsterLinkRating()
 
             /*
@@ -48,10 +48,12 @@ class CardService @Autowired constructor(
 				found in the same pack into the same ProductContent object
 			 */
             var firstOccurrenceOfProduct: Product? = null
-            val it = card.foundIn.iterator()
-            while (it.hasNext()) {
+            val it = card.foundIn?.listIterator()
+            while (it != null && it.hasNext()) {
                 val currentProduct = it.next()
-                if (firstOccurrenceOfProduct != null && firstOccurrenceOfProduct.productId == currentProduct.productId && firstOccurrenceOfProduct.productContent[0].productPosition == currentProduct.productContent[0].productPosition) {
+                if (firstOccurrenceOfProduct?.productId == currentProduct.productId
+                    && firstOccurrenceOfProduct.productContent[0].productPosition == currentProduct.productContent[0].productPosition
+                ) {
                     firstOccurrenceOfProduct.productContent.addAll(currentProduct.productContent)
                     it.remove()
                 } else firstOccurrenceOfProduct = currentProduct

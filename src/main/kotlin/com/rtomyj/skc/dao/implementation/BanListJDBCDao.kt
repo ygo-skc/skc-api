@@ -45,13 +45,16 @@ class BanListJDBCDao @Autowired constructor(
             val cardList = ArrayList<Card>()
             while (row.next()) {
                 cardList.add(
-                    Card()
+                    Card(
+                        row.getString(5),
+                        row.getString(1),
+                        row.getString(3),
+                        row.getString(6),
+                        row.getString(4)
+
+                    )
                         .apply {
-                            cardName = row.getString(1)
                             monsterType = row.getString(2)
-                            cardColor = row.getString(3)
-                            cardEffect = row.getString(4)
-                            cardID = row.getString(5)
                         }
                 )
             }

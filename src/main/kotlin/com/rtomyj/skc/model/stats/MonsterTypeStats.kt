@@ -20,7 +20,7 @@ data class MonsterTypeStats(
 		value = "Monster types and the total number of cards currently in Database that have the type for given scope.",
 		accessMode = ApiModelProperty.AccessMode.READ_ONLY
 	)
-	val monsterTypes: Map<String, Int>
+	val monsterTypes: MutableMap<String, Int>
 ) : RepresentationModel<MonsterTypeStats?>(), HateoasLinks {
 
 	override fun setSelfLink() {

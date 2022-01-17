@@ -9,7 +9,7 @@ object DBQueryConstants {
 				" FROM card_info" +
 				WHERE_CARD_NUMBER_IS_CARD_ID
 
-	const val GET_BAN_LIST_BY_STATUS = "SELECT card_name, monster_type, card_color, card_effect, card_number" +
+	const val GET_BAN_LIST_BY_STATUS = "SELECT card_name, monster_type, card_color, card_effect, card_number, card_attribute" +
 			" FROM ban_list_info" +
 			" WHERE ban_status = :status" +
 			" AND ban_list_date = :date" +
