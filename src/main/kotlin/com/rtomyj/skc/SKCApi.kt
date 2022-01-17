@@ -11,12 +11,12 @@ import org.springframework.boot.SpringApplication
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
-class YugiohAPIMain
+class SKCApi
 
 
 /**
  * Inits the program. Main method for program.
  */
 fun main() {
-    SpringApplication.run(YugiohAPIMain::class.java)
+    SpringApplication.run(SKCApi::class.java)
 }

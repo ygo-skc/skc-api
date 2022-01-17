@@ -2,9 +2,8 @@ package com.rtomyj.skc.dao.implementation
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.model.card.Card
 import org.junit.jupiter.api.Assertions
@@ -32,41 +31,9 @@ class BanListJDBCDaoTest {
     @Qualifier("ban-list-jdbc")
     private lateinit var banListDao: BanListDao
 
-    private val stratosTestCard: Card = Card
-        .builder()
-        .cardID(TestConstants.STRATOS_ID)
-        .cardName(TestConstants.STRATOS_NAME)
-        .monsterType(TestConstants.STRATOS_TYPE)
-        .cardColor(TestConstants.STRATOS_COLOR)
-        .cardAttribute(TestConstants.STRATOS_ATTRIBUTE)
-        .monsterAttack(TestConstants.STRATOS_ATK)
-        .monsterDefense(TestConstants.STRATOS_DEF)
-        .cardEffect(TestConstants.STRATOS_FULL_EFFECT)
-        .build()
-
-    private val aHeroLivesTestCard: Card = Card
-        .builder()
-        .cardID(TestConstants.A_HERO_LIVES_ID)
-        .cardName(TestConstants.A_HERO_LIVES_NAME)
-        .monsterType(null)
-        .cardColor(TestConstants.A_HERO_LIVES_COLOR)
-        .cardAttribute(TestConstants.A_HERO_LIVES_ATTRIBUTE)
-        .monsterAttack(null)
-        .monsterDefense(null)
-        .cardEffect(TestConstants.A_HERO_LIVES_FULL_EFFECT)
-        .build()
-
-    private val dMaliTestCard: Card = Card
-        .builder()
-        .cardID(TestConstants.D_MALICIOUS_ID)
-        .cardName(TestConstants.D_MALICIOUS_NAME)
-        .monsterType(TestConstants.D_MALICIOUS_TYPE)
-        .cardColor(TestConstants.D_MALICIOUS_COLOR)
-        .cardAttribute(TestConstants.D_MALICIOUS_ATTRIBUTE)
-        .monsterAttack(TestConstants.D_MALICIOUS_ATK)
-        .monsterDefense(TestConstants.D_MALICIOUS_DEF)
-        .cardEffect(TestConstants.D_MALICIOUS_FULL_EFFECT)
-        .build()
+    private val stratosTestCard: Card = TestObjects.STRATOS_CARD_FULL_TEXT
+    private val aHeroLivesTestCard = TestObjects.A_HERO_LIVES_CARD_FULL_TEXT
+    private val dMaliTestCard: Card = TestObjects.D_MALI_CARD_FULL_TEXT
 
 
     @Nested

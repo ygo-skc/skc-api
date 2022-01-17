@@ -89,8 +89,8 @@ class JDBCDao @Autowired constructor(
                 )
                     .apply {
                         monsterType = row.getString(5)
-                        monsterAttack = row.getObject(6, Int::class.java)
-                        monsterDefense = row.getObject(7, Int::class.java)
+                        monsterAttack = row.getObject(6, Int::class.javaObjectType)
+                        monsterDefense = row.getObject(7, Int::class.javaObjectType)
                         monsterAssociation = parseDBString(row.getString(8), objectMapper)
                     }
             }

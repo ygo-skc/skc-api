@@ -2,6 +2,7 @@ package com.rtomyj.skc.service
 
 import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.dao.ProductDao
@@ -39,11 +40,7 @@ class CardServiceTest {
     @Autowired
     private lateinit var cardService: CardService
 
-    private val successfulCardReceived: Card = Card
-        .builder()
-        .cardID(TestConstants.STRATOS_ID)
-        .cardName(TestConstants.STRATOS_NAME)
-        .build()
+    private val successfulCardReceived: Card = TestObjects.STRATOS_CARD_FULL_TEXT
 
 
     @Nested
@@ -83,24 +80,25 @@ class CardServiceTest {
         fun `Test Fetching Card From DB, Failure`() {
             // mock calls
             Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
-                .thenThrow(YgoException(
-                    String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.D001
-                ))
+                .thenThrow(
+                    YgoException(
+                        String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE),
+                        ErrorType.D001
+                    )
+                )
 
 
             // call code and assert throws
             Assertions.assertThrows(YgoException::class.java) {
                 cardService.getCardInfo(
-                    TestConstants.ID_THAT_CAUSES_FAILURE
-                    , false
+                    TestConstants.ID_THAT_CAUSES_FAILURE, false
                 )
             }
 
 
             // verify mocks are called the exact number of times expected
             Mockito.verify(
-                cardDao
-                , Mockito.times(1)
+                cardDao, Mockito.times(1)
             ).getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))
         }
     }
