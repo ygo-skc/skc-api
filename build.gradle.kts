@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.6.2"
+val springBootVersion = "2.6.3"
 val swagger2Version = "3.0.0"
 val mysqlVersion = "8.0.28"
 val jacksonVersion = "2.13.1"
