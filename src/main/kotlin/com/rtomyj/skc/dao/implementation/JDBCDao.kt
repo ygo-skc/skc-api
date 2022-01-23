@@ -59,7 +59,7 @@ class JDBCDao @Autowired constructor(
                 jdbcNamedTemplate.queryForObject(VERSION_QUERY, MapSqlParameterSource(), String::class.java)
             status = "up"
             assert(version != null)
-            val versionStringTokens = version!!.split("\\.").toTypedArray()
+            val versionStringTokens = version!!.split("-").toTypedArray()
             versionMajor = if (versionStringTokens.size != 0) versionStringTokens[0] else "---"
             downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
         } catch (e: DataAccessException) {
