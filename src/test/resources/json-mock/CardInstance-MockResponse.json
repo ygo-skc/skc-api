@@ -12,58 +12,72 @@
   "cardEffect": "When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; Destroy Spells/Traps on the field, up to the number of \"HERO\" monsters you control, except this card.\n&bull; Add 1 \"HERO\" monster from your Deck to your hand.",
   "restrictedIn": [
     {
+      "cardID": "40044918",
       "banListDate": "2019-07-15",
       "banStatus": "Semi-Limited"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2019-04-29",
       "banStatus": "Limited"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2019-01-28",
       "banStatus": "Limited"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2018-12-03",
       "banStatus": "Limited"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2018-09-17",
       "banStatus": "Limited"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2018-05-21",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2018-02-05",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2017-11-06",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2017-09-18",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2017-06-12",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2017-03-31",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2016-08-29",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2016-04-11",
       "banStatus": "Forbidden"
     },
     {
+      "cardID": "40044918",
       "banListDate": "2015-11-09",
       "banStatus": "Forbidden"
     }

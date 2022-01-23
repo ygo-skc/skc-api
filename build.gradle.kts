@@ -2,10 +2,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.6.2"
+val springBootVersion = "2.6.3"
 val swagger2Version = "3.0.0"
-val lombokVersion = "1.18.22"
-val mysqlVersion = "8.0.27"
+val mysqlVersion = "8.0.28"
 val jacksonVersion = "2.13.1"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
@@ -18,21 +17,28 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.6.2"
+	id("org.springframework.boot") version "2.6.3"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.0"
 	id("com.adarshr.test-logger") version "3.1.0"	// printing for JUnits
+
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
+	kotlin("plugin.allopen") version "1.6.10"
+
 	jacoco
 	java
 	scala
 }
 
+allOpen {
+	annotation("com.rtomyj.skc.Open")
+}
+
 
 group = "com.rtomyj.skc"
-version = "1.2.9"
-java.sourceCompatibility = JavaVersion.VERSION_16
+version = "2.0.0"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 
 repositories {
@@ -68,11 +74,10 @@ dependencies {
 
 	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
 
 	implementation("com.google.guava:guava:$guavaVersion")
-
-	annotationProcessor("org.projectlombok:lombok:$lombokVersion")	// needed to compile via gradle CLI
-	implementation("org.projectlombok:lombok:$lombokVersion")	// plug in required to work in VSCode, might be the same for other IDE's
 }
 
 
@@ -103,8 +108,7 @@ apply(from = "gradle/perfTest.gradle.kts")
 tasks {
 	withType<KotlinCompile> {
 		kotlinOptions {
-			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = JavaVersion.VERSION_16.toString()
+			jvmTarget = JavaVersion.VERSION_17.toString()
 		}
 	}
 
@@ -114,6 +118,7 @@ tasks {
 
 		manifest.attributes.apply {
 			put("Implementation-Title", archivesBaseName)
+			put("Implementation-Version", project.version)
 		}
 	}
 
