@@ -89,24 +89,6 @@ data class Card(
             trimEffects(banListInstance.limited)
             trimEffects(banListInstance.semiLimited)
         }
-
-
-        @JvmStatic
-        @Throws(SQLException::class)
-        fun productContent(row: ResultSet, objectMapper: ObjectMapper): Card {
-            return Card(
-                row.getString(10),
-                row.getString(12),
-                row.getString(11),
-                row.getString(13),
-                row.getString(14)
-            ).apply {
-                monsterType = row.getString(15)
-                monsterAttack = row.getObject(16, Int::class.java)
-                monsterDefense = row.getObject(17, Int::class.java)
-                monsterAssociation = parseDBString(row.getString(18), objectMapper)
-            }
-        }
     }
 
     @ApiModelProperty(value = SwaggerConstants.MONSTER_TYPE_DESCRIPTION)

@@ -6,6 +6,7 @@ import com.rtomyj.skc.dao.ProductDao
 import com.rtomyj.skc.enums.ProductType
 import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition
 import com.rtomyj.skc.model.card.Card
+import com.rtomyj.skc.model.card.MonsterAssociation
 import com.rtomyj.skc.model.product.Product
 import com.rtomyj.skc.model.product.ProductContent
 import com.rtomyj.skc.model.product.Products
@@ -160,6 +161,7 @@ class ProductJDBCDao @Autowired constructor(
 		return products
 	}
 
+
 	override fun getProductContents(
 		productId: String,
 		locale: String
@@ -169,8 +171,8 @@ class ProductJDBCDao @Autowired constructor(
 		sqlParams.addValue(LOCALE, locale)
 
 		val rarities: MutableMap<String, MutableSet<String>> = HashMap()
-		val cardPositionInProductMapsCardInfo =
-			HashMap<String, ProductContent>() // map will store references to ProductContent where each ProductContent is equivalent to a cards position ina product eg: 001
+		// map will store references to ProductContent where each ProductContent is equivalent to a cards position ina product eg: 001
+		val cardPositionInProductMapsCardInfo = HashMap<String, ProductContent>()
 
 
 		jdbcNamedTemplate.query(DBQueryConstants.GET_PRODUCT_CONTENT, sqlParams) { row: ResultSet, _: Int ->
@@ -182,7 +184,19 @@ class ProductJDBCDao @Autowired constructor(
 
 			// reference is stored once and only once. Rarity info is still being updated but since we are storing the reference to the rarity info we don't need to keep modifying the card
 			cardPositionInProductMapsCardInfo.computeIfAbsent(cardPositionWithinProduct) {
-				val card = Card.productContent(row, objectMapper)   // TODO: update me when Card class is in kotlin
+				val card = Card(
+					row.getString(10),
+					row.getString(12),
+					row.getString(11),
+					row.getString(13),
+					row.getString(14)
+				).apply {
+					monsterType = row.getString(15)
+					monsterAttack = row.getInt(16)
+					monsterDefense = row.getInt(17)
+					monsterAssociation = MonsterAssociation.parseDBString(row.getString(18), objectMapper)
+				}
+
 				ProductContent(
 					card,
 					row.getString(ProductsTableDefinition.PRODUCT_POSTION.toString()),
@@ -191,8 +205,11 @@ class ProductJDBCDao @Autowired constructor(
 			}
 		}
 
-		return cardPositionInProductMapsCardInfo.values.toSet()
+		return cardPositionInProductMapsCardInfo
+			.values
+			.toSortedSet(compareBy { it.productPosition })
 	}
+
 
 	override fun getAllProductsByType(productType: ProductType, locale: String): Products {
 		val sqlParams = MapSqlParameterSource()

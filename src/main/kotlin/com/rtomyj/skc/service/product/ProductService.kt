@@ -26,7 +26,7 @@ class ProductService @Autowired constructor(
     }
 
 
-    fun getProductsWithLocaleAndProductType(productType: ProductType, locale: String): Products {
+    fun getProductsUsingLocaleAndProductType(productType: ProductType, locale: String): Products {
         val products = productDao.getAllProductsByType(productType, locale)
             .apply {
                 this.productType = productType
@@ -37,7 +37,7 @@ class ProductService @Autowired constructor(
     }
 
 
-    fun getSingleProductWithLocale(productId: String, locale: String): Product {
+    fun getSingleProductUsingLocale(productId: String, locale: String): Product {
         val product = productDao.getProductInfo(productId, locale)
 
         product.productContent.addAll(productDao.getProductContents(productId, locale))

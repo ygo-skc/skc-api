@@ -97,6 +97,6 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 	): ResponseEntity<Products> {
 		log.info("Retrieving all products categorized as {} product type for locale {}", productType, locale)
 
-		return ResponseEntity.ok(availableProductsService.getProductsWithLocaleAndProductType(productType, locale))
+		return ResponseEntity.ok(availableProductsService.getProductsUsingLocaleAndProductType(productType, locale))
 	}
 }
