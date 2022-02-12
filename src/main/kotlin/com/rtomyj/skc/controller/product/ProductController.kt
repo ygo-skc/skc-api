@@ -66,7 +66,7 @@ class ProductController @Autowired constructor(private val availablePacksService
 
 		log.info("Retrieving product info for product w/ ID: {} and locale: {}", productId, localAsUpper)
 		return ResponseEntity.ok(
-			availablePacksService.getSingleProductWithLocale(
+			availablePacksService.getSingleProductUsingLocale(
 				productId,
 				localAsUpper
 			)
