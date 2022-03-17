@@ -191,7 +191,7 @@ pitest {
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
-	junit5PluginVersion.set("0.12")
+	junit5PluginVersion.set("0.15")
 
 	mutators.set(listOf("STRONGER"))
 }
