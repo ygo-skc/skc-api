@@ -38,7 +38,9 @@ Feature: Fetch information about an individual card. Use Card endpoints of SKC A
 
         Examples:
             | cardID   | cardName                                | cardColor        | cardAttribute | monsterType                     | monsterAtk | monsterDef | level | rank | httpStatus | productsFoundIn  | restrictedIn     |
+            | 07902349 | Left Arm of the Forbidden One           | Normal           | Dark          | Spellcaster/Normal              | 200        | 300        | 1     |      | 200        | 3                | 25               |
             | 40044918 | Elemental HERO Stratos                  | Effect           | Wind          | Warrior/Effect                  | 1800       | 300        | 4     |      | 200        | 4                | 10               |
+            | 43387895 | Supreme King Dragon Starving Venom      | Fusion           | Dark          | Dragon/Fusion/Effect            | 2800       | 2000       | 8     |      | 200        | 1                | 17               |
 
 
 
@@ -87,6 +89,7 @@ Feature: Fetch information about an individual card. Use Card endpoints of SKC A
         Examples:
             | cardID   | cardName                                | cardColor        | cardAttribute | monsterType                     | monsterAtk | monsterDef | level | rank | httpStatus |
             | 21844576 | Elemental HERO Avian                    | Normal           | Wind          | Warrior/Normal                  | 1000       | 1000       | 3     |      | 200        |
+            | 79979666 | Elemental HERO Bubbleman                | Effect           | Water         | Warrior/Effect                  | 800        | 1200       | 4     |      | 200        |
             | 40044918 | Elemental HERO Stratos                  | Effect           | Wind          | Warrior/Effect                  | 1800       | 300        | 4     |      | 200        |
             | 35809262 | Elemental HERO Flame Wingman            | Fusion           | Wind          | Warrior/Fusion/Effect           | 2100       | 1200       | 6     |      | 200        |
             | 47963370 | Magician of Chaos                       | Ritual           | Dark          | Spellcaster/Ritual/Effect       | 2500       | 2100       | 7     |      | 200        |
