@@ -1,5 +1,4 @@
-Feature: Fetch information about an individual card.
-    Use Card endpoints of YGO API to fetch info about a card.
+Feature: Fetch information about an individual card. Use Card endpoints of SKC API to fetch info about a card.
 
     Scenario Outline: Fetching all information about a card and checking if response has the necessary attributes and values (see other scenarios for more specific value checks).
         Given I request all info for card with ID: "<cardID>"

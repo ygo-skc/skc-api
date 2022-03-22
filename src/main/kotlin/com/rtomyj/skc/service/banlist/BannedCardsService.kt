@@ -68,7 +68,9 @@ class BannedCardsService @Autowired constructor(
 	private fun validateBanListInstance(banListInstance: BanListInstance, banListStartDate: String) {
 		if (banListInstance.numForbidden == 0 && banListInstance.numLimited == 0 && banListInstance.numSemiLimited == 0) {
 			throw YgoException(
-				String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.D001
+				String.format(
+					ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate
+				), ErrorType.D001
 			)
 		}
 	}

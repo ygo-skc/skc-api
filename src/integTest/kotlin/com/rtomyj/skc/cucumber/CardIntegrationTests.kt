@@ -1,37 +1,26 @@
 package com.rtomyj.skc.cucumber
 
 import io.cucumber.java.en.And
-import io.restassured.response.ValidatableResponse
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.restassured.RestAssured
-import io.restassured.path.json.JsonPath
 import org.hamcrest.Matchers
 
-class CardIntegrationTests {
-
-    companion object {
-//        private final String BASE_ENDPOINT = "http://localhost:9999/api/v1/card";
-        private const val BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card"
-//        private final String BASE_ENDPOINT = "https://skc-ygo-api.com/api/v1/card";
-    }
-
-    
-    private lateinit var jsonPath: JsonPath
-    private lateinit var validatableResponse: ValidatableResponse
+class CardIntegrationTests: CucumberBase() {
+    val requestEndpoint = "$BASE_ENDPOINT/card"
     
     
     @Given("I request all info for card with ID: {string}")
     fun allInfoIsRequestedForCard(cardId: String) {
-        val requestEndpoint = "$BASE_ENDPOINT/$cardId?allInfo=true"
-        jsonPath = RestAssured.get(requestEndpoint).jsonPath()
-        validatableResponse = RestAssured.get(requestEndpoint).then()
+        val res = RestAssured.get("$requestEndpoint/$cardId?allInfo=true")
+
+        jsonPath = res.jsonPath()
+        validatableResponse = res.then()
     }
 
     @Given("I request info without all info flag for card with ID: {string}")
     fun someInfoIsRequestedForCard(cardId: String) {
-        val requestEndpoint = "$BASE_ENDPOINT/$cardId"
-        validatableResponse = RestAssured.get(requestEndpoint).then()
+        validatableResponse = RestAssured.get("$requestEndpoint/$cardId").then()
     }
 
     @Then("http status of response should be {int}")
