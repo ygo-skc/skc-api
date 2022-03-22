@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.6.3"
+val springBootVersion = "2.6.4"
 val swagger2Version = "3.0.0"
 val mysqlVersion = "8.0.28"
 val jacksonVersion = "2.13.1"
@@ -10,17 +10,17 @@ val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
-val guavaVersion = "31.0.1-jre"
+val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
 
 val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.6.3"
+	id("org.springframework.boot") version "2.6.4"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	id("info.solidsoft.pitest") version "1.7.0"
-	id("com.adarshr.test-logger") version "3.1.0"	// printing for JUnits
+	id("info.solidsoft.pitest") version "1.7.4"
+	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
@@ -37,7 +37,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.0.1"
+version = "2.0.2"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -191,7 +191,7 @@ pitest {
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
-	junit5PluginVersion.set("0.12")
+	junit5PluginVersion.set("0.15")
 
 	mutators.set(listOf("STRONGER"))
 }

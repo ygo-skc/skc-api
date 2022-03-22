@@ -25,7 +25,6 @@ class BanListJDBCDao @Autowired constructor(
     private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
     @Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
 ) : BanListDao {
-
     companion object {
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
         private const val UNSUPPORTED_OPERATION_MESSAGE = "HibernateDao not able to execute method."

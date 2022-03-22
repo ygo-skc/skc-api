@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.jdbc.core.namedparam.SqlParameterSource
 import org.springframework.stereotype.Repository
 import org.springframework.util.StopWatch
 import java.sql.ResultSet
@@ -40,7 +39,6 @@ class JDBCDao @Autowired constructor(
     @Qualifier("dbSimpleDateFormat") val dateFormat: SimpleDateFormat,
     val objectMapper: ObjectMapper
 ) : Dao {
-
     companion object {
         private const val VERSION_QUERY = "select version() as version"
         private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -60,17 +58,18 @@ class JDBCDao @Autowired constructor(
             status = "up"
             assert(version != null)
             val versionStringTokens = version!!.split("-").toTypedArray()
-            versionMajor = if (versionStringTokens.size != 0) versionStringTokens[0] else "---"
+            versionMajor = if (versionStringTokens.isNotEmpty()) versionStringTokens[0] else "---"
             downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
         } catch (e: DataAccessException) {
-            log.error("Could not get version of the DB. Exception occured: {}", e.toString())
+            log.error("Could not get version of the DB. Exception occurred: {}", e.toString())
             downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
         } catch (e: AssertionError) {
-            log.error("Could not get version of the DB. Exception occured: {}", e.toString())
+            log.error("Could not get version of the DB. Exception occurred: {}", e.toString())
             downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
         }
         return downstreamStatus
     }
+
 
     @Throws(YgoException::class)
     override fun getCardInfo(cardID: String): Card {
@@ -130,21 +129,11 @@ class JDBCDao @Autowired constructor(
         limit: Int,
         sqlParams: MapSqlParameterSource
     ) {
-        var cardId = cardId
-        var cardName = cardName
-        var cardAttribute = cardAttribute
-        var cardColor = cardColor
-        var monsterType = monsterType
-        cardId = "%$cardId%"
-        cardName = "%$cardName%"
-        cardAttribute = if (cardAttribute!!.isEmpty()) ".*" else cardAttribute
-        cardColor = if (cardColor!!.isEmpty()) ".*" else cardColor
-        monsterType = if (monsterType!!.isEmpty()) ".*" else monsterType
-        sqlParams.addValue("cardId", cardId)
-        sqlParams.addValue("cardName", cardName)
-        sqlParams.addValue("cardAttribute", cardAttribute)
-        sqlParams.addValue("cardColor", cardColor)
-        sqlParams.addValue("monsterType", monsterType)
+        sqlParams.addValue("cardId", "%$cardId%")
+        sqlParams.addValue("cardName", "%$cardName%")
+        sqlParams.addValue("cardAttribute", if (cardAttribute!!.isEmpty()) ".*" else cardAttribute)
+        sqlParams.addValue("cardColor", if (cardColor!!.isEmpty()) ".*" else cardColor)
+        sqlParams.addValue("monsterType", if (monsterType!!.isEmpty()) ".*" else monsterType)
         sqlParams.addValue("limit", limit)
     }
 
@@ -287,15 +276,15 @@ class JDBCDao @Autowired constructor(
     override fun getDatabaseStats(): DatabaseStats {
         return jdbcNamedTemplate
             .queryForObject(
-                DBQueryConstants.GET_DATABASE_TOTALS, null as SqlParameterSource?
-            ) { row: ResultSet, rowNum: Int ->
+                DBQueryConstants.GET_DATABASE_TOTALS, MapSqlParameterSource()
+            ) { row: ResultSet, _: Int ->
                 DatabaseStats(
                     row.getInt(1),
                     row.getInt(2),
                     row.getInt(3),
                     row.getInt(4)
                 )
-            }
+            }!!
     }
 
     private fun transformCollectionToSQLOr(monsterAssociationValueSet: Collection<String>): String {
@@ -313,7 +302,6 @@ class JDBCDao @Autowired constructor(
     ): CardBrowseResults {
         val stopWatch = StopWatch()
         stopWatch.start()
-        val SQL_TEMPLATE = DBQueryConstants.GET_CARD_BROWSE_RESULTS
         val cardColorCriteria =
             if (criteria.cardColors.isEmpty()) ".*" else java.lang.String.join("|", criteria.cardColors)
         val attributeCriteria =
@@ -343,19 +331,21 @@ class JDBCDao @Autowired constructor(
             val levelCriteria = transformCollectionToSQLOr(monsterLevelSet)
             val rankCriteria = transformCollectionToSQLOr(monsterRankSet)
             val linkRatingCriteria = transformCollectionToSQLOr(monsterLinkRatingsSet)
+
             val monsterAssociationCriteriaList: MutableList<String?> =
-                ArrayList(Arrays.asList(levelCriteria, rankCriteria, linkRatingCriteria))
-            monsterAssociationCriteriaList.removeAll(Arrays.asList(null, ""))
+                mutableListOf(levelCriteria, rankCriteria, linkRatingCriteria)
+            monsterAssociationCriteriaList.removeAll(listOf(null, ""))
+
             val monsterAssociationCriteria = java.lang.String.join("+", monsterAssociationCriteriaList)
             sqlParams.addValue("monsterAssociation", monsterAssociationCriteria)
         }
-        val sql = String.format(SQL_TEMPLATE, monsterAssociationWhereClause)
+        val sql = String.format(DBQueryConstants.GET_CARD_BROWSE_RESULTS, monsterAssociationWhereClause)
         log.debug(
             "Fetching card browse results from DB using query: ( {} ) with sql params ( {} ).",
             sql,
             sqlParams
         )
-        val results = jdbcNamedTemplate.query(sql, sqlParams) { row: ResultSet, rowNum: Int ->
+        val results = jdbcNamedTemplate.query(sql, sqlParams) { row: ResultSet, _: Int ->
             Card(
                 row.getString(BrowseQueryDefinition.CARD_ID.toString()),
                 row.getString(BrowseQueryDefinition.CARD_NAME.toString()),
@@ -382,7 +372,7 @@ class JDBCDao @Autowired constructor(
         val sql = "SELECT card_color FROM card_colors WHERE card_color != 'Token'"
         log.debug("Retrieving unique card color values from DB using query {}", sql)
         val cardColors: Set<String> = LinkedHashSet(
-            jdbcNamedTemplate.query(sql) { row: ResultSet, rowNum: Int -> row.getString(1) })
+            jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
         stopWatch.stop()
         log.debug("Time taken to retrieve unique card color values: {}ms", stopWatch.totalTimeMillis)
         return cardColors
@@ -391,20 +381,20 @@ class JDBCDao @Autowired constructor(
     override fun getMonsterAttributes(): Set<String> {
         val sql =
             "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute"
-        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, rowNum: Int -> row.getString(1) })
+        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
     }
 
     override fun getMonsterTypes(): Set<String> {
         val sql =
             "SELECT DISTINCT SUBSTRING_INDEX(monster_type, '/', 1) AS monster_types FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_types"
-        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, rowNum: Int -> row.getString(1) })
+        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
     }
 
     override fun getMonsterSubTypes(): Set<String> {
         val sql =
             "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(monster_type, '/', 2), '/', -1) AS monster_sub_types FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_sub_types"
         val monsterSubTypes: MutableSet<String> = LinkedHashSet(
-            jdbcNamedTemplate.query(sql) { row: ResultSet, rowNum: Int ->
+            jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int ->
                 row.getString(1).split("/").toTypedArray()[0]
             })
         val cardColors = getCardColors()
@@ -424,7 +414,7 @@ class JDBCDao @Autowired constructor(
         val sql =
             "SELECT DISTINCT monster_association FROM cards WHERE monster_association LIKE :monsterAssociationField"
         val result: Set<MonsterAssociation> = HashSet(
-            jdbcNamedTemplate.query(sql, sqlParams) { row: ResultSet, rowNum: Int ->
+            jdbcNamedTemplate.query(sql, sqlParams) { row: ResultSet, _: Int ->
                 parseDBString(
                     row.getString(1),
                     objectMapper

@@ -27,7 +27,6 @@ class ProductJDBCDao @Autowired constructor(
 	@Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
 	private val objectMapper: ObjectMapper
 ) : ProductDao {
-
 	companion object {
 		private val log = LoggerFactory.getLogger(this::class.java.name)
 

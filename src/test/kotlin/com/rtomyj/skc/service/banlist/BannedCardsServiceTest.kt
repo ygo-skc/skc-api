@@ -1,12 +1,10 @@
 package com.rtomyj.skc.service.banlist
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
@@ -14,7 +12,10 @@ import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.model.card.Card
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -109,6 +110,9 @@ class BannedCardsServiceTest {
         }
 
 
+        /**
+         * Sets up mocks for methods called by happy path. Will Also verify return values are as expected.
+         */
         private fun happyPath(saveBandwidth: Boolean, fetchAllInfo: Boolean) {
             // create mocks
             Mockito.`when`(
@@ -160,11 +164,51 @@ class BannedCardsServiceTest {
             val banListInstance = bannedCardsService
                 .getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, fetchAllInfo)
 
-            var forbidden = banListInstance.forbidden
-            var limited = banListInstance.limited
-            var semiLimited = banListInstance.semiLimited
+            val forbidden = banListInstance.forbidden
+            val limited = banListInstance.limited
+            val semiLimited = banListInstance.semiLimited
+
+            assertCommonValues(banListInstance, forbidden, limited, semiLimited)
+            assertSaveBandwidthValues(forbidden, limited, semiLimited, saveBandwidth)
+            assertFetchAllInfoValues(banListInstance, fetchAllInfo)
 
 
+            // verify mocks are called the exact number of times expected
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(BanListCardStatus.FORBIDDEN)
+            )
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(BanListCardStatus.LIMITED)
+            )
+            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
+                eq(TestConstants.BAN_LIST_START_DATE),
+                eq(BanListCardStatus.SEMI_LIMITED)
+            )
+            Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
+                eq(TestConstants.BAN_LIST_START_DATE)
+            )
+
+            if (fetchAllInfo) {
+                Mockito.verify(diffService, Mockito.times(1)).getNewContentForGivenBanList(
+                    eq(TestConstants.BAN_LIST_START_DATE)
+                )
+                Mockito.verify(diffService, Mockito.times(1)).getRemovedContentForGivenBanList(
+                    eq(TestConstants.BAN_LIST_START_DATE)
+                )
+            } else {
+                Mockito.verify(diffService, Mockito.times(0)).getNewContentForGivenBanList(
+                    eq(TestConstants.BAN_LIST_START_DATE)
+                )
+                Mockito.verify(diffService, Mockito.times(0)).getRemovedContentForGivenBanList(
+                    eq(TestConstants.BAN_LIST_START_DATE)
+                )
+            }
+        }
+
+
+        private fun assertCommonValues(banListInstance: BanListInstance, forbidden: List<Card>, limited: List<Card>, semiLimited: List<Card>) {
             // ensure objects are not null as expected
             Assertions.assertNotNull(banListInstance)
             Assertions.assertNotNull(forbidden)
@@ -233,8 +277,13 @@ class BannedCardsServiceTest {
                 , limited[0].links.getLink("self").get().href)
             Assertions.assertEquals("/card/${TestConstants.D_MALICIOUS_ID}?allInfo=true"
                 , semiLimited[0].links.getLink("self").get().href)
+        }
 
-            // verify effects of cards returned in ban list array depending on option used for saveBandwidth
+
+        /**
+         * \Verify effects of cards returned in ban list array depending on option used for saveBandwidth
+         */
+        private fun assertSaveBandwidthValues(forbidden: List<Card>, limited: List<Card>, semiLimited: List<Card>, saveBandwidth: Boolean) {
             if (saveBandwidth) {
                 Assertions.assertEquals(Card.trimEffect(TestConstants.STRATOS_FULL_EFFECT), forbidden[0].cardEffect)
                 Assertions.assertEquals(Card.trimEffect(TestConstants.A_HERO_LIVES_FULL_EFFECT), limited[0].cardEffect)
@@ -244,38 +293,27 @@ class BannedCardsServiceTest {
                 Assertions.assertEquals(TestConstants.A_HERO_LIVES_FULL_EFFECT, limited[0].cardEffect)
                 Assertions.assertEquals(TestConstants.D_MALICIOUS_FULL_EFFECT, semiLimited[0].cardEffect)
             }
+        }
 
-            // fetch all info was false so new/removed cards from ban list should not have value
+
+        /**
+         * If fetch all info was true so new/removed cards from ban list should have value
+         * Else fetch all info was false so same fields should be null
+         */
+        private fun assertFetchAllInfoValues(banListInstance: BanListInstance, fetchAllInfo: Boolean) {
             if (fetchAllInfo) {
                 Assertions.assertNotNull(banListInstance.newContent)
+                Assertions.assertEquals(TestConstants.STRATOS_NAME, banListInstance.newContent!!.newForbidden[0].cardName)
+                Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, banListInstance.newContent!!.newLimited[0].cardName)
+                Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, banListInstance.newContent!!.newLimited[1].cardName)
+
                 Assertions.assertNotNull(banListInstance.removedContent)
-            }
-
-
-            // verify mocks are called the exact number of times expected
-            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                eq(TestConstants.BAN_LIST_START_DATE),
-                eq(BanListCardStatus.FORBIDDEN)
-            )
-            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                eq(TestConstants.BAN_LIST_START_DATE),
-                eq(BanListCardStatus.LIMITED)
-            )
-            Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
-                eq(TestConstants.BAN_LIST_START_DATE),
-                eq(BanListCardStatus.SEMI_LIMITED)
-            )
-            Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
-                eq(TestConstants.BAN_LIST_START_DATE)
-            )
-
-            if (fetchAllInfo) {
-                Mockito.verify(diffService, Mockito.times(1)).getNewContentForGivenBanList(
-                    eq(TestConstants.BAN_LIST_START_DATE)
-                )
-                Mockito.verify(diffService, Mockito.times(1)).getRemovedContentForGivenBanList(
-                    eq(TestConstants.BAN_LIST_START_DATE)
-                )
+                Assertions.assertEquals(TestConstants.STRATOS_NAME, banListInstance.removedContent!!.removedCards[0].cardName)
+                Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, banListInstance.removedContent!!.removedCards[1].cardName)
+                Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, banListInstance.removedContent!!.removedCards[2].cardName)
+            } else {
+                Assertions.assertNull(banListInstance.newContent)
+                Assertions.assertNull(banListInstance.removedContent)
             }
         }
     }
@@ -336,7 +374,7 @@ class BannedCardsServiceTest {
 
 
             // call code and assert throws
-            val ex = Assertions.assertThrows(YgoException::class.java) {
+            val ex = Assertions.assertThrowsExactly(YgoException::class.java) {
                 bannedCardsService.getBanListByDate(
                     TestConstants.BAN_LIST_START_DATE,
                     isSaveBandwidth,
