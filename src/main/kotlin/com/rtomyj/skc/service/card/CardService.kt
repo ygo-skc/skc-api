@@ -38,10 +38,11 @@ class CardService @Autowired constructor(
         log.info("Fetching info for card w/ ID: ( {} )", cardId)
 
         val card = cardDao.getCardInfo(cardId)
+        card.monsterAssociation?.transformMonsterLinkRating()
+
         if (fetchAllInfo) {
             card.foundIn = ArrayList(productDao.getProductDetailsForCard(cardId))
             card.restrictedIn = banListDao.getBanListDetailsForCard(cardId).toMutableList()
-            card.monsterAssociation?.transformMonsterLinkRating()
 
             /*
 				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
@@ -59,6 +60,7 @@ class CardService @Autowired constructor(
                 } else firstOccurrenceOfProduct = currentProduct
             }
         }
+
         card.setLinks()
         return card
     }
