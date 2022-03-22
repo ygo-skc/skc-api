@@ -69,15 +69,15 @@ class CardInfoIntegrationTests: CucumberBase() {
         validatableResponse.body("foundIn", Matchers.nullValue())
     }
 
+    @And("ban lists card is found in should not be included")
+    fun banListInfoShouldBeAvailable() {
+        validatableResponse.body("restrictedIn", Matchers.nullValue())
+    }
+
     @And("ban lists card is found in should be greater than or equal to {int}")
     fun checkBanListInfoArraySize(restrictedIn: Int) {
-        if (jsonPath.get<Int>("restrictedIn") == null) {
-            validatableResponse.body("restrictedIn", Matchers.nullValue())
-        }
-        else {
-            validatableResponse.body("restrictedIn", Matchers.`is`(Matchers.notNullValue()))
-            validatableResponse.body("restrictedIn.size()", Matchers.`is`(Matchers.greaterThanOrEqualTo(restrictedIn)))
-        }
+        validatableResponse.body("restrictedIn", Matchers.`is`(Matchers.notNullValue()))
+        validatableResponse.body("restrictedIn.size()", Matchers.`is`(Matchers.greaterThanOrEqualTo(restrictedIn)))
     }
 
     @And("monsterType, monsterAtk, monsterDef, level, rank should all be null")
