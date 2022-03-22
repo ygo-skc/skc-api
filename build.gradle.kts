@@ -5,7 +5,7 @@ val scalaLibraryVersion = "2.13.8"
 val springBootVersion = "2.6.4"
 val swagger2Version = "3.0.0"
 val mysqlVersion = "8.0.28"
-val jacksonVersion = "2.13.2"
+val jacksonVersion = "2.13.1"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
@@ -37,7 +37,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.0.1"
+version = "2.0.2"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -191,7 +191,7 @@ pitest {
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
-	junit5PluginVersion.set("0.12")
+	junit5PluginVersion.set("0.15")
 
 	mutators.set(listOf("STRONGER"))
 }
