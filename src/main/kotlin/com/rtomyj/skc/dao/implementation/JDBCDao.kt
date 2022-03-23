@@ -149,7 +149,7 @@ class JDBCDao @Autowired constructor(
         stopwatch.start()
         val sqlParams = MapSqlParameterSource()
         val query = DBQueryConstants.SEARCH_QUERY
-        prepSearchParams(cardId, cardName, cardAttribute, cardColor, monsterType, limit, sqlParams)
+        prepSearchParams(cardId, "$cardName*", cardAttribute, cardColor, monsterType, limit, sqlParams)
         log.debug(
             "Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
             query,
@@ -197,7 +197,7 @@ class JDBCDao @Autowired constructor(
         stopwatch.start()
         val sqlParams = MapSqlParameterSource()
         val query = DBQueryConstants.SEARCH_QUERY_WITH_BAN_INFO
-        prepSearchParams(cardId, cardName, cardAttribute, cardColor, monsterType, limit, sqlParams)
+        prepSearchParams(cardId, "$cardName*", cardAttribute, cardColor, monsterType, limit, sqlParams)
         log.debug(
             "Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
             query,
