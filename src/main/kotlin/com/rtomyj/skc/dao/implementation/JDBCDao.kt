@@ -42,6 +42,11 @@ class JDBCDao @Autowired constructor(
     companion object {
         private const val VERSION_QUERY = "select version() as version"
 
+        private const val UNIQUE_CARD_ATTRIBUTES = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?', '') ORDER BY card_attribute"
+
+        private const val UNIQUE_MONSTER_TYPES = "SELECT DISTINCT TRIM(SUBSTRING_INDEX(monster_type, '/', 1)) AS monster_types FROM cards WHERE monster_type IS NOT NULL AND monster_type != '?' ORDER BY monster_types"
+        private const val UNIQUE_MONSTER_SUB_TYPES = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(monster_type, '/', 2), '/', -1) AS monster_sub_types FROM cards WHERE monster_type IS NOT NULL AND monster_type != '?' ORDER BY monster_sub_types"
+
         private const val UNIQUE_LEVEL_VALUES_QUERY = "SELECT DISTINCT CAST(JSON_EXTRACT(monster_association, '$.level') AS UNSIGNED) AS level FROM cards WHERE monster_association LIKE '%level%' ORDER BY level"
         private const val UNIQUE_RANK_VALUES_QUERY = "SELECT DISTINCT CAST(JSON_EXTRACT(monster_association, '$.rank') AS UNSIGNED) AS `rank` FROM cards WHERE monster_association LIKE '%rank%' ORDER BY `rank`;"
         private const val UNIQUE_LINK_VALUES_QUERY = "SELECT DISTINCT CAST(JSON_EXTRACT(monster_association, '$.linkRating') AS UNSIGNED) AS linkRating FROM cards WHERE monster_association LIKE '%linkRating%' ORDER BY linkRating"
@@ -391,27 +396,18 @@ class JDBCDao @Autowired constructor(
         return cardColors
     }
 
-    override fun getMonsterAttributes(): Set<String> {
-        val sql =
-            "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?', '') ORDER BY card_attribute"
-        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
-    }
+    override fun getMonsterAttributes(): Set<String> = LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_CARD_ATTRIBUTES) { row: ResultSet, _: Int -> row.getString(1) })
 
 
-    override fun getMonsterTypes(): Set<String> {
-        val sql =
-            "SELECT DISTINCT TRIM(SUBSTRING_INDEX(monster_type, '/', 1)) AS monster_types FROM cards WHERE monster_type IS NOT NULL AND monster_type != '?' ORDER BY monster_types"
-        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
-    }
+    override fun getMonsterTypes(): Set<String> = LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_MONSTER_TYPES) { row: ResultSet, _: Int -> row.getString(1) })
 
 
     override fun getMonsterSubTypes(): Set<String> {
-        val sql =
-            "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(monster_type, '/', 2), '/', -1) AS monster_sub_types FROM cards WHERE monster_type IS NOT NULL AND monster_type != '?' ORDER BY monster_sub_types"
         val monsterSubTypes: MutableSet<String> = LinkedHashSet(
-            jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int ->
+            jdbcNamedTemplate.query(UNIQUE_MONSTER_SUB_TYPES) { row: ResultSet, _: Int ->
                 row.getString(1).split("/").toTypedArray()[0]
             })
+
         val cardColors = getCardColors()
         monsterSubTypes.removeAll(cardColors)
         monsterSubTypes.remove("Pendulum") // removing pendulum individually as pendulum monster color/name is categorized by cards other color: e.g.  Pendulum-Normal, Pendulum-Fusion, etc
