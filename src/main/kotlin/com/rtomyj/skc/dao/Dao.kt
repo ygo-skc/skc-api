@@ -1,5 +1,6 @@
 package com.rtomyj.skc.dao
 
+import com.rtomyj.skc.enums.MonsterAssociationType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.DownstreamStatus
 import com.rtomyj.skc.model.card.Card
@@ -53,5 +54,5 @@ interface Dao {
 
     fun getMonsterSubTypes(): Set<String>
 
-    fun getMonsterAssociationField(monsterAssociationField: String): Set<MonsterAssociation>
+    fun getMonsterAssociationField(monsterAssociationType: MonsterAssociationType): Set<Int>
 }
