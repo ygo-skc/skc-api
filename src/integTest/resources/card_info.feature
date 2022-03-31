@@ -1,3 +1,4 @@
+@Card
 Feature: Fetch information about an individual card. There are two flows within the same endpoint: users can either retrieve product/ban list info for a card (fetchAllInfo is true) or they can choose to not retrieve the info (fetchAllInfo is false).
     Scenario Outline: Fetching all information about a monster card and checking if response has the necessary attributes and values for product info. These cards have not been in any ban list so info for that card regarding ban lists will be null.
         Given I want all info for card with ID "<cardID>" - IE, info on ban lists, products, etc

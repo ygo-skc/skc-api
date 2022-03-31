@@ -1,5 +1,6 @@
 package com.rtomyj.skc.cucumber
 
+import io.cucumber.java.PendingException
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
@@ -18,13 +19,19 @@ class CardBrowseCriteriaTests: CucumberBase() {
         validatableResponse = res.then()
     }
 
+    @Then("browse criteria request status should be {int} and body should contain {int} elements")
+    fun browse_criteria_request_status_should_be_and_body_should_contain_elements(expectedStatus: Int, expectedNumElements: Int) {
+        validatableResponse
+            .statusCode(200)
+            .body("size()", Matchers.equalTo(expectedNumElements))
+    }
 
-    @Then("cardColor criteria array should contain the following:")
+
+    @And("cardColor criteria array should contain the following:")
     fun card_color_criteria_array_should_contain_the_following(
         expectedCardColorCriteria: List<String>
     ) {
         validatableResponse
-            .statusCode(200)
             .body("cardColors", Matchers.notNullValue())
             .body("cardColors.size()", Matchers.equalTo(expectedCardColorCriteria.size))
             .body("cardColors", Matchers.equalToObject(expectedCardColorCriteria))
@@ -73,5 +80,12 @@ class CardBrowseCriteriaTests: CucumberBase() {
             .body("linkRatings", Matchers.notNullValue())
             .body("linkRatings.size()", Matchers.equalTo(expectedLinkRatings.size))
             .body("linkRatings", Matchers.equalTo(expectedLinkRatings))
+    }
+
+
+    @Then("HATEOAS self ref should end with {string}")
+    fun hateoas_self_ref_should_end_with(selfLinkEndpoint: String) {
+        validatableResponse
+            .body("_links.self.href", Matchers.equalTo("${BASE_ENDPOINT}${selfLinkEndpoint}"))
     }
 }

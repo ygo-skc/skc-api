@@ -1,8 +1,10 @@
+@Card
 Feature: Search the database and return available criteria a user can use when browsing for cards. Will only return criteria that can be found in the database.
 
   Scenario: Client requests all browsing criteria for Cards in the SKC database.
     When user requests browsing criteria
-    Then cardColor criteria array should contain the following:
+    Then browse criteria request status should be 200 and body should contain 8 elements
+    And cardColor criteria array should contain the following:
     | Effect            |
     | Fusion            |
     | Link              |
@@ -87,3 +89,4 @@ Feature: Search the database and return available criteria a user can use when b
     | 4   |
     | 5   |
     | 6   |
+    And HATEOAS self ref should end with "/card/browse/criteria"
