@@ -123,10 +123,8 @@ tasks {
 	}
 
 	withType<Javadoc> {
-
 		options.memberLevel = JavadocMemberLevel.PRIVATE
 		source = sourceSets["main"].allJava
-
 	}
 
 	getByName<Jar>("jar") {
@@ -162,9 +160,6 @@ tasks {
 		// Especially important is the processIntegTestResources task which will correctly configure/copy the cucumber.properties file in resources folder
 		classpath = sourceSets["integTest"].runtimeClasspath
 		mainClass.set("io.cucumber.core.cli.Main")
-		args = listOf(
-			"-g", "com/rtomyj/skc/cucumber", "src/integTest/resources"
-		)
 	}
 
 	register("perfTest", JavaExec::class) {
