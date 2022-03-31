@@ -59,7 +59,6 @@ data class CardBrowseCriteria(
     )
     val linkRatings: Set<Int>
 ) : RepresentationModel<CardBrowseCriteria>(), HateoasLinks {
-
     companion object {
         private val cardBrowseControllerClass = CardBrowseController::class.java
     }
@@ -71,6 +70,7 @@ data class CardBrowseCriteria(
                 .withSelfRel()
         )
     }
+
 
     override fun setLinks() {
         setSelfLink()

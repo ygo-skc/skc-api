@@ -225,14 +225,14 @@ class JDBCDao @Autowired constructor(
             Objects.requireNonNull(
                 jdbcNamedTemplate.query<Collection<Card?>>(query, sqlParams) { row: ResultSet ->
                     /*
-				Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
-				ie:	ID		Name		BanList
+                    Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
+				    ie:	ID		Name		BanList
 						1234	Stratos	2019-07-15
 						1234	Stratos	2019-04-29
-				To prevent this, the map will use the cardId (unique) to map to a Card object containing info already gathered from previous rows.
-				An array within the Card object will then be used to keep track of all the ban lists the card was a part of. The array will be updated
-				 every time a new row has new ban list info of a card already in the map.
-			*/
+				    To prevent this, the map will use the cardId (unique) to map to a Card object containing info already gathered from previous rows.
+				    An array within the Card object will then be used to keep track of all the ban lists the card was a part of. The array will be updated
+				    every time a new row has new ban list info of a card already in the map.
+			        */
                     val cardInfoTracker: MutableMap<String, Card?> = LinkedHashMap()
                     var numUniqueCardsParsed = 0
                     while (row.next()) {

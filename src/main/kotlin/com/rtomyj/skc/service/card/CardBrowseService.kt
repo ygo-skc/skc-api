@@ -12,15 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
-import java.util.stream.Collectors
 
 @Service
-class CardBrowseService @Autowired constructor(
-    @Qualifier(
-        "jdbc"
-    ) val dao: Dao
-) {
-
+class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: Dao) {
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java.name)
 
