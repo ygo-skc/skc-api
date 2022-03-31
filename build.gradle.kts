@@ -47,9 +47,7 @@ repositories {
 
 
 sourceSets {
-	create("integTest") {
-		resources.srcDir("src/integTest/resources")
-	}
+	create("integTest")
 
 	create("perfTest") {
 		scala.srcDir("src/perfTest/scala")
@@ -156,22 +154,17 @@ tasks {
 		rename ("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
 	}
 
-	register("integTest") {
+	register("integTest", JavaExec::class) {
 		description = "Integration test executed using Cucumber"
 		group = "Verification"
 
-		dependsOn("compileIntegTestKotlin")
-		doLast {
-			javaexec {
-				mainClass.set("io.cucumber.core.cli.Main")
-				classpath = sourceSets["integTest"].runtimeClasspath
-				args = listOf(
-//					"--plugin", "pretty",
-//					"--plugin", "html:integration-test-results.html",
-					"-g", "com/rtomyj/skc/cucumber", "src/integTest/resources"
-				)
-			}
-		}
+		// This task needs to be of type JavaExec in order for all subtasks to run
+		// Especially important is the processIntegTestResources task which will correctly configure/copy the cucumber.properties file in resources folder
+		classpath = sourceSets["integTest"].runtimeClasspath
+		mainClass.set("io.cucumber.core.cli.Main")
+		args = listOf(
+			"-g", "com/rtomyj/skc/cucumber", "src/integTest/resources"
+		)
 	}
 
 	register("perfTest", JavaExec::class) {
