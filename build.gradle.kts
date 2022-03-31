@@ -47,7 +47,9 @@ repositories {
 
 
 sourceSets {
-	create("integTest")
+	create("integTest") {
+		resources.srcDir("src/integTest/resources")
+	}
 
 	create("perfTest") {
 		scala.srcDir("src/perfTest/scala")
@@ -158,12 +160,16 @@ tasks {
 		description = "Integration test executed using Cucumber"
 		group = "Verification"
 
-		dependsOn(assemble, "compileIntegTestJava")
+		dependsOn("compileIntegTestKotlin")
 		doLast {
 			javaexec {
 				mainClass.set("io.cucumber.core.cli.Main")
 				classpath = sourceSets["integTest"].runtimeClasspath
-				args = listOf("-g", "com/rtomyj/skc/cucumber", "src/integTest/resources")
+				args = listOf(
+//					"--plugin", "pretty",
+//					"--plugin", "html:integration-test-results.html",
+					"-g", "com/rtomyj/skc/cucumber", "src/integTest/resources"
+				)
 			}
 		}
 	}
