@@ -12,7 +12,7 @@ val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
-val jettyHttp2Version = "9.4.45.v20220203"
+val jettyHttp2Version = "11.0.8"
 
 val archivesBaseName = "skc-api"
 
