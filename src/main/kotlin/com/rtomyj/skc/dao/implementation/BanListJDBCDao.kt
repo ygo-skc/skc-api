@@ -27,7 +27,7 @@ class BanListJDBCDao @Autowired constructor(
 ) : BanListDao {
     companion object {
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
-        private const val UNSUPPORTED_OPERATION_MESSAGE = "HibernateDao not able to execute method."
+        private const val UNSUPPORTED_OPERATION_MESSAGE = "BanListJDBCDao not able to execute method."
     }
 
 
