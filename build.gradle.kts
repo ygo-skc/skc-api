@@ -12,7 +12,6 @@ val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
-val jettyHttp2Version = "9.4.45.v20220203"
 
 val archivesBaseName = "skc-api"
 
@@ -66,8 +65,8 @@ dependencies {
 	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
-	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server:$jettyHttp2Version")
-	runtimeOnly("org.eclipse.jetty.http2:http2-server:$jettyHttp2Version")
+	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server")
+	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
 	implementation("io.springfox:springfox-boot-starter:$swagger2Version")
 
