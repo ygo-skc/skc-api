@@ -1,3 +1,4 @@
+@BanList
 Feature: Fetch start dates for ban lists stored in the DB.
 
   Scenario: Use ban list date endpoint to fetch start dates and verify they are correct.

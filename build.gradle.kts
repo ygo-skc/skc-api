@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.6.4"
+val springBootVersion = "2.6.6"
 val swagger2Version = "3.0.0"
 val mysqlVersion = "8.0.28"
 val jacksonVersion = "2.13.1"
@@ -17,14 +17,14 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.6.4"
+	id("org.springframework.boot") version "2.6.6"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.4"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
-	kotlin("jvm") version "1.6.10"
-	kotlin("plugin.spring") version "1.6.10"
-	kotlin("plugin.allopen") version "1.6.10"
+	kotlin("jvm") version "1.6.20"
+	kotlin("plugin.spring") version "1.6.20"
+	kotlin("plugin.allopen") version "1.6.20"
 
 	jacoco
 	java
@@ -37,7 +37,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.0.2"
+version = "2.0.3"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -75,7 +75,6 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-
 
 	implementation("com.google.guava:guava:$guavaVersion")
 }
@@ -123,10 +122,8 @@ tasks {
 	}
 
 	withType<Javadoc> {
-
 		options.memberLevel = JavadocMemberLevel.PRIVATE
 		source = sourceSets["main"].allJava
-
 	}
 
 	getByName<Jar>("jar") {
@@ -154,18 +151,14 @@ tasks {
 		rename ("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
 	}
 
-	register("integTest") {
+	register("integTest", JavaExec::class) {
 		description = "Integration test executed using Cucumber"
 		group = "Verification"
 
-		dependsOn(assemble, "compileIntegTestJava")
-		doLast {
-			javaexec {
-				mainClass.set("io.cucumber.core.cli.Main")
-				classpath = sourceSets["integTest"].runtimeClasspath
-				args = listOf("-g", "com/rtomyj/skc/cucumber", "src/integTest/resources")
-			}
-		}
+		// This task needs to be of type JavaExec in order for all subtasks to run
+		// Especially important is the processIntegTestResources task which will correctly configure/copy the cucumber.properties file in resources folder
+		classpath = sourceSets["integTest"].runtimeClasspath
+		mainClass.set("io.cucumber.core.cli.Main")
 	}
 
 	register("perfTest", JavaExec::class) {

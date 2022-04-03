@@ -2,6 +2,7 @@ package com.rtomyj.skc.service.card
 
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.enums.MonsterAssociationExpression
+import com.rtomyj.skc.enums.MonsterAssociationType
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.model.card.CardBrowseCriteria
 import com.rtomyj.skc.model.card.CardBrowseResults
@@ -11,15 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
-import java.util.stream.Collectors
 
 @Service
-class CardBrowseService @Autowired constructor(
-    @Qualifier(
-        "jdbc"
-    ) val dao: Dao
-) {
-
+class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: Dao) {
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java.name)
 
@@ -67,30 +62,13 @@ class CardBrowseService @Autowired constructor(
             dao.getMonsterAttributes(),
             dao.getMonsterTypes(),
             dao.getMonsterSubTypes(),
-            uniqueMonsterAssociationField("level")
-                .stream()
-                .filter { it.level != null }
-                .map { obj: MonsterAssociation -> obj.level!! }
-                .collect(Collectors.toSet()),
-            uniqueMonsterAssociationField("rank")
-                .stream()
-                .filter { it.rank != null }
-                .map { obj: MonsterAssociation -> obj.rank!! }
-                .collect(Collectors.toSet()),
-            uniqueMonsterAssociationField("linkRating")
-                .stream()
-                .filter {it.linkRating != null}
-                .map { obj: MonsterAssociation -> obj.linkRating!! }
-                .collect(Collectors.toSet())
+            dao.getMonsterAssociationField(MonsterAssociationType.LEVEL),
+            dao.getMonsterAssociationField(MonsterAssociationType.RANK),
+            dao.getMonsterAssociationField(MonsterAssociationType.LINK)
         )
 
         cardBrowseCriteria.setLinks()
         return cardBrowseCriteria
-    }
-
-
-    private fun uniqueMonsterAssociationField(monsterAssociationField: String): Set<MonsterAssociation> {
-        return dao.getMonsterAssociationField(monsterAssociationField)
     }
 
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.DBQueryConstants
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.enums.MonsterAssociationType
 import com.rtomyj.skc.enums.table.definitions.BrowseQueryDefinition
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
@@ -12,7 +13,6 @@ import com.rtomyj.skc.model.banlist.CardBanListStatus
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.model.card.CardBrowseCriteria
 import com.rtomyj.skc.model.card.CardBrowseResults
-import com.rtomyj.skc.model.card.MonsterAssociation
 import com.rtomyj.skc.model.card.MonsterAssociation.Companion.parseDBString
 import com.rtomyj.skc.model.stats.DatabaseStats
 import com.rtomyj.skc.model.stats.MonsterTypeStats
@@ -41,6 +41,16 @@ class JDBCDao @Autowired constructor(
 ) : Dao {
     companion object {
         private const val VERSION_QUERY = "select version() as version"
+
+        private const val UNIQUE_CARD_ATTRIBUTES = "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?', '') ORDER BY card_attribute"
+
+        private const val UNIQUE_MONSTER_TYPES = "SELECT DISTINCT TRIM(SUBSTRING_INDEX(monster_type, '/', 1)) AS monster_types FROM cards WHERE monster_type IS NOT NULL AND monster_type != '?' ORDER BY monster_types"
+        private const val UNIQUE_MONSTER_SUB_TYPES = "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(monster_type, '/', 2), '/', -1) AS monster_sub_types FROM cards WHERE monster_type IS NOT NULL AND monster_type != '?' ORDER BY monster_sub_types"
+
+        private const val UNIQUE_LEVEL_VALUES_QUERY = "SELECT DISTINCT CAST(JSON_EXTRACT(monster_association, '$.level') AS UNSIGNED) AS level FROM cards WHERE monster_association LIKE '%level%' ORDER BY level"
+        private const val UNIQUE_RANK_VALUES_QUERY = "SELECT DISTINCT CAST(JSON_EXTRACT(monster_association, '$.rank') AS UNSIGNED) AS `rank` FROM cards WHERE monster_association LIKE '%rank%' ORDER BY `rank`;"
+        private const val UNIQUE_LINK_VALUES_QUERY = "SELECT DISTINCT CAST(JSON_EXTRACT(monster_association, '$.linkRating') AS UNSIGNED) AS linkRating FROM cards WHERE monster_association LIKE '%linkRating%' ORDER BY linkRating"
+
         private val log = LoggerFactory.getLogger(this::class.java.name)
     }
 
@@ -137,6 +147,14 @@ class JDBCDao @Autowired constructor(
         sqlParams.addValue("limit", limit)
     }
 
+    private fun fullTextQueryTransformer(oldQuery: String): String {
+        val newQuery = oldQuery
+            .replace("-", " ")
+            .trim()
+            .replace(" ", " +")
+        return "+$newQuery*"
+    }
+
     private fun searchForCards(
         cardId: String?,
         cardName: String?,
@@ -149,7 +167,7 @@ class JDBCDao @Autowired constructor(
         stopwatch.start()
         val sqlParams = MapSqlParameterSource()
         val query = DBQueryConstants.SEARCH_QUERY
-        prepSearchParams(cardId, cardName, cardAttribute, cardColor, monsterType, limit, sqlParams)
+        prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit, sqlParams)
         log.debug(
             "Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
             query,
@@ -197,7 +215,7 @@ class JDBCDao @Autowired constructor(
         stopwatch.start()
         val sqlParams = MapSqlParameterSource()
         val query = DBQueryConstants.SEARCH_QUERY_WITH_BAN_INFO
-        prepSearchParams(cardId, cardName, cardAttribute, cardColor, monsterType, limit, sqlParams)
+        prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit, sqlParams)
         log.debug(
             "Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
             query,
@@ -207,14 +225,14 @@ class JDBCDao @Autowired constructor(
             Objects.requireNonNull(
                 jdbcNamedTemplate.query<Collection<Card?>>(query, sqlParams) { row: ResultSet ->
                     /*
-				Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
-				ie:	ID		Name		BanList
+                    Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
+				    ie:	ID		Name		BanList
 						1234	Stratos	2019-07-15
 						1234	Stratos	2019-04-29
-				To prevent this, the map will use the cardId (unique) to map to a Card object containing info already gathered from previous rows.
-				An array within the Card object will then be used to keep track of all the ban lists the card was a part of. The array will be updated
-				 every time a new row has new ban list info of a card already in the map.
-			*/
+				    To prevent this, the map will use the cardId (unique) to map to a Card object containing info already gathered from previous rows.
+				    An array within the Card object will then be used to keep track of all the ban lists the card was a part of. The array will be updated
+				    every time a new row has new ban list info of a card already in the map.
+			        */
                     val cardInfoTracker: MutableMap<String, Card?> = LinkedHashMap()
                     var numUniqueCardsParsed = 0
                     while (row.next()) {
@@ -378,54 +396,47 @@ class JDBCDao @Autowired constructor(
         return cardColors
     }
 
-    override fun getMonsterAttributes(): Set<String> {
-        val sql =
-            "SELECT DISTINCT card_attribute FROM cards WHERE card_attribute NOT IN ('Spell', 'Trap', '?') ORDER BY card_attribute"
-        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
-    }
+    override fun getMonsterAttributes(): Set<String> = LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_CARD_ATTRIBUTES) { row: ResultSet, _: Int -> row.getString(1) })
 
-    override fun getMonsterTypes(): Set<String> {
-        val sql =
-            "SELECT DISTINCT SUBSTRING_INDEX(monster_type, '/', 1) AS monster_types FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_types"
-        return LinkedHashSet(jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int -> row.getString(1) })
-    }
+
+    override fun getMonsterTypes(): Set<String> = LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_MONSTER_TYPES) { row: ResultSet, _: Int -> row.getString(1) })
+
 
     override fun getMonsterSubTypes(): Set<String> {
-        val sql =
-            "SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(monster_type, '/', 2), '/', -1) AS monster_sub_types FROM cards WHERE monster_type IS NOT NULL ORDER BY monster_sub_types"
         val monsterSubTypes: MutableSet<String> = LinkedHashSet(
-            jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int ->
+            jdbcNamedTemplate.query(UNIQUE_MONSTER_SUB_TYPES) { row: ResultSet, _: Int ->
                 row.getString(1).split("/").toTypedArray()[0]
             })
+
         val cardColors = getCardColors()
         monsterSubTypes.removeAll(cardColors)
         monsterSubTypes.remove("Pendulum") // removing pendulum individually as pendulum monster color/name is categorized by cards other color: e.g.  Pendulum-Normal, Pendulum-Fusion, etc
         return monsterSubTypes
     }
 
-    override fun getMonsterAssociationField(monsterAssociationField: String): Set<MonsterAssociation> {
 
-//		Below query cannot be used on Remote Servers MySQL software due to version being outdated and having no access to update it - JSON functions are not supported.
-//		final String sql = "SELECT CAST(level AS UNSIGNED) AS level FROM (SELECT DISTINCT JSON_EXTRACT(monster_association, '$.level') AS LEVEL FROM cards WHERE monster_association LIKE '%level%') AS levels ORDER BY level";
+    override fun getMonsterAssociationField(monsterAssociationType: MonsterAssociationType): Set<Int> {
         val stopWatch = StopWatch()
         stopWatch.start()
-        val sqlParams = MapSqlParameterSource()
-        sqlParams.addValue("monsterAssociationField", "%$monsterAssociationField%")
-        val sql =
-            "SELECT DISTINCT monster_association FROM cards WHERE monster_association LIKE :monsterAssociationField"
-        val result: Set<MonsterAssociation> = HashSet(
-            jdbcNamedTemplate.query(sql, sqlParams) { row: ResultSet, _: Int ->
-                parseDBString(
-                    row.getString(1),
-                    objectMapper
-                )
+
+        val sql = when(monsterAssociationType) {
+            MonsterAssociationType.LEVEL -> UNIQUE_LEVEL_VALUES_QUERY
+            MonsterAssociationType.RANK -> UNIQUE_RANK_VALUES_QUERY
+            MonsterAssociationType.LINK -> UNIQUE_LINK_VALUES_QUERY
+        }
+
+        val result: Set<Int> = HashSet(
+            jdbcNamedTemplate.query(sql) { row: ResultSet, _: Int ->
+                row.getInt(1)
             })
+
         stopWatch.stop()
         log.debug(
             "Time taken to retrieve unique {} from DB was: {}ms",
-            monsterAssociationField,
+            monsterAssociationType,
             stopWatch.totalTimeMillis
         )
+
         return result
     }
 }
