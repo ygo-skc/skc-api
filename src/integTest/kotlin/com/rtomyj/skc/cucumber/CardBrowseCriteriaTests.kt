@@ -1,6 +1,5 @@
 package com.rtomyj.skc.cucumber
 
-import io.cucumber.java.PendingException
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
@@ -22,7 +21,7 @@ class CardBrowseCriteriaTests: CucumberBase() {
     @Then("browse criteria request status should be {int} and body should contain {int} elements")
     fun browse_criteria_request_status_should_be_and_body_should_contain_elements(expectedStatus: Int, expectedNumElements: Int) {
         validatableResponse
-            .statusCode(200)
+            .statusCode(expectedStatus)
             .body("size()", Matchers.equalTo(expectedNumElements))
     }
 
