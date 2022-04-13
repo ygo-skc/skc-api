@@ -8,8 +8,7 @@ import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.banlist.BanListDiffController
 import com.rtomyj.skc.controller.banlist.BannedCardsController
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import java.util.*
@@ -18,18 +17,18 @@ import java.util.*
  * Model containing information about a Ban List.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
-@ApiModel(
+@Schema(
+    implementation = BanListInstance::class,
     description = "Each object instance describes a particular card, a start date of a ban list it was a part of, and the specific status (forbidden, limited, semi-limited).",
-    parent = RepresentationModel::class
 )
 @Open
 data class CardBanListStatus(
     /**
      * Start date of ban list.
      */
-    @ApiModelProperty(
-        value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Date::class,
+        description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     )
     @JsonFormat(
         shape = JsonFormat.Shape.STRING,
@@ -40,15 +39,18 @@ data class CardBanListStatus(
     /**
      * The ID of the card.
      */
-    @ApiModelProperty(value = SwaggerConstants.CARD_ID_DESCRIPTION, accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.CARD_ID_DESCRIPTION, 
+    )
     val cardID: String,
 
     /**
      * Whether card is forbidden, limited, or semi-limited
      */
-    @ApiModelProperty(
-        value = "The ban status for the card (forbidden, limited, semi-limited).",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = "The ban status for the card (forbidden, limited, semi-limited).",
     )
     val banStatus: String
 ) : RepresentationModel<CardBanListStatus>(), HateoasLinks {

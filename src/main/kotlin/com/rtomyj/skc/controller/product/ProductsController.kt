@@ -6,11 +6,11 @@ import com.rtomyj.skc.controller.YgoApiBaseController
 import com.rtomyj.skc.enums.ProductType
 import com.rtomyj.skc.model.product.Products
 import com.rtomyj.skc.service.product.ProductService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiParam
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -23,7 +23,7 @@ import javax.validation.constraints.Pattern
 
 @RestController
 @RequestMapping(path = ["/products"], produces = ["application/json; charset=UTF-8"])
-@Api(tags = [SwaggerConstants.TAG_PRODUCT_TAG_NAME])
+@Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
 class ProductsController @Autowired constructor(private val availableProductsService: ProductService) :
 	YgoApiBaseController() {
 
@@ -33,22 +33,17 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 
 
 	@GetMapping("/{locale}")
-	@ApiOperation(
-		value = "Retrieve all products for a given locale.",
-		response = Products::class,
-		responseContainer = "Object"
+	@Operation(
+		description = "Retrieve all products for a given locale."
 	)
-	@ApiResponses(
-		value = [
-			ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE),
-			ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE),
-			ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
-		]
-	)
+	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	fun getProductsByLocale(
-		@ApiParam(
-			value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-			example = "en"
+		@Parameter(
+			name = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
+			example = "en",
+			schema = Schema(implementation = String::class)
 		) @Pattern(
 			regexp = SKCRegex.LOCALE,
 			message = "Locale is formatted incorrectly"
@@ -61,22 +56,17 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 
 
 	@GetMapping("/{productType}/{locale}")
-	@ApiOperation(
-		value = "Retrieve products that fit a certain product type and locale.",
-		response = Products::class,
-		responseContainer = "Object"
+	@Operation(
+		description = "Retrieve products that fit a certain product type and locale."
 	)
-	@ApiResponses(
-		value = [
-			ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE),
-			ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE),
-			ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
-		]
-	)
+	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	fun getAllProductsForProductTypeAndLocale(
-		@ApiParam(
-			value = "A specific product type used to limit results.",
-			example = "pack"
+		@Parameter(
+			name = "A specific product type used to limit results.",
+			example = "pack",
+			schema = Schema(implementation = String::class)
 		)
 		@NotNull
 		@Pattern(
@@ -84,9 +74,10 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 			message = "Product Type not formatted correctly"
 		)
 		@PathVariable("productType") productType: ProductType,
-		@ApiParam(
-			value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-			example = "en"
+		@Parameter(
+			description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
+			example = "en",
+			schema = Schema(implementation = String::class)
 		)
 		@NotNull
 		@Pattern(

@@ -5,7 +5,11 @@ import com.rtomyj.skc.controller.YgoApiBaseController
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
-import io.swagger.annotations.*
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -17,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(path = ["/card/search"], produces = ["application/json; charset=UTF-8"])
-@Api(tags = [SwaggerConstants.TAG_CAR_TAG_NAMED])
+@Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
 class CardSearchController @Autowired constructor(
     private val cardService: CardService
 ) : YgoApiBaseController() {
@@ -28,41 +32,60 @@ class CardSearchController @Autowired constructor(
 
 
     @GetMapping
-    @ApiOperation(
-        value = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)",
-        response = Card::class,
-        responseContainer = "List"
+    @Operation(
+        description = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)",
     )
-    @ApiResponses(value = [ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)])
+    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
     @Throws(
         YgoException::class
     )
     fun searchByCriteria(
-        @ApiParam(value = SwaggerConstants.CARD_ID_DESCRIPTION, example = "5")
+        @Parameter(
+            name = SwaggerConstants.CARD_ID_DESCRIPTION,
+            example = "5",
+            schema = Schema(implementation = Int::class)
+        )
         @RequestParam(name = "cId", required = false, defaultValue = "")
         cardId: String = "",
-        @ApiParam(value = SwaggerConstants.CARD_NAME_DESCRIPTION, example = "hero")
+        @Parameter(
+            name = SwaggerConstants.CARD_NAME_DESCRIPTION,
+            example = "hero",
+            schema = Schema(implementation = String::class)
+        )
         @RequestParam(name = "cName", required = false, defaultValue = "")
         cardName: String = "",
-        @ApiParam(
-            value = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
-            example = "water"
+        @Parameter(
+            name = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
+            example = "water",
+            schema = Schema(implementation = String::class)
         )
         @RequestParam(name = "cAttribute", required = false, defaultValue = "")
         cardAttribute: String = "",
-        @ApiParam(value = SwaggerConstants.CARD_COLOR_DESCRIPTION, example = "effect")
+        @Parameter(
+            name = SwaggerConstants.CARD_COLOR_DESCRIPTION,
+            example = "effect",
+            schema = Schema(implementation = String::class)
+        )
         @RequestParam(name = "cColor", required = false, defaultValue = "")
         cardColor: String = "",
-        @ApiParam(value = SwaggerConstants.MONSTER_TYPE_DESCRIPTION, example = "war")
+        @Parameter(
+            name = SwaggerConstants.MONSTER_TYPE_DESCRIPTION,
+            example = "war",
+            schema = Schema(implementation = String::class)
+        )
         @RequestParam(name = "mType", required = false, defaultValue = "")
         monsterType: String = "",
-        @ApiParam(value = SwaggerConstants.RESULT_LIMIT_DESCRIPTION, example = "10", defaultValue = "5")
+        @Parameter(
+            name = SwaggerConstants.RESULT_LIMIT_DESCRIPTION,
+            example = "10",
+            schema = Schema(implementation = Int::class, defaultValue = "5")
+        )
         @RequestParam(name = "limit", required = false, defaultValue = "5")
         limit: Int = 5,
-        @ApiParam(
-            value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
+        @Parameter(
+            name = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
             example = "false",
-            defaultValue = "true"
+            schema = Schema(implementation = Boolean::class, defaultValue = "false")
         )
         @RequestParam(name = "saveBandwidth", required = false, defaultValue = "true")
         saveBandwidth: Boolean = true

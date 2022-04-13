@@ -5,17 +5,19 @@ import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.product.ProductsController
 import com.rtomyj.skc.enums.ProductType
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(description = "Contains information about Yu-Gi-Oh! products.", parent = RepresentationModel::class)
+@Schema(
+    implementation = Products::class,
+    description = "Contains information about Yu-Gi-Oh! products."
+)
 data class Products(
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
     )
     val locale: String
 ) : RepresentationModel<Products?>(), HateoasLinks {
@@ -25,12 +27,15 @@ data class Products(
     }
 
 
-    @ApiModelProperty(value = "List of Yu-Gi-Oh! products.", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+    @Schema(
+        implementation = Products::class,
+        description = "List of Yu-Gi-Oh! products."
+    )
     var products: List<Product>? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Products::class,
+        description = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
     )
     var productType: ProductType? = null
 

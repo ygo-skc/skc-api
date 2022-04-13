@@ -6,7 +6,11 @@ import com.rtomyj.skc.controller.YgoApiBaseController
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.service.banlist.BannedCardsService
-import io.swagger.annotations.*
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -20,7 +24,7 @@ import javax.validation.constraints.Pattern
 @RestController
 @RequestMapping(path = ["/ban_list"], produces = ["application/hal+json; charset=UTF-8"])
 @Validated
-@Api(tags = [SwaggerConstants.BAN_LIST_TAG_NAME])
+@Tag(name = SwaggerConstants.BAN_LIST_TAG_NAME)
 class BannedCardsController
 /**
  * Create object instance.
@@ -49,42 +53,44 @@ class BannedCardsController
      */
     @ResponseBody
     @GetMapping(path = ["{banListStartDate}/cards"])
-    @ApiOperation(
-        value = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates).",
-        response = BanListInstance::class,
-        responseContainer = "Object",
+    @Operation(
+        description = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates).",
         tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
     )
-    @ApiResponses(
-        value = [ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE), ApiResponse(
-            code = 400,
-            message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE
-        ), ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE), ApiResponse(
-            code = 500,
-            message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE
-        )]
-    )
+    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+    @ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+    @ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+    @ApiResponse(responseCode = "500", description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
     @Throws(
         YgoException::class
     )
     fun getBannedCards(
-        @ApiParam(
-            value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
+        @Parameter(
+            name = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
             example = "2020-04-01",
-            required = true
+            required = true,
+            schema = Schema(implementation = String::class)
         )
         @Pattern(
             regexp = SKCRegex.DB_DATE,
             message = "Date doesn't have correct format."
         )
         @PathVariable banListStartDate: String,
-        @ApiParam(value = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION)
+        @Parameter(
+            name = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
+            required = false,
+            schema = Schema(implementation = Boolean::class)
+        )
         @RequestParam(
             name = "saveBandwidth",
             required = false,
             defaultValue = "true"
         ) saveBandwidth: Boolean = true,
-        @ApiParam(value = SwaggerConstants.BAN_LIST_FETCH_ALL_DESCRIPTION)
+        @Parameter(
+            name = SwaggerConstants.BAN_LIST_FETCH_ALL_DESCRIPTION,
+            required = false,
+            schema = Schema(implementation = Boolean::class)
+        )
         @RequestParam(
             name = "allInfo",
             required = false,

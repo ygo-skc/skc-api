@@ -1,14 +1,24 @@
 package com.rtomyj.skc.model
 
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 
-@ApiModel(description = "Status of the API.")
+@Schema(
+	implementation = StatusResponse::class,
+	description = "Status of the API."
+)
 data class StatusResponse(
-	@ApiModelProperty(value = "Current status of API.", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+	@Schema(
+		implementation = String::class,
+		description = "Current status of API.",
+	)
 	val status: String,
-	@ApiModelProperty(value = "Current API version.", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+
+	@Schema(
+		implementation = String::class,
+		description = "Current API version.",
+	)
 	val version: String,
+
 	val downstream: List<DownstreamStatus>
 )
 

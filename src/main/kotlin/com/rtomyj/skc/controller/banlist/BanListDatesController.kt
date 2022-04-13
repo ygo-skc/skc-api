@@ -4,10 +4,9 @@ import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.service.banlist.BanListDatesService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping(path = ["/ban_list/dates"], produces = ["application/json; charset=UTF-8"])
-@Api(tags = [SwaggerConstants.BAN_LIST_TAG_NAME])
+@Tag(name = SwaggerConstants.BAN_LIST_TAG_NAME)
 class BanListDatesController
 /**
  * Create object instance.
@@ -42,15 +41,10 @@ class BanListDatesController
      * Looks in the database for the start dates of all ban lists stored in database.
      * @return Map that contains a list of all dates of the ban lists in database.
      */
-    @ApiResponses(
-        value = [ApiResponse(
-            code = 200,
-            message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-        ), ApiResponse(code = 500, message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)]
-    )
-    @ApiOperation(
-        value = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
-        response = BanListDates::class,
+    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+    @ApiResponse(responseCode = "500", description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
+    @Operation(
+        description = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
         tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
     )
     @GetMapping

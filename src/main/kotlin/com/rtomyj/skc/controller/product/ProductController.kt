@@ -5,11 +5,11 @@ import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
 import com.rtomyj.skc.model.product.Product
 import com.rtomyj.skc.service.product.ProductService
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiParam
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -24,7 +24,7 @@ import javax.validation.constraints.Pattern
 @RestController
 @RequestMapping(path = ["/product"], produces = ["application/json; charset=UTF-8"])
 @Validated
-@Api(tags = [SwaggerConstants.TAG_PRODUCT_TAG_NAME])
+@Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
 class ProductController @Autowired constructor(private val availablePacksService: ProductService) :
 	YgoApiBaseController() {
 
@@ -34,29 +34,25 @@ class ProductController @Autowired constructor(private val availablePacksService
 
 
 	@GetMapping("/{productId}/{locale}")
-	@ApiOperation(
-		value = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.",
-		response = Product::class,
-		responseContainer = "Object"
+	@Operation(
+		summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami."
 	)
-	@ApiResponses(
-		value = [
-			ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE),
-			ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE),
-			ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
-		]
-	)
+	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
 	fun productInfo(
-		@ApiParam(
-			value = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.",
-			example = "LOB"
+		@Parameter(
+			name = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.",
+			example = "LOB",
+			schema = Schema(implementation = String::class)
 		) @Pattern(
 			regexp = SKCRegex.PRODUCT_ID,
 			message = "Product ID is formatted incorrectly"
 		) @NotNull @PathVariable("productId") productId:  String,
-		@ApiParam(
-			value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-			example = "en"
+		@Parameter(
+			name = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
+			example = "en",
+			schema = Schema(implementation = String::class)
 		) @Pattern(
 			regexp = SKCRegex.LOCALE,
 			message = "Locale is formatted incorrectly"

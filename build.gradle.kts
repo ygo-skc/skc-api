@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
 val springBootVersion = "2.6.6"
-val swagger2Version = "3.0.0"
+val springDocVersion = "1.6.7"
 val mysqlVersion = "8.0.28"
 val jacksonVersion = "2.13.1"
 val cucumberVersion = "6.7.0"
@@ -59,6 +59,7 @@ dependencies {
 	compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+//	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
@@ -68,7 +69,7 @@ dependencies {
 	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server")
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
-	implementation("io.springfox:springfox-boot-starter:$swagger2Version")
+	implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
 
 	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
