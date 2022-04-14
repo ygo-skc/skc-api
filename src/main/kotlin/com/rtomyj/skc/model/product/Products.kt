@@ -28,13 +28,13 @@ data class Products(
 
 
     @Schema(
-        implementation = Products::class,
+        implementation = Product::class,
         description = "List of Yu-Gi-Oh! products."
     )
     var products: List<Product>? = null
 
     @Schema(
-        implementation = Products::class,
+        implementation = ProductType::class,
         description = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
     )
     var productType: ProductType? = null

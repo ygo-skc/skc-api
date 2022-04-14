@@ -9,6 +9,7 @@ import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import java.util.*
 import java.util.function.Consumer
+import kotlin.collections.HashMap
 
 @JsonInclude(
     JsonInclude.Include.NON_EMPTY
@@ -60,6 +61,8 @@ data class Product(
     @Schema(
         implementation = Date::class,
         description = SwaggerConstants.PRODUCT_RELEASE_DATE_DESCRIPTION,
+        pattern = "yyyy-MM-dd",
+        format = "yyyy-MM-dd",
     )
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     var productReleaseDate: Date? = null
@@ -71,7 +74,7 @@ data class Product(
     var productTotal: Int? = null
 
     @Schema(
-        implementation = Map::class,
+        implementation = HashMap::class,
         description = SwaggerConstants.PRODUCT_RARITY_STATS_DESCRIPTION,
     )
     var productRarityStats: Map<String, Int>? = null

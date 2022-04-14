@@ -4,10 +4,12 @@ import com.rtomyj.skc.constant.SKCRegex
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
 import com.rtomyj.skc.enums.ProductType
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.model.product.Products
 import com.rtomyj.skc.service.product.ProductService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -36,12 +38,22 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 	@Operation(
 		description = "Retrieve all products for a given locale."
 	)
-	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+	@ApiResponse(
+		responseCode = "200",
+		description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+	)
+	@ApiResponse(responseCode = "400",
+		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
+	@ApiResponse(
+		responseCode = "404",
+		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
 	fun getProductsByLocale(
 		@Parameter(
-			name = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
+			description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
 			example = "en",
 			schema = Schema(implementation = String::class)
 		) @Pattern(
@@ -59,12 +71,22 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 	@Operation(
 		description = "Retrieve products that fit a certain product type and locale."
 	)
-	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+	@ApiResponse(
+		responseCode = "200",
+		description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+	)
+	@ApiResponse(responseCode = "400",
+		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
+	@ApiResponse(
+		responseCode = "404",
+		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
 	fun getAllProductsForProductTypeAndLocale(
 		@Parameter(
-			name = "A specific product type used to limit results.",
+			description = "A specific product type used to limit results.",
 			example = "pack",
 			schema = Schema(implementation = String::class)
 		)

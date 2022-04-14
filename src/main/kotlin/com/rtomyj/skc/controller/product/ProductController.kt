@@ -3,10 +3,12 @@ package com.rtomyj.skc.controller.product
 import com.rtomyj.skc.constant.SKCRegex
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.model.product.Product
 import com.rtomyj.skc.service.product.ProductService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -37,12 +39,22 @@ class ProductController @Autowired constructor(private val availablePacksService
 	@Operation(
 		summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami."
 	)
-	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+	@ApiResponse(
+		responseCode = "200",
+		description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+	)
+	@ApiResponse(responseCode = "400",
+		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
+	@ApiResponse(
+		responseCode = "404",
+		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
 	fun productInfo(
 		@Parameter(
-			name = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.",
+			description = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.",
 			example = "LOB",
 			schema = Schema(implementation = String::class)
 		) @Pattern(
@@ -50,7 +62,7 @@ class ProductController @Autowired constructor(private val availablePacksService
 			message = "Product ID is formatted incorrectly"
 		) @NotNull @PathVariable("productId") productId:  String,
 		@Parameter(
-			name = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
+			description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
 			example = "en",
 			schema = Schema(implementation = String::class)
 		) @Pattern(
