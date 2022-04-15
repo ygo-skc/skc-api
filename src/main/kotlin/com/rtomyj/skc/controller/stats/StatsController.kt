@@ -2,11 +2,13 @@ package com.rtomyj.skc.controller.stats
 
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.model.stats.DatabaseStats
 import com.rtomyj.skc.model.stats.MonsterTypeStats
 import com.rtomyj.skc.service.stats.StatsService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping(path = ["/stats"])
+@RequestMapping(path = ["/stats"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_STATS_NAME)
 class StatsController @Autowired constructor(private val statsService: StatsService) : YgoApiBaseController() {
 
@@ -33,11 +35,18 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 	)
 	@GetMapping("/card/monster_type/{cardColor}")
 	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "400",
+		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
+	@ApiResponse(
+		responseCode = "404",
+		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
 	fun monsterTypesForgivenCardColor(
 		@Parameter(
-			name = SwaggerConstants.CARD_COLOR_DESCRIPTION,
+			description = SwaggerConstants.CARD_COLOR_DESCRIPTION,
 			schema = Schema(
 				implementation = String::class,
 				defaultValue = "fusion"
@@ -52,8 +61,15 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 		summary = "Retrieve overview of the data currently in Database."
 	)
 	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+	@ApiResponse(responseCode = "400",
+		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
+	@ApiResponse(
+		responseCode = "404",
+		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+		content = [Content(schema = Schema(implementation = YgoError::class))]
+	)
 	@GetMapping
 	fun databaseStats(): ResponseEntity<DatabaseStats> {
 		log.info("Retrieving high level overview of info stored in DB.")

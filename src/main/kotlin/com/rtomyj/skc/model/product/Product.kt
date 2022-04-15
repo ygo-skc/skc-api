@@ -74,7 +74,7 @@ data class Product(
     var productTotal: Int? = null
 
     @Schema(
-        implementation = HashMap::class,
+        implementation = Map::class,
         description = SwaggerConstants.PRODUCT_RARITY_STATS_DESCRIPTION,
     )
     var productRarityStats: Map<String, Int>? = null
