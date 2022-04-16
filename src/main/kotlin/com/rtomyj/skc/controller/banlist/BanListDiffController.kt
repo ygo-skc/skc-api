@@ -3,12 +3,14 @@ package com.rtomyj.skc.controller.banlist
 import com.rtomyj.skc.constant.SKCRegex
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
 import com.rtomyj.skc.service.banlist.DiffService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -55,20 +57,35 @@ class BanListDiffController
      */
     @GetMapping(path = ["/{banListStartDate}/new"])
     @Operation(
-        description = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list " +
+        summary = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list " +
                 "using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates).",
         tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
     )
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "500", description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "500",
+        description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
     @Throws(
         YgoException::class
     )
     fun getNewlyAddedContentForBanList(
         @Parameter(
-            name = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
+            description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
             example = "2020-04-01",
             required = true,
             schema = Schema(implementation = String::class)
@@ -97,19 +114,34 @@ class BanListDiffController
 
     @GetMapping(path = ["/{banListStartDate}/removed"])
     @Operation(
-        description = "Retrieve cards removed from the desired ban list compared to the previous logical ban list (use /api/v1/ban/dates to see a valid list of start dates).",
+        summary = "Retrieve cards removed from the desired ban list compared to the previous logical ban list (use /api/v1/ban/dates to see a valid list of start dates).",
         tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
     )
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "500", description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "500",
+        description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
     @Throws(
         YgoException::class
     )
     fun getNewlyRemovedContentForBanList(
         @Parameter(
-            name = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
+            description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
             example = "2020-04-01",
             required = true,
             schema = Schema(implementation = String::class)

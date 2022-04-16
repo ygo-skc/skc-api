@@ -3,11 +3,13 @@ package com.rtomyj.skc.controller.card
 import com.google.common.base.Suppliers
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.model.card.CardBrowseCriteria
 import com.rtomyj.skc.model.card.CardBrowseResults
 import com.rtomyj.skc.service.card.CardBrowseService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -35,44 +37,54 @@ class CardBrowseController @Autowired constructor(
 
     @GetMapping
     @Operation(
-        description = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
+        summary = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
     )
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(responseCode = "400",
+        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
     fun browse(
         @Parameter(
-            name = "Desired set of card types to include in browse results.",
+            description = "Desired set of card types to include in browse results.",
             example = "effect,fusion",
             schema = Schema(implementation = String::class)
         ) @RequestParam(value = "cardColors", defaultValue = "") cardColors: String = "",
         @Parameter(
-            name = "Desired set of attributes to include in browse results.",
+            description = "Desired set of attributes to include in browse results.",
             example = "wind,dark,light",
             schema = Schema(implementation = String::class)
         ) @RequestParam(value = "attributes", defaultValue = "") attributes: String = "",
         @Parameter(
-            name = "Desired set of monster types to include in browse results.",
+            description = "Desired set of monster types to include in browse results.",
             example = "spellcaster,wyrm,warrior",
             schema = Schema(implementation = String::class)
         ) @RequestParam(value = "monsterTypes", defaultValue = "") monsterTypes: String = "",
         @Parameter(
-            name = "Desired set of monster sub types to include in browse results.",
+            description = "Desired set of monster sub types to include in browse results.",
             example = "flip,gemini,toon",
             schema = Schema(implementation = String::class)
         ) @RequestParam(value = "monsterSubTypes", defaultValue = "") monsterSubTypes: String = "",
         @Parameter(
-            name = "Desired set of monster levels to include in browse results.",
+            description = "Desired set of monster levels to include in browse results.",
             example = "4,5,6,7,8",
             schema = Schema(implementation = Int::class)
         ) @RequestParam(value = "levels", defaultValue = "") monsterLevels: String = "",
         @Parameter(
-            name = "Desired set of monster ranks to include in browse results.",
+            description = "Desired set of monster ranks to include in browse results.",
             example = "4,7,8",
             schema = Schema(implementation = Int::class)
         ) @RequestParam(value = "ranks", defaultValue = "") monsterRanks: String = "",
         @Parameter(
-            name = "Desired set of monster ranks to include in browse results.",
+            description = "Desired set of monster ranks to include in browse results.",
             example = "4,7,8",
             schema = Schema(implementation = Int::class)
         ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = ""
@@ -111,11 +123,21 @@ class CardBrowseController @Autowired constructor(
 
     @GetMapping("/criteria")
     @Operation(
-        description = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
+        summary = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
     )
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(responseCode = "400",
+        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
     fun browseCriteria(): CardBrowseCriteria {
         log.info("Retrieving browse criteria.")
         val cardBrowseCriteria = cardBrowseCriteriaSupplier.get()

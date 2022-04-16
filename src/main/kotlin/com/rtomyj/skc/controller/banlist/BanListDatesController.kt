@@ -2,9 +2,12 @@ package com.rtomyj.skc.controller.banlist
 
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.service.banlist.BanListDatesService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
@@ -41,10 +44,17 @@ class BanListDatesController
      * Looks in the database for the start dates of all ban lists stored in database.
      * @return Map that contains a list of all dates of the ban lists in database.
      */
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "500", description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(
+        responseCode = "500",
+        description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
     @Operation(
-        description = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
+        summary = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
         tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
     )
     @GetMapping

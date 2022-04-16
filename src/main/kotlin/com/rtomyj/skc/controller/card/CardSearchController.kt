@@ -2,11 +2,13 @@ package com.rtomyj.skc.controller.card
 
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,57 +35,59 @@ class CardSearchController @Autowired constructor(
 
     @GetMapping
     @Operation(
-        description = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)",
+        summary = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)",
+    )@ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
     )
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
     @Throws(
         YgoException::class
     )
     fun searchByCriteria(
         @Parameter(
-            name = SwaggerConstants.CARD_ID_DESCRIPTION,
+            description = SwaggerConstants.CARD_ID_DESCRIPTION,
             example = "5",
             schema = Schema(implementation = Int::class)
         )
         @RequestParam(name = "cId", required = false, defaultValue = "")
         cardId: String = "",
         @Parameter(
-            name = SwaggerConstants.CARD_NAME_DESCRIPTION,
+            description = SwaggerConstants.CARD_NAME_DESCRIPTION,
             example = "hero",
             schema = Schema(implementation = String::class)
         )
         @RequestParam(name = "cName", required = false, defaultValue = "")
         cardName: String = "",
         @Parameter(
-            name = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
+            description = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
             example = "water",
             schema = Schema(implementation = String::class)
         )
         @RequestParam(name = "cAttribute", required = false, defaultValue = "")
         cardAttribute: String = "",
         @Parameter(
-            name = SwaggerConstants.CARD_COLOR_DESCRIPTION,
+            description = SwaggerConstants.CARD_COLOR_DESCRIPTION,
             example = "effect",
             schema = Schema(implementation = String::class)
         )
         @RequestParam(name = "cColor", required = false, defaultValue = "")
         cardColor: String = "",
         @Parameter(
-            name = SwaggerConstants.MONSTER_TYPE_DESCRIPTION,
+            description = SwaggerConstants.MONSTER_TYPE_DESCRIPTION,
             example = "war",
             schema = Schema(implementation = String::class)
         )
         @RequestParam(name = "mType", required = false, defaultValue = "")
         monsterType: String = "",
         @Parameter(
-            name = SwaggerConstants.RESULT_LIMIT_DESCRIPTION,
+            description = SwaggerConstants.RESULT_LIMIT_DESCRIPTION,
             example = "10",
             schema = Schema(implementation = Int::class, defaultValue = "5")
         )
         @RequestParam(name = "limit", required = false, defaultValue = "5")
         limit: Int = 5,
         @Parameter(
-            name = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
+            description = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
             example = "false",
             schema = Schema(implementation = Boolean::class, defaultValue = "false")
         )

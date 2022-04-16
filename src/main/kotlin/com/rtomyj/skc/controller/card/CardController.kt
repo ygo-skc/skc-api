@@ -3,11 +3,13 @@ package com.rtomyj.skc.controller.card
 import com.rtomyj.skc.constant.SKCRegex
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -54,14 +56,29 @@ class CardController @Autowired constructor(
         summary = "Get information about a specific card."
     )
 
-    @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "400", description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "404", description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE)
-    @ApiResponse(responseCode = "500", description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "500",
+        description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
     @Throws(YgoException::class)
     fun getCard(
         @Parameter(
-            name = SwaggerConstants.CARD_ID_DESCRIPTION,
+            description = SwaggerConstants.CARD_ID_DESCRIPTION,
             example = "40044918",
             required = true,
             schema = Schema(implementation = String::class)
@@ -73,7 +90,7 @@ class CardController @Autowired constructor(
         )
         @PathVariable("cardId") cardId: String,
         @Parameter(
-            name = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION,
+            description = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION,
             example = "true",
             required = false,
             schema = Schema(

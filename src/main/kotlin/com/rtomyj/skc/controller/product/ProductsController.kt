@@ -36,7 +36,7 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 
 	@GetMapping("/{locale}")
 	@Operation(
-		description = "Retrieve all products for a given locale."
+		summary = "Retrieve all products for a given locale."
 	)
 	@ApiResponse(
 		responseCode = "200",
@@ -69,7 +69,7 @@ class ProductsController @Autowired constructor(private val availableProductsSer
 
 	@GetMapping("/{productType}/{locale}")
 	@Operation(
-		description = "Retrieve products that fit a certain product type and locale."
+		summary = "Retrieve products that fit a certain product type and locale."
 	)
 	@ApiResponse(
 		responseCode = "200",
