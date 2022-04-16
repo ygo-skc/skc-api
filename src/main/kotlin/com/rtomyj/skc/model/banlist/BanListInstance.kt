@@ -25,7 +25,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
     "limited",
     "semiLimited"
 )
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(
     implementation = BanListInstance::class,
