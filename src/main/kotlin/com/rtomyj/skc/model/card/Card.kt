@@ -2,7 +2,6 @@ package com.rtomyj.skc.model.card
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.Open
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.card.CardController
@@ -10,14 +9,10 @@ import com.rtomyj.skc.model.HateoasLinks
 import com.rtomyj.skc.model.HateoasLinks.Companion.setLinks
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.banlist.CardBanListStatus
-import com.rtomyj.skc.model.card.MonsterAssociation.Companion.parseDBString
 import com.rtomyj.skc.model.product.Product
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
-import java.sql.ResultSet
-import java.sql.SQLException
 import java.util.function.Consumer
 
 /**
@@ -26,22 +21,40 @@ import java.util.function.Consumer
 @JsonInclude(
     JsonInclude.Include.NON_EMPTY
 ) // serializes non null fields - ie returns non null fields from REST request
-@ApiModel(description = "Describes attributes of a Yu-Gi-Oh! card.", parent = RepresentationModel::class)
+@Schema(
+    implementation = Card::class,
+    description = "Describes attributes of a Yu-Gi-Oh! card.",
+)
 @Open
 data class Card(
-    @ApiModelProperty(value = SwaggerConstants.CARD_ID_DESCRIPTION)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.CARD_ID_DESCRIPTION
+    )
     val cardID: String,
 
-    @ApiModelProperty(value = SwaggerConstants.CARD_NAME_DESCRIPTION)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.CARD_NAME_DESCRIPTION
+    )
     val cardName: String,
 
-    @ApiModelProperty(value = SwaggerConstants.CARD_COLOR_DESCRIPTION)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.CARD_COLOR_DESCRIPTION
+    )
     val cardColor: String,
 
-    @ApiModelProperty(value = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION
+    )
     val cardAttribute: String,
 
-    @ApiModelProperty(value = SwaggerConstants.CARD_EFFECT_DESCRIPTION)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.CARD_EFFECT_DESCRIPTION
+    )
     var cardEffect: String
 ) : RepresentationModel<Card>(), HateoasLinks {
 
@@ -91,24 +104,44 @@ data class Card(
         }
     }
 
-    @ApiModelProperty(value = SwaggerConstants.MONSTER_TYPE_DESCRIPTION)
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.MONSTER_TYPE_DESCRIPTION
+    )
     var monsterType: String? = null
 
-    @ApiModelProperty(value = SwaggerConstants.MONSTER_ASSOCIATION_DESCRIPTION)
+    @Schema(
+        implementation = MonsterAssociation::class,
+        description = SwaggerConstants.MONSTER_ASSOCIATION_DESCRIPTION
+    )
     var monsterAssociation: MonsterAssociation? = null
 
     //	Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
-    @ApiModelProperty(value = SwaggerConstants.MONSTER_ATK_DESCRIPTION)
+    @Schema(
+        implementation = Int::class,
+        description = SwaggerConstants.MONSTER_ATK_DESCRIPTION
+    )
     var monsterAttack: Int? = null
 
-    @ApiModelProperty(value = SwaggerConstants.MONSTER_DEF_DESCRIPTION)
+    @Schema(
+        implementation = Int::class,
+        description = SwaggerConstants.MONSTER_DEF_DESCRIPTION
+    )
     var monsterDefense: Int? = null
 
-    @ApiModelProperty(value = SwaggerConstants.RESTRICTED_IN_DESCRIPTION)
+    @Schema(
+        implementation = MutableList::class,
+        description = SwaggerConstants.RESTRICTED_IN_DESCRIPTION
+    )
     var restrictedIn: MutableList<CardBanListStatus>? = null
 
-    @ApiModelProperty(value = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION)
+    @Schema(
+        implementation = MutableList::class,
+        description = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION
+    )
     var foundIn: MutableList<Product>? = null
+
+
     override fun setSelfLink() {
         this.add(
             WebMvcLinkBuilder.linkTo(

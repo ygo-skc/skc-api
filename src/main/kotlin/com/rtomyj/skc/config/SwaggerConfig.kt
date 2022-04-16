@@ -1,56 +1,36 @@
 package com.rtomyj.skc.config
 
-import springfox.documentation.swagger2.annotations.EnableSwagger2
-import springfox.documentation.spring.web.plugins.Docket
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.builders.PathSelectors
-import com.rtomyj.skc.enums.SwaggerTagEnum
+import io.swagger.v3.oas.models.ExternalDocumentation
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.info.License
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import springfox.documentation.service.ApiInfo
-import springfox.documentation.builders.ApiInfoBuilder
-import springfox.documentation.service.Contact
-import springfox.documentation.service.Tag
 
 /**
  * Configuration class for Swagger UI
  */
 @Configuration
-@EnableSwagger2
 class SwaggerConfig {
-	/**
-	 * Configures Swagger by specifying the package API controllers are stored.
-	 * @return bean with Swagger configuration
-	 */
-	@Bean
-	fun productApi(): Docket {
-		return Docket(DocumentationType.SWAGGER_2)
-			.select()
-			.apis(RequestHandlerSelectors.basePackage("com.rtomyj.skc"))
-			.paths(PathSelectors.any())
-			.build()
-			.apiInfo(infoSection())
-			.tags(SwaggerTagEnum.TEST_CALL_TAG.tag())
-			.tags(SwaggerTagEnum.BAN_LIST_TAG.tag())
-			.tags(SwaggerTagEnum.CARD_TAG.tag())
-			.tags(SwaggerTagEnum.PRODUCT_TAG.tag())
-			.tags(SwaggerTagEnum.STATISTICS_TAG.tag())
-	}
 
 	/**
 	 * Create and returns an object that has information about me.
 	 * @return info about me. Will be used by swagger to display contact information and licenses.
 	 */
-	private fun infoSection(): ApiInfo {
-		return ApiInfoBuilder()
-			.title("SKC API")
-			.description("Application Programming Interface (or API for short) for interfacing with a Database that contains information such as Ban List dates/content, Yu-Gi-Oh! product information, card information, etc.")
-			.version("v1.3.0")
-			.termsOfServiceUrl("https://github.com/ygo-skc/skc-api#readme")
-			.contact(Contact("Supreme King", "https://thesupremekingscastle.com/about", "thesupremeking25@gmail.com"))
-			.license("Apache License Version 2.0")
-			.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
-			.build()
+	@Bean
+	public fun infoSection(): OpenAPI {
+		return OpenAPI()
+			.info(
+				Info()
+					.title("SKC API")
+					.description("Application Programming Interface (or API for short) for interfacing with a Database that contains information such as Ban List dates/content, Yu-Gi-Oh! product information, card information, etc.")
+					.version("v1.3.0")
+					.license(License().name("Apache License Version 2.0").url("https://www.apache.org/licenses/LICENSE-2.0"))
+					.termsOfService("https://github.com/ygo-skc/skc-api#readme"))
+			.externalDocs(
+				ExternalDocumentation()
+					.description("GitHub")
+					.url("https://github.com/ygo-skc/skc-api")
+			)
 	}
 }

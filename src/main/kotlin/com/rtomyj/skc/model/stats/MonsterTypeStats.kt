@@ -2,21 +2,23 @@ package com.rtomyj.skc.model.stats
 
 import com.rtomyj.skc.controller.stats.StatsController
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
-@ApiModel(description = "Statistics for monster types stored in Database.", parent = RepresentationModel::class)
+@Schema(
+	implementation = MonsterTypeStats::class,
+	description = "Statistics for monster types stored in Database."
+)
 data class MonsterTypeStats(
-	@ApiModelProperty(
-		value = "The scope or filter used when retrieving monster type stats.",
-		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	@Schema(
+		implementation = String::class,
+		description = "The scope or filter used when retrieving monster type stats.",
 	)
 	val scope: String,
-	@ApiModelProperty(
-		value = "Monster types and the total number of cards currently in Database that have the type for given scope.",
-		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	@Schema(
+		implementation = MutableMap::class,
+		description = "Monster types and the total number of cards currently in Database that have the type for given scope.",
 	)
 	val monsterTypes: MutableMap<String, Int>
 ) : RepresentationModel<MonsterTypeStats?>(), HateoasLinks {

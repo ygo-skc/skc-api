@@ -4,40 +4,42 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.enums.LinkArrow.Companion.transformDBStringToEnum
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.slf4j.LoggerFactory
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
-@ApiModel(description = "Information about various properties only monster cards have that usually associate distinct monster cards (not in the same archetype) together.")
+@Schema(
+    implementation = MonsterAssociation::class,
+    description = "Information about various properties only monster cards have that usually associate distinct monster cards (not in the same archetype) together."
+)
 class MonsterAssociation(
-    @ApiModelProperty(
-        value = "The star rating of a monster card - determines tribute count.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Int::class,
+        description = "The star rating of a monster card - determines tribute count.",
     )
     val level: Int? = null,
 
-    @ApiModelProperty(
-        value = "Like level, except it determines which monsters can be used to summon the card.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Int::class,
+        description = "Like level, except it determines which monsters can be used to summon the card.",
     )
     val rank: Int? = null,
 
-    @ApiModelProperty(
-        value = "Pendulum rating used to perform pendulum summoning.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Int::class,
+        description = "Pendulum rating used to perform pendulum summoning.",
     )
     val scaleRating: Int? = null,
 
-    @ApiModelProperty(
-        value = "Number value determining link cost in summoning Link monster.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Int::class,
+        description = "Number value determining link cost in summoning Link monster.",
     )
     val linkRating: Int? = null,
 
-    @ApiModelProperty(
-        value = "Positions of Link arrows for link monster.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = List::class,
+        description = "Positions of Link arrows for link monster.",
     )
     var linkArrows: List<String>? = null
 ) {

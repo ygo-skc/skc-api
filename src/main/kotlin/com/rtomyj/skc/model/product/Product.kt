@@ -4,26 +4,29 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.product.ProductController
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import java.util.*
 import java.util.function.Consumer
+import kotlin.collections.HashMap
 
 @JsonInclude(
     JsonInclude.Include.NON_EMPTY
 )
-@ApiModel(description = "Information about a Yu-Gi-Oh! product such as a booster pack or tin.")
+@Schema(
+    implementation = Product::class,
+    description = "Information about a Yu-Gi-Oh! product such as a booster pack or tin."
+)
 data class Product(
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_ID_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PRODUCT_ID_DESCRIPTION,
     )
     val productId: String,
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
     )
     val productLocale: String
 ) : RepresentationModel<Product?>() {
@@ -37,46 +40,48 @@ data class Product(
     }
 
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_NAME_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PRODUCT_NAME_DESCRIPTION,
     )
     var productName: String? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
     )
     var productType: String? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_SUB_TYPE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PRODUCT_SUB_TYPE_DESCRIPTION,
     )
     var productSubType: String? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_RELEASE_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Date::class,
+        description = SwaggerConstants.PRODUCT_RELEASE_DATE_DESCRIPTION,
+        pattern = "yyyy-MM-dd",
+        format = "yyyy-MM-dd",
     )
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     var productReleaseDate: Date? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_TOTAL_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Int::class,
+        description = SwaggerConstants.PRODUCT_TOTAL_DESCRIPTION,
     )
     var productTotal: Int? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_RARITY_STATS_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Map::class,
+        description = SwaggerConstants.PRODUCT_RARITY_STATS_DESCRIPTION,
     )
     var productRarityStats: Map<String, Int>? = null
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PRODUCT_CONTENT_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = MutableList::class,
+        description = SwaggerConstants.PRODUCT_CONTENT_DESCRIPTION,
     )
     var productContent: MutableList<ProductContent> = mutableListOf()
 

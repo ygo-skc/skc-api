@@ -7,8 +7,7 @@ import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.banlist.BanListDiffController
 import com.rtomyj.skc.controller.banlist.BannedCardsController
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import java.util.*
@@ -17,14 +16,17 @@ import java.util.*
  * Model containing information about a Ban List.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
-@ApiModel(description = "Information about a ban lists effective date.", parent = RepresentationModel::class)
+@Schema(
+    implementation = BanListDate::class,
+    description = "Information about a ban lists effective date.",
+)
 data class BanListDate(
     /**
      * Start date of ban list.
      */
-    @ApiModelProperty(
-        value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Date::class,
+        description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     ) @JsonFormat(
         shape = JsonFormat.Shape.STRING,
         pattern = "yyyy-MM-dd"

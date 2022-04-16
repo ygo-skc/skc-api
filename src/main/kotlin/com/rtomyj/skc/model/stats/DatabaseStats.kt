@@ -2,28 +2,30 @@ package com.rtomyj.skc.model.stats
 
 import com.rtomyj.skc.controller.stats.StatsController
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
-@ApiModel(description = "High level stats for data in the database.", parent = RepresentationModel::class)
+@Schema(
+	implementation = DatabaseStats::class,
+	description = "High level stats for data in the database."
+)
 data class DatabaseStats(
-	@ApiModelProperty(
-		value = "Total number of products in the database.",
-		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	@Schema(
+		implementation = Int::class,
+		description = "Total number of products in the database."
 	) val productTotal: Int,
-	@ApiModelProperty(
-		value = "Total number of cards in the database.",
-		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	@Schema(
+		implementation = Int::class,
+		description = "Total number of cards in the database.",
 	) val cardTotal: Int,
-	@ApiModelProperty(
-		value = "Total number of ban lists in the database.",
-		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	@Schema(
+		implementation = Int::class,
+		description = "Total number of ban lists in the database.",
 	) val banListTotal: Int,
-	@ApiModelProperty(
-		value = "Total number of years spanned/covered by ban lists stored in database.",
-		accessMode = ApiModelProperty.AccessMode.READ_ONLY
+	@Schema(
+		implementation = Int::class,
+		description = "Total number of years spanned/covered by ban lists stored in database.",
 	) val yearsOfBanListCoverage: Int
 ) : RepresentationModel<DatabaseStats>(), HateoasLinks {
 

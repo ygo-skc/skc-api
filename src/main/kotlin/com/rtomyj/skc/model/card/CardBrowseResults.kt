@@ -2,21 +2,24 @@ package com.rtomyj.skc.model.card
 
 import com.rtomyj.skc.controller.card.CardBrowseController
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 
-@ApiModel(
+@Schema(
+    implementation = CardBrowseResults::class,
     description = "Card information for cards that fit requested browse criteria.",
-    parent = RepresentationModel::class
 )
 class CardBrowseResults(
-    @ApiModelProperty(
-        value = "Card info of all cards that fit criteria requested by user.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = List::class,
+        description = "Card info of all cards that fit criteria requested by user.",
     )
     val results: List<Card>,
-    @ApiModelProperty(value = "Total browse results.", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+
+    @Schema(
+        implementation = Int::class,
+        description = "Total browse results.", 
+    )
     val numResults: Int = 0
 ) : RepresentationModel<CardBrowseResults>(), HateoasLinks {
 
@@ -25,9 +28,9 @@ class CardBrowseResults(
     }
 
 
-    @ApiModelProperty(
-        value = "Criteria used to fetch these results.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = CardBrowseCriteria::class,
+        description = "Criteria used to fetch these results.",
     )
     var requestedCriteria: CardBrowseCriteria? = null
 

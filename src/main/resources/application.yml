@@ -24,6 +24,9 @@ server:
   http2:
     enabled: true
 
+springdoc:
+  packagesToScan: com.rtomyj.skc
+  pathsToMatch: /**
 
 ---
 spring:

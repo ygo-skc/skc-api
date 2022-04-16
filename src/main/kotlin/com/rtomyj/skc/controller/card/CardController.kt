@@ -3,10 +3,16 @@ package com.rtomyj.skc.controller.card
 import com.rtomyj.skc.constant.SKCRegex
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.YgoApiBaseController
+import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.service.card.CardService
-import io.swagger.annotations.*
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -21,7 +27,7 @@ import javax.validation.constraints.Pattern
 @RestController
 @RequestMapping(path = ["/card"], produces = ["application/json; charset=UTF-8"])
 @Validated
-@Api(tags = [SwaggerConstants.TAG_CAR_TAG_NAMED])
+@Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
 class CardController @Autowired constructor(
     /**
      * Service object used to interface with DB DAO.
@@ -46,26 +52,36 @@ class CardController @Autowired constructor(
      * @return Card object as a response.
      */
     @GetMapping("/{cardId}")
-    @ApiOperation(
-        value = "Get information about a specific card.",
-        response = Card::class,
-        responseContainer = "Object"
+    @Operation(
+        summary = "Get information about a specific card."
     )
 
-    @ApiResponses(
-        value = [
-            ApiResponse(code = 200, message = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE),
-            ApiResponse(code = 400, message = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE),
-            ApiResponse(code = 404, message = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE),
-            ApiResponse(code = 500, message = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE)
-        ]
+    @ApiResponse(
+        responseCode = "200",
+        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
+    )
+    @ApiResponse(
+        responseCode = "500",
+        description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
+        content = [Content(schema = Schema(implementation = YgoError::class))]
     )
     @Throws(YgoException::class)
     fun getCard(
-        @ApiParam(
-            value = SwaggerConstants.CARD_ID_DESCRIPTION,
+        @Parameter(
+            description = SwaggerConstants.CARD_ID_DESCRIPTION,
             example = "40044918",
-            required = true
+            required = true,
+            schema = Schema(implementation = String::class)
         )
         @NotNull
         @Pattern(
@@ -73,9 +89,13 @@ class CardController @Autowired constructor(
             message = "Card ID doesn't have correct format."
         )
         @PathVariable("cardId") cardId: String,
-        @ApiParam(
-            value = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION,
-            example = "true"
+        @Parameter(
+            description = SwaggerConstants.CARD_FETCH_ALL_DESCRIPTION,
+            example = "true",
+            required = false,
+            schema = Schema(
+                implementation = Boolean::class
+            )
         )
         @RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean = false
     ): ResponseEntity<Card> {

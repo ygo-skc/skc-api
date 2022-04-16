@@ -6,39 +6,38 @@ import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.banlist.BanListDiffController
 import com.rtomyj.skc.controller.banlist.BannedCardsController
 import com.rtomyj.skc.model.HateoasLinks
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
 @JsonPropertyOrder("listRequested", "comparedTo", "numRemoved", "removedCards")
-@ApiModel(
+@Schema(
+    implementation = BanListRemovedContent::class,
     description = "Cards that were removed from a ban list compared to the previous logical ban list.",
-    parent = RepresentationModel::class
 )
 @Open
 data class BanListRemovedContent(
-    @ApiModelProperty(
-        value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     )
     val listRequested: String,
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
     )
     val comparedTo: String,
 
-    @ApiModelProperty(
-        value = "List containing removed cards and their previous ban status.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = List::class,
+        description = "List containing removed cards and their previous ban status.",
     )
     val removedCards: List<CardsPreviousBanListStatus>,
 
-    @ApiModelProperty(
-        value = "Total number of cards removed in requested ban list compared to previous ban list.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards removed in requested ban list compared to previous ban list.",
     )
     val numRemoved: Int = removedCards.size
 ) : RepresentationModel<BanListRemovedContent?>(), HateoasLinks {
