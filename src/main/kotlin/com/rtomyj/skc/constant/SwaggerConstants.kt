@@ -59,7 +59,7 @@ object SwaggerConstants {
 	// Swagger tag names
 	const val TEST_CALL_TAG_NAME = "Test Call"
 	const val BAN_LIST_TAG_NAME = "Ban List"
-	const val TAG_CAR_TAG_NAMED = "Card Info"
+	const val TAG_CARD_TAG_NAMED = "Card Info"
 	const val TAG_PRODUCT_TAG_NAME = "Product Info"
 	const val TAG_STATS_NAME = "Database Statistics"
 }

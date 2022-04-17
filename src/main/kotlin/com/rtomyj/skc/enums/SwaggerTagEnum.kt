@@ -1,7 +1,7 @@
 package com.rtomyj.skc.enums
 
 import com.rtomyj.skc.constant.SwaggerConstants
-import springfox.documentation.service.Tag
+//import springfox.documentation.service.Tag
 
 enum class SwaggerTagEnum(
 	val tagName: String, val tagDescription: String
@@ -15,7 +15,7 @@ enum class SwaggerTagEnum(
 		"Request information about current or past ban lists."
 	),
 	CARD_TAG(
-		SwaggerConstants.TAG_CAR_TAG_NAMED,
+		SwaggerConstants.TAG_CARD_TAG_NAMED,
 		"Request information on a card, search for cards or get browse data for cards."
 	),
 	PRODUCT_TAG(
@@ -28,5 +28,5 @@ enum class SwaggerTagEnum(
 	);
 
 
-	fun tag(): Tag = Tag(this.tagName, this.tagDescription)
+//	fun tag(): Tag = Tag(this.tagName, this.tagDescription)
 }

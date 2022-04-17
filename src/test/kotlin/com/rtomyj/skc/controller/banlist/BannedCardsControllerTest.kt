@@ -76,10 +76,10 @@ class BannedCardsControllerTest {
 						.param("allInfo", "true")
 				)
 				.andExpect(status().isOk)
-				.andExpect(jsonPath("$.banListInstance.effectiveDate", `is`(REQUESTED_BAN_LIST_MOCK_DATE)))
-				.andExpect(jsonPath("$.banListInstance.numForbidden", `is`(1)))
-				.andExpect(jsonPath("$.banListInstance.numLimited", `is`(1)))
-				.andExpect(jsonPath("$.banListInstance.numSemiLimited", `is`(1)))
+				.andExpect(jsonPath("$.effectiveDate", `is`(REQUESTED_BAN_LIST_MOCK_DATE)))
+				.andExpect(jsonPath("$.numForbidden", `is`(1)))
+				.andExpect(jsonPath("$.numLimited", `is`(1)))
+				.andExpect(jsonPath("$.numSemiLimited", `is`(1)))
 
 
 			// ensure mocks are called

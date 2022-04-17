@@ -10,8 +10,7 @@ import com.rtomyj.skc.controller.banlist.BanListDiffController
 import com.rtomyj.skc.controller.banlist.BannedCardsController
 import com.rtomyj.skc.model.HateoasLinks
 import com.rtomyj.skc.model.card.Card
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
@@ -26,66 +25,59 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
     "limited",
     "semiLimited"
 )
-@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(
+@Schema(
+    implementation = BanListInstance::class,
     description = "Describes and contains information about a specific ban list.",
-    parent = RepresentationModel::class
 )
 @Open
 data class BanListInstance(
-    @ApiModelProperty(
-        value = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     )
     val effectiveDate: String,
 
-    @ApiModelProperty(
-        value = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY
+    @Schema(
+        implementation = String::class,
+        description = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
     )
     val comparedTo: String,
 
 
-    @ApiModelProperty(
-        value = "List of cards forbidden in this ban list instance.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 4
+    @Schema(
+        implementation = List::class,
+        description = "List of cards forbidden in this ban list instance.",
     )
     val forbidden: List<Card>,
 
-    @ApiModelProperty(
-        value = "List of cards limited in this ban list instance.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 5
+    @Schema(
+        implementation = List::class,
+        description = "List of cards limited in this ban list instance.",
     )
     val limited: List<Card>,
 
-    @ApiModelProperty(
-        value = "List of cards semi-limited in this ban list instance.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 6
+    @Schema(
+        implementation = List::class,
+        description = "List of cards semi-limited in this ban list instance.",
     )
     val semiLimited: List<Card>,
 
-    @ApiModelProperty(
-        value = "Total number of cards forbidden in this ban list instance; ie size of forbidden list.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 1
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards forbidden in this ban list instance; ie size of forbidden list.",
     )
     val numForbidden: Int = forbidden.size,
 
-    @ApiModelProperty(
-        value = "Total number of cards limited in this ban list instance; ie size of limited list.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 2
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards limited in this ban list instance; ie size of limited list.",
     )
     val numLimited: Int = limited.size,
 
-    @ApiModelProperty(
-        value = "Total number of cards semi-limited in this ban list instance; ie size of semi-limited list.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 3
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards semi-limited in this ban list instance; ie size of semi-limited list.",
     )
     val numSemiLimited: Int = semiLimited.size
 ) : RepresentationModel<BanListInstance>(), HateoasLinks {
@@ -97,17 +89,15 @@ data class BanListInstance(
     }
 
 
-    @ApiModelProperty(
-        value = "Object containing info of cards that are newly added to this ban list compared to previous logical ban list. Note: this field will be null unless specified otherwise.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 7
+    @Schema(
+        implementation = BanListNewContent::class,
+        description = "Object containing info of cards that are newly added to this ban list compared to previous logical ban list. Note: this field will be null unless specified otherwise.",
     )
     var newContent: BanListNewContent? = null
 
-    @ApiModelProperty(
-        value = "Object containing info of cards that are removed from this ban list compared to previous logical ban list. Note: this field will be null unless specified otherwise.",
-        accessMode = ApiModelProperty.AccessMode.READ_ONLY,
-        position = 8
+    @Schema(
+        implementation = BanListRemovedContent::class,
+        description = "Object containing info of cards that are removed from this ban list compared to previous logical ban list. Note: this field will be null unless specified otherwise.",
     )
     var removedContent: BanListRemovedContent? = null
 
