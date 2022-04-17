@@ -59,7 +59,6 @@ dependencies {
 	compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-//	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
