@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   skc-api:
-    image: "openjdk:17.0-jdk-slim"
+    image: "openjdk:18.0-jdk-slim"
     ports:
       - "4443-4444:8443"
     volumes:
