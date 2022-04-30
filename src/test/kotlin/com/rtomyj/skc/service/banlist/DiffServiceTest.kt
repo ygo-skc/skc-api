@@ -113,13 +113,13 @@ class DiffServiceTest {
             Assertions.assertEquals(0, newSemiLimitedCards.size)
 
             // validate correct data is returned in each list for each ban status
-            Assertions.assertEquals(TestConstants.STRATOS_ID, newForbiddenCards[0].cardId)
+            Assertions.assertEquals(TestConstants.STRATOS_ID, newForbiddenCards[0].card.cardID)
             Assertions.assertEquals("Limited", newForbiddenCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards[0].cardId)
+            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards[0].card.cardID)
             Assertions.assertEquals("Unlimited", newLimitedCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].cardId)
+            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].card.cardID)
             Assertions.assertEquals("Forbidden", newLimitedCards[1].previousBanStatus)
 
             // ensure self link is present
@@ -197,16 +197,16 @@ class DiffServiceTest {
             Assertions.assertEquals(3, removedCards.size)
 
             // ensure correct values are being returned in removedCards array
-            Assertions.assertEquals(TestConstants.STRATOS_ID, removedCards[0].cardId)
-            Assertions.assertEquals(TestConstants.STRATOS_NAME, removedCards[0].cardName)
+            Assertions.assertEquals(TestConstants.STRATOS_ID, removedCards[0].card.cardID)
+            Assertions.assertEquals(TestConstants.STRATOS_NAME, removedCards[0].card.cardID)
             Assertions.assertEquals("Forbidden", removedCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards[1].cardId)
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, removedCards[1].cardName)
+            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards[1].card.cardID)
+            Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, removedCards[1].card.cardID)
             Assertions.assertEquals("Limited", removedCards[1].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].cardId)
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].cardName)
+            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].card.cardID)
+            Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].card.cardID)
             Assertions.assertEquals("Semi-Limited", removedCards[2].previousBanStatus)
 
             // ensure self link is present
