@@ -1,5 +1,6 @@
 package com.rtomyj.skc.dao.implementation
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.constant.DBQueryConstants
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.enums.BanListCardStatus
@@ -7,6 +8,7 @@ import com.rtomyj.skc.model.banlist.BanListDates
 import com.rtomyj.skc.model.banlist.CardBanListStatus
 import com.rtomyj.skc.model.banlist.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.card.Card
+import com.rtomyj.skc.model.card.MonsterAssociation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +26,7 @@ import java.text.SimpleDateFormat
 class BanListJDBCDao @Autowired constructor(
     private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
     @Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
+    val objectMapper: ObjectMapper
 ) : BanListDao {
     companion object {
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -48,10 +51,10 @@ class BanListJDBCDao @Autowired constructor(
                         row.getString(3),
                         row.getString(6),
                         row.getString(4)
-
                     )
                         .apply {
                             monsterType = row.getString(2)
+                            monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
                         }
                 )
             }
