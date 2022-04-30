@@ -176,11 +176,12 @@ class BanListJDBCDao @Autowired constructor(
         }
 
         val query = "select card_name, monster_type, card_color, card_effect, new_list.card_number, card_attribute, monster_association " +
-                "from (select * from ban_list_info where ban_list_date = '2022-02-07' and ban_status = 'forbidden') as new_list " +
+                "from (select * from ban_list_info where ban_list_date = :newBanList and ban_status = :status) as new_list " +
                 "left join " +
-                "(select card_number, ban_status from ban_list_info where ban_list_date = '2021-10-01' and ban_status = 'forbidden') as old_list " +
+                "(select card_number, ban_status from ban_list_info where ban_list_date = :oldBanList and ban_status = :status) as old_list " +
                 "on new_list.card_number = old_list.card_number " +
-                "where old_list.card_number is NULL"
+                "where old_list.card_number is NULL " +
+                "ORDER BY color_id, card_name"
 
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("status", status.toString())
