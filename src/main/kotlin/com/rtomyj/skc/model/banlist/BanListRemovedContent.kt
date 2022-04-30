@@ -68,6 +68,5 @@ data class BanListRemovedContent(
                 WebMvcLinkBuilder.methodOn(diffController).getNewlyAddedContentForBanList(listRequested)
             ).withRel("Ban List New Content")
         )
-        HateoasLinks.setLinks(removedCards)
     }
 }

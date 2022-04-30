@@ -94,8 +94,5 @@ data class BanListNewContent(
                     .getNewlyRemovedContentForBanList(listRequested)
             ).withRel("Ban List Removed Content")
         )
-        HateoasLinks.setLinks(newForbidden)
-        HateoasLinks.setLinks(newLimited)
-        HateoasLinks.setLinks(newSemiLimited)
     }
 }

@@ -102,12 +102,12 @@ class BanListJDBCDao @Autowired constructor(
             return emptyList()
         }
 
-        val query = "select removed_cards.card_number, removed_cards.ban_status, cards.card_name" +
-                " from (select old_list.card_number, old_list.ban_status from (select card_number from ban_lists" +
-                " where ban_list_date = :newBanList) as new_list right join (select card_number, ban_status" +
-                " from ban_lists where ban_list_date = :oldBanList) as old_list on new_list.card_number = old_list.card_number" +
-                " where new_list.card_number is NULL) as removed_cards, cards where cards.card_number = removed_cards.card_number" +
-                " ORDER BY cards.card_name"
+        val query = "select" +
+                " old_list.card_name, old_list.monster_type, old_list.card_color, old_list.card_effect, old_list.card_number, old_list.card_attribute, old_list.monster_association, old_list.ban_status" +
+                " from (select card_number from ban_list_info where ban_list_date = :newBanList) as new_list" +
+                " right join" +
+                " (select * from ban_list_info where ban_list_date = :oldBanList) as old_list" +
+                " on new_list.card_number = old_list.card_number where new_list.card_number is NULL"
 
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("newBanList", banListDate)
@@ -118,11 +118,18 @@ class BanListJDBCDao @Autowired constructor(
 
             while (row.next()) {
                 val removedCard = CardsPreviousBanListStatus(
-                    row.getString(1),
-                    row.getString(3),
-                    row.getString(2)
-
-
+                    Card(
+                        row.getString(5),
+                        row.getString(1),
+                        row.getString(3),
+                        row.getString(6),
+                        row.getString(4)
+                    )
+                        .apply {
+                            monsterType = row.getString(2)
+                            monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                        },
+                    row.getString(8)
                 )
                 removedCards.add(removedCard)
             }
@@ -168,12 +175,12 @@ class BanListJDBCDao @Autowired constructor(
             return emptyList()
         }
 
-        val query = "select new_cards.card_number, cards.card_name from (select new_list.card_number" +
-                " from (select card_number from ban_lists where ban_list_date = :newBanList and ban_status = :status)" +
-                " as new_list left join (select card_number from ban_lists where ban_list_date = :oldBanList" +
-                " and ban_status = :status) as old_list on new_list.card_number = old_list.card_number" +
-                " where old_list.card_number is NULL) as new_cards, cards where cards.card_number = new_cards.card_number" +
-                " ORDER BY cards.card_name"
+        val query = "select card_name, monster_type, card_color, card_effect, new_list.card_number, card_attribute, monster_association " +
+                "from (select * from ban_list_info where ban_list_date = '2022-02-07' and ban_status = 'forbidden') as new_list " +
+                "left join " +
+                "(select card_number, ban_status from ban_list_info where ban_list_date = '2021-10-01' and ban_status = 'forbidden') as old_list " +
+                "on new_list.card_number = old_list.card_number " +
+                "where old_list.card_number is NULL"
 
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("status", status.toString())
@@ -193,8 +200,17 @@ class BanListJDBCDao @Autowired constructor(
                     val cardID = row.getString(1)
                     val previousStatus = getCardBanListStatusByDate(cardID, oldBanList)
                     val cardsPreviousBanListStatus = CardsPreviousBanListStatus(
-                        cardID,
-                        row.getString(2),
+                        Card(
+                            row.getString(5),
+                            row.getString(1),
+                            row.getString(3),
+                            row.getString(6),
+                            row.getString(4)
+                        )
+                            .apply {
+                                monsterType = row.getString(2)
+                                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                            },
                         previousStatus
                     )
 
