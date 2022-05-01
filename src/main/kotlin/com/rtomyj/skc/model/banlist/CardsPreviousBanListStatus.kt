@@ -27,4 +27,7 @@ data class CardsPreviousBanListStatus(
     )
     val previousBanStatus: String
 ) : RepresentationModel<CardsPreviousBanListStatus?>() {
+    fun setLinks() {
+        card.setLinks()
+    }
 }

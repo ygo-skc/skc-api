@@ -83,6 +83,13 @@ data class BanListNewContent(
 
     override fun setLinks() {
         setSelfLink()
+        newForbidden
+            .forEach(CardsPreviousBanListStatus::setLinks)
+        newLimited
+            .forEach(CardsPreviousBanListStatus::setLinks)
+        newSemiLimited
+            .forEach(CardsPreviousBanListStatus::setLinks)
+
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(banListController).getBannedCards(listRequested, false, true)
