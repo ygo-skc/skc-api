@@ -58,6 +58,10 @@ data class BanListRemovedContent(
 
     override fun setLinks() {
         setSelfLink()
+
+        removedCards
+            .forEach(CardsPreviousBanListStatus::setLinks)
+
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(banListController).getBannedCards(listRequested, false, true)
@@ -68,6 +72,5 @@ data class BanListRemovedContent(
                 WebMvcLinkBuilder.methodOn(diffController).getNewlyAddedContentForBanList(listRequested)
             ).withRel("Ban List New Content")
         )
-        HateoasLinks.setLinks(removedCards)
     }
 }

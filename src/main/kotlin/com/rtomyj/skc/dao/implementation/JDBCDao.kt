@@ -13,7 +13,7 @@ import com.rtomyj.skc.model.banlist.CardBanListStatus
 import com.rtomyj.skc.model.card.Card
 import com.rtomyj.skc.model.card.CardBrowseCriteria
 import com.rtomyj.skc.model.card.CardBrowseResults
-import com.rtomyj.skc.model.card.MonsterAssociation.Companion.parseDBString
+import com.rtomyj.skc.model.card.MonsterAssociation
 import com.rtomyj.skc.model.stats.DatabaseStats
 import com.rtomyj.skc.model.stats.MonsterTypeStats
 import org.slf4j.LoggerFactory
@@ -100,7 +100,7 @@ class JDBCDao @Autowired constructor(
                         monsterType = row.getString(5)
                         monsterAttack = row.getObject(6, Int::class.javaObjectType)
                         monsterDefense = row.getObject(7, Int::class.javaObjectType)
-                        monsterAssociation = parseDBString(row.getString(8), objectMapper)
+                        monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), objectMapper)
                     }
             }
             null
@@ -373,7 +373,7 @@ class JDBCDao @Autowired constructor(
             )
                 .apply {
                     this.monsterType = row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString())
-                    this.monsterAssociation = parseDBString(
+                    this.monsterAssociation = MonsterAssociation.parseDBString(
                         row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), objectMapper
                     )
                 }

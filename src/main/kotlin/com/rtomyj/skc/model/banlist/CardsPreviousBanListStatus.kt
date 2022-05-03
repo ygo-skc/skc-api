@@ -4,6 +4,7 @@ import com.rtomyj.skc.Open
 import com.rtomyj.skc.constant.SwaggerConstants
 import com.rtomyj.skc.controller.card.CardController
 import com.rtomyj.skc.model.HateoasLinks
+import com.rtomyj.skc.model.card.Card
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -15,41 +16,18 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 @Open
 data class CardsPreviousBanListStatus(
     @Schema(
-        implementation = CardsPreviousBanListStatus::class,
-        description = SwaggerConstants.CARD_ID_DESCRIPTION, 
+        implementation = Card::class,
+        description = "Card details",
     )
-    val cardId: String,
+    val card: Card,
 
     @Schema(
-        implementation = CardsPreviousBanListStatus::class,
-        description = SwaggerConstants.CARD_NAME_DESCRIPTION,
-    )
-    val cardName: String,
-
-    @Schema(
-        implementation = CardsPreviousBanListStatus::class,
+        implementation = String::class,
         description = "The previous ban status the card had when compared to current ban list.",
     )
     val previousBanStatus: String
-) : RepresentationModel<CardsPreviousBanListStatus?>(), HateoasLinks {
-
-    companion object {
-        private val controllerClass = CardController::class.java
-    }
-
-
-    override fun setSelfLink() {
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(controllerClass).getCard(
-                    cardId, false
-                )
-            ).withSelfRel()
-        )
-    }
-
-
-    override fun setLinks() {
-        setSelfLink()
+) : RepresentationModel<CardsPreviousBanListStatus?>() {
+    fun setLinks() {
+        card.setLinks()
     }
 }

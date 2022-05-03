@@ -2,10 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.6.6"
-val springDocVersion = "1.6.7"
-val mysqlVersion = "8.0.28"
-val jacksonVersion = "2.13.1"
+val springBootVersion = "2.6.7"
+val springDocVersion = "1.6.8"
+val mysqlVersion = "8.0.29"
+val jacksonVersion = "2.13.2"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
@@ -17,14 +17,14 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.6.6"
+	id("org.springframework.boot") version "2.6.7"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.4"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
-	kotlin("jvm") version "1.6.20"
-	kotlin("plugin.spring") version "1.6.20"
-	kotlin("plugin.allopen") version "1.6.20"
+	kotlin("jvm") version "1.6.21"
+	kotlin("plugin.spring") version "1.6.21"
+	kotlin("plugin.allopen") version "1.6.21"
 
 	jacoco
 	java
@@ -37,7 +37,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.0.4"
+version = "2.0.5"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -59,7 +59,6 @@ dependencies {
 	compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-//	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work

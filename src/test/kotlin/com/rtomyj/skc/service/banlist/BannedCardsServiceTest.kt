@@ -303,14 +303,14 @@ class BannedCardsServiceTest {
         private fun assertFetchAllInfoValues(banListInstance: BanListInstance, fetchAllInfo: Boolean) {
             if (fetchAllInfo) {
                 Assertions.assertNotNull(banListInstance.newContent)
-                Assertions.assertEquals(TestConstants.STRATOS_NAME, banListInstance.newContent!!.newForbidden[0].cardName)
-                Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, banListInstance.newContent!!.newLimited[0].cardName)
-                Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, banListInstance.newContent!!.newLimited[1].cardName)
+                Assertions.assertEquals(TestConstants.STRATOS_NAME, banListInstance.newContent!!.newForbidden[0].card.cardName)
+                Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, banListInstance.newContent!!.newLimited[0].card.cardName)
+                Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, banListInstance.newContent!!.newLimited[1].card.cardName)
 
                 Assertions.assertNotNull(banListInstance.removedContent)
-                Assertions.assertEquals(TestConstants.STRATOS_NAME, banListInstance.removedContent!!.removedCards[0].cardName)
-                Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, banListInstance.removedContent!!.removedCards[1].cardName)
-                Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, banListInstance.removedContent!!.removedCards[2].cardName)
+                Assertions.assertEquals(TestConstants.STRATOS_NAME, banListInstance.removedContent!!.removedCards[0].card.cardName)
+                Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, banListInstance.removedContent!!.removedCards[1].card.cardName)
+                Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, banListInstance.removedContent!!.removedCards[2].card.cardName)
             } else {
                 Assertions.assertNull(banListInstance.newContent)
                 Assertions.assertNull(banListInstance.removedContent)

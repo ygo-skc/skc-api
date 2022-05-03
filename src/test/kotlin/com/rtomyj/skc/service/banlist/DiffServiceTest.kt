@@ -113,27 +113,27 @@ class DiffServiceTest {
             Assertions.assertEquals(0, newSemiLimitedCards.size)
 
             // validate correct data is returned in each list for each ban status
-            Assertions.assertEquals(TestConstants.STRATOS_ID, newForbiddenCards[0].cardId)
+            Assertions.assertEquals(TestConstants.STRATOS_ID, newForbiddenCards[0].card.cardID)
             Assertions.assertEquals("Limited", newForbiddenCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards[0].cardId)
+            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards[0].card.cardID)
             Assertions.assertEquals("Unlimited", newLimitedCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].cardId)
+            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].card.cardID)
             Assertions.assertEquals("Forbidden", newLimitedCards[1].previousBanStatus)
 
             // ensure self link is present
-            Assertions.assertNotNull(newForbiddenCards[0].links.getLink("self"))
-            Assertions.assertNotNull(newLimitedCards[0].links.getLink("self"))
-            Assertions.assertNotNull(newLimitedCards[1].links.getLink("self"))
+            Assertions.assertNotNull(newForbiddenCards[0].card.links.getLink("self"))
+            Assertions.assertNotNull(newLimitedCards[0].card.links.getLink("self"))
+            Assertions.assertNotNull(newLimitedCards[1].card.links.getLink("self"))
 
             // ensure href is as expected
-            Assertions.assertEquals("/card/${TestConstants.STRATOS_ID}?allInfo=false"
-                , newForbiddenCards[0].links.getLink("self").get().href)
-            Assertions.assertEquals("/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=false"
-                , newLimitedCards[0].links.getLink("self").get().href)
-            Assertions.assertEquals("/card/${TestConstants.D_MALICIOUS_ID}?allInfo=false"
-                , newLimitedCards[1].links.getLink("self").get().href)
+            Assertions.assertEquals("/card/${TestConstants.STRATOS_ID}?allInfo=true"
+                , newForbiddenCards[0].card.links.getLink("self").get().href)
+            Assertions.assertEquals("/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=true"
+                , newLimitedCards[0].card.links.getLink("self").get().href)
+            Assertions.assertEquals("/card/${TestConstants.D_MALICIOUS_ID}?allInfo=true"
+                , newLimitedCards[1].card.links.getLink("self").get().href)
 
 
             // ensure mocks are called appropriate number of times
@@ -197,35 +197,35 @@ class DiffServiceTest {
             Assertions.assertEquals(3, removedCards.size)
 
             // ensure correct values are being returned in removedCards array
-            Assertions.assertEquals(TestConstants.STRATOS_ID, removedCards[0].cardId)
-            Assertions.assertEquals(TestConstants.STRATOS_NAME, removedCards[0].cardName)
+            Assertions.assertEquals(TestConstants.STRATOS_ID, removedCards[0].card.cardID)
+            Assertions.assertEquals(TestConstants.STRATOS_NAME, removedCards[0].card.cardName)
             Assertions.assertEquals("Forbidden", removedCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards[1].cardId)
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, removedCards[1].cardName)
+            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards[1].card.cardID)
+            Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, removedCards[1].card.cardName)
             Assertions.assertEquals("Limited", removedCards[1].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].cardId)
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].cardName)
+            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].card.cardID)
+            Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].card.cardName)
             Assertions.assertEquals("Semi-Limited", removedCards[2].previousBanStatus)
 
             // ensure self link is present
-            Assertions.assertNotNull(removedCards[0].links.getLink("self"))
-            Assertions.assertNotNull(removedCards[1].links.getLink("self"))
-            Assertions.assertNotNull(removedCards[2].links.getLink("self"))
+            Assertions.assertNotNull(removedCards[0].card.links.getLink("self"))
+            Assertions.assertNotNull(removedCards[1].card.links.getLink("self"))
+            Assertions.assertNotNull(removedCards[2].card.links.getLink("self"))
 
             // ensure href is as expected
             Assertions.assertEquals(
-                "/card/${TestConstants.STRATOS_ID}?allInfo=false"
-                , removedCards[0].links.getLink("self").get().href
+                "/card/${TestConstants.STRATOS_ID}?allInfo=true"
+                , removedCards[0].card.links.getLink("self").get().href
             )
             Assertions.assertEquals(
-                "/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=false"
-                , removedCards[1].links.getLink("self").get().href
+                "/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=true"
+                , removedCards[1].card.links.getLink("self").get().href
             )
             Assertions.assertEquals(
-                "/card/${TestConstants.D_MALICIOUS_ID}?allInfo=false"
-                , removedCards[2].links.getLink("self").get().href
+                "/card/${TestConstants.D_MALICIOUS_ID}?allInfo=true"
+                , removedCards[2].card.links.getLink("self").get().href
             )
 
 
