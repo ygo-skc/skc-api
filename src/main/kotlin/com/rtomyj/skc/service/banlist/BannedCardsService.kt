@@ -2,12 +2,12 @@ package com.rtomyj.skc.service.banlist
 
 import com.rtomyj.skc.constant.ErrConstants
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.enums.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListInstance
 import com.rtomyj.skc.model.card.Card
+import com.rtomyj.skc.model.card.MonsterAssociation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -58,6 +58,10 @@ class BannedCardsService @Autowired constructor(
 			if (saveBandwidth) {
 				Card.trimEffects(this)
 			}
+
+			MonsterAssociation.transformMonsterLinkRating(this.forbidden)
+			MonsterAssociation.transformMonsterLinkRating(this.limited)
+			MonsterAssociation.transformMonsterLinkRating(this.semiLimited)
 		}
 
 		return banListInstance
