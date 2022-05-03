@@ -7,6 +7,7 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.model.banlist.BanListNewContent
 import com.rtomyj.skc.model.banlist.BanListRemovedContent
+import com.rtomyj.skc.model.card.MonsterAssociation
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -39,6 +40,10 @@ class DiffService @Autowired constructor(
         val limited = banListDao.getNewContentOfBanList(banListStartDate, BanListCardStatus.LIMITED)
         val semiLimited = banListDao.getNewContentOfBanList(banListStartDate, BanListCardStatus.SEMI_LIMITED)
 
+        forbidden.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+        limited.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+        semiLimited.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+
         val newCardsMeta = BanListNewContent(
             banListStartDate,
             getPreviousBanListDate(banListStartDate),
@@ -63,6 +68,8 @@ class DiffService @Autowired constructor(
         val removedCards = banListDao.getRemovedContentOfBanList(
             banListStartDate
         )
+
+        removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
 
         // builds meta data object for removed cards request
         val removedCardsMeta = BanListRemovedContent(

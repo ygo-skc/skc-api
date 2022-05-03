@@ -63,7 +63,7 @@ class BanListDatesServiceTest {
             Assertions.assertNotNull(dates[0].links)
 
             Assertions.assertNotNull(dates[0].links.getLink("Ban List Content"))
-            Assertions.assertEquals("/ban_list/2020-01-20/cards?saveBandwidth=false&allInfo=true"
+            Assertions.assertEquals("/ban_list/2020-01-20/cards?saveBandwidth=true&allInfo=false"
                 , dates[0].links.getLink("Ban List Content").get().href)
 
             Assertions.assertNotNull(dates[0].links.getLink("Ban List New Content"))

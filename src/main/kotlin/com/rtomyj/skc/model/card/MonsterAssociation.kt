@@ -76,6 +76,13 @@ class MonsterAssociation(
                 .filter { it != null }
                 .forEach { it!!.transformMonsterLinkRating() }
         }
+
+
+        /**
+         * Calls [.transformMonsterLinkRating] on a card
+         * @param card card whose link rating should be transformed
+         */
+        fun transformMonsterLinkRating(card: Card) = card.monsterAssociation?.transformMonsterLinkRating()
     }
 
 

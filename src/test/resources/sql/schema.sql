@@ -7,13 +7,14 @@ CREATE TABLE card_colors
 
 CREATE TABLE cards
 (
-	card_number CHAR(8) NOT NULL,
+	card_number VARCHAR(8) NOT NULL,
 	color_id INT NOT NULL,
-	card_name VARCHAR(50) NOT NULL,
+	card_name VARCHAR(55) NOT NULL UNIQUE,
 	card_attribute VARCHAR(20) NOT NULL,
 	card_effect VARCHAR(1500),
+	property VARCHAR(15),
 	monster_type VARCHAR(35),
-	monster_association VARCHAR(70),
+	monster_association VARCHAR(80),
 	monster_attack INT,
 	monster_defense INT,
 	PRIMARY KEY(card_number),
