@@ -107,7 +107,7 @@ class BanListJDBCDao @Autowired constructor(
                 " from (select card_number from ban_list_info where ban_list_date = :newBanList) as new_list" +
                 " right join" +
                 " (select * from ban_list_info where ban_list_date = :oldBanList) as old_list" +
-                " on new_list.card_number = old_list.card_number where new_list.card_number is NULL"
+                " on new_list.card_number = old_list.card_number where new_list.card_number is NULL ORDER BY color_id, card_name"
 
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("newBanList", banListDate)
@@ -198,7 +198,7 @@ class BanListJDBCDao @Autowired constructor(
             jdbcNamedTemplate.query<List<CardsPreviousBanListStatus>>(query, sqlParams) { row: ResultSet ->
                 val newCards: MutableList<CardsPreviousBanListStatus> = ArrayList()
                 while (row.next()) {
-                    val cardID = row.getString(1)
+                    val cardID = row.getString(5)
                     val previousStatus = getCardBanListStatusByDate(cardID, oldBanList)
                     val cardsPreviousBanListStatus = CardsPreviousBanListStatus(
                         Card(
