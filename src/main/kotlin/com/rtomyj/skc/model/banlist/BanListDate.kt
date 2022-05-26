@@ -17,56 +17,56 @@ import java.util.*
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
 @Schema(
-    implementation = BanListDate::class,
-    description = "Information about a ban lists effective date.",
+	implementation = BanListDate::class,
+	description = "Information about a ban lists effective date.",
 )
 data class BanListDate(
-    /**
-     * Start date of ban list.
-     */
-    @Schema(
-        implementation = Date::class,
-        description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-    ) @JsonFormat(
-        shape = JsonFormat.Shape.STRING,
-        pattern = "yyyy-MM-dd"
-    ) val effectiveDate: Date
+	/**
+	 * Start date of ban list.
+	 */
+	@Schema(
+		implementation = Date::class,
+		description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
+	) @JsonFormat(
+		shape = JsonFormat.Shape.STRING,
+		pattern = "yyyy-MM-dd"
+	) val effectiveDate: Date
 ) : RepresentationModel<BanListDate?>(), HateoasLinks {
 
-    companion object {
-        private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
-        private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
-    }
+	companion object {
+		private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
+		private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
+	}
 
 
-    override fun setSelfLink() {
-        TODO()
-    }
+	override fun setSelfLink() {
+		TODO()
+	}
 
 
-    override fun setLinks() {
-        val dateConfig = DateConfig()
-        val banListDateStr = dateConfig.dBSimpleDateFormat().format(effectiveDate)
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)
-                    .getBannedCards(banListDateStr, true, false)
-            )
-                .withRel("Ban List Content")
-        )
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyAddedContentForBanList(banListDateStr)
-            )
-                .withRel("Ban List New Content")
-        )
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyRemovedContentForBanList(banListDateStr)
-            )
-                .withRel("Ban List Removed Content")
-        )
-    }
+	override fun setLinks() {
+		val dateConfig = DateConfig()
+		val banListDateStr = dateConfig.dBSimpleDateFormat().format(effectiveDate)
+		this.add(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)
+					.getBannedCards(banListDateStr, true, false)
+			)
+				.withRel("Ban List Content")
+		)
+		this.add(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
+					.getNewlyAddedContentForBanList(banListDateStr)
+			)
+				.withRel("Ban List New Content")
+		)
+		this.add(
+			WebMvcLinkBuilder.linkTo(
+				WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
+					.getNewlyRemovedContentForBanList(banListDateStr)
+			)
+				.withRel("Ban List Removed Content")
+		)
+	}
 }
