@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.jdbc.Sql
@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [BanListJDBCDao::class, DateConfig::class, ObjectMapper::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@DataJdbcTest
+@JdbcTest
 @ActiveProfiles("test") // Loading test props with H2 in memory DB configurations
 @SqlGroup(Sql("classpath:sql/drop.sql"), Sql("classpath:sql/schema.sql"), Sql("classpath:sql/data.sql"), Sql("classpath:sql/views.sql"))
 class BanListJDBCDaoTest {
