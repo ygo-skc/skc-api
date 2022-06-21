@@ -12,6 +12,7 @@ Feature: Search the database and return available criteria a user can use when b
     | Pendulum-Effect   |
     | Pendulum-Fusion   |
     | Pendulum-Normal   |
+    | Pendulum-Ritual   |
     | Pendulum-Synchro  |
     | Pendulum-Xyz      |
     | Ritual            |
