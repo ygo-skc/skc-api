@@ -6,13 +6,13 @@ services:
     ports:
       - "4443-4444:8443"
     volumes:
-       - ./build/libs/skc-api.jar:/skc-api.jar
+      - ./build/libs/skc-api.jar:/skc-api.jar
     command: java -jar skc-api.jar
     restart: always
     deploy:
       resources:
         limits:
-          memory: 600M
+          memory: 700M
     networks:
       - skc-network
     environment:

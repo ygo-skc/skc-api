@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.7.0"
-val springDocVersion = "1.6.8"
+val springBootVersion = "2.7.1"
+val springDocVersion = "1.6.9"
 val mysqlVersion = "8.0.29"
 val jacksonVersion = "2.13.3"
 val cucumberVersion = "6.7.0"
@@ -17,14 +17,14 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.7.0"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
+	id("org.springframework.boot") version "2.7.1"
+	id("io.spring.dependency-management") version "1.0.12.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.4"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
-	kotlin("jvm") version "1.6.21"
-	kotlin("plugin.spring") version "1.6.21"
-	kotlin("plugin.allopen") version "1.6.21"
+	kotlin("jvm") version "1.7.10"
+	kotlin("plugin.spring") version "1.7.0"
+	kotlin("plugin.allopen") version "1.7.10"
 
 	jacoco
 	java
@@ -37,7 +37,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.0.7"
+version = "2.0.8"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
