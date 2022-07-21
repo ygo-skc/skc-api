@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.7.1"
+val springBootVersion = "2.7.2"
 val springDocVersion = "1.6.9"
 val mysqlVersion = "8.0.29"
 val jacksonVersion = "2.13.3"
@@ -17,7 +17,7 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.7.1"
+	id("org.springframework.boot") version "2.7.2"
 	id("io.spring.dependency-management") version "1.0.12.RELEASE"
 	id("info.solidsoft.pitest") version "1.7.4"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
