@@ -6,13 +6,16 @@ import com.rtomyj.skc.skcsuggestionengine.traffic.model.Traffic
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
 @Service
 class TrafficService @Autowired constructor(
-	private val restTemplate: RestTemplate
+	private val restTemplate: RestTemplate,
+	@Value("\${api.skcSuggestionEngine.uri}") val skcSuggestionEngineUri: String,
+	@Value("\${api.skcSuggestionEngine.endpoints.traffic}") val trafficEndpoint: String
 ) {
 	companion object {
 		private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -33,7 +36,7 @@ class TrafficService @Autowired constructor(
 		)
 
 		try {
-			restTemplate.postForEntity("", trafficInstane, String::class.java)
+			restTemplate.postForEntity(skcSuggestionEngineUri + trafficEndpoint, trafficInstane, String::class.java)
 		} catch (ex: RestClientException) {
 			log.error("Could not send traffic data to SKC Suggestion Engine. Err: {}", ex)
 		}

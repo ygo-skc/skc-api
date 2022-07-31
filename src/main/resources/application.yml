@@ -28,6 +28,13 @@ springdoc:
   packagesToScan: com.rtomyj.skc
   pathsToMatch: /**
 
+api:
+  skcSuggestionEngine:
+    uri: http://localhost:9000
+    endpoints:
+      traffic: /api/v1/suggestions/traffic-analysis
+    key: ${SKC_SUGGESTION_ENGINE_API_KEY}
+
 ---
 spring:
   config:

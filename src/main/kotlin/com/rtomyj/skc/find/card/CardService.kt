@@ -6,6 +6,8 @@ import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.find.card.dao.Dao
+import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
+import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -18,7 +20,8 @@ import org.springframework.stereotype.Service
 class CardService @Autowired constructor(
 	@Qualifier("product-jdbc") val productDao: ProductDao,
 	@Qualifier("ban-list-jdbc") val banListDao: BanListDao,
-	@Qualifier("jdbc") val cardDao: Dao
+	@Qualifier("jdbc") val cardDao: Dao,
+	val trafficService: TrafficService
 ) {
 
 	companion object {
@@ -61,6 +64,7 @@ class CardService @Autowired constructor(
 		}
 
 		card.setLinks()
+		trafficService.submitTrafficData(TrafficResourceType.CARD, cardId)
 		return card
 	}
 }
