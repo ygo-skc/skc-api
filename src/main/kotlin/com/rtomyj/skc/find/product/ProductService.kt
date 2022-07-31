@@ -6,6 +6,8 @@ import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.browse.product.model.ProductContent
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
@@ -16,6 +18,10 @@ class ProductService @Autowired constructor(
 	private val trafficService: TrafficService
 ) {
 	fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Product {
+		GlobalScope.launch {
+			trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
+		}
+
 		val product = productDao.getProductInfo(productId, locale)
 
 		product.productContent.addAll(productDao.getProductContents(productId, locale))
@@ -30,8 +36,6 @@ class ProductService @Autowired constructor(
 					.map { productContent: ProductContent -> productContent.card!! }
 					.toList()
 			)
-
-		trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
 		return product
 	}
 }

@@ -8,6 +8,8 @@ import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -39,6 +41,10 @@ class CardService @Autowired constructor(
 	fun getCardInfo(cardId: String, fetchAllInfo: Boolean, clientIP: String): Card {
 		log.info("Fetching info for card w/ ID: ( {} )", cardId)
 
+		GlobalScope.launch {
+			trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
+		}
+
 		val card = cardDao.getCardInfo(cardId)
 		card.monsterAssociation?.transformMonsterLinkRating()
 
@@ -64,7 +70,6 @@ class CardService @Autowired constructor(
 		}
 
 		card.setLinks()
-		trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
 		return card
 	}
 }

@@ -76,6 +76,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
 	implementation("com.google.guava:guava:$guavaVersion")
 }
 

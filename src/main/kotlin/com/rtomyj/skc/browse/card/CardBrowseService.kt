@@ -7,6 +7,9 @@ import com.rtomyj.skc.browse.card.model.CardBrowseResults
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.util.enumeration.MonsterAssociationExpression
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -56,18 +59,38 @@ class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: CardB
     }
 
 
-    fun browseCriteria(): CardBrowseCriteria {
-        val cardBrowseCriteria = CardBrowseCriteria(
-            dao.getCardColors(),
-            dao.getMonsterAttributes(),
-            dao.getMonsterTypes(),
-            dao.getMonsterSubTypes(),
-            dao.getMonsterAssociationField(MonsterAssociationType.LEVEL),
-            dao.getMonsterAssociationField(MonsterAssociationType.RANK),
-            dao.getMonsterAssociationField(MonsterAssociationType.LINK)
-        )
+    fun browseCriteria(): CardBrowseCriteria  {
+        var cardBrowseCriteria: CardBrowseCriteria
 
-        cardBrowseCriteria.setLinks()
+        runBlocking {
+            var levels: Set<Int> = HashSet()
+            var ranks: Set<Int> = HashSet()
+            var links: Set<Int> = HashSet()
+
+            val deferredMonsterAssociations = GlobalScope.async {
+                levels = dao.getMonsterAssociationField(MonsterAssociationType.LEVEL)
+                ranks = dao.getMonsterAssociationField(MonsterAssociationType.RANK)
+                links = dao.getMonsterAssociationField(MonsterAssociationType.LINK)
+            }
+
+            var cardColors: Set<String> = HashSet()
+            var monsterAttributes: Set<String> = HashSet()
+            var monsterTypes: Set<String> = HashSet()
+            var monsterSubTypes: Set<String> = HashSet()
+
+            val deferredCardFeatures = GlobalScope.async {
+                cardColors = dao.getCardColors()
+                monsterAttributes = dao.getMonsterAttributes()
+                monsterTypes = dao.getMonsterTypes()
+                monsterSubTypes = dao.getMonsterSubTypes()
+            }
+
+            deferredMonsterAssociations.await()
+            deferredCardFeatures.await()
+
+            cardBrowseCriteria = CardBrowseCriteria(cardColors, monsterAttributes, monsterTypes, monsterSubTypes, levels, ranks, links)
+            cardBrowseCriteria.setLinks()
+        }
         return cardBrowseCriteria
     }
 
