@@ -3,10 +3,10 @@ package com.rtomyj.skc.find.banlist.dao
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.banlist.dao.BanListDao
 import com.rtomyj.skc.banlist.dao.BanListJDBCDao
+import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
-import com.rtomyj.skc.browse.card.model.Card
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -28,34 +28,34 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ActiveProfiles("test") // Loading test props with H2 in memory DB configurations
 @SqlGroup(Sql("classpath:sql/drop.sql"), Sql("classpath:sql/schema.sql"), Sql("classpath:sql/data.sql"), Sql("classpath:sql/views.sql"))
 class BanListJDBCDaoTest {
-    @Autowired
-    @Qualifier("ban-list-jdbc")
-    private lateinit var banListDao: BanListDao
+	@Autowired
+	@Qualifier("ban-list-jdbc")
+	private lateinit var banListDao: BanListDao
 
-    private val stratosTestCard: Card = TestObjects.STRATOS_CARD_FULL_TEXT
-    private val aHeroLivesTestCard = TestObjects.A_HERO_LIVES_CARD_FULL_TEXT
-    private val dMaliTestCard: Card = TestObjects.D_MALI_CARD_FULL_TEXT
-
-
-    @Nested
-    inner class HappyPath {
-        @Test
-        fun testFetchingBanListByStatus_Success() {
-            val banListDate = "2015-11-09"
-            val forbiddenDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.FORBIDDEN)
-            val limitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.LIMITED)
-            val semiLimitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.SEMI_LIMITED)
+	private val stratosTestCard: Card = TestObjects.STRATOS_CARD_FULL_TEXT
+	private val aHeroLivesTestCard = TestObjects.A_HERO_LIVES_CARD_FULL_TEXT
+	private val dMaliTestCard: Card = TestObjects.D_MALI_CARD_FULL_TEXT
 
 
-            Assertions.assertNotNull(forbiddenDbResult)
-            Assertions.assertNotNull(limitedDbResult)
-            Assertions.assertNotNull(semiLimitedDbResult)
-            Assertions.assertEquals(1, forbiddenDbResult.size)
-            Assertions.assertEquals(2, limitedDbResult.size)
-            Assertions.assertEquals(0, semiLimitedDbResult.size)
-            Assertions.assertEquals(stratosTestCard.cardName, forbiddenDbResult[0].cardName)
-            Assertions.assertEquals(dMaliTestCard.cardName, limitedDbResult[0].cardName)
-            Assertions.assertEquals(aHeroLivesTestCard.cardName, limitedDbResult[1].cardName)
-        }
-    }
+	@Nested
+	inner class HappyPath {
+		@Test
+		fun testFetchingBanListByStatus_Success() {
+			val banListDate = "2015-11-09"
+			val forbiddenDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.FORBIDDEN)
+			val limitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.LIMITED)
+			val semiLimitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.SEMI_LIMITED)
+
+
+			Assertions.assertNotNull(forbiddenDbResult)
+			Assertions.assertNotNull(limitedDbResult)
+			Assertions.assertNotNull(semiLimitedDbResult)
+			Assertions.assertEquals(1, forbiddenDbResult.size)
+			Assertions.assertEquals(2, limitedDbResult.size)
+			Assertions.assertEquals(0, semiLimitedDbResult.size)
+			Assertions.assertEquals(stratosTestCard.cardName, forbiddenDbResult[0].cardName)
+			Assertions.assertEquals(dMaliTestCard.cardName, limitedDbResult[0].cardName)
+			Assertions.assertEquals(aHeroLivesTestCard.cardName, limitedDbResult[1].cardName)
+		}
+	}
 }

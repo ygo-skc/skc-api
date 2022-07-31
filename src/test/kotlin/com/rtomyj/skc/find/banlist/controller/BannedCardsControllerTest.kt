@@ -2,21 +2,21 @@ package com.rtomyj.skc.find.banlist.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rtomyj.skc.banlist.controller.BannedCardsController
-import com.rtomyj.skc.util.constant.ErrConstants
-import com.rtomyj.skc.constant.TestConstants
-import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.banlist.model.BanListInstance
 import com.rtomyj.skc.banlist.model.BanListNewContent
 import com.rtomyj.skc.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.banlist.service.BannedCardsService
+import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.exception.ErrorType
+import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.testingutil.ControllerTestUtil
+import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -63,10 +63,12 @@ class BannedCardsControllerTest {
 			banListInstanceFullText.removedContent = banListRemovedContent
 
 			// setup mocks
-			`when`(bannedCardsServiceMock.getBanListByDate(
-				REQUESTED_BAN_LIST_MOCK_DATE,
-				saveBandwidth = false, fetchAllInfo = true
-			))
+			`when`(
+				bannedCardsServiceMock.getBanListByDate(
+					REQUESTED_BAN_LIST_MOCK_DATE,
+					saveBandwidth = false, fetchAllInfo = true
+				)
+			)
 				.thenReturn(banListInstanceFullText)
 
 

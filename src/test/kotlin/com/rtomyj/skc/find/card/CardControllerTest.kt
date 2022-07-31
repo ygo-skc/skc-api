@@ -1,18 +1,19 @@
 package com.rtomyj.skc.find.card
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.rtomyj.skc.util.constant.ErrConstants
+import com.google.common.net.HttpHeaders.X_FORWARDED_FOR
+import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.testingutil.ControllerTestUtil
+import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -41,7 +42,7 @@ class CardControllerTest {
 			val mockCardData: Card = mapper
 				.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_JSON_FILE).file, Card::class.java)
 
-			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true))
+			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
 				.thenReturn(mockCardData)
 
 
@@ -50,6 +51,7 @@ class CardControllerTest {
 				.perform(
 					get("/card/${TestConstants.STRATOS_ID}")
 						.param("allInfo", "true")
+						.header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
 				)
 				.andExpect(status().isOk)
 				.andExpect(jsonPath("$.cardID", `is`(TestConstants.STRATOS_ID)))
@@ -60,7 +62,7 @@ class CardControllerTest {
 
 			// verify mocks are called
 			verify(cardService)
-				.getCardInfo(TestConstants.STRATOS_ID, true)
+				.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)
 		}
 	}
 
@@ -83,9 +85,12 @@ class CardControllerTest {
 		@Test
 		fun `Fetching Card Information Using Card ID - Card Requested Is Not In DB - HTTP 404 Error`() {
 			// setup mocks - throw NOT FOUND (card not in DB) exception when particular card is requested
-			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true))
-				.thenThrow(YgoException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, TestConstants.STRATOS_ID)
-					, ErrorType.D001))
+			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
+				.thenThrow(
+					YgoException(
+						String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, TestConstants.STRATOS_ID), ErrorType.D001
+					)
+				)
 
 
 			// call controller and verify correct status, code and message are returned
@@ -94,20 +99,21 @@ class CardControllerTest {
 					.perform(
 						get("/card/${TestConstants.STRATOS_ID}")
 							.param("allInfo", "true")
+							.header(X_FORWARDED_FOR, TestConstants.MOCK_IP) // request filter will take the ip from this header and store it in a new header
 					)
 			)
 
 
 			// verify mocks are called
 			verify(cardService)
-				.getCardInfo(TestConstants.STRATOS_ID, true)
+				.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)
 		}
 
 
 		@Test
 		fun `Fetching Card Information Using Card ID - Required Database Tables Are Missing - HTTP 500 Error`() {
 			// setup mocks - throw DB table missing exception when particular card is requested
-			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true))
+			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
 				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002))
 
 
@@ -117,13 +123,14 @@ class CardControllerTest {
 					.perform(
 						get("/card/${TestConstants.STRATOS_ID}")
 							.param("allInfo", "true")
+							.header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
 					)
 			)
 
 
 			// verify mocks are called
 			verify(cardService)
-				.getCardInfo(TestConstants.STRATOS_ID, true)
+				.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)
 		}
 	}
 }

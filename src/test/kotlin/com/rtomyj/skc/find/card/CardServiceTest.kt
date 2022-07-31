@@ -9,6 +9,8 @@ import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.find.card.dao.Dao
+import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
+import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -36,6 +38,9 @@ class CardServiceTest {
 	@MockBean(name = "ban-list-jdbc")
 	private lateinit var banListDao: BanListDao
 
+	@MockBean
+	private lateinit var trafficService: TrafficService
+
 	@Autowired
 	private lateinit var cardService: CardService
 
@@ -50,12 +55,12 @@ class CardServiceTest {
 		@Test
 		fun `Test Fetching Card From DB, Success`() {
 			// mock calls
-			Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.STRATOS_ID)))
-				.thenReturn(successfulCardReceived)
+			Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.STRATOS_ID))).thenReturn(successfulCardReceived)
+			Mockito.doNothing().`when`(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.STRATOS_ID, TestConstants.MOCK_IP)
 
 
 			// call code
-			val card = cardService.getCardInfo(TestConstants.STRATOS_ID, false)
+			val card = cardService.getCardInfo(TestConstants.STRATOS_ID, false, TestConstants.MOCK_IP)
 
 
 			// assertions on return value
@@ -64,8 +69,8 @@ class CardServiceTest {
 
 
 			// verify mocks are called the exact number of times expected
-			Mockito.verify(cardDao, Mockito.times(1))
-				.getCardInfo(eq(TestConstants.STRATOS_ID))
+			Mockito.verify(cardDao, Mockito.times(1)).getCardInfo(eq(TestConstants.STRATOS_ID))
+			Mockito.verify(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.STRATOS_ID, TestConstants.MOCK_IP)
 		}
 	}
 
@@ -78,19 +83,18 @@ class CardServiceTest {
 		@Test
 		fun `Test Fetching Card From DB, Failure`() {
 			// mock calls
-			Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE)))
-				.thenThrow(
-					YgoException(
-						String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE),
-						ErrorType.D001
-					)
+			Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))).thenThrow(
+				YgoException(
+					String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.D001
 				)
+			)
+			Mockito.doNothing().`when`(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.ID_THAT_CAUSES_FAILURE, TestConstants.MOCK_IP)
 
 
 			// call code and assert throws
 			Assertions.assertThrows(YgoException::class.java) {
 				cardService.getCardInfo(
-					TestConstants.ID_THAT_CAUSES_FAILURE, false
+					TestConstants.ID_THAT_CAUSES_FAILURE, false, TestConstants.MOCK_IP
 				)
 			}
 
@@ -99,6 +103,7 @@ class CardServiceTest {
 			Mockito.verify(
 				cardDao, Mockito.times(1)
 			).getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))
+			Mockito.verify(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.ID_THAT_CAUSES_FAILURE, TestConstants.MOCK_IP)
 		}
 	}
 }
