@@ -1,24 +1,30 @@
 package com.rtomyj.skc.util.filter
 
+import com.google.common.base.Strings
+import com.google.common.net.HttpHeaders
+import com.rtomyj.skc.util.MutableHttpServletRequest
+import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.logging.Logging
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.io.IOException
 import javax.servlet.FilterChain
-import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
 class RequestFilter : OncePerRequestFilter() {
-    @Throws(ServletException::class, IOException::class)
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
-        try {
-            Logging.configureMDC(request)
-            chain.doFilter(request, response)
-        } finally {
-            MDC.clear()
-        }
-    }
+	override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
+		try {
+			val clientIP = if (Strings.isNullOrEmpty(request.getHeader(HttpHeaders.X_FORWARDED_FOR))) request.remoteHost else request.getHeader(HttpHeaders.X_FORWARDED_FOR)
+
+			val mutableRequest = MutableHttpServletRequest(request)
+			mutableRequest.putHeader(AppConstants.CLIENT_IP, clientIP)
+
+			Logging.configureMDC(mutableRequest)
+			chain.doFilter(mutableRequest, response)
+		} finally {
+			MDC.clear()
+		}
+	}
 }

@@ -36,7 +36,7 @@ class CardService @Autowired constructor(
 	 * @return Card object containing the information of the card desired.
 	 */
 	@Throws(YgoException::class)
-	fun getCardInfo(cardId: String, fetchAllInfo: Boolean): Card {
+	fun getCardInfo(cardId: String, fetchAllInfo: Boolean, clientIP: String): Card {
 		log.info("Fetching info for card w/ ID: ( {} )", cardId)
 
 		val card = cardDao.getCardInfo(cardId)
@@ -64,7 +64,7 @@ class CardService @Autowired constructor(
 		}
 
 		card.setLinks()
-		trafficService.submitTrafficData(TrafficResourceType.CARD, cardId)
+		trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
 		return card
 	}
 }

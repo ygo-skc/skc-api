@@ -15,7 +15,7 @@ class ProductService @Autowired constructor(
 	@Qualifier("product-jdbc") private val productDao: ProductDao,
 	private val trafficService: TrafficService
 ) {
-	fun getSingleProductUsingLocale(productId: String, locale: String): Product {
+	fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Product {
 		val product = productDao.getProductInfo(productId, locale)
 
 		product.productContent.addAll(productDao.getProductContents(productId, locale))
@@ -31,7 +31,7 @@ class ProductService @Autowired constructor(
 					.toList()
 			)
 
-		trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId)
+		trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
 		return product
 	}
 }

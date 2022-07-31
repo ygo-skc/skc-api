@@ -1,10 +1,11 @@
 package com.rtomyj.skc.find.product
 
+import com.rtomyj.skc.browse.product.model.Product
+import com.rtomyj.skc.exception.YgoError
+import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.exception.YgoError
-import com.rtomyj.skc.browse.product.model.Product
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.NotNull
@@ -42,7 +44,8 @@ class ProductController @Autowired constructor(private val availablePacksService
 		responseCode = "200",
 		description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
 	)
-	@ApiResponse(responseCode = "400",
+	@ApiResponse(
+		responseCode = "400",
 		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
 		content = [Content(schema = Schema(implementation = YgoError::class))]
 	)
@@ -59,7 +62,7 @@ class ProductController @Autowired constructor(private val availablePacksService
 		) @Pattern(
 			regexp = SKCRegex.PRODUCT_ID,
 			message = "Product ID is formatted incorrectly"
-		) @NotNull @PathVariable("productId") productId:  String,
+		) @NotNull @PathVariable("productId") productId: String,
 		@Parameter(
 			description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
 			example = "en",
@@ -67,7 +70,8 @@ class ProductController @Autowired constructor(private val availablePacksService
 		) @Pattern(
 			regexp = SKCRegex.LOCALE,
 			message = "Locale is formatted incorrectly"
-		) @NotNull @PathVariable("locale") locale: String
+		) @NotNull @PathVariable("locale") locale: String,
+		@RequestHeader(value = AppConstants.CLIENT_IP) clientIP: String = ""
 	): ResponseEntity<Product> {
 		val localAsUpper = locale.uppercase()
 
@@ -75,7 +79,8 @@ class ProductController @Autowired constructor(private val availablePacksService
 		return ResponseEntity.ok(
 			availablePacksService.getSingleProductUsingLocale(
 				productId,
-				localAsUpper
+				localAsUpper,
+				clientIP
 			)
 		)
 	}
