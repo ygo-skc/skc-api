@@ -1,6 +1,6 @@
 package com.rtomyj.skc.constant
 
-import com.rtomyj.skc.model.card.Card
+import com.rtomyj.skc.browse.card.model.Card
 
 object TestObjects {
     val STRATOS_CARD_FULL_TEXT = Card(

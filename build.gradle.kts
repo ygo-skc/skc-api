@@ -178,7 +178,7 @@ tasks {
 
 pitest {
 	targetClasses.set(listOf("com.rtomyj.skc.*"))
-	excludedClasses.set(listOf("com.rtomyj.skc.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.constant.*"
+	excludedClasses.set(listOf("com.rtomyj.skc.*.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.constant.*"
 		, "com.rtomyj.skc.exception.*", "com.rtomyj.skc.enums.*"))
 
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)

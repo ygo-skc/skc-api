@@ -1,7 +1,5 @@
 package com.rtomyj.skc.constant
 
-import com.rtomyj.skc.model.card.Card
-
 object TestConstants {
     // JSON res files
     const val BAN_LIST_INSTANCE_JSON_FILE = "json-mock/BanListInstanceTestResponse.json"
