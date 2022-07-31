@@ -4,13 +4,16 @@ import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.browse.product.model.ProductContent
+import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
+import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
 @Service
 class ProductService @Autowired constructor(
-	@Qualifier("product-jdbc") private val productDao: ProductDao
+	@Qualifier("product-jdbc") private val productDao: ProductDao,
+	private val trafficService: TrafficService
 ) {
 	fun getSingleProductUsingLocale(productId: String, locale: String): Product {
 		val product = productDao.getProductInfo(productId, locale)
@@ -27,6 +30,8 @@ class ProductService @Autowired constructor(
 					.map { productContent: ProductContent -> productContent.card!! }
 					.toList()
 			)
+
+		trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId)
 		return product
 	}
 }
