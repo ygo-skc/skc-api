@@ -1,9 +1,9 @@
 package com.rtomyj.skc.browse.product
 
-import com.rtomyj.skc.constant.SKCRegex
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SKCRegex
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.enums.ProductType
+import com.rtomyj.skc.util.enumeration.ProductType
 import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.browse.product.model.Products
 import io.swagger.v3.oas.annotations.Operation

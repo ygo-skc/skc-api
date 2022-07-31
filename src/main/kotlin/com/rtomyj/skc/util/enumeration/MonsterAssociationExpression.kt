@@ -1,4 +1,4 @@
-package com.rtomyj.skc.enums
+package com.rtomyj.skc.util.enumeration
 
 enum class MonsterAssociationExpression(
     private val expression: String

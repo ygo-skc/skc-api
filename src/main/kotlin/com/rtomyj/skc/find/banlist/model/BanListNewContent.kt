@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.rtomyj.skc.Open
 import com.rtomyj.skc.banlist.controller.BanListDiffController
 import com.rtomyj.skc.banlist.controller.BannedCardsController
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel

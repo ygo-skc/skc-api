@@ -1,6 +1,6 @@
 package com.rtomyj.skc.banlist.controller
 
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.banlist.model.BanListDates

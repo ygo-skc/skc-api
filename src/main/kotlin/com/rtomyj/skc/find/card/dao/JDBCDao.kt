@@ -3,8 +3,8 @@ package com.rtomyj.skc.find.card.dao
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
-import com.rtomyj.skc.constant.DBQueryConstants
-import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import org.slf4j.LoggerFactory

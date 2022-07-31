@@ -1,9 +1,9 @@
 package com.rtomyj.skc.browse.product.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.constant.DBQueryConstants
-import com.rtomyj.skc.enums.ProductType
-import com.rtomyj.skc.enums.table.definitions.ProductsTableDefinition
+import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.enumeration.ProductType
+import com.rtomyj.skc.util.enumeration.table.definitions.ProductsTableDefinition
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.browse.product.model.Product

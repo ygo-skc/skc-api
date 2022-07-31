@@ -1,6 +1,6 @@
 package com.rtomyj.skc.browse.card.dao
 
-import com.rtomyj.skc.enums.MonsterAssociationType
+import com.rtomyj.skc.util.enumeration.MonsterAssociationType
 import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
 import com.rtomyj.skc.browse.card.model.CardBrowseResults
 

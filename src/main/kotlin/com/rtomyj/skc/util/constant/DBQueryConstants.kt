@@ -1,4 +1,4 @@
-package com.rtomyj.skc.constant
+package com.rtomyj.skc.util.constant
 
 object DBQueryConstants {
 	private const val WHERE_CARD_NUMBER_IS_CARD_ID = " WHERE card_number = :cardId"

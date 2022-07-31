@@ -1,7 +1,7 @@
 package com.rtomyj.skc.browse.card
 
 import com.google.common.base.Suppliers
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.browse.card.model.CardBrowseCriteria

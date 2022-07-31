@@ -2,7 +2,7 @@ package com.rtomyj.skc.find.banlist.controller
 
 import com.rtomyj.skc.banlist.controller.BanListDatesController
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.banlist.model.BanListDate

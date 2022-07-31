@@ -1,4 +1,4 @@
-package com.rtomyj.skc.constant
+package com.rtomyj.skc.util.constant
 
 object SwaggerConstants {
 	// Success

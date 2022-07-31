@@ -1,7 +1,7 @@
 package com.rtomyj.skc.browse.product.dao
 
 import com.rtomyj.skc.browse.product.model.ProductContent
-import com.rtomyj.skc.enums.ProductType
+import com.rtomyj.skc.util.enumeration.ProductType
 import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.browse.product.model.Products
 

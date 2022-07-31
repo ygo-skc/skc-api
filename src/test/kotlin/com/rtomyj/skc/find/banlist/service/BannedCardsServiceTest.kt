@@ -2,10 +2,10 @@ package com.rtomyj.skc.find.banlist.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.eq
-import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.banlist.dao.BanListDao
-import com.rtomyj.skc.enums.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.banlist.model.BanListInstance

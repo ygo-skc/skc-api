@@ -1,4 +1,4 @@
-package com.rtomyj.skc.enums.table.definitions
+package com.rtomyj.skc.util.enumeration.table.definitions
 
 enum class ProductsTableDefinition(
     private val columnName: String

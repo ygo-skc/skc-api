@@ -1,4 +1,4 @@
-package com.rtomyj.skc.constant
+package com.rtomyj.skc.util.constant
 
 object ErrConstants {
 	const val BAN_LIST_NOT_FOUND_FOR_START_DATE = "There is no ban list in DB with date: %s"

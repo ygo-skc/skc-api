@@ -2,7 +2,7 @@ package com.rtomyj.skc.browse.product.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.find.product.ProductController
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel

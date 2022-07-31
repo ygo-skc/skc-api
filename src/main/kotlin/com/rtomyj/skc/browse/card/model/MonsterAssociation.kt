@@ -3,7 +3,7 @@ package com.rtomyj.skc.browse.card.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.enums.LinkArrow.Companion.transformDBStringToEnum
+import com.rtomyj.skc.util.enumeration.LinkArrow.Companion.transformDBStringToEnum
 import io.swagger.v3.oas.annotations.media.Schema
 import org.slf4j.LoggerFactory
 

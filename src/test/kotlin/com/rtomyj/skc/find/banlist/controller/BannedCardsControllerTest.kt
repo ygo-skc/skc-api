@@ -2,7 +2,7 @@ package com.rtomyj.skc.find.banlist.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.rtomyj.skc.banlist.controller.BannedCardsController
-import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException

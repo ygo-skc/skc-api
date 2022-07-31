@@ -1,7 +1,7 @@
 package com.rtomyj.skc.status
 
-import com.rtomyj.skc.constant.AppConstants
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.AppConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.status.dao.StatusDao
 import com.rtomyj.skc.status.model.StatusResponse
 import com.rtomyj.skc.util.YgoApiBaseController

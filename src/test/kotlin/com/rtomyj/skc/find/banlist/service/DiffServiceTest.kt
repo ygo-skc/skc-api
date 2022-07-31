@@ -5,7 +5,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.banlist.dao.BanListDao
-import com.rtomyj.skc.enums.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.banlist.model.BanListNewContent
 import com.rtomyj.skc.banlist.model.BanListRemovedContent

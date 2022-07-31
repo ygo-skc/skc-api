@@ -1,8 +1,8 @@
 package com.rtomyj.skc.banlist.service
 
-import com.rtomyj.skc.constant.ErrConstants
+import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.banlist.dao.BanListDao
-import com.rtomyj.skc.enums.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.banlist.model.BanListNewContent

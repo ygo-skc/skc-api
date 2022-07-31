@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 import com.rtomyj.skc.Open
 import com.rtomyj.skc.banlist.controller.BanListDiffController
 import com.rtomyj.skc.banlist.controller.BannedCardsController
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.browse.card.model.Card
 import io.swagger.v3.oas.annotations.media.Schema

@@ -1,4 +1,4 @@
-package com.rtomyj.skc.constant
+package com.rtomyj.skc.util.constant
 
 object SKCRegex {
 	const val DB_DATE = "[0-9]{4}-[0-9]{2}-[0-9]{2}"

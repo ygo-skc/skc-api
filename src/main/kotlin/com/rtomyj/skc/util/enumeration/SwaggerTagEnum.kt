@@ -1,6 +1,6 @@
-package com.rtomyj.skc.enums
+package com.rtomyj.skc.util.enumeration
 
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 //import springfox.documentation.service.Tag
 
 enum class SwaggerTagEnum(

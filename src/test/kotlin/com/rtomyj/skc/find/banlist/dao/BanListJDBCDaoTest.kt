@@ -5,7 +5,7 @@ import com.rtomyj.skc.banlist.dao.BanListDao
 import com.rtomyj.skc.banlist.dao.BanListJDBCDao
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
-import com.rtomyj.skc.enums.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.browse.card.model.Card
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested

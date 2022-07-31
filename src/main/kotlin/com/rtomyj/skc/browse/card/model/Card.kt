@@ -3,7 +3,7 @@ package com.rtomyj.skc.browse.card.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.Open
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.HateoasLinks.Companion.setLinks
 import com.rtomyj.skc.banlist.model.BanListInstance

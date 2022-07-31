@@ -1,6 +1,6 @@
 package com.rtomyj.skc.stats
 
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.YgoError
 import com.rtomyj.skc.stats.model.DatabaseStats

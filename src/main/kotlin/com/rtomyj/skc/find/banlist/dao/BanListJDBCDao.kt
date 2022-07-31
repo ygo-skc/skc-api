@@ -1,8 +1,8 @@
 package com.rtomyj.skc.banlist.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.constant.DBQueryConstants
-import com.rtomyj.skc.enums.BanListCardStatus
+import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.banlist.model.BanListDates
 import com.rtomyj.skc.banlist.model.CardBanListStatus
 import com.rtomyj.skc.banlist.model.CardsPreviousBanListStatus

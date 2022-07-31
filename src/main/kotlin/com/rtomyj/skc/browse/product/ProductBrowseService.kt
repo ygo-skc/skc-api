@@ -1,7 +1,7 @@
 package com.rtomyj.skc.browse.product
 
 import com.rtomyj.skc.browse.product.dao.ProductDao
-import com.rtomyj.skc.enums.ProductType
+import com.rtomyj.skc.util.enumeration.ProductType
 import com.rtomyj.skc.browse.product.model.Products
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

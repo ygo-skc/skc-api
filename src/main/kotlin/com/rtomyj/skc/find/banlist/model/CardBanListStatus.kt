@@ -6,7 +6,7 @@ import com.rtomyj.skc.Open
 import com.rtomyj.skc.banlist.controller.BanListDiffController
 import com.rtomyj.skc.banlist.controller.BannedCardsController
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.constant.SwaggerConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
@@ -41,7 +41,7 @@ data class CardBanListStatus(
      */
     @Schema(
         implementation = String::class,
-        description = SwaggerConstants.CARD_ID_DESCRIPTION, 
+        description = SwaggerConstants.CARD_ID_DESCRIPTION,
     )
     val cardID: String,
 

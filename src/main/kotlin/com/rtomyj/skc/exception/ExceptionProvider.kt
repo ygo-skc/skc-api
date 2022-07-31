@@ -1,6 +1,6 @@
 package com.rtomyj.skc.exception
 
-import com.rtomyj.skc.constant.LogConstants
+import com.rtomyj.skc.util.constant.LogConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
