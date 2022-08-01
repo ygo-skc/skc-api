@@ -37,8 +37,9 @@ class StatusJDBCDao @Autowired constructor(
 				jdbcNamedTemplate.queryForObject(VERSION_QUERY, MapSqlParameterSource(), String::class.java)
 			status = "up"
 			assert(version != null)
+
 			val versionStringTokens = version!!.split("-").toTypedArray()
-			versionMajor = if (versionStringTokens.isNotEmpty()) versionStringTokens[0] else "---"
+			versionMajor = if (versionStringTokens.isNotEmpty()) versionStringTokens[0].split(".")[0] else "---"
 			downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
 		} catch (e: DataAccessException) {
 			log.error("Could not get version of the DB. Exception occurred: {}", e.toString())
