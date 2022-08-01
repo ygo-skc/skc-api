@@ -1,10 +1,13 @@
 package com.rtomyj.skc.status
 
-import com.rtomyj.skc.util.constant.AppConstants
-import com.rtomyj.skc.util.constant.SwaggerConstants
+import com.rtomyj.skc.skcsuggestionengine.status.SuggestionEngineStatusService
+import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineDownstreamStatus
 import com.rtomyj.skc.status.dao.StatusDao
+import com.rtomyj.skc.status.model.DownstreamStatus
 import com.rtomyj.skc.status.model.StatusResponse
 import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.AppConstants
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -24,7 +27,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(path = ["/status"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TEST_CALL_TAG_NAME)
 class StatusController @Autowired constructor(
-	@Qualifier("jdbc") val dao: StatusDao
+	@Qualifier("jdbc") val dao: StatusDao,
+	val suggestionEngineStatusService: SuggestionEngineStatusService
 ) : YgoApiBaseController() {
 
 	companion object {
@@ -33,7 +37,7 @@ class StatusController @Autowired constructor(
 
 
 	/**
-	 * Retrieve status of the API.
+	 * Retrieve basic info of the API and status on all dependant downstream services.
 	 * @return Status info.
 	 */
 	@GetMapping
@@ -45,8 +49,18 @@ class StatusController @Autowired constructor(
 	fun status(): ResponseEntity<StatusResponse> {
 		log.info("Status of API was requested")
 
-		// get status of downstream services
-		val downstreamStatus = listOf(dao.dbConnection())
+		// get status of SKC DB
+		val downstreamStatus = mutableListOf(dao.dbConnection())
+
+		// get status of SKC Suggestion Engine
+		val suggestionEngineStatus = suggestionEngineStatusService.getStatus()
+		// get a list of services used by Suggestion Engine whose status isn't "Up" - in other words not functional
+		val failedSuggestionEngineDownstreamServices =
+			suggestionEngineStatus.downstream.filter { status -> status.status != "Up" }.map(SuggestionEngineDownstreamStatus::serviceName)
+		// either display a happy status, or display the names of all services used by Suggestion Engine that are down.
+		val suggestionEngineStatusString = if (failedSuggestionEngineDownstreamServices.isEmpty()) "All good 😛" else "The following services are offline: ${failedSuggestionEngineDownstreamServices.joinToString()}"
+
+		downstreamStatus.add(DownstreamStatus("SKC Suggestion Engine", suggestionEngineStatus.version, suggestionEngineStatusString))
 
 		return ResponseEntity.ok(
 			StatusResponse("API is online and functional.", AppConstants.APP_VERSION, downstreamStatus)

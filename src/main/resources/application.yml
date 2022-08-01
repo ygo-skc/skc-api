@@ -32,6 +32,7 @@ api:
   skcSuggestionEngine:
     uri: http://localhost:9000
     endpoints:
+      status: /api/v1/suggestions/status
       traffic: /api/v1/suggestions/traffic-analysis
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
 
