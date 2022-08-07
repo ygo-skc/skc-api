@@ -133,7 +133,7 @@ class BanListDiffControllerTest {
 						String.format(
 							ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
 							TestConstants.BAN_LIST_START_DATE
-						), ErrorType.D001
+						), ErrorType.DB001
 					)
 				)
 
@@ -158,7 +158,7 @@ class BanListDiffControllerTest {
 				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
 			)
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
+					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
 
 

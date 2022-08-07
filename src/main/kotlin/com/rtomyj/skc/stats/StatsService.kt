@@ -24,7 +24,7 @@ class StatsService @Autowired constructor(
 		val monsterTypeStats = dao.getMonsterTypeStats(cardColor)
 
 		if (monsterTypeStats.monsterTypes.isEmpty()) {
-			throw YgoException("Requested monster type not found in DB", ErrorType.D001)    // flow ends here on err
+			throw YgoException("Requested monster type not found in DB", ErrorType.DB001)    // flow ends here on err
 		}
 
 		monsterTypeStats.setLinks()

@@ -85,7 +85,7 @@ class CardServiceTest {
 			// mock calls
 			Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))).thenThrow(
 				YgoException(
-					String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.D001
+					String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.DB001
 				)
 			)
 			Mockito.doNothing().`when`(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.ID_THAT_CAUSES_FAILURE, TestConstants.MOCK_IP)

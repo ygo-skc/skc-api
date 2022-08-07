@@ -88,7 +88,7 @@ class CardControllerTest {
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
 				.thenThrow(
 					YgoException(
-						String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, TestConstants.STRATOS_ID), ErrorType.D001
+						String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, TestConstants.STRATOS_ID), ErrorType.DB001
 					)
 				)
 
@@ -114,7 +114,7 @@ class CardControllerTest {
 		fun `Fetching Card Information Using Card ID - Required Database Tables Are Missing - HTTP 500 Error`() {
 			// setup mocks - throw DB table missing exception when particular card is requested
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
-				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002))
+				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002))
 
 
 			// call controller and verify correct status, code and message are returned

@@ -392,7 +392,7 @@ class BannedCardsServiceTest {
 
 			Assertions.assertEquals(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE), ex.message)
 			Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.errorType.httpStatus)
-			Assertions.assertEquals(ErrorType.D001, ex.errorType)
+			Assertions.assertEquals(ErrorType.DB001, ex.errorType)
 
 
 			// verify mocks are called the exact number of times expected

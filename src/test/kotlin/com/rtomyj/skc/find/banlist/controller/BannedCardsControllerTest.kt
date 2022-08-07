@@ -115,7 +115,7 @@ class BannedCardsControllerTest {
 				)
 			)
 				.thenThrow(
-					YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE), ErrorType.D001)
+					YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE), ErrorType.DB001)
 				)
 
 
@@ -145,7 +145,7 @@ class BannedCardsControllerTest {
 				)
 			)
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
+					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
 
 

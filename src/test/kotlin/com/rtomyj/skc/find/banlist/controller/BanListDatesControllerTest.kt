@@ -102,7 +102,7 @@ class BanListDatesControllerTest {
 			// mock retrieval of ban list dates - error occurred - table ban list table DNE
 			`when`(banListDatesService.retrieveBanListStartDates())
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
+					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
 
 

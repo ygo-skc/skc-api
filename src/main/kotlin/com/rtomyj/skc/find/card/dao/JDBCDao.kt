@@ -55,7 +55,7 @@ class JDBCDao @Autowired constructor(
 		}
 			?: throw YgoException(
 				String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID),
-				ErrorType.D001
+				ErrorType.DB001
 			)
 	}
 }

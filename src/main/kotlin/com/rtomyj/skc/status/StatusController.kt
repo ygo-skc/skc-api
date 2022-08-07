@@ -1,5 +1,6 @@
 package com.rtomyj.skc.status
 
+import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.skcsuggestionengine.status.SuggestionEngineStatusService
 import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineDownstreamStatus
 import com.rtomyj.skc.status.dao.StatusDao
@@ -52,15 +53,21 @@ class StatusController @Autowired constructor(
 		// get status of SKC DB
 		val downstreamStatus = mutableListOf(dao.dbConnection())
 
-		// get status of SKC Suggestion Engine
-		val suggestionEngineStatus = suggestionEngineStatusService.getStatus()
-		// get a list of services used by Suggestion Engine whose status isn't "Up" - in other words not functional
-		val failedSuggestionEngineDownstreamServices =
-			suggestionEngineStatus.downstream.filter { status -> status.status != "Up" }.map(SuggestionEngineDownstreamStatus::serviceName)
-		// either display a happy status, or display the names of all services used by Suggestion Engine that are down.
-		val suggestionEngineStatusString = if (failedSuggestionEngineDownstreamServices.isEmpty()) "All good 😛" else "The following services are offline: ${failedSuggestionEngineDownstreamServices.joinToString()}"
+		var suggestionEngineStatusString: String
+		try {
+			// get status of SKC Suggestion Engine
+			val suggestionEngineStatus = suggestionEngineStatusService.getStatus()
+			// get a list of services used by Suggestion Engine whose status isn't "Up" - in other words not functional
+			val failedSuggestionEngineDownstreamServices =
+				suggestionEngineStatus.downstream.filter { status -> status.status != "Up" }.map(SuggestionEngineDownstreamStatus::serviceName)
+			// either display a happy status, or display the names of all services used by Suggestion Engine that are down.
+			suggestionEngineStatusString = if (failedSuggestionEngineDownstreamServices.isEmpty()) "All good 😛" else "The following services are offline: ${failedSuggestionEngineDownstreamServices.joinToString()}"
 
-		downstreamStatus.add(DownstreamStatus("SKC Suggestion Engine", suggestionEngineStatus.version, suggestionEngineStatusString))
+			downstreamStatus.add(DownstreamStatus("SKC Suggestion Engine", suggestionEngineStatus.version, suggestionEngineStatusString))
+		} catch (e: YgoException) {
+			suggestionEngineStatusString = "API is down."
+			downstreamStatus.add(DownstreamStatus("SKC Suggestion Engine", "N/A", suggestionEngineStatusString))
+		}
 
 		return ResponseEntity.ok(
 			StatusResponse("API is online and functional.", AppConstants.APP_VERSION, downstreamStatus)

@@ -1,5 +1,7 @@
 package com.rtomyj.skc.skcsuggestionengine.status
 
+import com.rtomyj.skc.exception.ErrorType
+import com.rtomyj.skc.exception.YgoException
 import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,6 +32,7 @@ class SuggestionEngineStatusService @Autowired constructor(
 			suggestionEngineStatus = restTemplate.getForEntity(skcSuggestionEngineUri + statusEndpoint, SuggestionEngineStatus::class.java).body!!
 		} catch (ex: RestClientException) {
 			log.error("Could not send traffic data to SKC Suggestion Engine. Err: {}", ex.toString())
+			throw YgoException("Suggestion Engine status check failed.", ErrorType.DS001)
 		}
 
 		return suggestionEngineStatus

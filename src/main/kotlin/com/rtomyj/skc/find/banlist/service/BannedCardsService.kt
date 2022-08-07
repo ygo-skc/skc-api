@@ -74,7 +74,7 @@ class BannedCardsService @Autowired constructor(
 			throw YgoException(
 				String.format(
 					ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate
-				), ErrorType.D001
+				), ErrorType.DB001
 			)
 		}
 	}

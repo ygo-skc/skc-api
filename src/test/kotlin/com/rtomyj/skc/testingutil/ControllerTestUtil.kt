@@ -32,11 +32,11 @@ class ControllerTestUtil {
 				.andExpect(MockMvcResultMatchers.status().isNotFound)
 				.andExpect(
 					MockMvcResultMatchers.jsonPath(
-						"$.message", Matchers.`is`(ErrorType.D001.error)
+						"$.message", Matchers.`is`(ErrorType.DB001.error)
 					)
 				)
 				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.D001.name))
+					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.DB001.name))
 				)
 		}
 
@@ -49,10 +49,10 @@ class ControllerTestUtil {
 			resultActions
 				.andExpect(MockMvcResultMatchers.status().isInternalServerError)
 				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.message", Matchers.`is`(ErrorType.D002.error))
+					MockMvcResultMatchers.jsonPath("$.message", Matchers.`is`(ErrorType.DB002.error))
 				)
 				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.D002.name))
+					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.DB002.name))
 				)
 		}
 	}

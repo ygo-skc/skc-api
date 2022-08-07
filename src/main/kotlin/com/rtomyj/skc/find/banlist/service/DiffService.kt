@@ -31,7 +31,7 @@ class DiffService @Autowired constructor(
             String.format(
                 ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
                 banListStartDate
-            ), ErrorType.D001
+            ), ErrorType.DB001
         )
 
 
@@ -63,7 +63,7 @@ class DiffService @Autowired constructor(
             String.format(
                 ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE,
                 banListStartDate
-            ), ErrorType.D001
+            ), ErrorType.DB001
         )
         val removedCards = banListDao.getRemovedContentOfBanList(
             banListStartDate

@@ -76,7 +76,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
             if ((causeMessage != null)
                 && causeMessage.contains("Table") && causeMessage.contains("doesn't exist")
             ) {
-                throw YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.D002)
+                throw YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
             }
         }
 
