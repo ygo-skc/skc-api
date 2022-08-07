@@ -12,6 +12,7 @@ val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
+val kotlinCoroutineVersion = "1.6.4"
 
 val archivesBaseName = "skc-api"
 
@@ -76,7 +77,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutineVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
 }
