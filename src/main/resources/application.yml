@@ -52,6 +52,9 @@ server:
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
     key-alias: skcapi
 
+api:
+  skcSuggestionEngine:
+    uri: http://skc-suggestion-engine:9000
 ---
 spring:
   config:
@@ -67,3 +70,7 @@ server:
     key-store: classpath:skc-api.jks
     key-store-password: ${SSL_KEYSTORE_PASSWORD}
     key-alias: skcapi
+
+api:
+  skcSuggestionEngine:
+    uri: http://skc-suggestion-engine:9000
