@@ -3,7 +3,7 @@ package com.rtomyj.skc.banlist.dao
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.banlist.model.BanListDate
 import com.rtomyj.skc.banlist.model.BanListDates
 import com.rtomyj.skc.banlist.model.CardBanListStatus
@@ -31,7 +31,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
     }
 
 
-    @Throws(YgoException::class)
+    @Throws(SKCException::class)
     override fun getBanListDates(): BanListDates {
         var dates: List<BanListDate> = emptyList()
 
@@ -76,7 +76,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
             if ((causeMessage != null)
                 && causeMessage.contains("Table") && causeMessage.contains("doesn't exist")
             ) {
-                throw YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
+                throw SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
             }
         }
 

@@ -4,7 +4,7 @@ import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.banlist.dao.BanListDao
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.banlist.model.BanListNewContent
 import com.rtomyj.skc.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
@@ -23,11 +23,11 @@ class DiffService @Autowired constructor(
     }
     
     
-    @Throws(YgoException::class)
+    @Throws(SKCException::class)
     fun getNewContentForGivenBanList(banListStartDate: String): BanListNewContent {
         log.info("Fetching new content for ban list from DB w/ start date: ({}).", banListStartDate)
 
-        if (!banListDao.isValidBanList(banListStartDate)) throw YgoException(
+        if (!banListDao.isValidBanList(banListStartDate)) throw SKCException(
             String.format(
                 ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
                 banListStartDate
@@ -56,10 +56,10 @@ class DiffService @Autowired constructor(
         return newCardsMeta
     }
 
-    @Throws(YgoException::class)
+    @Throws(SKCException::class)
     fun getRemovedContentForGivenBanList(banListStartDate: String?): BanListRemovedContent {
         log.info("Fetching removed content for ban list from DB w/ start date: ( {} ).", banListStartDate)
-        if (!banListDao.isValidBanList(banListStartDate!!)) throw YgoException(
+        if (!banListDao.isValidBanList(banListStartDate!!)) throw SKCException(
             String.format(
                 ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE,
                 banListStartDate

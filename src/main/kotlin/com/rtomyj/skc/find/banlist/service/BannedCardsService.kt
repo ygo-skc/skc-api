@@ -4,7 +4,7 @@ import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.banlist.dao.BanListDao
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.banlist.model.BanListInstance
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
@@ -34,9 +34,9 @@ class BannedCardsService @Autowired constructor(
 	 * @param fetchAllInfo whether all information should be fetched for a particular ban list. In this case, not only are the contents of the ban list returned
 	 * , but also information on newly added cards to the ban list and cards no longer on ban list (compared to previous ban list).
 	 * @return Object representation of a ban list.
-	 * @throws YgoException if there is no ban list for given date.
+	 * @throws SKCException if there is no ban list for given date.
 	 */
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	fun getBanListByDate(banListStartDate: String, saveBandwidth: Boolean, fetchAllInfo: Boolean): BanListInstance {
 		log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
 
@@ -68,10 +68,10 @@ class BannedCardsService @Autowired constructor(
 	}
 
 
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	private fun validateBanListInstance(banListInstance: BanListInstance, banListStartDate: String) {
 		if (banListInstance.numForbidden == 0 && banListInstance.numLimited == 0 && banListInstance.numSemiLimited == 0) {
-			throw YgoException(
+			throw SKCException(
 				String.format(
 					ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate
 				), ErrorType.DB001

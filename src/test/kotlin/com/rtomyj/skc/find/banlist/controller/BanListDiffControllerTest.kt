@@ -7,7 +7,7 @@ import com.rtomyj.skc.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.banlist.service.DiffService
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.testingutil.ControllerTestUtil
 import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`
@@ -129,7 +129,7 @@ class BanListDiffControllerTest {
 				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
 			)
 				.thenThrow(
-					YgoException(
+					SKCException(
 						String.format(
 							ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
 							TestConstants.BAN_LIST_START_DATE
@@ -158,7 +158,7 @@ class BanListDiffControllerTest {
 				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
 			)
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
+					SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
 
 

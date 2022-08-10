@@ -6,7 +6,7 @@ import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.DBQueryConstants
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -29,7 +29,7 @@ class JDBCDao @Autowired constructor(
 	}
 
 
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	override fun getCardInfo(cardID: String): Card {
 		val query = DBQueryConstants.GET_CARD_BY_ID
 		val sqlParams = MapSqlParameterSource()
@@ -53,7 +53,7 @@ class JDBCDao @Autowired constructor(
 			}
 			null
 		}
-			?: throw YgoException(
+			?: throw SKCException(
 				String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID),
 				ErrorType.DB001
 			)

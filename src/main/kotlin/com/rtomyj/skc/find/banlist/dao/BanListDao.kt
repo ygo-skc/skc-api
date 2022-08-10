@@ -1,7 +1,7 @@
 package com.rtomyj.skc.banlist.dao
 
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.banlist.model.BanListDates
 import com.rtomyj.skc.banlist.model.CardBanListStatus
 import com.rtomyj.skc.banlist.model.CardsPreviousBanListStatus
@@ -63,7 +63,7 @@ interface BanListDao {
 	 * Get the list of dates of all the ban lists stored in the database.
 	 * @return A list of BanList
 	 */
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	fun getBanListDates(): BanListDates
 
 	fun getBanListDetailsForCard(cardId: String): List<CardBanListStatus>

@@ -8,7 +8,7 @@ import com.rtomyj.skc.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.banlist.service.BannedCardsService
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.testingutil.ControllerTestUtil
 import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`
@@ -115,7 +115,7 @@ class BannedCardsControllerTest {
 				)
 			)
 				.thenThrow(
-					YgoException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE), ErrorType.DB001)
+					SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, REQUESTED_BAN_LIST_MOCK_DATE), ErrorType.DB001)
 				)
 
 
@@ -145,7 +145,7 @@ class BannedCardsControllerTest {
 				)
 			)
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
+					SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
 
 

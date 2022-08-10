@@ -1,7 +1,7 @@
 package com.rtomyj.skc.find.product
 
 import com.rtomyj.skc.browse.product.model.Product
-import com.rtomyj.skc.exception.YgoError
+import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
@@ -47,12 +47,12 @@ class ProductController @Autowired constructor(private val availablePacksService
 	@ApiResponse(
 		responseCode = "400",
 		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	@ApiResponse(
 		responseCode = "404",
 		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	fun productInfo(
 		@Parameter(

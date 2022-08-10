@@ -5,7 +5,7 @@ import com.google.common.net.HttpHeaders.X_FORWARDED_FOR
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.testingutil.ControllerTestUtil
 import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`
@@ -87,7 +87,7 @@ class CardControllerTest {
 			// setup mocks - throw NOT FOUND (card not in DB) exception when particular card is requested
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
 				.thenThrow(
-					YgoException(
+					SKCException(
 						String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, TestConstants.STRATOS_ID), ErrorType.DB001
 					)
 				)
@@ -114,7 +114,7 @@ class CardControllerTest {
 		fun `Fetching Card Information Using Card ID - Required Database Tables Are Missing - HTTP 500 Error`() {
 			// setup mocks - throw DB table missing exception when particular card is requested
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
-				.thenThrow(YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002))
+				.thenThrow(SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002))
 
 
 			// call controller and verify correct status, code and message are returned

@@ -11,7 +11,7 @@ import com.rtomyj.skc.banlist.service.DiffService
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.junit.jupiter.api.Assertions
@@ -382,7 +382,7 @@ class BannedCardsServiceTest {
 
 
 			// call code and assert throws
-			val ex = Assertions.assertThrowsExactly(YgoException::class.java) {
+			val ex = Assertions.assertThrowsExactly(SKCException::class.java) {
 				bannedCardsService.getBanListByDate(
 					TestConstants.BAN_LIST_START_DATE,
 					isSaveBandwidth,

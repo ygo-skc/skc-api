@@ -2,7 +2,7 @@ package com.rtomyj.skc.search.card
 
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.util.YgoApiBaseController
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -39,7 +39,7 @@ class CardSearchController @Autowired constructor(
 		description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
 	)
 	@Throws(
-		YgoException::class
+		SKCException::class
 	)
 	fun searchByCriteria(
 		@Parameter(

@@ -8,7 +8,7 @@ import com.rtomyj.skc.banlist.model.BanListNewContent
 import com.rtomyj.skc.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.banlist.service.DiffService
 import com.rtomyj.skc.constant.TestConstants
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
@@ -269,7 +269,7 @@ class DiffServiceTest {
 				.thenReturn(ArrayList())
 
 
-			Assertions.assertThrows(YgoException::class.java) {
+			Assertions.assertThrows(SKCException::class.java) {
 				diffService.getNewContentForGivenBanList(
 					TestConstants.BAN_LIST_START_DATE
 				)
@@ -307,7 +307,7 @@ class DiffServiceTest {
 
 
 			// call code w/ above mocks, expecting an exception
-			Assertions.assertThrows(YgoException::class.java) {
+			Assertions.assertThrows(SKCException::class.java) {
 				diffService.getRemovedContentForGivenBanList(
 					TestConstants.BAN_LIST_START_DATE
 				)

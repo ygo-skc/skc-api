@@ -4,7 +4,7 @@ import com.rtomyj.skc.banlist.dao.BanListDao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.browse.product.model.Product
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
@@ -37,7 +37,7 @@ class CardService @Autowired constructor(
 	 * "All Info" includes information about the packs the card is in, the ban lists the card is in, etc.
 	 * @return Card object containing the information of the card desired.
 	 */
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	fun getCardInfo(cardId: String, fetchAllInfo: Boolean, clientIP: String): Card {
 		log.info("Fetching info for card w/ ID: ( {} )", cardId)
 

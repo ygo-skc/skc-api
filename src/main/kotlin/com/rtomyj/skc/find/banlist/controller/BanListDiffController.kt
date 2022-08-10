@@ -3,8 +3,8 @@ package com.rtomyj.skc.banlist.controller
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.exception.YgoError
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.banlist.model.BanListNewContent
 import com.rtomyj.skc.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.banlist.service.DiffService
@@ -68,20 +68,20 @@ class BanListDiffController
     @ApiResponse(
         responseCode = "400",
         description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @ApiResponse(
         responseCode = "404",
         description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @ApiResponse(
         responseCode = "500",
         description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @Throws(
-        YgoException::class
+        SKCException::class
     )
     fun getNewlyAddedContentForBanList(
         @Parameter(
@@ -124,20 +124,20 @@ class BanListDiffController
     @ApiResponse(
         responseCode = "400",
         description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @ApiResponse(
         responseCode = "404",
         description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @ApiResponse(
         responseCode = "500",
         description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @Throws(
-        YgoException::class
+        SKCException::class
     )
     fun getNewlyRemovedContentForBanList(
         @Parameter(

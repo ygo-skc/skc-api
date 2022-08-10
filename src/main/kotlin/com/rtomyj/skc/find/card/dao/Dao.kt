@@ -1,10 +1,7 @@
 package com.rtomyj.skc.find.card.dao
 
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.browse.card.model.Card
-import com.rtomyj.skc.stats.model.DatabaseStats
-import com.rtomyj.skc.stats.model.MonsterTypeStats
-import com.rtomyj.skc.status.model.DownstreamStatus
 
 /**
  * Contract for database operations.
@@ -15,6 +12,6 @@ interface Dao {
 	 * @param cardID The ID of a Yugioh card.
 	 * @return The Card requested.
 	 */
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	fun getCardInfo(cardID: String): Card
 }

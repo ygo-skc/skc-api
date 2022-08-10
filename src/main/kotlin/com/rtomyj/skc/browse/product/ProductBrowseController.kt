@@ -4,7 +4,7 @@ import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.enumeration.ProductType
-import com.rtomyj.skc.exception.YgoError
+import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.browse.product.model.Products
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -43,12 +43,12 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
 	)
 	@ApiResponse(responseCode = "400",
 		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	@ApiResponse(
 		responseCode = "404",
 		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	fun getProductsByLocale(
 		@Parameter(
@@ -76,12 +76,12 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
 	)
 	@ApiResponse(responseCode = "400",
 		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	@ApiResponse(
 		responseCode = "404",
 		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	fun getAllProductsForProductTypeAndLocale(
 		@Parameter(

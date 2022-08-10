@@ -2,7 +2,7 @@ package com.rtomyj.skc.stats
 
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.exception.YgoError
+import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.stats.model.DatabaseStats
 import com.rtomyj.skc.stats.model.MonsterTypeStats
 import io.swagger.v3.oas.annotations.Operation
@@ -36,12 +36,12 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
 	@ApiResponse(responseCode = "400",
 		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	@ApiResponse(
 		responseCode = "404",
 		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	fun monsterTypesForgivenCardColor(
 		@Parameter(
@@ -62,12 +62,12 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
 	@ApiResponse(responseCode = "400",
 		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	@ApiResponse(
 		responseCode = "404",
 		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = YgoError::class))]
+		content = [Content(schema = Schema(implementation = SKCError::class))]
 	)
 	@GetMapping
 	fun databaseStats(): ResponseEntity<DatabaseStats> {

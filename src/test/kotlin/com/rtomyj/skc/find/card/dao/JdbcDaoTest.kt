@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -89,7 +89,7 @@ class JdbcDaoTest {
 	inner class UnhappyPath {
 		@Test
 		fun testFetchingCardById_Failure() {
-			Assertions.assertThrows(YgoException::class.java) { dao.getCardInfo("12345678") }
+			Assertions.assertThrows(SKCException::class.java) { dao.getCardInfo("12345678") }
 		}
 	}
 }

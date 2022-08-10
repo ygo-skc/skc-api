@@ -6,7 +6,7 @@ import com.rtomyj.skc.banlist.model.BanListDates
 import com.rtomyj.skc.banlist.service.BanListDatesService
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.testingutil.ControllerTestUtil
 import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`
@@ -102,7 +102,7 @@ class BanListDatesControllerTest {
 			// mock retrieval of ban list dates - error occurred - table ban list table DNE
 			`when`(banListDatesService.retrieveBanListStartDates())
 				.thenThrow(
-					YgoException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
+					SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
 
 

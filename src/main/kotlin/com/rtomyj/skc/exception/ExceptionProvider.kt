@@ -20,12 +20,12 @@ class ExceptionProvider : ResponseEntityExceptionHandler() {
 
 
 	@ResponseBody
-	@ExceptionHandler(YgoException::class)
-	fun onYgoException(exception: YgoException): ResponseEntity<YgoError> {
+	@ExceptionHandler(SKCException::class)
+	fun onYgoException(exception: SKCException): ResponseEntity<SKCError> {
 		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.message, exception.errorType, exception.errorType.httpStatus)
 
 		return ResponseEntity(
-			YgoError(exception.errorType.error, exception.errorType.name), exception.errorType.httpStatus
+			SKCError(exception.errorType.error, exception.errorType.name), exception.errorType.httpStatus
 		)
 	}
 
@@ -33,9 +33,9 @@ class ExceptionProvider : ResponseEntityExceptionHandler() {
 	@ResponseBody
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(ConstraintViolationException::class)
-	fun onValidationFail(exception: ConstraintViolationException): YgoError {
+	fun onValidationFail(exception: ConstraintViolationException): SKCError {
 		log.error("Request did not conform to spec. Constraints violated: {}", exception.toString())
 
-		return YgoError(ErrorType.G001.error, ErrorType.G001.name)
+		return SKCError(ErrorType.G001.error, ErrorType.G001.name)
 	}
 }

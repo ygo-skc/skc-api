@@ -1,7 +1,7 @@
 package com.rtomyj.skc.stats
 
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.stats.dao.StatsDao
 import com.rtomyj.skc.stats.model.DatabaseStats
 import com.rtomyj.skc.stats.model.MonsterTypeStats
@@ -24,7 +24,7 @@ class StatsService @Autowired constructor(
 		val monsterTypeStats = dao.getMonsterTypeStats(cardColor)
 
 		if (monsterTypeStats.monsterTypes.isEmpty()) {
-			throw YgoException("Requested monster type not found in DB", ErrorType.DB001)    // flow ends here on err
+			throw SKCException("Requested monster type not found in DB", ErrorType.DB001)    // flow ends here on err
 		}
 
 		monsterTypeStats.setLinks()

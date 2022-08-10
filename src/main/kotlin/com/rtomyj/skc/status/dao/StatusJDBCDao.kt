@@ -1,6 +1,6 @@
 package com.rtomyj.skc.status.dao
 
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.status.model.DownstreamStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,7 +25,7 @@ class StatusJDBCDao @Autowired constructor(
 	}
 
 
-	@Throws(YgoException::class)
+	@Throws(SKCException::class)
 	override fun dbConnection(): DownstreamStatus {
 		val dbName = "SKC DB"
 		var versionMajor = "---"

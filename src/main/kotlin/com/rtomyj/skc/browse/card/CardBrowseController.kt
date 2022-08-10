@@ -3,7 +3,7 @@ package com.rtomyj.skc.browse.card
 import com.google.common.base.Suppliers
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.exception.YgoError
+import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
 import com.rtomyj.skc.browse.card.model.CardBrowseResults
 import io.swagger.v3.oas.annotations.Operation
@@ -44,12 +44,12 @@ class CardBrowseController @Autowired constructor(
     )
     @ApiResponse(responseCode = "400",
         description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @ApiResponse(
         responseCode = "404",
         description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     fun browse(
         @Parameter(
@@ -130,12 +130,12 @@ class CardBrowseController @Autowired constructor(
     )
     @ApiResponse(responseCode = "400",
         description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @ApiResponse(
         responseCode = "404",
         description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     fun browseCriteria(): CardBrowseCriteria {
         log.info("Retrieving browse criteria.")

@@ -2,7 +2,7 @@ package com.rtomyj.skc.banlist.controller
 
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.exception.YgoError
+import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.banlist.model.BanListDates
 import com.rtomyj.skc.banlist.service.BanListDatesService
 import io.swagger.v3.oas.annotations.Operation
@@ -51,7 +51,7 @@ class BanListDatesController
     @ApiResponse(
         responseCode = "500",
         description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = YgoError::class))]
+        content = [Content(schema = Schema(implementation = SKCError::class))]
     )
     @Operation(
         summary = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",

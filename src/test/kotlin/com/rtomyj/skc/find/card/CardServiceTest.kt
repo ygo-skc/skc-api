@@ -7,7 +7,7 @@ import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.YgoException
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
@@ -84,7 +84,7 @@ class CardServiceTest {
 		fun `Test Fetching Card From DB, Failure`() {
 			// mock calls
 			Mockito.`when`(cardDao.getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))).thenThrow(
-				YgoException(
+				SKCException(
 					String.format("Unable to find card in DB with ID: %s", TestConstants.ID_THAT_CAUSES_FAILURE), ErrorType.DB001
 				)
 			)
@@ -92,7 +92,7 @@ class CardServiceTest {
 
 
 			// call code and assert throws
-			Assertions.assertThrows(YgoException::class.java) {
+			Assertions.assertThrows(SKCException::class.java) {
 				cardService.getCardInfo(
 					TestConstants.ID_THAT_CAUSES_FAILURE, false, TestConstants.MOCK_IP
 				)
