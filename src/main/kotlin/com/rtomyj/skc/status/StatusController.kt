@@ -62,7 +62,8 @@ class StatusController @Autowired constructor(
 				suggestionEngineStatus.downstream.filter { status -> status.status != "Up" }.map(SuggestionEngineDownstreamStatus::serviceName)
 
 			// either display a happy status, or display the names of all services used by Suggestion Engine that are down.
-			val suggestionEngineStatusString = if (failedSuggestionEngineDownstreamServices.isEmpty()) "All good 😛" else "The following services are offline: ${failedSuggestionEngineDownstreamServices.joinToString()}"
+			val suggestionEngineStatusString =
+				if (failedSuggestionEngineDownstreamServices.isEmpty()) "All good 😛" else "The following services are offline: ${failedSuggestionEngineDownstreamServices.joinToString()}"
 
 			downstreamStatus.add(DownstreamStatus("SKC Suggestion Engine", suggestionEngineStatus.version, suggestionEngineStatusString))
 		} catch (e: SKCException) {

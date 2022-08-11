@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.lang.Thread.sleep
 
 
 @ExtendWith(SpringExtension::class)
@@ -99,6 +100,7 @@ class CardServiceTest {
 			}
 
 
+			sleep(200)  // sleep as traffic call is async and we will verify the call below
 			// verify mocks are called the exact number of times expected
 			Mockito.verify(
 				cardDao, Mockito.times(1)
