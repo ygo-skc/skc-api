@@ -30,7 +30,7 @@ class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: CardB
     }
 
 
-    fun getBrowseResults(criteria: CardBrowseCriteria): CardBrowseResults {
+    fun browseResults(criteria: CardBrowseCriteria): CardBrowseResults {
         val watch = StopWatch()
         watch.start()
 

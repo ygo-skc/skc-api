@@ -110,7 +110,7 @@ class CardBrowseController @Autowired constructor(
             linkRatingSet
         )
 
-        val cardBrowseResults = cardBrowseService.getBrowseResults(criteria)
+        val cardBrowseResults = cardBrowseService.browseResults(criteria)
         log.info(
             "Successfully retrieved card browse results using criteria: [ {} ]. Found {} matching results.",
             criteria.toString(),

@@ -40,7 +40,7 @@ class CardControllerTest {
 			// setup mocks - throw NOT FOUND (card not in DB) exception when particular card is requested
 			val mapper = jacksonObjectMapper()
 			val mockCardData: Card = mapper
-				.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_JSON_FILE).file, Card::class.java)
+				.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_STRATOS).file, Card::class.java)
 
 			`when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP))
 				.thenReturn(mockCardData)
