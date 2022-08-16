@@ -16,6 +16,8 @@ object TestConstants {
 	const val STRATOS_TYPE = "Warrior/Effect"
 	const val STRATOS_COLOR = "Effect"
 	const val STRATOS_ATTRIBUTE = "Wind"
+	const val STRATOS_TRIMMED_EFFECT =
+		"When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; Destroy Spells/Traps on the fi..."
 	const val STRATOS_FULL_EFFECT =
 		"When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; You can destroy Spell/Trap Cards on the field, up to the number of \"HERO\" monsters you control, except this card.\n&bull; Add 1 \"HERO\" monster from your Deck to your hand."
 	const val STRATOS_ATK = 1800

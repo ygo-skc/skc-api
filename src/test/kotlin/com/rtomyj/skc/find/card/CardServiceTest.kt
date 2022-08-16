@@ -70,6 +70,7 @@ class CardServiceTest {
 
 
 			// verify mocks are called the exact number of times expected
+			sleep(200)  // sleep as traffic call is async and we will verify the call below
 			Mockito.verify(cardDao, Mockito.times(1)).getCardInfo(eq(TestConstants.STRATOS_ID))
 			Mockito.verify(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.STRATOS_ID, TestConstants.MOCK_IP)
 		}
@@ -100,8 +101,8 @@ class CardServiceTest {
 			}
 
 
-			sleep(200)  // sleep as traffic call is async and we will verify the call below
 			// verify mocks are called the exact number of times expected
+			sleep(200)  // sleep as traffic call is async and we will verify the call below
 			Mockito.verify(
 				cardDao, Mockito.times(1)
 			).getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))

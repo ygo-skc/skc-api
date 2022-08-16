@@ -1,8 +1,6 @@
 package com.rtomyj.skc.browse.card
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.common.net.HttpHeaders
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
 import com.rtomyj.skc.browse.card.model.CardBrowseResults
 import com.rtomyj.skc.constant.TestConstants
@@ -14,7 +12,6 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.core.io.ClassPathResource
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -35,7 +32,7 @@ class CardBrowseControllerTest {
 	@Tag("CardBrowse")
 	inner class HappyPath {
 		@Test
-		fun `'Retrieving Browser Results With No Errors'`() {
+		fun `'Retrieving Browse Results With No Errors'`() {
 			// mock setup
 			val cardBrowseCriteria = CardBrowseCriteria(
 				emptySet(),
@@ -46,12 +43,9 @@ class CardBrowseControllerTest {
 				emptySet(),
 				emptySet()
 			)
-			val mapper = jacksonObjectMapper()
-			val stratos: Card = mapper
-				.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_STRATOS).file, Card::class.java)
 
 			Mockito.`when`(cardBrowseService.browseResults(cardBrowseCriteria))
-				.thenReturn(CardBrowseResults(listOf(stratos), 0))
+				.thenReturn(CardBrowseResults(listOf(CardBrowseTestUtil.stratos), 0))
 
 			// perform call
 			mockMvc.perform(
@@ -77,15 +71,7 @@ class CardBrowseControllerTest {
 		@Test
 		fun `'Retrieving Browse Criteria With No Errors'`() {
 			// mock setup
-			val cardBrowseCriteria = CardBrowseCriteria(
-				setOf("Effect", "Fusion", "Pendulum-Xyz"),
-				setOf("Dark", "Divine", "Earth", "Fire", "Light", "Water", "Wind"),
-				setOf("Aqua", "Beast-Warrior", "Divine-Beast", "Psychic", "Winged Beast"),
-				setOf("Flip", "Gemini", "Spirit", "Toon", "Tuner", "Union"),
-				setOf(4, 6, 12),
-				setOf(1, 3, 11),
-				setOf(2, 5, 10)
-			)
+			val cardBrowseCriteria = CardBrowseTestUtil.cardBrowseCriteria
 
 			Mockito.`when`(cardBrowseService.browseCriteria())
 				.thenReturn(cardBrowseCriteria)
