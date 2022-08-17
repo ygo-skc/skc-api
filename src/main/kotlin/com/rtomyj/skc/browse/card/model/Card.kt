@@ -3,9 +3,9 @@ package com.rtomyj.skc.browse.card.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.Open
-import com.rtomyj.skc.banlist.model.BanListInstance
-import com.rtomyj.skc.banlist.model.CardBanListStatus
 import com.rtomyj.skc.browse.product.model.Product
+import com.rtomyj.skc.find.banlist.model.BanListInstance
+import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.card.CardController
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.HateoasLinks.Companion.setLinks

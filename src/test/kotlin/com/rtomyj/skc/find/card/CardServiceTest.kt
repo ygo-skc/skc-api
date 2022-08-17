@@ -1,7 +1,7 @@
 package com.rtomyj.skc.find.card
 
 import com.nhaarman.mockito_kotlin.eq
-import com.rtomyj.skc.banlist.dao.BanListDao
+import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.constant.TestConstants

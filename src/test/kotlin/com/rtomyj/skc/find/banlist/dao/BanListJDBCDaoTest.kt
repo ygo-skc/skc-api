@@ -1,8 +1,6 @@
 package com.rtomyj.skc.find.banlist.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.banlist.dao.BanListDao
-import com.rtomyj.skc.banlist.dao.BanListJDBCDao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects

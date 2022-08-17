@@ -1,11 +1,11 @@
-package com.rtomyj.skc.banlist.dao
+package com.rtomyj.skc.find.banlist.dao
 
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.banlist.model.BanListDates
-import com.rtomyj.skc.banlist.model.CardBanListStatus
-import com.rtomyj.skc.banlist.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.browse.card.model.Card
+import com.rtomyj.skc.find.banlist.model.BanListDates
+import com.rtomyj.skc.find.banlist.model.CardBanListStatus
+import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
 
 interface BanListDao {
 	/**

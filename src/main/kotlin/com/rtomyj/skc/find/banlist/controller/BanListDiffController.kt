@@ -1,13 +1,13 @@
-package com.rtomyj.skc.banlist.controller
+package com.rtomyj.skc.find.banlist.controller
 
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.banlist.model.BanListNewContent
-import com.rtomyj.skc.banlist.model.BanListRemovedContent
-import com.rtomyj.skc.banlist.service.DiffService
+import com.rtomyj.skc.find.banlist.model.BanListNewContent
+import com.rtomyj.skc.find.banlist.model.BanListRemovedContent
+import com.rtomyj.skc.find.banlist.service.DiffService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content

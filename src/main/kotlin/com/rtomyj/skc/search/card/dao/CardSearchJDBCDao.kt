@@ -1,7 +1,7 @@
 package com.rtomyj.skc.search.card.dao
 
-import com.rtomyj.skc.banlist.model.CardBanListStatus
 import com.rtomyj.skc.browse.card.model.Card
+import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.util.constant.DBQueryConstants
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

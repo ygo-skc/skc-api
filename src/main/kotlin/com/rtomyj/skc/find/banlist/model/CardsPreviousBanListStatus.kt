@@ -1,4 +1,4 @@
-package com.rtomyj.skc.banlist.model
+package com.rtomyj.skc.find.banlist.model
 
 import com.rtomyj.skc.Open
 import com.rtomyj.skc.browse.card.model.Card

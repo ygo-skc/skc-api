@@ -1,9 +1,9 @@
-package com.rtomyj.skc.banlist.model
+package com.rtomyj.skc.find.banlist.model
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.rtomyj.skc.Open
-import com.rtomyj.skc.banlist.controller.BanListDiffController
-import com.rtomyj.skc.banlist.controller.BannedCardsController
+import com.rtomyj.skc.find.banlist.controller.BanListDiffController
+import com.rtomyj.skc.find.banlist.controller.BannedCardsController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema

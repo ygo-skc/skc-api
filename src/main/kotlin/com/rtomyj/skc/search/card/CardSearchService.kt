@@ -1,6 +1,6 @@
 package com.rtomyj.skc.search.card
 
-import com.rtomyj.skc.banlist.dao.BanListDao
+import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.search.card.dao.CardSearchDao
