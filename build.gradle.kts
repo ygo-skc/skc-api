@@ -188,7 +188,10 @@ pitest {
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
-	junit5PluginVersion.set("0.15")
+	junit5PluginVersion.set("1.0.0")
+	pitestVersion.set("1.9.4")
 
 	mutators.set(listOf("STRONGER"))
+
+	avoidCallsTo.set(setOf("kotlin.jvm.internal", "org.springframework.util.StopWatch", "org.slf4j.Logger"))
 }

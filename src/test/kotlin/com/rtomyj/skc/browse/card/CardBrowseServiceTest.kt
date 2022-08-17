@@ -36,15 +36,33 @@ class CardBrowseServiceTest {
 			val linkSet = setOf("\"linkRating\": \"2\"", "\"linkRating\": \"5\"", "\"linkRating\": \"10\"")
 
 			Mockito.`when`(dao.getBrowseResults(cardBrowseCriteria, levelSet, rankSet, linkSet))
-				.thenReturn(CardBrowseResults(listOf(CardBrowseTestUtil.stratos), 0))
+				.thenReturn(CardBrowseResults(listOf(CardBrowseTestUtil.stratos, CardBrowseTestUtil.crusader), 2))
 
 			val results = cardBrowseService.browseResults(cardBrowseCriteria)
 
 			Assertions.assertNotNull(results)
+			Assertions.assertEquals(2, results.numResults)
+			Assertions.assertEquals(2, results.results.size)
 			Assertions.assertEquals(cardBrowseCriteria, results.requestedCriteria)
-			Assertions.assertNotNull(results.links)
+			Assertions.assertTrue(results.links.isEmpty)
+
+			Assertions.assertNotNull(results.results[0].links)
+			Assertions.assertTrue(results.results[0].links.getLink("self").isPresent)
 			Assertions.assertEquals("/card/${TestConstants.STRATOS_ID}?allInfo=true", results.results[0].links.getLink("self").get().href)
 			Assertions.assertEquals(TestConstants.STRATOS_TRIMMED_EFFECT, results.results[0].cardEffect)
+			Assertions.assertNotEquals(TestConstants.STRATOS_FULL_EFFECT, results.results[0].cardEffect)
+			Assertions.assertNotNull(results.results[0].monsterAssociation)
+			Assertions.assertNotNull(results.results[0].monsterAssociation!!.level)
+			Assertions.assertEquals(4, results.results[0].monsterAssociation!!.level)
+
+			Assertions.assertNotNull(results.results[1].links)
+			Assertions.assertTrue(results.results[1].links.getLink("self").isPresent)
+			Assertions.assertEquals("/card/${TestConstants.CRUSADER_ID}?allInfo=true", results.results[1].links.getLink("self").get().href)
+			Assertions.assertEquals(TestConstants.CRUSADER_TRIMMED_EFFECT, results.results[1].cardEffect)
+			Assertions.assertNotNull(results.results[1].monsterAssociation)
+			Assertions.assertNotNull(results.results[1].monsterAssociation!!.linkArrows)
+			Assertions.assertEquals(2, results.results[1].monsterAssociation!!.linkRating)
+			Assertions.assertNotEquals(listOf("B-L", "B-R"), results.results[1].monsterAssociation!!.linkArrows)
 
 			// verify mocks are called
 			Mockito.verify(dao)

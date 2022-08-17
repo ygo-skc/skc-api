@@ -69,6 +69,7 @@ class MonsterAssociation(
          * Calls [.transformMonsterLinkRating] on a list of Cards
          * @param cards list of cards whose link rating should be transformed
          */
+        @JvmStatic
         fun transformMonsterLinkRating(cards: List<Card>) {
             cards
                 .stream()

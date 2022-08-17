@@ -22,5 +22,8 @@ class CardBrowseTestUtil {
 
 		val stratos: Card = mapper
 			.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_STRATOS).file, Card::class.java)
+
+		val crusader: Card = mapper
+			.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_CRUSADER).file, Card::class.java)
 	}
 }

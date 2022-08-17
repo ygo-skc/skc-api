@@ -9,6 +9,11 @@ object TestConstants {
 	const val BAN_LIST_REMOVED_CONTENT = "json-mock/BanListRemovedContent.json"
 
 	const val CARD_INSTANCE_STRATOS = "json-mock/CardInstance-Stratos.json"
+	const val CARD_INSTANCE_CRUSADER = "json-mock/CardInstance-Crusader.json"
+
+	// X-HERO Crusader card info
+	const val CRUSADER_ID = "58004362"
+	const val CRUSADER_TRIMMED_EFFECT = "2 Warrior monsters\nIf this card is Link Summoned: You can target 1 \"Destiny HERO\" monster in your GY; Special Summon it...."
 
 	// E-HERO Stratos card info
 	const val STRATOS_ID = "40044918"
