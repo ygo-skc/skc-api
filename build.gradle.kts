@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.8"
-val springBootVersion = "2.7.2"
-val springDocVersion = "1.6.9"
+val springBootVersion = "2.7.3"
+val springDocVersion = "1.6.11"
 val mysqlVersion = "8.0.30"
 val jacksonVersion = "2.13.3"
 val cucumberVersion = "6.7.0"
@@ -12,14 +12,15 @@ val restAssuredVersion = "4.3.3"
 val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
+val kotlinCoroutineVersion = "1.6.4"
 
 val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "2.7.2"
-	id("io.spring.dependency-management") version "1.0.12.RELEASE"
-	id("info.solidsoft.pitest") version "1.7.4"
+	id("org.springframework.boot") version "2.7.3"
+	id("io.spring.dependency-management") version "1.0.13.RELEASE"
+	id("info.solidsoft.pitest") version "1.9.0"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
 	kotlin("jvm") version "1.7.10"
@@ -37,7 +38,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.0.9"
+version = "2.1.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -65,7 +66,7 @@ dependencies {
 	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
 	implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
-	runtimeOnly("org.eclipse.jetty:jetty-alpn-conscrypt-server")
+	runtimeOnly("org.eclipse.jetty:jetty-alpn-java-server")
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
 	implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
@@ -75,6 +76,9 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutineVersion")
 
 	implementation("com.google.guava:guava:$guavaVersion")
 }
@@ -178,13 +182,16 @@ tasks {
 
 pitest {
 	targetClasses.set(listOf("com.rtomyj.skc.*"))
-	excludedClasses.set(listOf("com.rtomyj.skc.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.constant.*"
+	excludedClasses.set(listOf("com.rtomyj.skc.*.model.*", "com.rtomyj.skc.config.*", "com.rtomyj.skc.constant.*"
 		, "com.rtomyj.skc.exception.*", "com.rtomyj.skc.enums.*"))
 
 	threads.set(Runtime.getRuntime().availableProcessors() - 2)
 	outputFormats.set(listOf("XML", "HTML"))
 	timestampedReports.set(false)
-	junit5PluginVersion.set("0.15")
+	junit5PluginVersion.set("1.0.0")
+	pitestVersion.set("1.9.4")
 
 	mutators.set(listOf("STRONGER"))
+
+	avoidCallsTo.set(setOf("kotlin.jvm.internal", "org.springframework.util.StopWatch", "org.slf4j.Logger"))
 }
