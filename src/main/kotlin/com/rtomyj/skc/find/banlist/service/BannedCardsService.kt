@@ -37,22 +37,22 @@ class BannedCardsService @Autowired constructor(
 	 * @throws SKCException if there is no ban list for given date.
 	 */
 	@Throws(SKCException::class)
-	fun getBanListByDate(banListStartDate: String, saveBandwidth: Boolean, fetchAllInfo: Boolean): BanListInstance {
+	fun getBanListByDate(banListStartDate: String, saveBandwidth: Boolean, format: String, fetchAllInfo: Boolean): BanListInstance {
 		log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
 
 		val banListInstance: BanListInstance = BanListInstance(
 			banListStartDate,
-			banListDao.getPreviousBanListDate(banListStartDate),
-			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN),
-			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED),
-			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED)
+			banListDao.getPreviousBanListDate(banListStartDate, format),
+			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN, format),
+			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED, format),
+			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED, format)
 		).apply {
 			validateBanListInstance(this, banListStartDate)
 			setLinks()
 
 			if (fetchAllInfo) {
-				newContent = diffService.getNewContentForGivenBanList(banListStartDate)
-				removedContent = diffService.getRemovedContentForGivenBanList(banListStartDate)
+				newContent = diffService.getNewContentForGivenBanList(banListStartDate, format)
+				removedContent = diffService.getRemovedContentForGivenBanList(banListStartDate, format)
 			}
 
 			if (saveBandwidth) {

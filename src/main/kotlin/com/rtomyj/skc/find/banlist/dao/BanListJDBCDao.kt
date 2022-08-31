@@ -33,7 +33,7 @@ class BanListJDBCDao @Autowired constructor(
     }
 
 
-    override fun getBanListByBanStatus(date: String, status: BanListCardStatus): List<Card> {
+    override fun getBanListByBanStatus(date: String, status: BanListCardStatus, format: String): List<Card> {
         val query = DBQueryConstants.GET_BAN_LIST_BY_STATUS
 
         val sqlParams = MapSqlParameterSource()
@@ -74,15 +74,18 @@ class BanListJDBCDao @Autowired constructor(
     }
 
 
-    override fun banListDatesInOrder(): List<String> {
-        val query = "select distinct ban_list_date from ban_lists order by ban_list_date"
+    override fun banListDatesInOrder(format: String): List<String> {
+        val sqlParams = MapSqlParameterSource()
+        sqlParams.addValue("format", format)
 
-        return jdbcNamedTemplate.queryForList(query, MapSqlParameterSource(), String::class.java)
+        val query = "select distinct ban_list_date from ban_lists WHERE duel_format = :format order by ban_list_date"
+
+        return jdbcNamedTemplate.queryForList(query, sqlParams, String::class.java)
     }
 
 
-    override fun getPreviousBanListDate(currentBanList: String): String {
-        val sortedBanListDates = banListDatesInOrder()
+    override fun getPreviousBanListDate(currentBanList: String, format: String): String {
+        val sortedBanListDates = banListDatesInOrder(format)
         val currentBanListPosition = sortedBanListDates.indexOf(currentBanList)
 
         if (currentBanListPosition == 0) {
@@ -95,8 +98,8 @@ class BanListJDBCDao @Autowired constructor(
 
 
     // TODO: make sure you write a test for the instance where the last ban list is selected
-    override fun getRemovedContentOfBanList(banListDate: String): List<CardsPreviousBanListStatus> {
-        val oldBanList = getPreviousBanListDate(banListDate)
+    override fun getRemovedContentOfBanList(banListDate: String, format: String): List<CardsPreviousBanListStatus> {
+        val oldBanList = getPreviousBanListDate(banListDate, format)
         if (oldBanList == "") {
             return emptyList()
         }
@@ -106,9 +109,12 @@ class BanListJDBCDao @Autowired constructor(
                 " from (select card_number from ban_list_info where ban_list_date = :newBanList) as new_list" +
                 " right join" +
                 " (select * from ban_list_info where ban_list_date = :oldBanList) as old_list" +
-                " on new_list.card_number = old_list.card_number where new_list.card_number is NULL ORDER BY color_id, card_name"
+                " on new_list.card_number = old_list.card_number where new_list.card_number is NULL " +
+                "AND duel_format = :format " +
+                "ORDER BY color_id, card_name"
 
         val sqlParams = MapSqlParameterSource()
+        sqlParams.addValue("format", format)
         sqlParams.addValue("newBanList", banListDate)
         sqlParams.addValue("oldBanList", oldBanList)
 
@@ -164,12 +170,13 @@ class BanListJDBCDao @Autowired constructor(
     // TODO: make sure you write a test for the instance where the last ban list is selected
     override fun getNewContentOfBanList(
         banListDate: String,
-        status: BanListCardStatus
+        status: BanListCardStatus,
+        format: String
     ): List<CardsPreviousBanListStatus> {
         val stopwatch = StopWatch()
         stopwatch.start()
 
-        val oldBanList = getPreviousBanListDate(banListDate)
+        val oldBanList = getPreviousBanListDate(banListDate, format)
         if (oldBanList == "") {
             return emptyList()
         }
@@ -180,10 +187,12 @@ class BanListJDBCDao @Autowired constructor(
                 "(select card_number, ban_status from ban_list_info where ban_list_date = :oldBanList and ban_status = :status) as old_list " +
                 "on new_list.card_number = old_list.card_number " +
                 "where old_list.card_number is NULL " +
+                "AND duel_format = :format " +
                 "ORDER BY color_id, card_name"
 
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("status", status.toString())
+        sqlParams.addValue("format", format)
         sqlParams.addValue("newBanList", banListDate)
         sqlParams.addValue("oldBanList", oldBanList)
 
@@ -226,7 +235,7 @@ class BanListJDBCDao @Autowired constructor(
     }
 
 
-    override fun getBanListDates(): BanListDates {
+    override fun getBanListDates(format: String): BanListDates {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 

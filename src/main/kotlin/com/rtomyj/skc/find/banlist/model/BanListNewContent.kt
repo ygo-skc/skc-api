@@ -92,7 +92,7 @@ data class BanListNewContent(
 
         this.add(
             WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(listRequested, false, true)
+                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(listRequested, false, "TCG", true)
             ).withRel("Ban List Content")
         )
         this.add(

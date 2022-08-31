@@ -50,7 +50,7 @@ data class BanListDate(
 		this.add(
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)
-					.getBannedCards(banListDateStr, true, false)
+					.getBannedCards(banListDateStr, true, "TCG", false)
 			)
 				.withRel("Ban List Content")
 		)

@@ -40,9 +40,9 @@ class BanListJDBCDaoTest {
 		@Test
 		fun testFetchingBanListByStatus_Success() {
 			val banListDate = "2015-11-09"
-			val forbiddenDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.FORBIDDEN)
-			val limitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.LIMITED)
-			val semiLimitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.SEMI_LIMITED)
+			val forbiddenDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.FORBIDDEN, "TCG")
+			val limitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.LIMITED, "TCG")
+			val semiLimitedDbResult = banListDao.getBanListByBanStatus(banListDate, BanListCardStatus.SEMI_LIMITED, "TCG")
 
 
 			Assertions.assertNotNull(forbiddenDbResult)

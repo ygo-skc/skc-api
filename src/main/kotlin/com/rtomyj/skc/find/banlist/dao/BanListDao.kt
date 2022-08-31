@@ -14,7 +14,7 @@ interface BanListDao {
 	 * @param status The status
 	 * @return List of Cards that have the status wanted for the desired date.
 	 */
-	fun getBanListByBanStatus(date: String, status: BanListCardStatus): List<Card>
+	fun getBanListByBanStatus(date: String, status: BanListCardStatus, format: String): List<Card>
 
 	/**
 	 * Checks the database for the number of ban lists stored.
@@ -27,7 +27,7 @@ interface BanListDao {
 	 * Returns an integer ([1, n]) that corresponds to the position of the banListDate when the database is sorted by banListDate ASC.
 	 * @return The position of the ban list queried in the database: -1 if not in database, 1 if it is the first ban list while database is sorted ASC.
 	 */
-	fun banListDatesInOrder(): List<String>
+	fun banListDatesInOrder(format: String): List<String>
 
 	/**
 	 * Checks the database and returns the date of the previous ban list as the one passed into the method.
@@ -37,7 +37,7 @@ interface BanListDao {
 	 * @param currentBanList the date of a ban list to use to find the previous sequential ban list relative to it.
 	 * @return String of the date of the previous ban list.
 	 */
-	fun getPreviousBanListDate(currentBanList: String): String
+	fun getPreviousBanListDate(currentBanList: String, format: String): String
 
 	/**
 	 * Checks the database to find card(s) that where added to the ban list, ie: the card(s) was not in the previous ban list.
@@ -48,14 +48,14 @@ interface BanListDao {
 	 * id: Identifier of newly added card
 	 * previousStatus: status the card had on the previous ban list, empty string if card wasn't in previous ban list.
 	 */
-	fun getNewContentOfBanList(banListDate: String, status: BanListCardStatus): List<CardsPreviousBanListStatus>
+	fun getNewContentOfBanList(banListDate: String, status: BanListCardStatus, format: String): List<CardsPreviousBanListStatus>
 
 	/**
 	 *
 	 * @param banListDate effective date of a YGO ban list.
 	 * @return the contents of the previous ban list in relation to `banListDate`.
 	 */
-	fun getRemovedContentOfBanList(banListDate: String): List<CardsPreviousBanListStatus>
+	fun getRemovedContentOfBanList(banListDate: String, format: String): List<CardsPreviousBanListStatus>
 
 	fun isValidBanList(banListDate: String): Boolean
 
@@ -64,7 +64,7 @@ interface BanListDao {
 	 * @return A list of BanList
 	 */
 	@Throws(SKCException::class)
-	fun getBanListDates(): BanListDates
+	fun getBanListDates(format: String): BanListDates
 
 	fun getBanListDetailsForCard(cardId: String): List<CardBanListStatus>
 

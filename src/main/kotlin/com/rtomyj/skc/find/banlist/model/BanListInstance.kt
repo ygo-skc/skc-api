@@ -104,7 +104,7 @@ data class BanListInstance(
     override fun setSelfLink() {
         this.add(
             WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(effectiveDate, false, true)
+                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(effectiveDate, false, "TCG", true)
             )
                 .withSelfRel()
         )

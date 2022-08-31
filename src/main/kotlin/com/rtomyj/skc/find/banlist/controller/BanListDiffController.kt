@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
@@ -95,14 +96,20 @@ class BanListDiffController
             regexp = SKCRegex.DB_DATE,
             message = "Date doesn't have correct format."
         )
-        @PathVariable banListStartDate: String
+        @PathVariable banListStartDate: String,
+        @RequestParam(
+            name = "format",
+            required = true,
+            defaultValue = "TCG"
+        ) format: String = "TCG"
     ): ResponseEntity<BanListNewContent> {
-        log.info("User is requesting new content for ban list: {}", banListStartDate)
+        log.info("User is requesting new content for ban list: {} using format {}", banListStartDate, format)
 
-        val banListNewContent = banListDiffService.getNewContentForGivenBanList(banListStartDate)
+        val banListNewContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
         log.info(
-            "Successfully retrieved new content for ban list ({}) using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
+            "Successfully retrieved new content for ban list ({}) for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
             banListNewContent.listRequested,
+            format,
             banListNewContent.comparedTo,
             banListNewContent.numNewForbidden,
             banListNewContent.numNewLimited,
@@ -151,10 +158,15 @@ class BanListDiffController
             regexp = SKCRegex.DB_DATE,
             message = "Date doesn't have correct format."
         )
-        @PathVariable(name = "banListStartDate") banListStartDate: String
+        @PathVariable(name = "banListStartDate") banListStartDate: String,
+        @RequestParam(
+            name = "format",
+            required = true,
+            defaultValue = "TCG"
+        ) format: String = "TCG"
     ): ResponseEntity<BanListRemovedContent> {
-        val banListRemovedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate)
-        log.info("Successfully retrieved removed content for banlist: ( {} ).", banListStartDate)
+        val banListRemovedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format)
+        log.info("Successfully retrieved removed content for ban list: ( {} ) using format.", banListStartDate, format)
 
         return ResponseEntity.ok(banListRemovedContent)
     }

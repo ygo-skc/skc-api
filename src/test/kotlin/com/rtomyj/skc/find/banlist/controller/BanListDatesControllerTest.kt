@@ -45,15 +45,17 @@ class BanListDatesControllerTest {
 	inner class HappyPath {
 		@Test
 		fun `Getting Ban List Dates Using Controller, DB Has Databases - Success`() {
-			`when`(banListDatesService.retrieveBanListStartDates())
+			`when`(banListDatesService.retrieveBanListStartDates("TCG"))
 				.thenReturn(
-					BanListDates(getMockBanListDates())
+					BanListDates(getMockBanListDates()).apply { format = "TCG" }
 				)
 
 
 			// call endpoint to retrieve ban list dates
 			mockMvc
-				.perform(get(BAN_LIST_DATES_ENDPOINT))
+				.perform(
+					get(BAN_LIST_DATES_ENDPOINT)
+				)
 				.andExpect(status().isOk)
 				.andExpect(
 					jsonPath("$.banListDates.length()", `is`(2))
@@ -68,16 +70,16 @@ class BanListDatesControllerTest {
 
 			// ensure methods are called correct number of times
 			verify(banListDatesService)
-				.retrieveBanListStartDates()
+				.retrieveBanListStartDates("TCG")
 		}
 
 
 		@Test
 		fun `Getting Ban List Dates Using Controller, But There Are No Ban List Dates To Return - Success`() {
 			// mock retrieval of ban list dates - return an empty array (na dates found in DB)
-			`when`(banListDatesService.retrieveBanListStartDates())
+			`when`(banListDatesService.retrieveBanListStartDates("TCG"))
 				.thenReturn(
-					BanListDates(emptyList())
+					BanListDates(emptyList()).apply { format = "TCG" }
 				)
 
 
@@ -89,7 +91,7 @@ class BanListDatesControllerTest {
 
 			// ensure methods are called correct number of times
 			verify(banListDatesService)
-				.retrieveBanListStartDates()
+				.retrieveBanListStartDates("TCG")
 		}
 	}
 
@@ -99,7 +101,7 @@ class BanListDatesControllerTest {
 		@Test
 		fun `Getting Ban List Dates Using Controller, But The Ban List Table Isn't Setup - Server Error`() {
 			// mock retrieval of ban list dates - error occurred - table ban list table DNE
-			`when`(banListDatesService.retrieveBanListStartDates())
+			`when`(banListDatesService.retrieveBanListStartDates("TCG"))
 				.thenThrow(
 					SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
 				)
@@ -113,7 +115,7 @@ class BanListDatesControllerTest {
 
 			// ensure methods are called correct number of times
 			verify(banListDatesService)
-				.retrieveBanListStartDates()
+				.retrieveBanListStartDates("TCG")
 		}
 	}
 

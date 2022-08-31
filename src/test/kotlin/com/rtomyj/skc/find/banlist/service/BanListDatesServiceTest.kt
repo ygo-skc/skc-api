@@ -46,12 +46,12 @@ class BanListDatesServiceTest {
 		@Test
 		fun `Test Fetching All Ban List Dates`() {
 			// setup mocks
-			Mockito.`when`(banListDao.getBanListDates())
+			Mockito.`when`(banListDao.getBanListDates("TCG"))
 				.thenReturn(banListDatesInstance)
 
 
 			// call code to test
-			val banListDates = banService.retrieveBanListStartDates()
+			val banListDates = banService.retrieveBanListStartDates("TCG")
 			Assertions.assertNotNull(banListDates)
 			Assertions.assertNotNull(banListDates.dates)
 
@@ -64,23 +64,23 @@ class BanListDatesServiceTest {
 
 			Assertions.assertNotNull(dates[0].links.getLink("Ban List Content"))
 			Assertions.assertEquals(
-				"/ban_list/2020-01-20/cards?saveBandwidth=true&allInfo=false", dates[0].links.getLink("Ban List Content").get().href
+				"/ban_list/2020-01-20/cards?saveBandwidth=true&format=TCG&allInfo=false", dates[0].links.getLink("Ban List Content").get().href
 			)
 
 			Assertions.assertNotNull(dates[0].links.getLink("Ban List New Content"))
 			Assertions.assertEquals(
-				"/ban_list/2020-01-20/new", dates[0].links.getLink("Ban List New Content").get().href
+				"/ban_list/2020-01-20/new?format=TCG", dates[0].links.getLink("Ban List New Content").get().href
 			)
 
 			Assertions.assertNotNull(dates[0].links.getLink("Ban List Removed Content"))
 			Assertions.assertEquals(
-				"/ban_list/2020-01-20/removed", dates[0].links.getLink("Ban List Removed Content").get().href
+				"/ban_list/2020-01-20/removed?format=TCG", dates[0].links.getLink("Ban List Removed Content").get().href
 			)
 
 
 			// verify mocks are called the correct number of times
 			Mockito.verify(banListDao, Mockito.times(1))
-				.getBanListDates()
+				.getBanListDates("TCG")
 		}
 	}
 }

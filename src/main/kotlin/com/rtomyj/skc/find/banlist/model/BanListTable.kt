@@ -32,6 +32,13 @@ class BanListTable : Serializable {
     var cardNumber: String? = null
 
     /**
+     * The ID of the card.
+     */
+    @Id
+    @Column(name = "duel_format", length = 8)
+    var format: String? = null
+
+    /**
      * Whether card is forbidden, limited, or semi-limited
      */
     @Column(name = "ban_status", length = 15)

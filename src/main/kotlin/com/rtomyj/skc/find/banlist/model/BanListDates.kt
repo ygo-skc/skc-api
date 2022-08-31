@@ -3,7 +3,6 @@ package com.rtomyj.skc.find.banlist.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.rtomyj.skc.Open
 import com.rtomyj.skc.find.banlist.controller.BanListDatesController
-import com.rtomyj.skc.find.banlist.model.BanListDate
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
@@ -19,9 +18,16 @@ data class BanListDates(
 		implementation = BanListDates::class,
 		description = "Array of objects containing valid start dates of all ban lists currently in DB."
 	)
-	@JsonProperty(value = "banListDates", index = 0)
+	@JsonProperty(value = "banListDates", index = 1)
 	val dates: List<BanListDate>
 ) : RepresentationModel<BanListDates>(), HateoasLinks {
+
+	@Schema(
+		implementation = String::class,
+		description = "What format the ban list dates correspond to."
+	)
+	@JsonProperty(value = "format", index = 0)
+	lateinit var format: String
 
 	override fun setSelfLink() {
 		this.add(
@@ -29,7 +35,7 @@ data class BanListDates(
 				.linkTo(
 					WebMvcLinkBuilder
 						.methodOn(controllerClass)
-						.banListStartDates()
+						.banListStartDates(format)
 				)
 				.withSelfRel()
 		)
