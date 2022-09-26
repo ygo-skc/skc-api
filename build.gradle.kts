@@ -19,7 +19,7 @@ val archivesBaseName = "skc-api"
 
 plugins {
 	id("org.springframework.boot") version "2.7.3"
-	id("io.spring.dependency-management") version "1.0.13.RELEASE"
+	id("io.spring.dependency-management") version "1.0.14.RELEASE"
 	id("info.solidsoft.pitest") version "1.9.0"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
