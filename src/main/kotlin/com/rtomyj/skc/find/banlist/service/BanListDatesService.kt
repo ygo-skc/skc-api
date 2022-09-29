@@ -39,6 +39,7 @@ class BanListDatesService
 
         val banListDates = banListDao.getBanListDates(format)
         banListDates.format = format
+        banListDates.dates.forEach{ it.format = format}
         banListDates.setLinks()
 
         return banListDates

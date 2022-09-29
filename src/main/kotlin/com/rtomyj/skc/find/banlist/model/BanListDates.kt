@@ -1,5 +1,6 @@
 package com.rtomyj.skc.find.banlist.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.rtomyj.skc.Open
 import com.rtomyj.skc.find.banlist.controller.BanListDatesController
@@ -21,12 +22,7 @@ data class BanListDates(
 	@JsonProperty(value = "banListDates", index = 1)
 	val dates: List<BanListDate>
 ) : RepresentationModel<BanListDates>(), HateoasLinks {
-
-	@Schema(
-		implementation = String::class,
-		description = "What format the ban list dates correspond to."
-	)
-	@JsonProperty(value = "format", index = 0)
+	@JsonIgnore
 	lateinit var format: String
 
 	override fun setSelfLink() {
