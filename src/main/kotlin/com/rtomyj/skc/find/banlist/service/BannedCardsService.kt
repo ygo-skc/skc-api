@@ -47,6 +47,16 @@ class BannedCardsService @Autowired constructor(
 			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED, format),
 			banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED, format)
 		).apply {
+			if (format == "DL") {
+				this.limitedOne = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED_ONE, format)
+				this.limitedTwo = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED_TWO, format)
+				this.limitedThree = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED_THREE, format)
+
+				this.numLimitedOne = this.limitedOne!!.size
+				this.numLimitedTwo = this.limitedTwo!!.size
+				this.numLimitedThree = this.limitedThree!!.size
+			}
+
 			validateBanListInstance(this, banListStartDate)
 			setLinks()
 

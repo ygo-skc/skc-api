@@ -20,11 +20,17 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
     "numForbidden",
     "numLimited",
     "numSemiLimited",
+    "numLimitedOne",
+    "numLimitedTwo",
+    "numLimitedThree",
     "forbidden",
     "limited",
-    "semiLimited"
+    "semiLimited",
+    "limitedOne",
+    "limitedTwo",
+    "limitedThree",
 )
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Schema(
     implementation = BanListInstance::class,
     description = "Describes and contains information about a specific ban list.",
@@ -50,13 +56,13 @@ data class BanListInstance(
     )
     val forbidden: List<Card>,
 
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "List of cards limited in this ban list instance.",
     )
     val limited: List<Card>,
 
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "List of cards semi-limited in this ban list instance.",
     )
@@ -87,6 +93,41 @@ data class BanListInstance(
         private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
     }
 
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards considered limited 1 in this ban list instance; ie size of limited one list.",
+    )
+    var numLimitedOne: Int = 0
+
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards considered limited 2 in this ban list instance; ie size of limited two list.",
+    )
+    var numLimitedTwo: Int = 0
+
+    @Schema(
+        implementation = Int::class,
+        description = "Total number of cards considered limited 3 in this ban list instance; ie size of limited three list.",
+    )
+    var numLimitedThree: Int = 0
+
+    @Schema(
+        implementation = List::class,
+        description = "Pool of cards that can only have one occurrence in a deck. You can only use one card from this list in your deck.",
+    )
+    var limitedOne: List<Card>? = null
+
+    @Schema(
+        implementation = List::class,
+        description = "Pool of cards that can only have two occurrence in a deck. You can only use two cards from this list in your deck.",
+    )
+    var limitedTwo: List<Card>? = null
+
+    @Schema(
+        implementation = List::class,
+        description = "Pool of cards that can only have three occurrence in a deck. You can only use three cards from this list in your deck.",
+    )
+    var limitedThree: List<Card>? = null
 
     @Schema(
         implementation = BanListNewContent::class,

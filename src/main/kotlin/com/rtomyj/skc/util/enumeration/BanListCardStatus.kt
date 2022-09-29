@@ -20,7 +20,23 @@ enum class BanListCardStatus(
 	/**
 	 * Only two instance of the card can be used.
 	 */
-	SEMI_LIMITED("Semi-Limited");
+	SEMI_LIMITED("Semi-Limited"),
+
+	/**
+	 * Only one card can be used from this pool MAX - Duel Links limited list.
+	 */
+	LIMITED_ONE("Limited 1"),
+
+	/**
+	 * Only two card can be used from this pool MAX - Duel Links semi-limited list.
+	 */
+	LIMITED_TWO("Limited 2"),
+
+
+	/**
+	 * Only three card can be used from this pool MAX - Duel Links specific.
+	 */
+	LIMITED_THREE("Limited 3");
 
 	/**
 	 * String representation of enum.
