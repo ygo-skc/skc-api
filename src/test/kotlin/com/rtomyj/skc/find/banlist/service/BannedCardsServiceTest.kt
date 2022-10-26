@@ -118,27 +118,31 @@ class BannedCardsServiceTest {
 			Mockito.`when`(
 				banListDao.getBanListByBanStatus(
 					eq(TestConstants.BAN_LIST_START_DATE),
-					eq(BanListCardStatus.FORBIDDEN)
+					eq(BanListCardStatus.FORBIDDEN),
+					eq("TCG")
 				)
 			)
 				.thenReturn(banListInstanceFullText.forbidden)
 			Mockito.`when`(
 				banListDao.getBanListByBanStatus(
 					eq(TestConstants.BAN_LIST_START_DATE),
-					eq(BanListCardStatus.LIMITED)
+					eq(BanListCardStatus.LIMITED),
+					eq("TCG")
 				)
 			)
 				.thenReturn(banListInstanceFullText.limited)
 			Mockito.`when`(
 				banListDao.getBanListByBanStatus(
 					eq(TestConstants.BAN_LIST_START_DATE),
-					eq(BanListCardStatus.SEMI_LIMITED)
+					eq(BanListCardStatus.SEMI_LIMITED),
+					eq("TCG")
 				)
 			)
 				.thenReturn(banListInstanceFullText.semiLimited)
 			Mockito.`when`(
 				banListDao.getPreviousBanListDate(
-					eq(TestConstants.BAN_LIST_START_DATE)
+					eq(TestConstants.BAN_LIST_START_DATE),
+					eq("TCG")
 				)
 			)
 				.thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
@@ -146,14 +150,16 @@ class BannedCardsServiceTest {
 			if (fetchAllInfo) {
 				Mockito.`when`(
 					diffService.getNewContentForGivenBanList(
-						eq(TestConstants.BAN_LIST_START_DATE)
+						eq(TestConstants.BAN_LIST_START_DATE),
+						eq("TCG")
 					)
 				)
 					.thenReturn(banListNewContent)
 
 				Mockito.`when`(
 					diffService.getRemovedContentForGivenBanList(
-						eq(TestConstants.BAN_LIST_START_DATE)
+						eq(TestConstants.BAN_LIST_START_DATE),
+						eq("TCG")
 					)
 				)
 					.thenReturn(banListRemovedContent)
@@ -162,7 +168,7 @@ class BannedCardsServiceTest {
 
 			// call code being tested
 			val banListInstance = bannedCardsService
-				.getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, fetchAllInfo)
+				.getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, "TCG", fetchAllInfo)
 
 			val forbidden = banListInstance.forbidden
 			val limited = banListInstance.limited
@@ -176,33 +182,41 @@ class BannedCardsServiceTest {
 			// verify mocks are called the exact number of times expected
 			Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
 				eq(TestConstants.BAN_LIST_START_DATE),
-				eq(BanListCardStatus.FORBIDDEN)
+				eq(BanListCardStatus.FORBIDDEN),
+				eq("TCG")
 			)
 			Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
 				eq(TestConstants.BAN_LIST_START_DATE),
-				eq(BanListCardStatus.LIMITED)
+				eq(BanListCardStatus.LIMITED),
+				eq("TCG")
 			)
 			Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
 				eq(TestConstants.BAN_LIST_START_DATE),
-				eq(BanListCardStatus.SEMI_LIMITED)
+				eq(BanListCardStatus.SEMI_LIMITED),
+				eq("TCG")
 			)
 			Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
-				eq(TestConstants.BAN_LIST_START_DATE)
+				eq(TestConstants.BAN_LIST_START_DATE),
+				eq("TCG")
 			)
 
 			if (fetchAllInfo) {
 				Mockito.verify(diffService, Mockito.times(1)).getNewContentForGivenBanList(
-					eq(TestConstants.BAN_LIST_START_DATE)
+					eq(TestConstants.BAN_LIST_START_DATE),
+					eq("TCG")
 				)
 				Mockito.verify(diffService, Mockito.times(1)).getRemovedContentForGivenBanList(
-					eq(TestConstants.BAN_LIST_START_DATE)
+					eq(TestConstants.BAN_LIST_START_DATE),
+					eq("TCG")
 				)
 			} else {
 				Mockito.verify(diffService, Mockito.times(0)).getNewContentForGivenBanList(
-					eq(TestConstants.BAN_LIST_START_DATE)
+					eq(TestConstants.BAN_LIST_START_DATE),
+					eq("TCG")
 				)
 				Mockito.verify(diffService, Mockito.times(0)).getRemovedContentForGivenBanList(
-					eq(TestConstants.BAN_LIST_START_DATE)
+					eq(TestConstants.BAN_LIST_START_DATE),
+					eq("TCG")
 				)
 			}
 		}
@@ -265,13 +279,13 @@ class BannedCardsServiceTest {
 
 			// ensure href is as expected
 			Assertions.assertEquals(
-				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/cards?saveBandwidth=false&allInfo=true", banListInstance.links.getLink("self").get().href
+				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/cards?saveBandwidth=false&format=TCG&allInfo=true", banListInstance.links.getLink("self").get().href
 			)
 			Assertions.assertEquals(
-				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/new", banListInstance.links.getLink("Ban List New Content").get().href
+				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/new?format=TCG", banListInstance.links.getLink("Ban List New Content").get().href
 			)
 			Assertions.assertEquals(
-				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/removed", banListInstance.links.getLink("Ban List Removed Content").get().href
+				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/removed?format=TCG", banListInstance.links.getLink("Ban List Removed Content").get().href
 			)
 
 			Assertions.assertEquals(
@@ -353,27 +367,31 @@ class BannedCardsServiceTest {
 			Mockito.`when`(
 				banListDao.getBanListByBanStatus(
 					eq(TestConstants.BAN_LIST_START_DATE),
-					eq(BanListCardStatus.FORBIDDEN)
+					eq(BanListCardStatus.FORBIDDEN),
+					eq("TCG")
 				)
 			)
 				.thenReturn(ArrayList())
 			Mockito.`when`(
 				banListDao.getBanListByBanStatus(
 					eq(TestConstants.BAN_LIST_START_DATE),
-					eq(BanListCardStatus.LIMITED)
+					eq(BanListCardStatus.LIMITED),
+					eq("TCG")
 				)
 			)
 				.thenReturn(ArrayList())
 			Mockito.`when`(
 				banListDao.getBanListByBanStatus(
 					eq(TestConstants.BAN_LIST_START_DATE),
-					eq(BanListCardStatus.SEMI_LIMITED)
+					eq(BanListCardStatus.SEMI_LIMITED),
+					eq("TCG")
 				)
 			)
 				.thenReturn(ArrayList())
 			Mockito.`when`(
 				banListDao.getPreviousBanListDate(
-					eq(TestConstants.BAN_LIST_START_DATE)
+					eq(TestConstants.BAN_LIST_START_DATE),
+					eq("TCG")
 				)
 			)
 				.thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
@@ -384,6 +402,7 @@ class BannedCardsServiceTest {
 				bannedCardsService.getBanListByDate(
 					TestConstants.BAN_LIST_START_DATE,
 					isSaveBandwidth,
+					"TCG",
 					false
 				)
 			}
@@ -396,18 +415,22 @@ class BannedCardsServiceTest {
 			// verify mocks are called the exact number of times expected
 			Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
 				eq(TestConstants.BAN_LIST_START_DATE),
-				eq(BanListCardStatus.FORBIDDEN)
+				eq(BanListCardStatus.FORBIDDEN),
+				eq("TCG")
 			)
 			Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
 				eq(TestConstants.BAN_LIST_START_DATE),
-				eq(BanListCardStatus.LIMITED)
+				eq(BanListCardStatus.LIMITED),
+				eq("TCG")
 			)
 			Mockito.verify(banListDao, Mockito.times(1)).getBanListByBanStatus(
 				eq(TestConstants.BAN_LIST_START_DATE),
-				eq(BanListCardStatus.SEMI_LIMITED)
+				eq(BanListCardStatus.SEMI_LIMITED),
+				eq("TCG")
 			)
 			Mockito.verify(banListDao, Mockito.times(1)).getPreviousBanListDate(
-				eq(TestConstants.BAN_LIST_START_DATE)
+				eq(TestConstants.BAN_LIST_START_DATE),
+				eq("TCG")
 			)
 		}
 	}

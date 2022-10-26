@@ -4,6 +4,9 @@
 	"numNewForbidden": 1,
 	"numNewLimited": 2,
 	"numNewSemiLimited": 0,
+	"numNewLimitedOne": 0,
+	"numNewLimitedTwo": 0,
+	"numNewLimitedThree": 0,
 	"newForbidden": [
 		{
 			"card": {
@@ -50,5 +53,8 @@
 			"previousBanStatus": "Forbidden"
 		}
 	],
-	"newSemiLimited": []
+	"newSemiLimited": [],
+	"newLimitedOne": [],
+	"newLimitedTwo": [],
+	"newLimitedThree": []
 }

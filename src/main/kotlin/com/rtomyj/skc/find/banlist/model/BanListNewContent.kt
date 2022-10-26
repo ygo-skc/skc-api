@@ -47,6 +47,24 @@ data class BanListNewContent(
     )
     val newSemiLimited: List<CardsPreviousBanListStatus>,
 
+    @Schema(
+        implementation = List::class,
+        description = "List containing cards that are newly added to the Limited 1 list.",
+    )
+    val newLimitedOne: List<CardsPreviousBanListStatus>,
+
+    @Schema(
+        implementation = List::class,
+        description = "List containing cards that are newly added to the Limited 2 list.",
+    )
+    val newLimitedTwo: List<CardsPreviousBanListStatus>,
+
+    @Schema(
+        implementation = List::class,
+        description = "List containing cards that are newly added to the Limited 3 list.",
+    )
+    val newLimitedThree: List<CardsPreviousBanListStatus>,
+
 	@Schema(
         implementation = Int::class,
         description = "Total new forbidden cards added to a ban list when compared to a previous logical ban list.",
@@ -63,7 +81,25 @@ data class BanListNewContent(
         implementation = Int::class,
         description = "Total new semi-limited cards added to a ban list when compared to a previous logical ban list.",
     )
-    val numNewSemiLimited: Int = newSemiLimited.size
+    val numNewSemiLimited: Int = newSemiLimited.size,
+
+    @Schema(
+        implementation = Int::class,
+        description = "Total new cards included in the Limited One list.",
+    )
+    val numNewLimitedOne: Int = newLimitedOne.size,
+
+    @Schema(
+        implementation = Int::class,
+        description = "Total new cards included in the Limited Two list.",
+    )
+    val numNewLimitedTwo: Int = newLimitedTwo.size,
+
+    @Schema(
+        implementation = Int::class,
+        description = "Total new cards included in the Limited Three list.",
+    )
+    val numNewLimitedThree: Int = newLimitedThree.size,
 ) : RepresentationModel<BanListNewContent?>(), HateoasLinks {
 
     companion object {
@@ -92,7 +128,7 @@ data class BanListNewContent(
 
         this.add(
             WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(listRequested, false, true)
+                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(listRequested, false, "TCG", true)
             ).withRel("Ban List Content")
         )
         this.add(

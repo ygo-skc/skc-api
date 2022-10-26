@@ -54,7 +54,7 @@ class BanListDiffControllerTest {
 		fun `Getting Newly Added Cards For A Ban List  - Success`() {
 			// mock exception when Service is called
 			`when`(
-				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 			)
 				.thenReturn(banListNewContent)
 
@@ -75,7 +75,7 @@ class BanListDiffControllerTest {
 
 			// ensure mocks are called the correct number of times
 			verify(banListDiffService)
-				.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 		}
 
 
@@ -83,7 +83,7 @@ class BanListDiffControllerTest {
 		fun `Getting Removed Cards For A Ban List  - Success`() {
 			// mock exception when Service is called
 			`when`(
-				banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 			)
 				.thenReturn(banListRemovedContent)
 
@@ -104,7 +104,7 @@ class BanListDiffControllerTest {
 
 			// ensure mocks are called the correct number of times
 			verify(banListDiffService)
-				.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 		}
 	}
 
@@ -125,7 +125,7 @@ class BanListDiffControllerTest {
 		fun `Getting Newly Added Cards For A Ban List - No Ban List Info For Given Date - 404 HTTP Exception`() {
 			// mock exception when Service is called
 			`when`(
-				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 			)
 				.thenThrow(
 					SKCException(
@@ -146,7 +146,7 @@ class BanListDiffControllerTest {
 
 			// ensure mocks are called the correct number of times
 			verify(banListDiffService)
-				.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 		}
 
 
@@ -154,7 +154,7 @@ class BanListDiffControllerTest {
 		fun `Getting Newly Added Cards For A Ban List - Ban List Table Is Missing - 500 HTTP Exception`() {
 			// mock exception when Service is called
 			`when`(
-				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 			)
 				.thenThrow(
 					SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
@@ -167,7 +167,7 @@ class BanListDiffControllerTest {
 
 			// ensure mocks are called the correct number of times
 			verify(banListDiffService)
-				.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE)
+				.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 		}
 	}
 }

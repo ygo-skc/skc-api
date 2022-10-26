@@ -103,6 +103,11 @@ class BannedCardsController
             required = false,
             defaultValue = "true"
         ) saveBandwidth: Boolean = true,
+        @RequestParam(
+            name = "format",
+            required = true,
+            defaultValue = "TCG"
+        ) format: String = "TCG",
         @Parameter(
             description = SwaggerConstants.BAN_LIST_FETCH_ALL_DESCRIPTION,
             required = false,
@@ -114,11 +119,12 @@ class BannedCardsController
             defaultValue = "false"
         ) fetchAllInfo: Boolean = false
     ): ResponseEntity<BanListInstance> {
-        val reqBanListInstance = bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, fetchAllInfo)
+        val reqBanListInstance = bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo)
         log.info(
-            "Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ).",
+            "Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ) and format {}.",
             banListStartDate,
-            saveBandwidth
+            saveBandwidth,
+            format
         )
         return ResponseEntity.ok(reqBanListInstance)
     }

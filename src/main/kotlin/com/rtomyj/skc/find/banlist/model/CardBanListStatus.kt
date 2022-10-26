@@ -73,7 +73,7 @@ data class CardBanListStatus(
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)
-                    .getBannedCards(banListDateStr, false, true)
+                    .getBannedCards(banListDateStr, false, "TCG", true)
             )
                 .withRel("Ban List Content")
         )

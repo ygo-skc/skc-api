@@ -65,7 +65,7 @@ class BannedCardsControllerTest {
 			`when`(
 				bannedCardsServiceMock.getBanListByDate(
 					REQUESTED_BAN_LIST_MOCK_DATE,
-					saveBandwidth = false, fetchAllInfo = true
+					saveBandwidth = false, "TCG", fetchAllInfo = true
 				)
 			)
 				.thenReturn(banListInstanceFullText)
@@ -87,7 +87,7 @@ class BannedCardsControllerTest {
 
 			// ensure mocks are called
 			verify(bannedCardsServiceMock)
-				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = true)
+				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, "TCG", fetchAllInfo = true)
 		}
 	}
 
@@ -110,7 +110,7 @@ class BannedCardsControllerTest {
 			`when`(
 				bannedCardsServiceMock.getBanListByDate(
 					REQUESTED_BAN_LIST_MOCK_DATE,
-					saveBandwidth = false, fetchAllInfo = false
+					saveBandwidth = false, "TCG", fetchAllInfo = false
 				)
 			)
 				.thenThrow(
@@ -131,7 +131,7 @@ class BannedCardsControllerTest {
 
 			// ensure mocks are called the correct number of times
 			verify(bannedCardsServiceMock)
-				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = false)
+				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, "TCG", fetchAllInfo = false)
 		}
 
 
@@ -140,7 +140,7 @@ class BannedCardsControllerTest {
 			// mock call and return exception - ban list requested not in DB
 			`when`(
 				bannedCardsServiceMock.getBanListByDate(
-					REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, fetchAllInfo = false
+					REQUESTED_BAN_LIST_MOCK_DATE, saveBandwidth = false, "TCG", fetchAllInfo = false
 				)
 			)
 				.thenThrow(
@@ -157,7 +157,7 @@ class BannedCardsControllerTest {
 
 			// ensure mocks are called the correct number of times
 			verify(bannedCardsServiceMock)
-				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, false, false)
+				.getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, false, "TCG", false)
 		}
 	}
 }

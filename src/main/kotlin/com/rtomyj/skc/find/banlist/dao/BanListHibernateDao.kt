@@ -32,7 +32,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
 
 
     @Throws(SKCException::class)
-    override fun getBanListDates(): BanListDates {
+    override fun getBanListDates(format: String): BanListDates {
         var dates: List<BanListDate> = emptyList()
 
         val stopwatch = StopWatch()
@@ -51,10 +51,10 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
                     criteriaQuery
                         .select(
                             criteriaBuilder
-                                .construct(BanListDate::class.java, root.get<Any>("banListDate"))
+                                .construct(BanListDate::class.java, root.get<String>("banListDate"))
                         )
+                        .where(criteriaBuilder.equal(root.get<String>("format"), format))
                         .distinct(true)
-                    criteriaQuery
                         .orderBy(
                             criteriaBuilder
                                 .desc(root.get<Any>("banListDate"))
@@ -84,7 +84,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
     }
 
 
-    override fun getBanListByBanStatus(date: String, status: BanListCardStatus): List<Card> {
+    override fun getBanListByBanStatus(date: String, status: BanListCardStatus, format: String): List<Card> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
@@ -92,22 +92,23 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun banListDatesInOrder(): List<String> {
+    override fun banListDatesInOrder(format: String): List<String> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun getPreviousBanListDate(currentBanList: String): String {
+    override fun getPreviousBanListDate(currentBanList: String, fromat: String): String {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
     override fun getNewContentOfBanList(
         banListDate: String,
-        status: BanListCardStatus
+        status: BanListCardStatus,
+        format: String
     ): List<CardsPreviousBanListStatus> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun getRemovedContentOfBanList(banListDate: String): List<CardsPreviousBanListStatus> {
+    override fun getRemovedContentOfBanList(banListDate: String, format: String): List<CardsPreviousBanListStatus> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 

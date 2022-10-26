@@ -34,11 +34,14 @@ class BanListDatesService
      * @return List of BanList objects
      */
     @Throws(SKCException::class)
-    fun retrieveBanListStartDates(): BanListDates {
-        val banListDates = banListDao.getBanListDates()
-
+    fun retrieveBanListStartDates(format: String): BanListDates {
         log.info("Retrieving ban list dates.")
+
+        val banListDates = banListDao.getBanListDates(format)
+        banListDates.format = format
+        banListDates.dates.forEach{ it.format = format}
         banListDates.setLinks()
+
         return banListDates
     }
 }
