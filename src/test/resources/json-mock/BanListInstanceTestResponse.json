@@ -1,10 +1,13 @@
 {
-   "effectiveDate": "2018-12-03"
-   , "comparedTo": "2018-09-17"
-   , "numForbidden": 1
-   , "numLimited": 1
-   , "numSemiLimited": 1
-   , "forbidden": [
+	"effectiveDate": "2018-12-03",
+	"comparedTo": "2018-09-17",
+	"numForbidden": 1,
+	"numLimited": 1,
+	"numSemiLimited": 1,
+	"numLimitedOne": 0,
+	"numLimitedTwo": 0,
+	"numLimitedThree": 0,
+	"forbidden": [
 		{
 			"cardName": "Elemental HERO Stratos",
 			"monsterType": "Warrior/Effect",
@@ -15,7 +18,8 @@
 			"monsterAttack": 1800,
 			"monsterDefense": 300
 		}
-	], "limited": [
+	],
+	"limited": [
 		{
 			"cardName": "A Hero Lives",
 			"cardColor": "Spell",
@@ -23,7 +27,8 @@
 			"cardID": "08949584",
 			"cardAttribute": "Spell"
 		}
-	], "semiLimited": [
+	],
+	"semiLimited": [
 		{
 			"cardName": "Destiny HERO - Malicious",
 			"monsterType": "Warrior/Effect",
@@ -34,5 +39,8 @@
 			"monsterAttack": 800,
 			"monsterDefense": 800
 		}
-	]
+	],
+	"limitedOne": [],
+	"limitedTwo": [],
+	"limitedThree": []
 }
