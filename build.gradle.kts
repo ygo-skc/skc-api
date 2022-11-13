@@ -5,9 +5,9 @@ val scalaLibraryVersion = "2.13.10"
 val springBootVersion = "2.7.5"
 val springDocVersion = "1.6.12"
 val mysqlVersion = "8.0.31"
-val jacksonDatabindVersion = "2.13.4.2"
-val jacksonKotlinVersion = "2.13.4"
-val jacksonCoreVersion = "2.13.4"
+val jacksonDatabindVersion = "2.14.0"
+val jacksonKotlinVersion = "2.14.0"
+val jacksonCoreVersion = "2.14.0"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
@@ -25,9 +25,9 @@ plugins {
 	id("info.solidsoft.pitest") version "1.9.0"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
-	kotlin("jvm") version "1.7.20"
-	kotlin("plugin.spring") version "1.7.20"
-	kotlin("plugin.allopen") version "1.7.20"
+	kotlin("jvm") version "1.7.21"
+	kotlin("plugin.spring") version "1.7.21"
+	kotlin("plugin.allopen") version "1.7.21"
 
 	jacoco
 	java
