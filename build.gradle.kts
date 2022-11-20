@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.10"
 val springBootVersion = "2.7.5"
-val springDocVersion = "1.6.12"
+val springDocVersion = "1.6.13"
 val mysqlVersion = "8.0.31"
 val jacksonDatabindVersion = "2.14.0"
 val jacksonKotlinVersion = "2.14.0"
