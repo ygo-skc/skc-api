@@ -54,7 +54,7 @@ server:
 
 api:
   skcSuggestionEngine:
-    uri: https://skc-suggestion-engine:9000
+    uri: https://suggestions.skc-ygo-api.com
 ---
 spring:
   config:
@@ -73,4 +73,4 @@ server:
 
 api:
   skcSuggestionEngine:
-    uri: https://skc-suggestion-engine:9000
+    uri: https://suggestions.skc-ygo-api.com
