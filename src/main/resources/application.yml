@@ -55,6 +55,10 @@ server:
 api:
   skcSuggestionEngine:
     uri: https://suggestions.skc-ygo-api.com
+    endpoints:
+      status: /api/v1/suggestions/status
+      traffic: /api/v1/suggestions/traffic-analysis
+    key: ${SKC_SUGGESTION_ENGINE_API_KEY}
 ---
 spring:
   config:
@@ -74,3 +78,7 @@ server:
 api:
   skcSuggestionEngine:
     uri: https://suggestions.skc-ygo-api.com
+    endpoints:
+      status: /api/v1/suggestions/status
+      traffic: /api/v1/suggestions/traffic-analysis
+    key: ${SKC_SUGGESTION_ENGINE_API_KEY}
