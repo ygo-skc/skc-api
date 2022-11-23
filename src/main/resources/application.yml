@@ -30,7 +30,7 @@ springdoc:
 
 api:
   skcSuggestionEngine:
-    uri: http://localhost:9000
+    uri: http://localhost:90
     endpoints:
       status: /api/v1/suggestions/status
       traffic: /api/v1/suggestions/traffic-analysis
