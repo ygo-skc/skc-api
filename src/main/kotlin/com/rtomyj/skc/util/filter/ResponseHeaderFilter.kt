@@ -13,8 +13,6 @@ class ResponseHeaderFilter : OncePerRequestFilter() {
     @Throws(IOException::class, ServletException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         response.setHeader("Cache-Control", "max-age=300")
-        response.setHeader("Connection", "Keep-Alive")
-        response.setHeader("Keep-Alive", "timeout=60, max=600")
         chain.doFilter(request, response)
     }
 }
