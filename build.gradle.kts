@@ -40,7 +40,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.1.1"
+version = "2.1.2"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
