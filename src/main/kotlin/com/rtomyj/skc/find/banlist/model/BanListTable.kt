@@ -13,7 +13,7 @@ import javax.persistence.*
 @Table(name = "ban_lists")
 @JsonInclude(
     JsonInclude.Include.NON_EMPTY
-) // serializes non null fields - ie returns non null fields from REST request
+) // serializes non-null fields - ie returns non-null fields from REST request
 class BanListTable : Serializable {
     /**
      * Start date of ban list.
