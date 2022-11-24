@@ -44,7 +44,11 @@ class BanListTable : Serializable {
     @Column(name = "ban_status", length = 15)
     var banStatus: String? = null
 
-    companion object {
-        private const val serialVersionUID = 3890245600312215281L
+    override fun equals(other: Any?): Boolean {
+        return this.banListDate === (other as BanListTable).banListDate && this.cardNumber === (other as BanListTable).cardNumber && this.format === (other as BanListTable).format
+    }
+
+    override fun hashCode(): Int {
+        return this.banListDate.hashCode() + this.cardNumber.hashCode() + this.format.hashCode()
     }
 }

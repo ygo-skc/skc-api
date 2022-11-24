@@ -15,6 +15,7 @@ val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
 val kotlinCoroutineVersion = "1.6.4"
+val slf4jVersion = "2.0.4"
 
 val archivesBaseName = "skc-api"
 
@@ -72,6 +73,8 @@ dependencies {
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
 	implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
+
+	implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
 	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
