@@ -1,6 +1,5 @@
 package com.rtomyj.skc.cucumber
 
-import io.cucumber.java.PendingException
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
@@ -40,7 +39,7 @@ class BanListTests: CucumberBase() {
 
 
 	@And("First - oldest - ban list found in DB has effectiveDate of {string} and newest ban list found in DB has effectiveDate of {string}")
-	fun first_ban_list_found_in_db_has_efective_date_of(oldestBanListEffectiveDate: String, newestBanListEffectiveDate: String) {
+	fun first_ban_list_found_in_db_has_effective_date_of(oldestBanListEffectiveDate: String, newestBanListEffectiveDate: String) {
 		validatableResponse.body("banListDates[0].effectiveDate", Matchers.equalTo(newestBanListEffectiveDate))
 		validatableResponse.body("banListDates[27].effectiveDate", Matchers.equalTo(oldestBanListEffectiveDate))
 	}

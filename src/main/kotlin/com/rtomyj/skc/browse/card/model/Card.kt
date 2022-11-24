@@ -20,7 +20,7 @@ import java.util.function.Consumer
  */
 @JsonInclude(
 	JsonInclude.Include.NON_EMPTY
-) // serializes non null fields - ie returns non null fields from REST request
+) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
 	implementation = Card::class,
 	description = "Describes attributes of a Yu-Gi-Oh! card.",
@@ -116,7 +116,7 @@ data class Card(
 	)
 	var monsterAssociation: MonsterAssociation? = null
 
-	//	Using Integer object since I only want to serialize non null values. An int primitive has a default value of 0.
+	//	Using Integer object since I only want to serialize non-null values. An int primitive has a default value of 0.
 	@Schema(
 		implementation = Int::class,
 		description = SwaggerConstants.MONSTER_ATK_DESCRIPTION
