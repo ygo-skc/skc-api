@@ -1,17 +1,19 @@
 package com.rtomyj.skc.browse.product
 
+import com.rtomyj.skc.browse.product.model.Products
+import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.enumeration.ProductType
-import com.rtomyj.skc.exception.SKCError
-import com.rtomyj.skc.browse.product.model.Products
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Pattern
 
 @RestController
 @RequestMapping(path = ["/products"], produces = ["application/json; charset=UTF-8"])

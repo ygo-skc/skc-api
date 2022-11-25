@@ -3,11 +3,11 @@ package com.rtomyj.skc.find.banlist.model
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.Open
+import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.find.banlist.controller.BanListDiffController
 import com.rtomyj.skc.find.banlist.controller.BannedCardsController
-import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -16,7 +16,7 @@ import java.util.*
 /**
  * Model containing information about a Ban List.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
+@JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
     implementation = BanListInstance::class,
     description = "Each object instance describes a particular card, a start date of a ban list it was a part of, and the specific status (forbidden, limited, semi-limited).",

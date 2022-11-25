@@ -1,19 +1,21 @@
 package com.rtomyj.skc.find.banlist.controller
 
-import com.rtomyj.skc.util.constant.SKCRegex
-import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.banlist.model.BanListNewContent
 import com.rtomyj.skc.find.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.find.banlist.service.DiffService
+import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.SKCRegex
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -23,8 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Pattern
 
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list

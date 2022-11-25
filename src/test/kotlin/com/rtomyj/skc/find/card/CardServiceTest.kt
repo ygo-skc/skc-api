@@ -1,13 +1,13 @@
 package com.rtomyj.skc.find.card
 
 import com.nhaarman.mockito_kotlin.eq
-import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
@@ -70,7 +70,7 @@ class CardServiceTest {
 
 
 			// verify mocks are called the exact number of times expected
-			sleep(200)  // sleep as traffic call is async and we will verify the call below
+			sleep(200)  // sleep as traffic call is async, and we will verify the call below
 			Mockito.verify(cardDao, Mockito.times(1)).getCardInfo(eq(TestConstants.STRATOS_ID))
 			Mockito.verify(trafficService).submitTrafficData(TrafficResourceType.CARD, TestConstants.STRATOS_ID, TestConstants.MOCK_IP)
 		}
@@ -102,7 +102,7 @@ class CardServiceTest {
 
 
 			// verify mocks are called the exact number of times expected
-			sleep(200)  // sleep as traffic call is async and we will verify the call below
+			sleep(200)  // sleep as traffic call is async, and we will verify the call below
 			Mockito.verify(
 				cardDao, Mockito.times(1)
 			).getCardInfo(eq(TestConstants.ID_THAT_CAUSES_FAILURE))

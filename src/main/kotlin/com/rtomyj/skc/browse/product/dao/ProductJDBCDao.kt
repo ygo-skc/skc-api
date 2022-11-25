@@ -1,14 +1,14 @@
 package com.rtomyj.skc.browse.product.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.util.constant.DBQueryConstants
-import com.rtomyj.skc.util.enumeration.ProductType
-import com.rtomyj.skc.util.enumeration.table.definitions.ProductsTableDefinition
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.browse.product.model.ProductContent
 import com.rtomyj.skc.browse.product.model.Products
+import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.enumeration.ProductType
+import com.rtomyj.skc.util.enumeration.table.definitions.ProductsTableDefinition
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -118,7 +118,7 @@ class ProductJDBCDao @Autowired constructor(
 		val products: Set<Product> = LinkedHashSet(
 			jdbcNamedTemplate.query(GET_PRODUCT_INFO_FOR_CARD, sqlParams) { row: ResultSet, _: Int ->
 				val productId = row.getString(ProductsTableDefinition.PRODUCT_ID.toString())
-				val cardPosition = row.getString(ProductsTableDefinition.PRODUCT_POSTION.toString())
+				val cardPosition = row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString())
 
 				rarities
 					.getOrPut(productId) { HashMap() } // add empty HashMap if rarity info is missing for product
@@ -178,7 +178,7 @@ class ProductJDBCDao @Autowired constructor(
 				.getOrPut(row.getString(ProductsTableDefinition.CARD_ID.toString())) { HashSet() }
 				.add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
 
-			val cardPositionWithinProduct = row.getString(ProductsTableDefinition.PRODUCT_POSTION.toString())
+			val cardPositionWithinProduct = row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString())
 
 			// reference is stored once and only once. Rarity info is still being updated but since we are storing the reference to the rarity info we don't need to keep modifying the card
 			cardPositionInProductMapsCardInfo.computeIfAbsent(cardPositionWithinProduct) {
@@ -197,7 +197,7 @@ class ProductJDBCDao @Autowired constructor(
 
 				ProductContent(
 					card,
-					row.getString(ProductsTableDefinition.PRODUCT_POSTION.toString()),
+					row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString()),
 					rarities[card.cardID]!!
 				)
 			}

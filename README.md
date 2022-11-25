@@ -16,7 +16,8 @@ Teachers and/or instructors can also use the API for demonstration.
 
 However, since it takes time to build a robust Database from scratch alone in a room, usage of the API is not allowed for commercial use.
 
-Essentially, if you want to learn about computers/CS/coding/etc and need random data/ random service to call, use the API! If you want to make money, build your own. I cannot afford to offset other peoples traffic on my servers :(
+Essentially, if you want to learn about computers/CS/coding/etc. and need random data/ random service to call, use the API! If you want to make money, build your own. I cannot
+afford to offset other people's traffic on my servers :(
 
 ## Contributions
 ### Developers
@@ -27,13 +28,16 @@ Currently, I do not need extra hands and have no way of paying people. Making it
 The Source code is public so other developers can critique it. 
 
 ### Others
+
 This is an unfunded project. In other words, there is no Crowd Funding offering you perks in vain attempt to take your money.
 
-This means that everything is coming out of my pocket. There are ways of donating via Paypal/BTC BUT that should only be done by users who use the service frequently AND find value in it. There are no perks in donating. You will also have to find how to donate on your own.
+This means that everything is coming out of my pocket. There are ways of donating via PayPal/BTC BUT that should only be done by users who use the service frequently AND find value
+in it. There are no perks in donating. You will also have to find how to donate on your own.
 
 I am also offering the community more content. Check out the links for my YouTube channel and subscribe to support the project by watching my videos.
 
-In summary, I am trying to provide a free, non-add supported, fast and clean service for everyone and am finding unconventional ways of funding it. Along the way, I am providing not only the service, but entertainment. Now how many "Yugi Tubers" can say that?
+In summary, I am trying to provide a free, non-add supported, fast and clean service for everyone I am finding unconventional ways of funding it. Along the way, I am providing not
+only the service, but entertainment. Now how many "Yugi Tubers" can say that?
 
 ## Links
 - [Website](https://www.thesupremekingscastle.com)

@@ -13,18 +13,18 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Pattern
 
 /**
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
@@ -103,10 +103,9 @@ class CardController @Autowired constructor(
 			)
 		)
 		@RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean,
-        @RequestHeader(value = AppConstants.CLIENT_IP) clientIP: String = ""
 	): ResponseEntity<Card> {
 		log.info("Retrieving card info for using ID: {}.", cardId)
-		val foundCard = cardService.getCardInfo(cardId, fetchAllInfo, clientIP)
+		val foundCard = cardService.getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
 		log.info(
 			"Successfully retrieved card info for: {}, w/ all info: {}.",
 			cardId,
