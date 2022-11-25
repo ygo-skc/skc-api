@@ -1,11 +1,11 @@
 package com.rtomyj.skc.find.banlist.dao
 
-import com.rtomyj.skc.util.enumeration.BanListCardStatus
-import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.browse.card.model.Card
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.banlist.model.BanListDates
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 
 interface BanListDao {
 	/**
@@ -33,7 +33,7 @@ interface BanListDao {
 	 * Checks the database and returns the date of the previous ban list as the one passed into the method.
 	 *
 	 * Returns an empty string if there are no previous ban lists or if the ban list date requested doesn't exist in database,
-	 * ie: its the oldest ban list or the date isn't a date where a ban list started.
+	 * ie: it's the oldest ban list or the date isn't a date where a ban list started.
 	 * @param currentBanList the date of a ban list to use to find the previous sequential ban list relative to it.
 	 * @return String of the date of the previous ban list.
 	 */
@@ -72,7 +72,7 @@ interface BanListDao {
 	 *
 	 * @param cardId unique identifier for a YGO card.
 	 * @param banListDate effective date of a YGO ban list.
-	 * @return ban status for card in a specific ban list (forbidden, limited, semi-limted).
+	 * @return ban status for card in a specific ban list (forbidden, limited, semi-limited).
 	 */
 	fun getCardBanListStatusByDate(cardId: String, banListDate: String): String
 }

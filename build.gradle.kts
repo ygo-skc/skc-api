@@ -15,6 +15,7 @@ val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
 val kotlinCoroutineVersion = "1.6.4"
+val slf4jVersion = "2.0.4"
 
 val archivesBaseName = "skc-api"
 
@@ -40,7 +41,7 @@ allOpen {
 
 
 group = "com.rtomyj.skc"
-version = "2.1.2"
+version = "2.1.3"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 
@@ -63,7 +64,7 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
 	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
@@ -72,6 +73,8 @@ dependencies {
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
 	implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
+
+	implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
 	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 

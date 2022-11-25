@@ -2,9 +2,14 @@ package com.rtomyj.skc.find.banlist.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import jakarta.persistence.Temporal
+import jakarta.persistence.TemporalType
 import java.io.Serializable
 import java.util.*
-import javax.persistence.*
 
 /**
  * Entity describing the ban_lists table in mysql DB.
@@ -13,7 +18,7 @@ import javax.persistence.*
 @Table(name = "ban_lists")
 @JsonInclude(
     JsonInclude.Include.NON_EMPTY
-) // serializes non null fields - ie returns non null fields from REST request
+) // serializes non-null fields - ie returns non-null fields from REST request
 class BanListTable : Serializable {
     /**
      * Start date of ban list.
@@ -44,7 +49,11 @@ class BanListTable : Serializable {
     @Column(name = "ban_status", length = 15)
     var banStatus: String? = null
 
-    companion object {
-        private const val serialVersionUID = 3890245600312215281L
+    override fun equals(other: Any?): Boolean {
+        return this.banListDate === (other as BanListTable).banListDate && this.cardNumber === (other as BanListTable).cardNumber && this.format === (other as BanListTable).format
+    }
+
+    override fun hashCode(): Int {
+        return this.banListDate.hashCode() + this.cardNumber.hashCode() + this.format.hashCode()
     }
 }

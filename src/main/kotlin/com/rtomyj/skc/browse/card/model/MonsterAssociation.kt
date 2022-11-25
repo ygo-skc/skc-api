@@ -7,10 +7,10 @@ import com.rtomyj.skc.util.enumeration.LinkArrow.Companion.transformDBStringToEn
 import io.swagger.v3.oas.annotations.media.Schema
 import org.slf4j.LoggerFactory
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non null fields - ie returns non null fields from REST request
+@JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
-    implementation = MonsterAssociation::class,
-    description = "Information about various properties only monster cards have that usually associate distinct monster cards (not in the same archetype) together."
+	implementation = MonsterAssociation::class,
+	description = "Information about various properties only monster cards have that usually associate distinct monster cards (not in the same archetype) together."
 )
 class MonsterAssociation(
     @Schema(

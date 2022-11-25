@@ -30,7 +30,7 @@ springdoc:
 
 api:
   skcSuggestionEngine:
-    uri: http://localhost:9000
+    uri: http://localhost:90
     endpoints:
       status: /api/v1/suggestions/status
       traffic: /api/v1/suggestions/traffic-analysis
@@ -54,7 +54,11 @@ server:
 
 api:
   skcSuggestionEngine:
-    uri: https://skc-suggestion-engine:9000
+    uri: https://suggestions.skc-ygo-api.com
+    endpoints:
+      status: /api/v1/suggestions/status
+      traffic: /api/v1/suggestions/traffic-analysis
+    key: ${SKC_SUGGESTION_ENGINE_API_KEY}
 ---
 spring:
   config:
@@ -73,4 +77,8 @@ server:
 
 api:
   skcSuggestionEngine:
-    uri: https://skc-suggestion-engine:9000
+    uri: https://suggestions.skc-ygo-api.com
+    endpoints:
+      status: /api/v1/suggestions/status
+      traffic: /api/v1/suggestions/traffic-analysis
+    key: ${SKC_SUGGESTION_ENGINE_API_KEY}

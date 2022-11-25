@@ -10,7 +10,7 @@ enum class ProductsTableDefinition(
     PRODUCT_CONTENT_TOTAL("product_content_total"),
     PRODUCT_TYPE("product_type"),
     PRODUCT_SUB_TYPE("product_sub_type"),
-    PRODUCT_POSTION("product_position"),
+    PRODUCT_POSITION("product_position"),
     CARD_RARITY("card_rarity"),
     CARD_ID("card_number");
 
