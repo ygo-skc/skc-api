@@ -3,6 +3,7 @@ package com.rtomyj.skc.find.product
 import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -69,7 +71,6 @@ class ProductController @Autowired constructor(private val availablePacksService
 			regexp = SKCRegex.LOCALE,
 			message = "Locale is formatted incorrectly"
 		) @NotNull @PathVariable("locale") locale: String,
-//		@RequestHeader(value = AppConstants.CLIENT_IP, required = false) clientIP: String = ""
 	): ResponseEntity<Product> {
 		val localAsUpper = locale.uppercase()
 
@@ -78,7 +79,7 @@ class ProductController @Autowired constructor(private val availablePacksService
 			availablePacksService.getSingleProductUsingLocale(
 				productId,
 				localAsUpper,
-				"clientIP"
+				MDC.get(AppConstants.CLIENT_IP_MDC)
 			)
 		)
 	}

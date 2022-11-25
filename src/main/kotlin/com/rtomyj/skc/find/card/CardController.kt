@@ -4,6 +4,7 @@ import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -101,10 +103,9 @@ class CardController @Autowired constructor(
 			)
 		)
 		@RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean,
-//        @RequestHeader(value = AppConstants.CLIENT_IP, required = false) clientIP: String = ""
 	): ResponseEntity<Card> {
 		log.info("Retrieving card info for using ID: {}.", cardId)
-		val foundCard = cardService.getCardInfo(cardId, fetchAllInfo, "")
+		val foundCard = cardService.getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
 		log.info(
 			"Successfully retrieved card info for: {}, w/ all info: {}.",
 			cardId,

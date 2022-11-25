@@ -21,11 +21,11 @@ class Logging private constructor() {
 		 * Configures the global MDC object for all requests. MDC is used to hold useful info that will later be used in logs to better track requests.
 		 * @param httpServletRequest Contains useful information about new requests to the server from the client that will be used to access IP address and header information.
 		 */
-		fun configureMDC(httpServletRequest: HttpServletRequest) {
+		fun configureMDC(httpServletRequest: HttpServletRequest, clientIP: String) {
 			val queryParams = if (httpServletRequest.queryString == null) "" else "?" + httpServletRequest.queryString
 
 			// proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
-			MDC.put("reqIp", httpServletRequest.getHeader(AppConstants.CLIENT_IP))
+			MDC.put(AppConstants.CLIENT_IP_MDC, clientIP.replace("[", "").replace("]", ""))
 			MDC.put("reqPath", httpServletRequest.servletPath + queryParams)
 			MDC.put("reqUUID", UUID.randomUUID().toString())
 			MDC.put("clientID", httpServletRequest.getHeader(CLIENT_ID_NAME))

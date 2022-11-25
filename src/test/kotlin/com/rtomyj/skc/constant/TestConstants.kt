@@ -1,7 +1,7 @@
 package com.rtomyj.skc.constant
 
 object TestConstants {
-	const val MOCK_IP = ""
+	const val MOCK_IP = "213.11.159.100"
 
 	// JSON res files
 	const val BAN_LIST_INSTANCE_JSON_FILE = "json-mock/BanListInstanceTestResponse.json"
