@@ -2,9 +2,14 @@ package com.rtomyj.skc.find.banlist.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import jakarta.persistence.Temporal
+import jakarta.persistence.TemporalType
 import java.io.Serializable
 import java.util.*
-import javax.persistence.*
 
 /**
  * Entity describing the ban_lists table in mysql DB.

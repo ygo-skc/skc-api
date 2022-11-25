@@ -1,11 +1,10 @@
 package com.rtomyj.skc.util.logging
 
-import com.google.common.base.Strings
 import com.google.common.net.HttpHeaders
 import com.rtomyj.skc.util.constant.AppConstants
+import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.MDC
 import java.util.*
-import javax.servlet.http.HttpServletRequest
 
 /**
  * Contains common logging utilities.

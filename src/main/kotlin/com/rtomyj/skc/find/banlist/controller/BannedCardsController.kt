@@ -1,24 +1,24 @@
 package com.rtomyj.skc.find.banlist.controller
 
-import com.rtomyj.skc.util.constant.SKCRegex
-import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.banlist.model.BanListInstance
 import com.rtomyj.skc.find.banlist.service.BannedCardsService
+import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.SKCRegex
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import javax.validation.constraints.Pattern
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.

@@ -1,8 +1,8 @@
 package com.rtomyj.skc.util
 
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequestWrapper
 import java.util.*
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletRequestWrapper
 
 /**
  * Stolen from https://stackoverflow.com/questions/48240291/adding-custom-header-to-request-via-filter
