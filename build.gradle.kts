@@ -15,7 +15,7 @@ val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
 val kotlinCoroutineVersion = "1.6.4"
-val slf4jVersion = "2.0.4"
+val slf4jVersion = "2.0.5"
 
 val archivesBaseName = "skc-api"
 
@@ -23,7 +23,7 @@ val archivesBaseName = "skc-api"
 plugins {
 	id("org.springframework.boot") version "3.0.0"
 	id("io.spring.dependency-management") version "1.1.0"
-	id("info.solidsoft.pitest") version "1.9.0"
+	id("info.solidsoft.pitest") version "1.9.11"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
 
 	kotlin("jvm") version "1.7.21"
