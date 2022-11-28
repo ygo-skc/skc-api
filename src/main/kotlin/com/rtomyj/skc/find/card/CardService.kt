@@ -66,7 +66,7 @@ class CardService @Autowired constructor(
 				}
 
 				val deferredRestrictedIn = GlobalScope.async {
-					restrictedIn = banListDao.getBanListDetailsForCard(cardId).toMutableList()
+					restrictedIn = banListDao.getBanListDetailsForCard(cardId, "TCG").toMutableList()
 				}
 
 				deferredCardInfo.await()

@@ -112,7 +112,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun getBanListDetailsForCard(cardId: String): List<CardBanListStatus> {
+    override fun getBanListDetailsForCard(cardId: String, format: String): List<CardBanListStatus> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 

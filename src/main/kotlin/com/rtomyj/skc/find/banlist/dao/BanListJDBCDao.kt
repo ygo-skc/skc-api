@@ -1,13 +1,13 @@
 package com.rtomyj.skc.find.banlist.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.util.constant.DBQueryConstants
-import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.find.banlist.model.BanListDates
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
+import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -240,9 +240,10 @@ class BanListJDBCDao @Autowired constructor(
     }
 
 
-    override fun getBanListDetailsForCard(cardId: String): List<CardBanListStatus> {
+    override fun getBanListDetailsForCard(cardId: String, format: String): List<CardBanListStatus> {
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("cardId", cardId)
+        sqlParams.addValue("format", format)
 
         return jdbcNamedTemplate.query(
             DBQueryConstants.GET_BAN_LIST_INFO_FOR_CARD,

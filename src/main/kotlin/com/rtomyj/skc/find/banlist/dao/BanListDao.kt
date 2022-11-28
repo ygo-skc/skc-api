@@ -23,9 +23,8 @@ interface BanListDao {
 	fun numberOfBanLists(): Int
 
 	/**
-	 * todo update me
-	 * Returns an integer ([1, n]) that corresponds to the position of the banListDate when the database is sorted by banListDate ASC.
-	 * @return The position of the ban list queried in the database: -1 if not in database, 1 if it is the first ban list while database is sorted ASC.
+	 * Returns a list of ban lists for a given format in order (newest to oldest).
+	 * @return sorted list.
 	 */
 	fun banListDatesInOrder(format: String): List<String>
 
@@ -66,7 +65,7 @@ interface BanListDao {
 	@Throws(SKCException::class)
 	fun getBanListDates(format: String): BanListDates
 
-	fun getBanListDetailsForCard(cardId: String): List<CardBanListStatus>
+	fun getBanListDetailsForCard(cardId: String, format: String): List<CardBanListStatus>
 
 	/**
 	 *
