@@ -1,15 +1,19 @@
 package com.rtomyj.skc.find.card
 
-import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.find.banlist.dao.BanListDao
+import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service
  * Service that is used to access card info from DB.
  */
 @Service
+@OptIn(DelicateCoroutinesApi::class)
 class CardService @Autowired constructor(
 	@Qualifier("product-jdbc") val productDao: ProductDao,
 	@Qualifier("ban-list-jdbc") val banListDao: BanListDao,
@@ -45,31 +50,66 @@ class CardService @Autowired constructor(
 			trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
 		}
 
-		val card = cardDao.getCardInfo(cardId)
-		card.monsterAssociation?.transformMonsterLinkRating()
+		lateinit var card: Card
 
 		if (fetchAllInfo) {
-			card.foundIn = ArrayList(productDao.getProductDetailsForCard(cardId))
-			card.restrictedIn = banListDao.getBanListDetailsForCard(cardId).toMutableList()
+			runBlocking {
+				var foundIn: ArrayList<Product> = arrayListOf()
+				var restrictedIn: MutableList<CardBanListStatus> = mutableListOf()
 
-			/*
-				Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
-				found in the same pack into the same ProductContent object
-			 */
-			var firstOccurrenceOfProduct: Product? = null
-			val it = card.foundIn?.listIterator()
-			while (it != null && it.hasNext()) {
-				val currentProduct = it.next()
-				if (firstOccurrenceOfProduct?.productId == currentProduct.productId
-					&& firstOccurrenceOfProduct.productContent[0].productPosition == currentProduct.productContent[0].productPosition
-				) {
-					firstOccurrenceOfProduct.productContent.addAll(currentProduct.productContent)
-					it.remove()
-				} else firstOccurrenceOfProduct = currentProduct
+				val deferredCardInfo = GlobalScope.async {
+					card = getCardInfo(cardId)
+				}
+
+				val deferredFoundIn = GlobalScope.async {
+					foundIn = getProductInfo(cardId)
+				}
+
+				val deferredRestrictedIn = GlobalScope.async {
+					restrictedIn = banListDao.getBanListDetailsForCard(cardId, "TCG").toMutableList()
+				}
+
+				deferredCardInfo.await()
+				deferredFoundIn.await()
+				deferredRestrictedIn.await()
+
+				card.foundIn = foundIn
+				card.restrictedIn = restrictedIn
 			}
+		} else {
+			card = getCardInfo(cardId)
 		}
 
 		card.setLinks()
 		return card
+	}
+
+	fun getCardInfo(cardId: String): Card {
+		val card = cardDao.getCardInfo(cardId)
+		card.monsterAssociation?.transformMonsterLinkRating()
+
+		return card
+	}
+
+	fun getProductInfo(cardId: String): ArrayList<Product> {
+		val foundIn = ArrayList(productDao.getProductDetailsForCard(cardId))
+
+		/*
+			Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
+			found in the same pack into the same ProductContent object
+		 */
+		var firstOccurrenceOfProduct: Product? = null
+		val it = foundIn.listIterator()
+		while (it.hasNext()) {
+			val currentProduct = it.next()
+			if (firstOccurrenceOfProduct?.productId == currentProduct.productId
+				&& firstOccurrenceOfProduct.productContent[0].productPosition == currentProduct.productContent[0].productPosition
+			) {
+				firstOccurrenceOfProduct.productContent.addAll(currentProduct.productContent)
+				it.remove()
+			} else firstOccurrenceOfProduct = currentProduct
+		}
+
+		return foundIn
 	}
 }

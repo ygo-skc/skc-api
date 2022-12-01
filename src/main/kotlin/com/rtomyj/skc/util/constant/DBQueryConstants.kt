@@ -37,6 +37,7 @@ object DBQueryConstants {
 	const val GET_BAN_LIST_INFO_FOR_CARD = "SELECT ban_list_date, ban_status" +
 			" FROM ban_lists" +
 			WHERE_CARD_NUMBER_IS_CARD_ID +
+			" AND duel_format = :format" +
 			" ORDER BY ban_list_date DESC"
 
 	const val SEARCH_QUERY =
