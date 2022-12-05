@@ -8,6 +8,8 @@ import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
+import com.rtomyj.skc.util.HateoasLinks
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -55,7 +57,7 @@ class CardService @Autowired constructor(
 		if (fetchAllInfo) {
 			runBlocking {
 				var foundIn: ArrayList<Product> = arrayListOf()
-				var restrictedIn: MutableList<CardBanListStatus> = mutableListOf()
+				var restrictedIn = hashMapOf<BanListFormat, MutableList<CardBanListStatus>>()
 
 				val deferredCardInfo = GlobalScope.async {
 					card = getCardInfo(cardId)
@@ -66,7 +68,13 @@ class CardService @Autowired constructor(
 				}
 
 				val deferredRestrictedIn = GlobalScope.async {
-					restrictedIn = banListDao.getBanListDetailsForCard(cardId, "TCG").toMutableList()
+					restrictedIn[BanListFormat.TCG] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG).toMutableList()
+					restrictedIn[BanListFormat.MD] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD).toMutableList()
+					restrictedIn[BanListFormat.DL] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL).toMutableList()
+
+					for (list in restrictedIn.values) {
+						HateoasLinks.setLinks(list)
+					}
 				}
 
 				deferredCardInfo.await()

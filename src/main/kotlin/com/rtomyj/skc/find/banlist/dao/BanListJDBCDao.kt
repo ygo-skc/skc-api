@@ -8,6 +8,7 @@ import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.util.constant.DBQueryConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -240,17 +241,17 @@ class BanListJDBCDao @Autowired constructor(
     }
 
 
-    override fun getBanListDetailsForCard(cardId: String, format: String): List<CardBanListStatus> {
+    override fun getBanListDetailsForCard(cardId: String, format: BanListFormat): List<CardBanListStatus> {
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("cardId", cardId)
-        sqlParams.addValue("format", format)
+        sqlParams.addValue("format", format.toString())
 
         return jdbcNamedTemplate.query(
             DBQueryConstants.GET_BAN_LIST_INFO_FOR_CARD,
             sqlParams
         ) { row: ResultSet, _: Int ->
             try {
-                return@query CardBanListStatus(dateFormat.parse(row.getString(1)), cardId, row.getString(2))
+                return@query CardBanListStatus(dateFormat.parse(row.getString(1)), cardId, row.getString(2), format)
             } catch (e: ParseException) {
                 log.error(
                     "Cannot parse date from DB when retrieving ban list info for card {} with exception: {}",
