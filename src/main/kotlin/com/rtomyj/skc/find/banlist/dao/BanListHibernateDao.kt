@@ -10,6 +10,7 @@ import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.PersistenceException
 import org.hibernate.SessionFactory
@@ -112,7 +113,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun getBanListDetailsForCard(cardId: String, format: String): List<CardBanListStatus> {
+    override fun getBanListDetailsForCard(cardId: String, format: BanListFormat): List<CardBanListStatus> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 

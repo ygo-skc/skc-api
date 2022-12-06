@@ -52,7 +52,7 @@ object DBQueryConstants {
 				" LIMIT :limit"
 
 	const val SEARCH_QUERY_WITH_BAN_INFO =
-		"SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status" +
+		"SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, duel_format" +
 				" FROM search_with_ban_info" +
 				" WHERE card_number LIKE :cardId" +
 				" AND MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE)" +

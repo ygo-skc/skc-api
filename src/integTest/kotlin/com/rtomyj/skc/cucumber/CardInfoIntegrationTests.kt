@@ -70,14 +70,21 @@ class CardInfoIntegrationTests: CucumberBase() {
     }
 
     @And("ban lists card is found in should not be included")
-    fun banListInfoShouldBeAvailable() {
+    fun restrictedInMissing() {
         validatableResponse.body("restrictedIn", Matchers.nullValue())
+    }
+
+    @And("card will not be found in any ban list")
+    fun cardNotInAnyBanList() {
+        validatableResponse.body("restrictedIn['TCG'].size()", Matchers.`is`(0))
+        validatableResponse.body("restrictedIn['MD'].size()", Matchers.`is`(0))
+        validatableResponse.body("restrictedIn['DL'].size()", Matchers.`is`(0))
     }
 
     @And("ban lists card is found in should be greater than or equal to {int}")
     fun checkBanListInfoArraySize(restrictedIn: Int) {
-        validatableResponse.body("restrictedIn", Matchers.`is`(Matchers.notNullValue()))
-        validatableResponse.body("restrictedIn.size()", Matchers.`is`(Matchers.greaterThanOrEqualTo(restrictedIn)))
+        validatableResponse.body("restrictedIn['TCG']", Matchers.`is`(Matchers.notNullValue()))
+        validatableResponse.body("restrictedIn['TCG'].size()", Matchers.`is`(Matchers.greaterThanOrEqualTo(restrictedIn)))
     }
 
     @And("monsterType, monsterAtk, monsterDef, level, rank should all be null")

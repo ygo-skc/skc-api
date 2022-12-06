@@ -3,6 +3,7 @@ package com.rtomyj.skc.search.card.dao
 import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -154,6 +155,7 @@ class CardSearchJDBCDao @Autowired constructor(
 					var numUniqueCardsParsed = 0
 					while (row.next()) {
 						var card = cardInfoTracker[row.getString(1)]
+
 						if (card == null) {
 							if (numUniqueCardsParsed == limit) break
 							card = Card(
@@ -169,15 +171,21 @@ class CardSearchJDBCDao @Autowired constructor(
 									this.monsterDefense = row.getObject(8, Int::class.java)
 								}
 							cardInfoTracker[card.cardID] = card
+
+							card.restrictedIn = mapOf() // init map for ban lists
 						}
 						if (row.getString(9) != null) {
+							val format = BanListFormat.valueOf(row.getString(11))
+
 							try {
 								val cardBanListStatus = CardBanListStatus(
 									dateFormat.parse(row.getString(9)),
 									cardId!!,
-									row.getString(10)
+									row.getString(10),
+									format
 								)
-								card.restrictedIn?.add(cardBanListStatus)
+
+								card.restrictedIn?.getOrDefault(format, mutableListOf())?.add(cardBanListStatus)
 							} catch (e: ParseException) {
 								log.error(
 									"Error occurred while parsing date for ban list, date: {}.",

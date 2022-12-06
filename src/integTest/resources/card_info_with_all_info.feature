@@ -8,7 +8,7 @@ Feature: Fetch information about an individual card. There are two flows within 
         And monster card specific info return value be "<monsterType>" "<monsterAtk>" "<monsterDef>" "<level>" "<rank>"
         And card effect should not be empty or null
         And products card is found in should be greater than or equal to <productsFoundIn>
-        And ban lists card is found in should not be included
+        And card will not be found in any ban list
 
         Examples:
             | cardID   | cardName                                | cardColor        | cardAttribute | monsterType                     | monsterAtk | monsterDef | level | rank | httpStatus | productsFoundIn  |
@@ -53,7 +53,7 @@ Feature: Fetch information about an individual card. There are two flows within 
         And monsterType, monsterAtk, monsterDef, level, rank should all be null
         And card effect should not be empty or null
         And products card is found in should be greater than or equal to <productsFoundIn>
-        And ban lists card is found in should not be included
+        And card will not be found in any ban list
 
         Examples:
             | cardID   | cardName                                | cardColor        | cardAttribute |  httpStatus | productsFoundIn  |

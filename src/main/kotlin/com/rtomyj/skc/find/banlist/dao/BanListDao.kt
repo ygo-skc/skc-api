@@ -6,6 +6,7 @@ import com.rtomyj.skc.find.banlist.model.BanListDates
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
+import com.rtomyj.skc.util.enumeration.BanListFormat
 
 interface BanListDao {
 	/**
@@ -65,7 +66,7 @@ interface BanListDao {
 	@Throws(SKCException::class)
 	fun getBanListDates(format: String): BanListDates
 
-	fun getBanListDetailsForCard(cardId: String, format: String): List<CardBanListStatus>
+	fun getBanListDetailsForCard(cardId: String, format: BanListFormat): List<CardBanListStatus>
 
 	/**
 	 *

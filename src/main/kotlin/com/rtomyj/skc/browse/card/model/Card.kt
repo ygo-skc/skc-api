@@ -8,8 +8,8 @@ import com.rtomyj.skc.find.banlist.model.BanListInstance
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.card.CardController
 import com.rtomyj.skc.util.HateoasLinks
-import com.rtomyj.skc.util.HateoasLinks.Companion.setLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -133,7 +133,7 @@ data class Card(
 		implementation = MutableList::class,
 		description = SwaggerConstants.RESTRICTED_IN_DESCRIPTION
 	)
-	var restrictedIn: MutableList<CardBanListStatus>? = null
+	var restrictedIn: Map<BanListFormat, MutableList<CardBanListStatus>>? = null
 
 	@Schema(
 		implementation = MutableList::class,
@@ -154,7 +154,6 @@ data class Card(
 
 	override fun setLinks() {
 		setSelfLink()
-		if (restrictedIn != null) setLinks(restrictedIn!!)
 	}
 
 }

@@ -8,6 +8,7 @@ import com.rtomyj.skc.find.banlist.controller.BanListDiffController
 import com.rtomyj.skc.find.banlist.controller.BannedCardsController
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -52,9 +53,10 @@ data class CardBanListStatus(
         implementation = String::class,
         description = "The ban status for the card (forbidden, limited, semi-limited).",
     )
-    val banStatus: String
+    val banStatus: String,
+//    @JsonIgnore
+    val format: BanListFormat
 ) : RepresentationModel<CardBanListStatus>(), HateoasLinks {
-
     companion object {
         private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
         private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
@@ -73,21 +75,21 @@ data class CardBanListStatus(
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)
-                    .getBannedCards(banListDateStr, false, "TCG", true)
+                    .getBannedCards(banListDateStr, false, format.toString(), true)
             )
                 .withRel("Ban List Content")
         )
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyAddedContentForBanList(banListDateStr)
+                    .getNewlyAddedContentForBanList(banListDateStr, format.toString())
             )
                 .withRel("Ban List New Content")
         )
         this.add(
             WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyRemovedContentForBanList(banListDateStr)
+                    .getNewlyRemovedContentForBanList(banListDateStr, format.toString())
             )
                 .withRel("Ban List Removed Content")
         )

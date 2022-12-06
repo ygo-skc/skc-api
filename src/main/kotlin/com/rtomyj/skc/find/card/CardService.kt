@@ -8,6 +8,8 @@ import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
+import com.rtomyj.skc.util.HateoasLinks
+import com.rtomyj.skc.util.enumeration.BanListFormat
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -54,19 +56,25 @@ class CardService @Autowired constructor(
 
 		if (fetchAllInfo) {
 			runBlocking {
-				var foundIn: ArrayList<Product> = arrayListOf()
-				var restrictedIn: MutableList<CardBanListStatus> = mutableListOf()
+				var foundIn = mutableListOf<Product>()
+				var restrictedIn = hashMapOf<BanListFormat, MutableList<CardBanListStatus>>()
 
 				val deferredCardInfo = GlobalScope.async {
 					card = getCardInfo(cardId)
 				}
 
 				val deferredFoundIn = GlobalScope.async {
-					foundIn = getProductInfo(cardId)
+					foundIn = productDao.getProductDetailsForCard(cardId)
 				}
 
 				val deferredRestrictedIn = GlobalScope.async {
-					restrictedIn = banListDao.getBanListDetailsForCard(cardId, "TCG").toMutableList()
+					restrictedIn[BanListFormat.TCG] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG).toMutableList()
+					restrictedIn[BanListFormat.MD] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD).toMutableList()
+					restrictedIn[BanListFormat.DL] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL).toMutableList()
+
+					for (list in restrictedIn.values) {
+						HateoasLinks.setLinks(list)
+					}
 				}
 
 				deferredCardInfo.await()
@@ -89,27 +97,5 @@ class CardService @Autowired constructor(
 		card.monsterAssociation?.transformMonsterLinkRating()
 
 		return card
-	}
-
-	fun getProductInfo(cardId: String): ArrayList<Product> {
-		val foundIn = ArrayList(productDao.getProductDetailsForCard(cardId))
-
-		/*
-			Cleaning product info for card by grouping different occurrences of a card (like the same card in different rarity)
-			found in the same pack into the same ProductContent object
-		 */
-		var firstOccurrenceOfProduct: Product? = null
-		val it = foundIn.listIterator()
-		while (it.hasNext()) {
-			val currentProduct = it.next()
-			if (firstOccurrenceOfProduct?.productId == currentProduct.productId
-				&& firstOccurrenceOfProduct.productContent[0].productPosition == currentProduct.productContent[0].productPosition
-			) {
-				firstOccurrenceOfProduct.productContent.addAll(currentProduct.productContent)
-				it.remove()
-			} else firstOccurrenceOfProduct = currentProduct
-		}
-
-		return foundIn
 	}
 }

@@ -109,24 +109,17 @@ class ProductJDBCDao @Autowired constructor(
 		}
 	}
 
-	override fun getProductDetailsForCard(cardId: String): Set<Product> {
+	override fun getProductDetailsForCard(cardId: String): MutableList<Product> {
 		val sqlParams = MapSqlParameterSource()
 		sqlParams.addValue("cardId", cardId)
 
-		val rarities: MutableMap<String, MutableMap<String, MutableSet<String>>> = HashMap()
+		val productMap = linkedMapOf<String, Product>()
 
-		val products: Set<Product> = LinkedHashSet(
-			jdbcNamedTemplate.query(GET_PRODUCT_INFO_FOR_CARD, sqlParams) { row: ResultSet, _: Int ->
-				val productId = row.getString(ProductsTableDefinition.PRODUCT_ID.toString())
-				val cardPosition = row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString())
+		jdbcNamedTemplate.query(GET_PRODUCT_INFO_FOR_CARD, sqlParams) { row: ResultSet, _: Int ->
+			val productId = row.getString(ProductsTableDefinition.PRODUCT_ID.toString())
+			val cardPosition = row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString())
 
-				rarities
-					.getOrPut(productId) { HashMap() } // add empty HashMap if rarity info is missing for product
-					.getOrPut(
-						cardPosition
-					) { mutableSetOf() } // add empty rarity info for card at given position if no rarity info exists
-					.add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
-
+			val productContent = productMap.getOrPut(productId) {
 				Product(productId, row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
 					.apply {
 						productName = row.getString(ProductsTableDefinition.PRODUCT_NAME.toString())
@@ -143,20 +136,21 @@ class ProductJDBCDao @Autowired constructor(
 								e.toString()
 							)
 						}
-					}
-			})
 
-		for (product in products) {
-			product.productContent = ArrayList()
-			for ((key, value) in rarities[product.productId]!!) {
-				product
-					.productContent
-					.add(
-						ProductContent(null, key, value)
-					)
+						productContent = mutableListOf(ProductContent(null, cardPosition, mutableSetOf()))
+					}
+			}.productContent
+
+			var pc = productContent.find { it.productPosition == cardPosition }
+			if (pc == null) {
+				pc = ProductContent(null, cardPosition, mutableSetOf())
+				productContent.add(pc)
 			}
+
+			(pc.rarities as HashSet).add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
 		}
-		return products
+
+		return productMap.values.toMutableList()
 	}
 
 
