@@ -15,7 +15,7 @@ val groovyVersion = "3.0.7"
 val guavaVersion = "31.1-jre"
 val validationAPIVersion = "2.0.1.Final"
 val kotlinCoroutineVersion = "1.6.4"
-val slf4jVersion = "2.0.5"
+val slf4jVersion = "2.0.6"
 
 val archivesBaseName = "skc-api"
 
