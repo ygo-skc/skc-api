@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.10"
-val springBootVersion = "3.0.0"
+val springBootVersion = "3.0.1"
 val springDocVersion = "1.6.14"
 val mysqlVersion = "8.0.31"
 val jacksonDatabindVersion = "2.14.1"
@@ -21,7 +21,7 @@ val archivesBaseName = "skc-api"
 
 
 plugins {
-	id("org.springframework.boot") version "3.0.0"
+	id("org.springframework.boot") version "3.0.1"
 	id("io.spring.dependency-management") version "1.1.0"
 	id("info.solidsoft.pitest") version "1.9.11"
 	id("com.adarshr.test-logger") version "3.2.0"	// printing for JUnits
@@ -64,7 +64,7 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.0")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.1")
 	implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
 	runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
