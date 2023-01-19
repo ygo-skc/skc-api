@@ -28,15 +28,10 @@ plugins {
 
 	kotlin("jvm") version "1.8.0"
 	kotlin("plugin.spring") version "1.8.0"
-	kotlin("plugin.allopen") version "1.8.0"
 
 	jacoco
 	java
 	scala
-}
-
-allOpen {
-	annotation("com.rtomyj.skc.Open")
 }
 
 

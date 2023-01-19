@@ -1,11 +1,10 @@
 package com.rtomyj.skc.find.banlist.model
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
-import com.rtomyj.skc.Open
 import com.rtomyj.skc.find.banlist.controller.BanListDiffController
 import com.rtomyj.skc.find.banlist.controller.BannedCardsController
-import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.HateoasLinks
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -15,7 +14,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
     implementation = BanListNewContent::class,
     description = "Cards added to requested ban list that were not in the previous ban list and/or cards that have a different ban list status (forbidden, limited, semi-limited) compared to the previous ban list.",
 )
-@Open
 data class BanListNewContent(
 	@Schema(
         implementation = String::class,

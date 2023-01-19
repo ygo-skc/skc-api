@@ -2,7 +2,6 @@ package com.rtomyj.skc.find.banlist.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.rtomyj.skc.Open
 import com.rtomyj.skc.find.banlist.controller.BanListDatesController
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
@@ -13,7 +12,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 	implementation = BanListDates::class,
 	description = "Start dates of ban lists.",
 )
-@Open
 data class BanListDates(
 	@Schema(
 		implementation = BanListDates::class,
