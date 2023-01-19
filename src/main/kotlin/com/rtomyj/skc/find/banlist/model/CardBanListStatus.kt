@@ -2,7 +2,6 @@ package com.rtomyj.skc.find.banlist.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.Open
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.find.banlist.controller.BanListDiffController
 import com.rtomyj.skc.find.banlist.controller.BannedCardsController
@@ -22,7 +21,6 @@ import java.util.*
     implementation = BanListInstance::class,
     description = "Each object instance describes a particular card, a start date of a ban list it was a part of, and the specific status (forbidden, limited, semi-limited).",
 )
-@Open
 data class CardBanListStatus(
     /**
      * Start date of ban list.

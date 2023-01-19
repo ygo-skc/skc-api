@@ -1,3 +1,5 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.rtomyj.skc.browse.card
 
 import com.rtomyj.skc.browse.card.dao.CardBrowseDao
@@ -7,6 +9,7 @@ import com.rtomyj.skc.browse.card.model.CardBrowseResults
 import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.util.enumeration.MonsterAssociationExpression
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking

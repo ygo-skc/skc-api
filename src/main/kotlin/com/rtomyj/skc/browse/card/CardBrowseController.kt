@@ -1,11 +1,11 @@
 package com.rtomyj.skc.browse.card
 
 import com.google.common.base.Suppliers
-import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.util.YgoApiBaseController
-import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
 import com.rtomyj.skc.browse.card.model.CardBrowseResults
+import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -128,7 +129,8 @@ class CardBrowseController @Autowired constructor(
         responseCode = "200",
         description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
     )
-    @ApiResponse(responseCode = "400",
+    @ApiResponse(
+        responseCode = "400",
         description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
         content = [Content(schema = Schema(implementation = SKCError::class))]
     )
@@ -137,11 +139,11 @@ class CardBrowseController @Autowired constructor(
         description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
         content = [Content(schema = Schema(implementation = SKCError::class))]
     )
-    fun browseCriteria(): CardBrowseCriteria {
+    fun browseCriteria(): ResponseEntity<CardBrowseCriteria> {
         log.info("Retrieving browse criteria.")
         val cardBrowseCriteria = cardBrowseCriteriaSupplier.get()
         log.info("Successfully retrieved browse criteria for cards.")
 
-        return cardBrowseCriteria
+        return ResponseEntity.ok(cardBrowseCriteria)
     }
 }

@@ -1,6 +1,5 @@
 package com.rtomyj.skc.find.banlist.model
 
-import com.rtomyj.skc.Open
 import com.rtomyj.skc.browse.card.model.Card
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
@@ -9,7 +8,6 @@ import org.springframework.hateoas.RepresentationModel
     implementation = CardsPreviousBanListStatus::class,
     description = "Contains info about a cards' previous ban status (forbidden, limited, semi-limited) that changed in reference to a previous logical ban list.",
 )
-@Open
 data class CardsPreviousBanListStatus(
 	@Schema(
         implementation = Card::class,

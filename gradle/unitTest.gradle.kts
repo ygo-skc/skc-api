@@ -1,4 +1,4 @@
-val springVersion = "3.0.0"
+val springVersion = "3.0.1"
 val h2Version = "2.1.214"
 val mockitKotlinVersion = "1.6.0"
 
