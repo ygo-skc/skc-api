@@ -15,7 +15,7 @@ on:
       - reopened
 
 jobs:
-  build-and-test:
+  build-and-junits:
     runs-on: ubuntu-latest
 
     steps:
