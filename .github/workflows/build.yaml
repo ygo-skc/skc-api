@@ -15,7 +15,7 @@ on:
       - reopened
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +27,14 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Build & Unit Test
+      - name: Execute Gradle Build
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: wrapper
           arguments: build
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-results
+          path: build/reports/tests/test
