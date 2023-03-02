@@ -54,15 +54,17 @@ class CardSearchJDBCDao @Autowired constructor(
 		cardAttribute: String?,
 		cardColor: String?,
 		monsterType: String?,
-		limit: Int,
-		sqlParams: MapSqlParameterSource
-	) {
+		limit: Int
+	): MapSqlParameterSource {
+		val sqlParams = MapSqlParameterSource()
 		sqlParams.addValue("cardId", "%$cardId%")
-		sqlParams.addValue("cardName", "%$cardName%")
+		sqlParams.addValue("cardName", cardName)
 		sqlParams.addValue("cardAttribute", if (cardAttribute!!.isEmpty()) ".*" else cardAttribute)
 		sqlParams.addValue("cardColor", if (cardColor!!.isEmpty()) ".*" else cardColor)
 		sqlParams.addValue("monsterType", if (monsterType!!.isEmpty()) ".*" else monsterType)
 		sqlParams.addValue("limit", limit)
+
+		return sqlParams
 	}
 
 	private fun fullTextQueryTransformer(oldQuery: String): String {
@@ -83,9 +85,8 @@ class CardSearchJDBCDao @Autowired constructor(
 	): List<Card> {
 		val stopwatch = StopWatch()
 		stopwatch.start()
-		val sqlParams = MapSqlParameterSource()
+		val sqlParams = prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit)
 		val query = DBQueryConstants.SEARCH_QUERY
-		prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit, sqlParams)
 		log.debug(
 			"Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
 			query,
@@ -131,9 +132,8 @@ class CardSearchJDBCDao @Autowired constructor(
 	): List<Card> {
 		val stopwatch = StopWatch()
 		stopwatch.start()
-		val sqlParams = MapSqlParameterSource()
+		val sqlParams = prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit)
 		val query = DBQueryConstants.SEARCH_QUERY_WITH_BAN_INFO
-		prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit, sqlParams)
 		log.debug(
 			"Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
 			query,
