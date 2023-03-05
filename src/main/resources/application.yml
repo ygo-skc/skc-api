@@ -64,7 +64,7 @@ spring:
   config:
     activate.on-profile: docker-remote
   datasource:
-    url: jdbc:mysql://skc-api-db:3306/skc_api_db
+    url: jdbc:mysql://skc-api-db/skc_api_db
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 

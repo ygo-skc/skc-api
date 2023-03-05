@@ -26,15 +26,12 @@ class SuggestionEngineStatusService @Autowired constructor(
 	 */
 	fun getStatus(): SuggestionEngineStatus{
 		log.info("Retrieving Suggestion Engine status.")
-		var suggestionEngineStatus = SuggestionEngineStatus("", emptyList())
 
 		try {
-			suggestionEngineStatus = restTemplate.getForEntity(skcSuggestionEngineUri + statusEndpoint, SuggestionEngineStatus::class.java).body!!
+			return restTemplate.getForEntity(skcSuggestionEngineUri + statusEndpoint, SuggestionEngineStatus::class.java).body!!
 		} catch (ex: RestClientException) {
 			log.error("Could not send traffic data to SKC Suggestion Engine. Err: {}", ex.toString())
 			throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
 		}
-
-		return suggestionEngineStatus
 	}
 }
