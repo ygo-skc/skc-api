@@ -1,13 +1,17 @@
 # README
 
+[![Build & JUnits](https://github.com/ygo-skc/skc-api/actions/workflows/build.yaml/badge.svg)](https://github.com/ygo-skc/skc-api/actions/workflows/build.yaml)
+
 ## Supreme Kings Castle (SKC)
+
 SKC is the **best** YuGiOh database. It offers players a fast and free interface to find cards, products, and ban list information.
 
-This GitHub Repo contains the API portion of SKC. It is used by the website to interface with the Database. 
+This GitHub Repo contains the API portion of SKC. It is used by the website to interface with the Database.
 
-**Note:** A Suggestion Engine is being built and will be a new API. Links will be provided later :)  
+**Note:** A Suggestion Engine is being built and will be a new API. Links will be provided later :)
 
 ## "Hey Can I Use Your API For...?"
+
 Short answer - maybe.
 
 I understand that developers who are starting out with Web API's can struggle a bit. As such, any developer who is just learning about REST can use my API to get a feel for the spec. 
