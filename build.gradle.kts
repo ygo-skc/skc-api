@@ -67,7 +67,7 @@ dependencies {
 	runtimeOnly("org.eclipse.jetty:jetty-alpn-java-server")
 	runtimeOnly("org.eclipse.jetty.http2:http2-server")
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
 
 	implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
