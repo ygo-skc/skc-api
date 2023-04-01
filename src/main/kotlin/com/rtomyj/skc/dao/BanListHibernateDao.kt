@@ -1,4 +1,4 @@
-package com.rtomyj.skc.find.banlist.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException

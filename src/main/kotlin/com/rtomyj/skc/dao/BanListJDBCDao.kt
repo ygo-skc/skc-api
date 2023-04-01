@@ -1,4 +1,4 @@
-package com.rtomyj.skc.find.banlist.dao
+package com.rtomyj.skc.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.model.*

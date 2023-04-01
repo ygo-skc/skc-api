@@ -1,4 +1,4 @@
-package com.rtomyj.skc.find.card.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card

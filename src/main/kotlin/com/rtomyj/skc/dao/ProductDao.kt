@@ -1,4 +1,4 @@
-package com.rtomyj.skc.browse.product.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.model.ProductContent

@@ -1,8 +1,8 @@
 package com.rtomyj.skc.find.banlist.service
 
+import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.MonsterAssociation

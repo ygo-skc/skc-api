@@ -1,7 +1,7 @@
 package com.rtomyj.skc.browse.card
 
-import com.rtomyj.skc.browse.card.dao.CardBrowseDao
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.dao.CardBrowseDao
 import com.rtomyj.skc.model.CardBrowseResults
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested

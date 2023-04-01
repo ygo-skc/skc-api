@@ -1,4 +1,4 @@
-package com.rtomyj.skc.search.card.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.model.Card
 

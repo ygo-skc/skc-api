@@ -1,9 +1,9 @@
 package com.rtomyj.skc.search.card
 
+import com.rtomyj.skc.dao.BanListDao
+import com.rtomyj.skc.dao.CardSearchDao
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.model.Card
-import com.rtomyj.skc.search.card.dao.CardSearchDao
 import com.rtomyj.skc.util.HateoasLinks
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

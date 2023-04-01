@@ -1,9 +1,9 @@
 package com.rtomyj.skc.find.card
 
-import com.rtomyj.skc.browse.product.dao.ProductDao
+import com.rtomyj.skc.dao.BanListDao
+import com.rtomyj.skc.dao.Dao
+import com.rtomyj.skc.dao.ProductDao
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.dao.BanListDao
-import com.rtomyj.skc.find.card.dao.Dao
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBanListStatus
 import com.rtomyj.skc.model.Product

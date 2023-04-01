@@ -1,4 +1,4 @@
-package com.rtomyj.skc.browse.card.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults

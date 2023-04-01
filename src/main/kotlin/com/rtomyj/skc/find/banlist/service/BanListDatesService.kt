@@ -1,7 +1,7 @@
 package com.rtomyj.skc.find.banlist.service
 
+import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.model.BanListDates
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

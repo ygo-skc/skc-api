@@ -2,7 +2,7 @@
 
 package com.rtomyj.skc.browse.card
 
-import com.rtomyj.skc.browse.card.dao.CardBrowseDao
+import com.rtomyj.skc.dao.CardBrowseDao
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults

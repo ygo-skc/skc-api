@@ -1,4 +1,4 @@
-package com.rtomyj.skc.stats.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats

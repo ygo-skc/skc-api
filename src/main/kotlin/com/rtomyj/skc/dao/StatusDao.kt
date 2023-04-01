@@ -1,4 +1,4 @@
-package com.rtomyj.skc.status.dao
+package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.DownstreamStatus

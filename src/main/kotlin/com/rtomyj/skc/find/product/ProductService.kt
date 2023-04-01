@@ -1,6 +1,6 @@
 package com.rtomyj.skc.find.product
 
-import com.rtomyj.skc.browse.product.dao.ProductDao
+import com.rtomyj.skc.dao.ProductDao
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.model.ProductContent
