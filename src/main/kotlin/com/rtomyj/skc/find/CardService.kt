@@ -52,21 +52,24 @@ class CardService @Autowired constructor(
 
 		if (fetchAllInfo) {
 			runBlocking {
-				var foundIn = mutableListOf<Product>()
-				var restrictedIn = hashMapOf<BanListFormat, MutableList<CardBanListStatus>>()
+				val foundIn = mutableListOf<Product>()
+				val restrictedIn = hashMapOf<BanListFormat, MutableList<CardBanListStatus>>()
+
+				val deferredFoundIn = GlobalScope.async {
+					foundIn.addAll(productDao.getProductDetailsForCard(cardId))
+				}
 
 				val deferredCardInfo = GlobalScope.async {
 					card = getCardInfo(cardId)
 				}
 
-				val deferredFoundIn = GlobalScope.async {
-					foundIn = productDao.getProductDetailsForCard(cardId)
-				}
-
 				val deferredRestrictedIn = GlobalScope.async {
-					restrictedIn[BanListFormat.TCG] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG).toMutableList()
-					restrictedIn[BanListFormat.MD] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD).toMutableList()
-					restrictedIn[BanListFormat.DL] = banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL).toMutableList()
+					restrictedIn[BanListFormat.TCG] =
+						banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG).toMutableList()
+					restrictedIn[BanListFormat.MD] =
+						banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD).toMutableList()
+					restrictedIn[BanListFormat.DL] =
+						banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL).toMutableList()
 
 					for (list in restrictedIn.values) {
 						HateoasLinks.setLinks(list)
@@ -74,17 +77,16 @@ class CardService @Autowired constructor(
 				}
 
 				deferredCardInfo.await()
-				deferredFoundIn.await()
-				deferredRestrictedIn.await()
 
-				card.foundIn = foundIn
+				deferredRestrictedIn.await()
 				card.restrictedIn = restrictedIn
+
+				deferredFoundIn.await()
+				card.foundIn = foundIn
 			}
 		} else {
 			card = getCardInfo(cardId)
 		}
-
-		card.setLinks()
 		return card
 	}
 
@@ -92,6 +94,7 @@ class CardService @Autowired constructor(
 		val card = cardDao.getCardInfo(cardId)
 		card.monsterAssociation?.transformMonsterLinkRating()
 
+		card.setLinks()
 		return card
 	}
 }

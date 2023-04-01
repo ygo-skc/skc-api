@@ -114,7 +114,7 @@ class ProductJDBCDao @Autowired constructor(
 			val productId = row.getString(ProductsTableDefinition.PRODUCT_ID.toString())
 			val cardPosition = row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString())
 
-			val productContent = productMap.getOrPut(productId) {
+			val productContent = productMap.getOrPut("$productId-$cardPosition") {
 				Product(productId, row.getString(ProductsTableDefinition.PRODUCT_LOCALE.toString()))
 					.apply {
 						productName = row.getString(ProductsTableDefinition.PRODUCT_NAME.toString())
@@ -136,13 +136,9 @@ class ProductJDBCDao @Autowired constructor(
 					}
 			}.productContent
 
-			var pc = productContent.find { it.productPosition == cardPosition }
-			if (pc == null) {
-				pc = ProductContent(null, cardPosition, mutableSetOf())
-				productContent.add(pc)
-			}
-
-			(pc.rarities as HashSet).add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
+			val productWithID =
+				productContent.find { it.productPosition == cardPosition }    // there should always be a value here since its hard coded in line 135
+			(productWithID!!.rarities as HashSet).add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
 		}
 
 		return productMap.values.toMutableList()
