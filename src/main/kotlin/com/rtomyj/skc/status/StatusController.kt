@@ -3,8 +3,8 @@ package com.rtomyj.skc.status
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.DownstreamStatus
 import com.rtomyj.skc.model.StatusResponse
+import com.rtomyj.skc.model.SuggestionEngineDownstreamStatus
 import com.rtomyj.skc.skcsuggestionengine.status.SuggestionEngineStatusService
-import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineDownstreamStatus
 import com.rtomyj.skc.status.dao.StatusDao
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
@@ -59,7 +59,9 @@ class StatusController @Autowired constructor(
 
 			// get a list of services used by Suggestion Engine whose status isn't "Up"
 			val failedSuggestionEngineDownstreamServices =
-				suggestionEngineStatus.downstream.filter { status -> status.status != "Up" }.map(SuggestionEngineDownstreamStatus::serviceName)
+				suggestionEngineStatus.downstream.filter { status -> status.status != "Up" }.map(
+					SuggestionEngineDownstreamStatus::serviceName
+				)
 
 			// either display a happy status, or display the names of all services used by Suggestion Engine that are down.
 			val suggestionEngineStatusString =

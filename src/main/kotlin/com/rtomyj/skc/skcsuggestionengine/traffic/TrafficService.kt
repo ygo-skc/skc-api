@@ -1,8 +1,8 @@
 package com.rtomyj.skc.skcsuggestionengine.traffic
 
-import com.rtomyj.skc.skcsuggestionengine.traffic.model.ResourceUtilized
-import com.rtomyj.skc.skcsuggestionengine.traffic.model.Source
-import com.rtomyj.skc.skcsuggestionengine.traffic.model.Traffic
+import com.rtomyj.skc.model.ResourceUtilized
+import com.rtomyj.skc.model.Source
+import com.rtomyj.skc.model.Traffic
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.slf4j.LoggerFactory

@@ -1,4 +1,4 @@
-package com.rtomyj.skc.skcsuggestionengine.status.model
+package com.rtomyj.skc.model
 
 data class SuggestionEngineDownstreamStatus(
 	val serviceName: String,

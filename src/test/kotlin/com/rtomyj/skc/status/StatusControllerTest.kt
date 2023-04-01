@@ -3,9 +3,9 @@ package com.rtomyj.skc.status
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.DownstreamStatus
+import com.rtomyj.skc.model.SuggestionEngineDownstreamStatus
+import com.rtomyj.skc.model.SuggestionEngineStatus
 import com.rtomyj.skc.skcsuggestionengine.status.SuggestionEngineStatusService
-import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineDownstreamStatus
-import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineStatus
 import com.rtomyj.skc.status.dao.StatusDao
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested

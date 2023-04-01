@@ -1,4 +1,4 @@
-package com.rtomyj.skc.skcsuggestionengine.traffic.model
+package com.rtomyj.skc.model
 
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 

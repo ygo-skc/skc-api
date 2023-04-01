@@ -2,7 +2,7 @@ package com.rtomyj.skc.skcsuggestionengine.status
 
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineStatus
+import com.rtomyj.skc.model.SuggestionEngineStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -24,11 +24,14 @@ class SuggestionEngineStatusService @Autowired constructor(
 	/**
 	 * Calls the status endpoint of the Suggestion Engine API to determine the health of the Suggestion Engine.
 	 */
-	fun getStatus(): SuggestionEngineStatus{
+	fun getStatus(): SuggestionEngineStatus {
 		log.info("Retrieving Suggestion Engine status.")
 
 		try {
-			return restTemplate.getForEntity(skcSuggestionEngineUri + statusEndpoint, SuggestionEngineStatus::class.java).body!!
+			return restTemplate.getForEntity(
+				skcSuggestionEngineUri + statusEndpoint,
+				SuggestionEngineStatus::class.java
+			).body!!
 		} catch (ex: RestClientException) {
 			log.error("Could not send traffic data to SKC Suggestion Engine. Err: {}", ex.toString())
 			throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
