@@ -186,9 +186,9 @@ pitest {
 		listOf(
 			"com.rtomyj.skc.model.*",
 			"com.rtomyj.skc.config.*",
-			"com.rtomyj.skc.constant.*",
 			"com.rtomyj.skc.exception.*",
-			"com.rtomyj.skc.enums.*"
+			"com.rtomyj.skc.util.constant.*",
+			"com.rtomyj.skc.util.enumeration.*"
 		)
 	)
 
