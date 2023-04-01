@@ -2,7 +2,7 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.find.card.CardController
+import com.rtomyj.skc.find.CardController
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat

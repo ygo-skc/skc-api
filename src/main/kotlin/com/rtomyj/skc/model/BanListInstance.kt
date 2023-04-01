@@ -3,8 +3,8 @@ package com.rtomyj.skc.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonTypeName
-import com.rtomyj.skc.find.banlist.controller.BanListDiffController
-import com.rtomyj.skc.find.banlist.controller.BannedCardsController
+import com.rtomyj.skc.find.BanListDiffController
+import com.rtomyj.skc.find.BannedCardsController
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema

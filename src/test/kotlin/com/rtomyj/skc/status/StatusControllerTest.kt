@@ -6,7 +6,7 @@ import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.DownstreamStatus
 import com.rtomyj.skc.model.SuggestionEngineDownstreamStatus
 import com.rtomyj.skc.model.SuggestionEngineStatus
-import com.rtomyj.skc.skcsuggestionengine.status.SuggestionEngineStatusService
+import com.rtomyj.skc.skcsuggestionengine.SuggestionEngineStatusService
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag

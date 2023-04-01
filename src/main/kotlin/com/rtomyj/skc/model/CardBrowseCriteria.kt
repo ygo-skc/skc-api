@@ -1,7 +1,7 @@
 package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.browse.card.CardBrowseController
+import com.rtomyj.skc.browse.CardBrowseController
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel

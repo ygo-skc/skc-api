@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.find.banlist.controller.BanListDiffController
-import com.rtomyj.skc.find.banlist.controller.BannedCardsController
+import com.rtomyj.skc.find.BanListDiffController
+import com.rtomyj.skc.find.BannedCardsController
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema

@@ -1,7 +1,7 @@
 package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.browse.product.ProductBrowseController
+import com.rtomyj.skc.browse.ProductBrowseController
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType

@@ -2,7 +2,7 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.rtomyj.skc.find.banlist.controller.BanListDatesController
+import com.rtomyj.skc.find.BanListDatesController
 import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
