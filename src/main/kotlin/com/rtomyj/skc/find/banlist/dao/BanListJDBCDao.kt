@@ -1,11 +1,7 @@
 package com.rtomyj.skc.find.banlist.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.browse.card.model.Card
-import com.rtomyj.skc.browse.card.model.MonsterAssociation
-import com.rtomyj.skc.find.banlist.model.BanListDates
-import com.rtomyj.skc.find.banlist.model.CardBanListStatus
-import com.rtomyj.skc.find.banlist.model.CardsPreviousBanListStatus
+import com.rtomyj.skc.model.*
 import com.rtomyj.skc.util.constant.DBQueryConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.util.enumeration.BanListFormat

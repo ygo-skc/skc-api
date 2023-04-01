@@ -1,9 +1,9 @@
 package com.rtomyj.skc.find.product
 
-import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.browse.product.dao.ProductDao
-import com.rtomyj.skc.browse.product.model.Product
-import com.rtomyj.skc.browse.product.model.ProductContent
+import com.rtomyj.skc.model.MonsterAssociation
+import com.rtomyj.skc.model.Product
+import com.rtomyj.skc.model.ProductContent
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import kotlinx.coroutines.GlobalScope

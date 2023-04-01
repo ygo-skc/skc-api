@@ -1,9 +1,9 @@
 package com.rtomyj.skc.find.banlist.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
+import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested

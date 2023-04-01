@@ -1,4 +1,4 @@
-package com.rtomyj.skc.find.banlist.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty

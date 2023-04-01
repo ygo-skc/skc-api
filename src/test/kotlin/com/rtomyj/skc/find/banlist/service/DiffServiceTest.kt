@@ -3,11 +3,11 @@ package com.rtomyj.skc.find.banlist.service
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
-import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.model.BanListNewContent
-import com.rtomyj.skc.find.banlist.model.BanListRemovedContent
+import com.rtomyj.skc.find.banlist.dao.BanListDao
+import com.rtomyj.skc.model.BanListNewContent
+import com.rtomyj.skc.model.BanListRemovedContent
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested

@@ -1,4 +1,4 @@
-package com.rtomyj.skc.status.model
+package com.rtomyj.skc.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -20,10 +20,4 @@ data class StatusResponse(
 	val version: String,
 
 	val downstream: List<DownstreamStatus>
-)
-
-data class DownstreamStatus(
-	val name: String,
-	val version: String,
-	val status: String
 )

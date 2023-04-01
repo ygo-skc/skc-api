@@ -1,9 +1,9 @@
 package com.rtomyj.skc.browse.card
 
 import com.google.common.net.HttpHeaders
-import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
-import com.rtomyj.skc.browse.card.model.CardBrowseResults
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.model.CardBrowseCriteria
+import com.rtomyj.skc.model.CardBrowseResults
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag

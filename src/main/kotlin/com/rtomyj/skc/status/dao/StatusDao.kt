@@ -1,7 +1,7 @@
 package com.rtomyj.skc.status.dao
 
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.status.model.DownstreamStatus
+import com.rtomyj.skc.model.DownstreamStatus
 
 /**
  * Contract for database operations.

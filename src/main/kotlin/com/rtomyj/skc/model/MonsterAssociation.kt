@@ -1,4 +1,4 @@
-package com.rtomyj.skc.browse.card.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonProcessingException

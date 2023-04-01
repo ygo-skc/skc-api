@@ -1,21 +1,17 @@
 package com.rtomyj.skc.find.card
 
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.product.dao.ProductDao
-import com.rtomyj.skc.browse.product.model.Product
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.banlist.dao.BanListDao
-import com.rtomyj.skc.find.banlist.model.CardBanListStatus
 import com.rtomyj.skc.find.card.dao.Dao
+import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardBanListStatus
+import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

@@ -1,8 +1,7 @@
-package com.rtomyj.skc.browse.product.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.browse.card.model.Card
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import java.util.function.Consumer
@@ -14,17 +13,17 @@ import java.util.function.Consumer
     implementation = Products::class,
 )
 data class ProductContent(
-	@Schema(
+    @Schema(
         implementation = Card::class,
         description = "Information about card."
     )
     val card: Card?,
-	@Schema(
+    @Schema(
         implementation = String::class,
         description = SwaggerConstants.CARD_POSITION_IN_PRODUCT_DESCRIPTION
     )
     val productPosition: String,
-	@Schema(
+    @Schema(
         implementation = Set::class,
         description = SwaggerConstants.CARD_RARITIES_FOR_POSITION_DESCRIPTION
     )

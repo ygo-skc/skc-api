@@ -3,10 +3,10 @@
 package com.rtomyj.skc.browse.card
 
 import com.rtomyj.skc.browse.card.dao.CardBrowseDao
-import com.rtomyj.skc.browse.card.model.Card
-import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
-import com.rtomyj.skc.browse.card.model.CardBrowseResults
-import com.rtomyj.skc.browse.card.model.MonsterAssociation
+import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardBrowseCriteria
+import com.rtomyj.skc.model.CardBrowseResults
+import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.enumeration.MonsterAssociationExpression
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -62,7 +62,7 @@ class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: CardB
     }
 
 
-    fun browseCriteria(): CardBrowseCriteria  {
+    fun browseCriteria(): CardBrowseCriteria {
         var cardBrowseCriteria: CardBrowseCriteria
 
         runBlocking {

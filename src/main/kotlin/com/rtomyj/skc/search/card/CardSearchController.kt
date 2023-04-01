@@ -1,9 +1,9 @@
 package com.rtomyj.skc.search.card
 
-import com.rtomyj.skc.browse.card.model.Card
-import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema

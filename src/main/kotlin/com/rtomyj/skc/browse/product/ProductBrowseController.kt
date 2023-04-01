@@ -1,7 +1,7 @@
 package com.rtomyj.skc.browse.product
 
-import com.rtomyj.skc.browse.product.model.Products
 import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants

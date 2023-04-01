@@ -1,4 +1,4 @@
-package com.rtomyj.skc.stats.model
+package com.rtomyj.skc.model
 
 import com.rtomyj.skc.stats.StatsController
 import com.rtomyj.skc.util.HateoasLinks

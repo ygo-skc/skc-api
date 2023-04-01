@@ -1,7 +1,7 @@
 package com.rtomyj.skc.find.card.dao
 
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.browse.card.model.Card
+import com.rtomyj.skc.model.Card
 
 /**
  * Contract for database operations.

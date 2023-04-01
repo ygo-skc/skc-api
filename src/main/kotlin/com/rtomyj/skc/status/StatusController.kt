@@ -1,11 +1,11 @@
 package com.rtomyj.skc.status
 
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.model.DownstreamStatus
+import com.rtomyj.skc.model.StatusResponse
 import com.rtomyj.skc.skcsuggestionengine.status.SuggestionEngineStatusService
 import com.rtomyj.skc.skcsuggestionengine.status.model.SuggestionEngineDownstreamStatus
 import com.rtomyj.skc.status.dao.StatusDao
-import com.rtomyj.skc.status.model.DownstreamStatus
-import com.rtomyj.skc.status.model.StatusResponse
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SwaggerConstants

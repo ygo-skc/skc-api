@@ -1,7 +1,7 @@
 package com.rtomyj.skc.status.dao
 
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.status.model.DownstreamStatus
+import com.rtomyj.skc.model.DownstreamStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

@@ -1,10 +1,10 @@
-package com.rtomyj.skc.browse.product.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.browse.product.ProductBrowseController
-import com.rtomyj.skc.util.enumeration.ProductType
 import com.rtomyj.skc.util.HateoasLinks
+import com.rtomyj.skc.util.constant.SwaggerConstants
+import com.rtomyj.skc.util.enumeration.ProductType
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
@@ -63,6 +63,6 @@ data class Products(
 
     override fun setLinks() {
         setSelfLink()
-	    Product.setLinks(products!!)
+        Product.setLinks(products!!)
     }
 }

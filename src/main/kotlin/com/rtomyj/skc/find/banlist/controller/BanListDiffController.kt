@@ -2,9 +2,9 @@ package com.rtomyj.skc.find.banlist.controller
 
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.model.BanListNewContent
-import com.rtomyj.skc.find.banlist.model.BanListRemovedContent
 import com.rtomyj.skc.find.banlist.service.DiffService
+import com.rtomyj.skc.model.BanListNewContent
+import com.rtomyj.skc.model.BanListRemovedContent
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -20,11 +20,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list

@@ -1,4 +1,4 @@
-package com.rtomyj.skc.browse.card.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.browse.card.CardBrowseController

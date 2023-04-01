@@ -1,4 +1,4 @@
-package com.rtomyj.skc.find.banlist.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.rtomyj.skc.find.banlist.controller.BanListDiffController
@@ -15,31 +15,31 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
     description = "Cards added to requested ban list that were not in the previous ban list and/or cards that have a different ban list status (forbidden, limited, semi-limited) compared to the previous ban list.",
 )
 data class BanListNewContent(
-	@Schema(
+    @Schema(
         implementation = String::class,
         description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     )
     val listRequested: String,
 
-	@Schema(
+    @Schema(
         implementation = String::class,
         description = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
     )
     val comparedTo: String,
 
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "List containing newly forbidden cards and their previous ban status.",
     )
     val newForbidden: List<CardsPreviousBanListStatus>,
 
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "List containing newly limited cards and their previous ban status.",
     )
     val newLimited: List<CardsPreviousBanListStatus>,
 
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "List containing newly semi-limited cards and their previous ban status.",
     )
@@ -63,19 +63,19 @@ data class BanListNewContent(
     )
     val newLimitedThree: List<CardsPreviousBanListStatus>,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
         description = "Total new forbidden cards added to a ban list when compared to a previous logical ban list.",
     )
     val numNewForbidden: Int = newForbidden.size,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
         description = "Total new limited cards added to a list when compared to a previous logical ban list.",
     )
     val numNewLimited: Int = newLimited.size,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
         description = "Total new semi-limited cards added to a ban list when compared to a previous logical ban list.",
     )

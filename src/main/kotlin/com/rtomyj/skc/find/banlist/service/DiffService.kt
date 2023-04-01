@@ -1,11 +1,11 @@
 package com.rtomyj.skc.find.banlist.service
 
-import com.rtomyj.skc.browse.card.model.MonsterAssociation
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.banlist.dao.BanListDao
-import com.rtomyj.skc.find.banlist.model.BanListNewContent
-import com.rtomyj.skc.find.banlist.model.BanListRemovedContent
+import com.rtomyj.skc.model.BanListNewContent
+import com.rtomyj.skc.model.BanListRemovedContent
+import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.slf4j.LoggerFactory

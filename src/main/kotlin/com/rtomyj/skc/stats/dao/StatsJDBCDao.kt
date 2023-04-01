@@ -1,8 +1,8 @@
 package com.rtomyj.skc.stats.dao
 
+import com.rtomyj.skc.model.DatabaseStats
+import com.rtomyj.skc.model.MonsterTypeStats
 import com.rtomyj.skc.util.constant.DBQueryConstants
-import com.rtomyj.skc.stats.model.DatabaseStats
-import com.rtomyj.skc.stats.model.MonsterTypeStats
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

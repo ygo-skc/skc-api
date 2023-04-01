@@ -1,9 +1,9 @@
 package com.rtomyj.skc.browse.card
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.rtomyj.skc.browse.card.model.Card
-import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
 import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardBrowseCriteria
 import org.springframework.core.io.ClassPathResource
 
 class CardBrowseTestUtil {

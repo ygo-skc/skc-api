@@ -1,10 +1,10 @@
 package com.rtomyj.skc.find.card.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.model.Card
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

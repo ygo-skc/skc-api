@@ -1,4 +1,4 @@
-package com.rtomyj.skc.browse.card.model
+package com.rtomyj.skc.model
 
 import com.rtomyj.skc.browse.card.CardBrowseController
 import com.rtomyj.skc.util.HateoasLinks
@@ -10,15 +10,15 @@ import org.springframework.hateoas.RepresentationModel
     description = "Card information for cards that fit requested browse criteria.",
 )
 class CardBrowseResults(
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "Card info of all cards that fit criteria requested by user.",
     )
     val results: List<Card>,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
-        description = "Total browse results.", 
+        description = "Total browse results.",
     )
     val numResults: Int = 0
 ) : RepresentationModel<CardBrowseResults>(), HateoasLinks {

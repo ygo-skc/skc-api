@@ -1,10 +1,10 @@
 package com.rtomyj.skc.browse.card.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rtomyj.skc.browse.card.model.Card
-import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
-import com.rtomyj.skc.browse.card.model.CardBrowseResults
-import com.rtomyj.skc.browse.card.model.MonsterAssociation
+import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardBrowseCriteria
+import com.rtomyj.skc.model.CardBrowseResults
+import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.DBQueryConstants
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
 import com.rtomyj.skc.util.enumeration.table.definitions.BrowseQueryDefinition

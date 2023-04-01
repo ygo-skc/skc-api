@@ -2,10 +2,10 @@ package com.rtomyj.skc.find.card
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.common.net.HttpHeaders.X_FORWARDED_FOR
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.testingutil.ControllerTestUtil
 import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`

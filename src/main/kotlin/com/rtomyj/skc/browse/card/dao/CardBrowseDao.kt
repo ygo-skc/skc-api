@@ -1,8 +1,8 @@
 package com.rtomyj.skc.browse.card.dao
 
+import com.rtomyj.skc.model.CardBrowseCriteria
+import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
-import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
-import com.rtomyj.skc.browse.card.model.CardBrowseResults
 
 /**
  * Contract for database operations.

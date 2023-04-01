@@ -2,8 +2,8 @@ package com.rtomyj.skc.find.banlist.controller
 
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.model.BanListInstance
 import com.rtomyj.skc.find.banlist.service.BannedCardsService
+import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants

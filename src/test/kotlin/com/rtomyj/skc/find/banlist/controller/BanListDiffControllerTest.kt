@@ -1,12 +1,12 @@
 package com.rtomyj.skc.find.banlist.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.rtomyj.skc.find.banlist.service.DiffService
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.find.banlist.model.BanListNewContent
-import com.rtomyj.skc.find.banlist.model.BanListRemovedContent
+import com.rtomyj.skc.find.banlist.service.DiffService
+import com.rtomyj.skc.model.BanListNewContent
+import com.rtomyj.skc.model.BanListRemovedContent
 import com.rtomyj.skc.testingutil.ControllerTestUtil
 import com.rtomyj.skc.util.constant.ErrConstants
 import org.hamcrest.Matchers.`is`

@@ -1,9 +1,8 @@
-package com.rtomyj.skc.find.banlist.model
+package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonTypeName
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.find.banlist.controller.BanListDiffController
 import com.rtomyj.skc.find.banlist.controller.BannedCardsController
 import com.rtomyj.skc.util.HateoasLinks
@@ -35,20 +34,20 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
     description = "Describes and contains information about a specific ban list.",
 )
 data class BanListInstance(
-	@Schema(
+    @Schema(
         implementation = String::class,
         description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     )
     val effectiveDate: String,
 
-	@Schema(
+    @Schema(
         implementation = String::class,
         description = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
     )
     val comparedTo: String,
 
 
-	@Schema(
+    @Schema(
         implementation = List::class,
         description = "List of cards forbidden in this ban list instance.",
     )
@@ -66,19 +65,19 @@ data class BanListInstance(
     )
     val semiLimited: List<Card>,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
         description = "Total number of cards forbidden in this ban list instance; ie size of forbidden list.",
     )
     val numForbidden: Int = forbidden.size,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
         description = "Total number of cards limited in this ban list instance; ie size of limited list.",
     )
     val numLimited: Int = limited.size,
 
-	@Schema(
+    @Schema(
         implementation = Int::class,
         description = "Total number of cards semi-limited in this ban list instance; ie size of semi-limited list.",
     )

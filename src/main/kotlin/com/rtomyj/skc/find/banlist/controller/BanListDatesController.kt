@@ -1,8 +1,8 @@
 package com.rtomyj.skc.find.banlist.controller
 
 import com.rtomyj.skc.exception.SKCError
-import com.rtomyj.skc.find.banlist.model.BanListDates
 import com.rtomyj.skc.find.banlist.service.BanListDatesService
+import com.rtomyj.skc.model.BanListDates
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation

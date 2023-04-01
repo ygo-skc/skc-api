@@ -1,7 +1,6 @@
 package com.rtomyj.skc.find.card
 
 import com.nhaarman.mockito_kotlin.eq
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.browse.product.dao.ProductDao
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.constant.TestObjects
@@ -9,6 +8,7 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.find.banlist.dao.BanListDao
 import com.rtomyj.skc.find.card.dao.Dao
+import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.skcsuggestionengine.traffic.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.junit.jupiter.api.Assertions

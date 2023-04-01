@@ -1,8 +1,8 @@
 package com.rtomyj.skc.browse.product.dao
 
-import com.rtomyj.skc.browse.product.model.Product
-import com.rtomyj.skc.browse.product.model.ProductContent
-import com.rtomyj.skc.browse.product.model.Products
+import com.rtomyj.skc.model.Product
+import com.rtomyj.skc.model.ProductContent
+import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.util.enumeration.ProductType
 
 interface ProductDao {

@@ -1,9 +1,9 @@
 package com.rtomyj.skc.browse.card
 
 import com.google.common.base.Suppliers
-import com.rtomyj.skc.browse.card.model.CardBrowseCriteria
-import com.rtomyj.skc.browse.card.model.CardBrowseResults
 import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.model.CardBrowseCriteria
+import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation

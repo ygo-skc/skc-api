@@ -1,8 +1,8 @@
 package com.rtomyj.skc.find.card
 
-import com.rtomyj.skc.browse.card.model.Card
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
+import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
@@ -20,11 +20,7 @@ import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * Configures endpoint(s) that can be used to get card data for cards stored in database.
