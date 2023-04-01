@@ -53,8 +53,7 @@ class ProductJDBCDao @Autowired constructor(
 		private const val GET_PRODUCT_INFO_FOR_CARD =
 			"select product_id, product_locale, product_name, product_release_date, product_type, product_sub_type, product_position, card_rarity" +
 					FROM_PRODUCT_CONTENT_TABLE +
-					WHERE_CARD_NUMBER_IS_CARD_ID +
-					" ORDER BY product_release_date DESC"
+					WHERE_CARD_NUMBER_IS_CARD_ID
 	}
 
 
