@@ -1,10 +1,10 @@
 package com.rtomyj.skc.stats
 
-import com.rtomyj.skc.util.constant.SwaggerConstants
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.exception.SKCError
-import com.rtomyj.skc.stats.model.DatabaseStats
-import com.rtomyj.skc.stats.model.MonsterTypeStats
+import com.rtomyj.skc.model.DatabaseStats
+import com.rtomyj.skc.model.MonsterTypeStats
+import com.rtomyj.skc.util.YgoApiBaseController
+import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
