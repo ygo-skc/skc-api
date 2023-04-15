@@ -45,7 +45,11 @@ class BanListTable : Serializable {
     var banStatus: String? = null
 
     override fun equals(other: Any?): Boolean {
-        return this.banListDate === (other as BanListTable).banListDate && this.cardNumber === (other as BanListTable).cardNumber && this.format === (other as BanListTable).format
+        if (other?.javaClass != this.javaClass)
+            return false
+
+        val o = other as BanListTable
+        return this.banListDate === o.banListDate && this.cardNumber === o.cardNumber && this.format === o.format
     }
 
     override fun hashCode(): Int {

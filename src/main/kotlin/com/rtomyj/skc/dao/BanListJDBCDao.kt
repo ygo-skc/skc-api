@@ -93,8 +93,6 @@ class BanListJDBCDao @Autowired constructor(
         return sortedBanListDates[previousBanListPosition]
     }
 
-
-    // TODO: make sure you write a test for the instance where the last ban list is selected
     override fun getRemovedContentOfBanList(banListDate: String, format: String): List<CardsPreviousBanListStatus> {
         val oldBanList = getPreviousBanListDate(banListDate, format)
         if (oldBanList == "") {
@@ -164,7 +162,6 @@ class BanListJDBCDao @Autowired constructor(
         return results.isNotEmpty()
     }
 
-    // TODO: make sure you write a test for the instance where the last ban list is selected
     override fun getNewContentOfBanList(
         banListDate: String,
         status: BanListCardStatus,

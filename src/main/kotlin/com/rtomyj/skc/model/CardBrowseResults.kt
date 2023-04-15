@@ -35,8 +35,9 @@ class CardBrowseResults(
     var requestedCriteria: CardBrowseCriteria? = null
 
 
-    // TODO: add links
-    override fun setSelfLink() {}
+    override fun setSelfLink() {
+        // TODO: add links
+    }
 
 
     override fun setLinks() {

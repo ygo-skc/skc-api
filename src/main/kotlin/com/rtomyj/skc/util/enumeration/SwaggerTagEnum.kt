@@ -1,7 +1,6 @@
 package com.rtomyj.skc.util.enumeration
 
 import com.rtomyj.skc.util.constant.SwaggerConstants
-//import springfox.documentation.service.Tag
 
 enum class SwaggerTagEnum(
 	val tagName: String, val tagDescription: String
@@ -26,7 +25,4 @@ enum class SwaggerTagEnum(
 		SwaggerConstants.TAG_STATS_NAME,
 		"See information about the data currently in the Database."
 	);
-
-
-//	fun tag(): Tag = Tag(this.tagName, this.tagDescription)
 }
