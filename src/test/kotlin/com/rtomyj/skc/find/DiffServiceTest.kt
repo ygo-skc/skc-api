@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import kotlin.test.assertNotNull
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [DiffService::class])
+@ContextConfiguration(classes = [BanListDiffService::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 class DiffServiceTest {
@@ -32,7 +32,7 @@ class DiffServiceTest {
 	private lateinit var banListDao: BanListDao
 
 	@Autowired
-	private lateinit var diffService: DiffService
+	private lateinit var banListDiffService: BanListDiffService
 
 	private val banListNewContent: BanListNewContent
 	private val banListRemovedContent: BanListRemovedContent
@@ -89,7 +89,7 @@ class DiffServiceTest {
 
 
 			// call method with above mocks
-			val banListNewContentInstance = diffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
+			val banListNewContentInstance = banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 
 			val newForbiddenCards = banListNewContentInstance.newForbidden
 			val newLimitedCards = banListNewContentInstance.newLimited
@@ -193,7 +193,7 @@ class DiffServiceTest {
 
 
 			// call code w/ above mocks
-			val banListRemovedContentInstance = diffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
+			val banListRemovedContentInstance = banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
 			val removedCards = banListRemovedContentInstance.removedCards
 
 
@@ -280,7 +280,7 @@ class DiffServiceTest {
 
 
 			Assertions.assertThrows(SKCException::class.java) {
-				diffService.getNewContentForGivenBanList(
+				banListDiffService.getNewContentForGivenBanList(
 					TestConstants.BAN_LIST_START_DATE,
 					eq("TCG")
 				)
@@ -322,7 +322,7 @@ class DiffServiceTest {
 
 			// call code w/ above mocks, expecting an exception
 			Assertions.assertThrows(SKCException::class.java) {
-				diffService.getRemovedContentForGivenBanList(
+				banListDiffService.getRemovedContentForGivenBanList(
 					TestConstants.BAN_LIST_START_DATE,
 					eq("TCG")
 				)

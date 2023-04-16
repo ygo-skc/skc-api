@@ -27,7 +27,7 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [BannedCardsService::class, DiffService::class])
+@ContextConfiguration(classes = [BannedCardsService::class, BanListDiffService::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)    // allows usage of init as opposed to static context
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 class BannedCardsServiceTest {
@@ -35,7 +35,7 @@ class BannedCardsServiceTest {
 	private lateinit var banListDao: BanListDao
 
 	@MockBean
-	private lateinit var diffService: DiffService
+	private lateinit var banListDiffService: BanListDiffService
 
 	@Autowired
 	private lateinit var bannedCardsService: BannedCardsService
@@ -149,7 +149,7 @@ class BannedCardsServiceTest {
 
 			if (fetchAllInfo) {
 				Mockito.`when`(
-					diffService.getNewContentForGivenBanList(
+					banListDiffService.getNewContentForGivenBanList(
 						eq(TestConstants.BAN_LIST_START_DATE),
 						eq("TCG")
 					)
@@ -157,7 +157,7 @@ class BannedCardsServiceTest {
 					.thenReturn(banListNewContent)
 
 				Mockito.`when`(
-					diffService.getRemovedContentForGivenBanList(
+					banListDiffService.getRemovedContentForGivenBanList(
 						eq(TestConstants.BAN_LIST_START_DATE),
 						eq("TCG")
 					)
@@ -201,20 +201,20 @@ class BannedCardsServiceTest {
 			)
 
 			if (fetchAllInfo) {
-				Mockito.verify(diffService, Mockito.times(1)).getNewContentForGivenBanList(
+				Mockito.verify(banListDiffService, Mockito.times(1)).getNewContentForGivenBanList(
 					eq(TestConstants.BAN_LIST_START_DATE),
 					eq("TCG")
 				)
-				Mockito.verify(diffService, Mockito.times(1)).getRemovedContentForGivenBanList(
+				Mockito.verify(banListDiffService, Mockito.times(1)).getRemovedContentForGivenBanList(
 					eq(TestConstants.BAN_LIST_START_DATE),
 					eq("TCG")
 				)
 			} else {
-				Mockito.verify(diffService, Mockito.times(0)).getNewContentForGivenBanList(
+				Mockito.verify(banListDiffService, Mockito.times(0)).getNewContentForGivenBanList(
 					eq(TestConstants.BAN_LIST_START_DATE),
 					eq("TCG")
 				)
-				Mockito.verify(diffService, Mockito.times(0)).getRemovedContentForGivenBanList(
+				Mockito.verify(banListDiffService, Mockito.times(0)).getRemovedContentForGivenBanList(
 					eq(TestConstants.BAN_LIST_START_DATE),
 					eq("TCG")
 				)

@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @Tag("Controller")
 class BanListDiffControllerTest {
 	@MockBean
-	private lateinit var banListDiffService: DiffService
+	private lateinit var banListDiffService: BanListDiffService
 
 	@Autowired
 	private lateinit var mockMvc: MockMvc

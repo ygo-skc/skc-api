@@ -92,7 +92,7 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun getPreviousBanListDate(currentBanList: String, fromat: String): String {
+    override fun getPreviousBanListDate(currentBanList: String, format: String): String {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 

@@ -37,7 +37,7 @@ class BanListDiffController
     /**
      * Service used to interface with dao.
      */
-    val banListDiffService: DiffService
+    val banListDiffService: BanListDiffService
 ) : YgoApiBaseController() {
 
     companion object {

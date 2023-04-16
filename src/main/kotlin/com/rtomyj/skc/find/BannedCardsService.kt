@@ -25,7 +25,7 @@ import java.util.*
 @Service
 @OptIn(DelicateCoroutinesApi::class)
 class BannedCardsService @Autowired constructor(
-    @Qualifier("ban-list-jdbc") private val banListDao: BanListDao, private val diffService: DiffService
+    @Qualifier("ban-list-jdbc") private val banListDao: BanListDao, private val banListDiffService: BanListDiffService
 ) {
     companion object {
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -95,8 +95,8 @@ class BannedCardsService @Autowired constructor(
             setLinks()
 
             if (fetchAllInfo) {
-                newContent = diffService.getNewContentForGivenBanList(banListStartDate, format)
-                removedContent = diffService.getRemovedContentForGivenBanList(banListStartDate, format)
+                newContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
+                removedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format)
             }
 
             if (saveBandwidth) {

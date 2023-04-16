@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
 @Service
-class DiffService @Autowired constructor(
+class BanListDiffService @Autowired constructor(
 	@Qualifier("ban-list-jdbc") val banListDao: BanListDao
 ) {
 
