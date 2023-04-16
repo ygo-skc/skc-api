@@ -139,7 +139,6 @@ class BannedCardsService @Autowired constructor(
             deferredSemiLimited.await()
         }
 
-        log.info(content.toString())
         return content
     }
 
