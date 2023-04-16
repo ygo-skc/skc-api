@@ -36,29 +36,34 @@ class BanListDiffService @Autowired constructor(
         banStatus: BanListCardStatus,
         newContents: MutableMap<BanListCardStatus, List<CardsPreviousBanListStatus>>,
         banListStartDate: String,
+        previousBanListDate: String,
         format: String
     ) {
-        val newlyAdded = banListDao.getNewContentOfBanList(banListStartDate, banStatus, format)
+        val newlyAdded = banListDao.getNewContentOfBanList(banListStartDate, previousBanListDate, banStatus, format)
         newlyAdded.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
         newContents[banStatus] = newlyAdded
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun newContentNormalFormat(banListStartDate: String, format: String): BanListNewContent {
+    private fun newContentNormalFormat(
+        banListStartDate: String,
+        previousBanListDate: String,
+        format: String
+    ): BanListNewContent {
         val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
 
 
         runBlocking {
             val deferredNewlyForbidden = GlobalScope.async {
-                getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
             }
 
             val deferredNewlyLimited = GlobalScope.async {
-                getNewContent(BanListCardStatus.LIMITED, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.LIMITED, content, banListStartDate, previousBanListDate, format)
             }
 
             val deferredNewlySemiLimited = GlobalScope.async {
-                getNewContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, previousBanListDate, format)
             }
 
             deferredNewlyForbidden.await()
@@ -68,7 +73,7 @@ class BanListDiffService @Autowired constructor(
 
         return BanListNewContent(
             banListStartDate,
-            getPreviousBanListDate(banListStartDate, format),
+            previousBanListDate,
             content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
             content[BanListCardStatus.LIMITED] ?: emptyList(),
             content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
@@ -79,24 +84,28 @@ class BanListDiffService @Autowired constructor(
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun newContentDuelLinksFormat(banListStartDate: String, format: String): BanListNewContent {
+    private fun newContentDuelLinksFormat(
+        banListStartDate: String,
+        previousBanListDate: String,
+        format: String
+    ): BanListNewContent {
         val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
 
         runBlocking {
             val deferredNewlyForbidden = GlobalScope.async {
-                getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
             }
 
             val deferredNewlyLimitedOne = GlobalScope.async {
-                getNewContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, previousBanListDate, format)
             }
 
             val deferredNewlyLimitedTwo = GlobalScope.async {
-                getNewContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, previousBanListDate, format)
             }
 
             val deferredNewlyLimitedThree = GlobalScope.async {
-                getNewContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, format)
+                getNewContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, previousBanListDate, format)
             }
 
             deferredNewlyForbidden.await()
@@ -107,7 +116,7 @@ class BanListDiffService @Autowired constructor(
 
         return BanListNewContent(
             banListStartDate,
-            getPreviousBanListDate(banListStartDate, format),
+            previousBanListDate,
             content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
             emptyList(),
             emptyList(),
@@ -127,13 +136,12 @@ class BanListDiffService @Autowired constructor(
             ), ErrorType.DB001
         )
 
+        val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
 
         // builds meta data object for new cards request
         val newCardsMeta =
-            if (format == "DL") newContentDuelLinksFormat(banListStartDate, format) else newContentNormalFormat(
-                banListStartDate,
-                format
-            )
+            if (format == "DL") newContentDuelLinksFormat(banListStartDate, previousBanListDate, format)
+            else newContentNormalFormat(banListStartDate, previousBanListDate, format)
 
         newCardsMeta.setLinks()
         return newCardsMeta
@@ -148,16 +156,16 @@ class BanListDiffService @Autowired constructor(
                 banListStartDate
             ), ErrorType.DB001
         )
-        val removedCards = banListDao.getRemovedContentOfBanList(
-            banListStartDate, format
-        )
 
+        val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
+
+        val removedCards = banListDao.getRemovedContentOfBanList(banListStartDate, previousBanListDate, format)
         removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
 
         // builds meta data object for removed cards request
         val removedCardsMeta = BanListRemovedContent(
             banListStartDate,
-            getPreviousBanListDate(banListStartDate, format),
+            previousBanListDate,
             removedCards
         )
 

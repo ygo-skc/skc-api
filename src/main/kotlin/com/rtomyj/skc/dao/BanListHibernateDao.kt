@@ -98,13 +98,18 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
 
     override fun getNewContentOfBanList(
         banListDate: String,
+        previousBanListDate: String,
         status: BanListCardStatus,
         format: String
     ): List<CardsPreviousBanListStatus> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
-    override fun getRemovedContentOfBanList(banListDate: String, format: String): List<CardsPreviousBanListStatus> {
+    override fun getRemovedContentOfBanList(
+        banListDate: String,
+        previousBanListDate: String,
+        format: String
+    ): List<CardsPreviousBanListStatus> {
         throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
 
