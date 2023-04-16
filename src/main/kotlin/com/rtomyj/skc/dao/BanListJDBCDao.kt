@@ -93,11 +93,12 @@ class BanListJDBCDao @Autowired constructor(
         return sortedBanListDates[previousBanListPosition]
     }
 
-
-    // TODO: make sure you write a test for the instance where the last ban list is selected
-    override fun getRemovedContentOfBanList(banListDate: String, format: String): List<CardsPreviousBanListStatus> {
-        val oldBanList = getPreviousBanListDate(banListDate, format)
-        if (oldBanList == "") {
+    override fun getRemovedContentOfBanList(
+        banListDate: String,
+        previousBanListDate: String,
+        format: String
+    ): List<CardsPreviousBanListStatus> {
+        if (previousBanListDate == "") {
             return emptyList()
         }
 
@@ -113,7 +114,7 @@ class BanListJDBCDao @Autowired constructor(
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("format", format)
         sqlParams.addValue("newBanList", banListDate)
-        sqlParams.addValue("oldBanList", oldBanList)
+        sqlParams.addValue("oldBanList", previousBanListDate)
 
         return jdbcNamedTemplate.query<List<CardsPreviousBanListStatus>>(query, sqlParams) { row: ResultSet ->
             val removedCards = ArrayList<CardsPreviousBanListStatus>()
@@ -164,34 +165,34 @@ class BanListJDBCDao @Autowired constructor(
         return results.isNotEmpty()
     }
 
-    // TODO: make sure you write a test for the instance where the last ban list is selected
     override fun getNewContentOfBanList(
         banListDate: String,
+        previousBanListDate: String,
         status: BanListCardStatus,
         format: String
     ): List<CardsPreviousBanListStatus> {
         val stopwatch = StopWatch()
         stopwatch.start()
 
-        val oldBanList = getPreviousBanListDate(banListDate, format)
-        if (oldBanList == "") {
+        if (previousBanListDate == "") {
             return emptyList()
         }
 
-        val query = "select card_name, monster_type, card_color, card_effect, new_list.card_number, card_attribute, monster_association " +
-                "from (select * from ban_list_info where ban_list_date = :newBanList and ban_status = :status) as new_list " +
-                "left join " +
-                "(select card_number, ban_status from ban_list_info where ban_list_date = :oldBanList and ban_status = :status) as old_list " +
-                "on new_list.card_number = old_list.card_number " +
-                "where old_list.card_number is NULL " +
-                "AND duel_format = :format " +
-                "ORDER BY color_id, card_name"
+        val query =
+            "select card_name, monster_type, card_color, card_effect, new_list.card_number, card_attribute, monster_association " +
+                    "from (select * from ban_list_info where ban_list_date = :newBanList and ban_status = :status) as new_list " +
+                    "left join " +
+                    "(select card_number, ban_status from ban_list_info where ban_list_date = :oldBanList and ban_status = :status) as old_list " +
+                    "on new_list.card_number = old_list.card_number " +
+                    "where old_list.card_number is NULL " +
+                    "AND duel_format = :format " +
+                    "ORDER BY color_id, card_name"
 
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("status", status.toString())
         sqlParams.addValue("format", format)
         sqlParams.addValue("newBanList", banListDate)
-        sqlParams.addValue("oldBanList", oldBanList)
+        sqlParams.addValue("oldBanList", previousBanListDate)
 
         log.debug(
             "Fetching new {} cards in ban list from DB using query ({}) with sql params ({}).",
@@ -204,7 +205,7 @@ class BanListJDBCDao @Autowired constructor(
                 val newCards: MutableList<CardsPreviousBanListStatus> = ArrayList()
                 while (row.next()) {
                     val cardID = row.getString(5)
-                    val previousStatus = getCardBanListStatusByDate(cardID, oldBanList)
+                    val previousStatus = getCardBanListStatusByDate(cardID, previousBanListDate)
                     val cardsPreviousBanListStatus = CardsPreviousBanListStatus(
                         Card(
                             row.getString(5),
