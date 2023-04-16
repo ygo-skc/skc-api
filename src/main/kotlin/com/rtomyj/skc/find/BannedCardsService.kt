@@ -5,6 +5,7 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
@@ -43,10 +44,7 @@ class BannedCardsService @Autowired constructor(
      */
     @Throws(SKCException::class)
     fun getBanListByDate(
-        banListStartDate: String,
-        saveBandwidth: Boolean,
-        format: String,
-        fetchAllInfo: Boolean
+        banListStartDate: String, saveBandwidth: Boolean, format: String, fetchAllInfo: Boolean
     ): BanListInstance {
         log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
 
@@ -79,7 +77,10 @@ class BannedCardsService @Autowired constructor(
 
         val banListInstance: BanListInstance = BanListInstance(
             banListStartDate,
-            banListDao.getPreviousBanListDate(banListStartDate, format), forbiddenCards, limitedCards, semiLimitedCards
+            banListDao.getPreviousBanListDate(banListStartDate, format),
+            forbiddenCards,
+            limitedCards,
+            semiLimitedCards
         ).apply {
             if (format == "DL") {
                 this.limitedOne = limitedOneCards
@@ -107,31 +108,37 @@ class BannedCardsService @Autowired constructor(
         return banListInstance
     }
 
-    private fun fetchStandardFormatContent(
+    /**
+     * This method should be used when cards are needed for a given ban list.
+     * Using BanListCardStatus, this method will use the DAO to fetch appropriate cards.
+     */
+    private fun getContent(
+        status: BanListCardStatus,
+        content: MutableMap<BanListCardStatus, List<Card>>,
         banListStartDate: String,
         format: String
+    ) {
+        val cards = banListDao.getBanListByBanStatus(banListStartDate, status, format)
+        MonsterAssociation.transformMonsterLinkRating(cards)
+        content[status] = cards
+    }
+
+    private fun fetchStandardFormatContent(
+        banListStartDate: String, format: String
     ): Map<BanListCardStatus, List<Card>> {
         val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<Card>>())
 
         runBlocking {
             val deferredForbidden = GlobalScope.async {
-                val forbiddenCards =
-                    banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN, format)
-                MonsterAssociation.transformMonsterLinkRating(forbiddenCards)
-                content[BanListCardStatus.FORBIDDEN] = forbiddenCards
+                getContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, format)
             }
 
             val deferredLimited = GlobalScope.async {
-                val limitedCards = banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED, format)
-                MonsterAssociation.transformMonsterLinkRating(limitedCards)
-                content[BanListCardStatus.LIMITED] = limitedCards
+                getContent(BanListCardStatus.LIMITED, content, banListStartDate, format)
             }
 
             val deferredSemiLimited = GlobalScope.async {
-                val semiLimitedCards =
-                    banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.SEMI_LIMITED, format)
-                MonsterAssociation.transformMonsterLinkRating(semiLimitedCards)
-                content[BanListCardStatus.SEMI_LIMITED] = semiLimitedCards
+                getContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, format)
             }
 
             deferredForbidden.await()
@@ -143,38 +150,25 @@ class BannedCardsService @Autowired constructor(
     }
 
     private fun fetchDuelLinksFormatContent(
-        banListStartDate: String,
-        format: String
+        banListStartDate: String, format: String
     ): Map<BanListCardStatus, List<Card>> {
         val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<Card>>())
 
         runBlocking {
             val deferredForbidden = GlobalScope.async {
-                val forbiddenCards =
-                    banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.FORBIDDEN, format)
-                MonsterAssociation.transformMonsterLinkRating(forbiddenCards)
-                content[BanListCardStatus.FORBIDDEN] = forbiddenCards
+                getContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, format)
             }
 
             val deferredLimitedOne = GlobalScope.async {
-                val limitedOneCards =
-                    banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED_ONE, format)
-                MonsterAssociation.transformMonsterLinkRating(limitedOneCards)
-                content[BanListCardStatus.LIMITED_ONE] = limitedOneCards
+                getContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, format)
             }
 
             val deferredLimitedTwo = GlobalScope.async {
-                val limitedTwoCards =
-                    banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED_TWO, format)
-                MonsterAssociation.transformMonsterLinkRating(limitedTwoCards)
-                content[BanListCardStatus.LIMITED_TWO] = limitedTwoCards
+                getContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, format)
             }
 
             val deferredLimitedThree = GlobalScope.async {
-                val limitedThreeCards =
-                    banListDao.getBanListByBanStatus(banListStartDate, BanListCardStatus.LIMITED_THREE, format)
-                MonsterAssociation.transformMonsterLinkRating(limitedThreeCards)
-                content[BanListCardStatus.LIMITED_THREE] = limitedThreeCards
+                getContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, format)
             }
 
             deferredForbidden.await()
