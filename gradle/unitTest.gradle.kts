@@ -10,7 +10,6 @@ dependencies {
     "testRuntimeOnly"("com.h2database:h2:$h2Version")
 }
 
-
 tasks.withType<Test> {
     useJUnitPlatform()
 
