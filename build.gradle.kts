@@ -5,9 +5,9 @@ val scalaLibraryVersion = "2.13.10"
 val springBootVersion = "3.0.6"
 val springDocVersion = "1.6.14"
 val mysqlVersion = "8.0.33"
-val jacksonDatabindVersion = "2.14.2"
 val jacksonKotlinVersion = "2.15.0"
 val jacksonCoreVersion = "2.15.0"
+val snakeYamlVersion = "2.0"
 val cucumberVersion = "6.7.0"
 val gatlingVersion = "3.5.0"
 val restAssuredVersion = "4.3.3"
@@ -73,9 +73,9 @@ dependencies {
 
 	runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
-	implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion")
 	implementation("com.fasterxml.jackson.core:jackson-core:$jacksonCoreVersion")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion")
+	implementation("org.yaml:snakeyaml:$snakeYamlVersion")
 
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutineVersion")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutineVersion")
@@ -85,6 +85,14 @@ dependencies {
 
 
 configurations {
+	all {
+		resolutionStrategy.eachDependency {
+			if (this.requested.group == ("com.fasterxml.jackson.core")) {
+				this.useVersion(jacksonCoreVersion)
+			}
+		}
+	}
+
 	implementation {
 		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
 		exclude(module = "spring-boot-starter-tomcat")
