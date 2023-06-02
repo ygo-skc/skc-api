@@ -1,4 +1,4 @@
-val scalaLibraryVersion = "2.13.10"
+val scalaLibraryVersion = "2.13.11"
 val gatlingVersion = "3.9.5"
 
 
