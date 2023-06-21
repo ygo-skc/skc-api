@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import java.util.*
 
 /**
  * Contains main method.
@@ -19,6 +20,7 @@ class SKCApi {
     fun init() {
         // Setting Spring Boot SetTimeZone
         log.info("Configuring API timezone as {}", timeZone)
+        TimeZone.setDefault(TimeZone.getTimeZone(timeZone))
     }
 }
 

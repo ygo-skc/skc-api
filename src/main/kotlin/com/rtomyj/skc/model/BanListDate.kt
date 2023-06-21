@@ -11,6 +11,7 @@ import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -26,12 +27,12 @@ data class BanListDate(
 	 * Start date of ban list.
 	 */
 	@Schema(
-		implementation = Date::class,
+		implementation = LocalDate::class,
 		description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
 	) @JsonFormat(
 		shape = JsonFormat.Shape.STRING,
 		pattern = "yyyy-MM-dd"
-	) val effectiveDate: Date
+	) val effectiveDate: LocalDate
 ) : RepresentationModel<BanListDate?>(), HateoasLinks {
 	@Schema(
 		implementation = String::class,
@@ -53,7 +54,8 @@ data class BanListDate(
 
 	override fun setLinks() {
 		val dateConfig = DateConfig()
-		val banListDateStr = dateConfig.dBSimpleDateFormat().format(effectiveDate)
+		val banListDateStr = effectiveDate.format(dateConfig.dbDateTimeFormatter())
+
 		this.add(
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(BANNED_CARDS_CONTROLLER_CLASS)

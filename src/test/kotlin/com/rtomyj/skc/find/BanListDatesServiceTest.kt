@@ -2,7 +2,6 @@ package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.find.BanListDatesService
 import com.rtomyj.skc.model.BanListDate
 import com.rtomyj.skc.model.BanListDates
 import org.junit.jupiter.api.Assertions
@@ -16,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.time.LocalDate
 
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [BanListDatesService::class])
@@ -32,8 +32,7 @@ class BanListDatesServiceTest {
 
 
 	init {
-		val banListSimpleDate = DateConfig().dBSimpleDateFormat()
-		val testBanListDate = banListSimpleDate.parse("2020-01-20")
+		val testBanListDate = LocalDate.parse("2020-01-20", DateConfig().dbDateTimeFormatter())
 		val banListDates = listOf(
 			BanListDate(testBanListDate)
 		)
