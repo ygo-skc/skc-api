@@ -1,4 +1,4 @@
-val springVersion = "3.0.5"
+val springVersion = "3.1.0"
 val h2Version = "2.1.214"
 val mockitKotlinVersion = "1.6.0"
 
@@ -9,7 +9,6 @@ dependencies {
     "testImplementation"("org.springframework.boot:spring-boot-starter-test:$springVersion")
     "testRuntimeOnly"("com.h2database:h2:$h2Version")
 }
-
 
 tasks.withType<Test> {
     useJUnitPlatform()
@@ -52,7 +51,7 @@ tasks.withType<JacocoCoverageVerification> {
             limit {
                 counter = "LINE"
                 value = "COVEREDRATIO"
-                minimum = "0.2".toBigDecimal()
+                minimum = "0.3".toBigDecimal()
             }
         }
 
@@ -60,7 +59,7 @@ tasks.withType<JacocoCoverageVerification> {
             limit {
                 counter = "BRANCH"
                 value = "COVEREDRATIO"
-                minimum = "0.1".toBigDecimal()
+                minimum = "0.2".toBigDecimal()
             }
         }
     }

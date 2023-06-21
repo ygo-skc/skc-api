@@ -1,9 +1,9 @@
 package com.rtomyj.skc.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
 import jakarta.persistence.*
 import java.io.Serializable
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -21,8 +21,7 @@ class BanListTable : Serializable {
     @Id
     @Temporal(TemporalType.DATE)
     @Column(name = "ban_list_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    var banListDate: Date? = null
+    var banListDate: LocalDate? = null
 
     /**
      * The ID of the card.
