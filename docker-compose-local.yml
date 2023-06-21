@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   skc-api:
-    image: "amazoncorretto:17-alpine3.17-jdk"
+    image: "eclipse-temurin:17.0.7_7-jre-alpine"
     ports:
       - "9998:8443"
     volumes:
