@@ -1,29 +1,29 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "3.1.0"
+val springBootVersion = "3.1.1"
 val springDocVersion = "2.1.0"
 val mysqlVersion = "8.0.33"
 val jacksonKotlinVersion = "2.15.2"
 val jacksonCoreVersion = "2.15.2"
 val snakeYamlVersion = "2.0"
-val guavaVersion = "32.0.1-jre"
-val kotlinCoroutineVersion = "1.7.1"
+val guavaVersion = "32.1.1-jre"
+val kotlinCoroutineVersion = "1.7.2"
 val slf4jVersion = "2.0.7"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "2.1.10"
-java.sourceCompatibility = JavaVersion.VERSION_17
+version = "2.1.11"
+java.sourceCompatibility = JavaVersion.VERSION_20
 
 plugins {
-    id("org.springframework.boot") version "3.1.0"
+    id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
     id("info.solidsoft.pitest") version "1.9.11"
     id("com.adarshr.test-logger") version "3.2.0"    // printing for JUnits
 
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
+    kotlin("jvm") version "1.9.0"
+    kotlin("plugin.spring") version "1.9.0"
 
     jacoco
     java
@@ -76,7 +76,7 @@ configurations {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.1")
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
     runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
@@ -103,7 +103,7 @@ dependencies {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+            jvmTarget = JavaVersion.VERSION_20.toString()
         }
     }
 
