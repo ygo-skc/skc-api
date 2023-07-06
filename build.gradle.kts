@@ -14,7 +14,7 @@ val slf4jVersion = "2.0.7"
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
 version = "2.1.10"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_20
 
 plugins {
     id("org.springframework.boot") version "3.1.1"
@@ -103,7 +103,7 @@ dependencies {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+            jvmTarget = JavaVersion.VERSION_20.toString()
         }
     }
 
