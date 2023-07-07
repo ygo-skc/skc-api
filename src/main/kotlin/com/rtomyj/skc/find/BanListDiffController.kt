@@ -98,18 +98,35 @@ class BanListDiffController
             defaultValue = "TCG"
         ) format: String = "TCG"
     ): ResponseEntity<BanListNewContent> {
-        log.info("User is requesting new content for ban list: {} using format {}", banListStartDate, format)
+        log.info(
+            "Retrieving new ban list content for ban list w/ start date {} using format {}",
+            banListStartDate,
+            format
+        )
 
         val banListNewContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
-        log.info(
-            "Successfully retrieved new content for ban list ({}) for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
-            banListNewContent.listRequested,
-            format,
-            banListNewContent.comparedTo,
-            banListNewContent.numNewForbidden,
-            banListNewContent.numNewLimited,
-            banListNewContent.numNewSemiLimited
-        )
+        if (format == "DL") {
+            log.info(
+                "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
+                banListNewContent.listRequested,
+                format,
+                banListNewContent.comparedTo,
+                banListNewContent.numNewForbidden,
+                banListNewContent.numNewLimitedOne,
+                banListNewContent.numNewLimitedTwo,
+                banListNewContent.numNewLimitedThree
+            )
+        } else {
+            log.info(
+                "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
+                banListNewContent.listRequested,
+                format,
+                banListNewContent.comparedTo,
+                banListNewContent.numNewForbidden,
+                banListNewContent.numNewLimited,
+                banListNewContent.numNewSemiLimited
+            )
+        }
 
         return ResponseEntity.ok(banListNewContent)
     }
@@ -161,7 +178,12 @@ class BanListDiffController
         ) format: String = "TCG"
     ): ResponseEntity<BanListRemovedContent> {
         val banListRemovedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format)
-        log.info("Successfully retrieved removed content for ban list: ( {} ) using format.", banListStartDate, format)
+        log.info(
+            "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
+            banListStartDate,
+            format,
+            banListRemovedContent.numRemoved
+        )
 
         return ResponseEntity.ok(banListRemovedContent)
     }

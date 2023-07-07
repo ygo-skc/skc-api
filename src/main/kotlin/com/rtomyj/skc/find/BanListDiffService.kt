@@ -149,7 +149,7 @@ class BanListDiffService @Autowired constructor(
 
     @Throws(SKCException::class)
     fun getRemovedContentForGivenBanList(banListStartDate: String?, format: String): BanListRemovedContent {
-        log.info("Fetching removed content for ban list from DB w/ start date: ( {} ).", banListStartDate)
+        log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)
         if (!banListDao.isValidBanList(banListStartDate!!)) throw SKCException(
             String.format(
                 ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE,
