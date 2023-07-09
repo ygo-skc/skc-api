@@ -86,7 +86,7 @@ class CardBrowseJDBCDao @Autowired constructor(
 
             val monsterAssociationCriteriaList: MutableList<String?> =
                 mutableListOf(levelCriteria, rankCriteria, linkRatingCriteria)
-            monsterAssociationCriteriaList.removeAll(listOf(null, ""))
+            monsterAssociationCriteriaList.removeAll(setOf(null, ""))
 
             val monsterAssociationCriteria = java.lang.String.join("+", monsterAssociationCriteriaList)
             sqlParams.addValue("monsterAssociation", monsterAssociationCriteria)

@@ -13,6 +13,7 @@ object DBQueryConstants {
 			" FROM ban_list_info" +
 			" WHERE ban_status = :status" +
 			" AND ban_list_date = :date" +
+			" AND duel_format = :format" +
 			" ORDER BY color_id, card_name"
 
 	const val GET_AVAILABLE_PACKS =

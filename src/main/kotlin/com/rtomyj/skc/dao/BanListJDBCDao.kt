@@ -36,6 +36,7 @@ class BanListJDBCDao @Autowired constructor(
         val sqlParams = MapSqlParameterSource()
         sqlParams.addValue("date", date)
         sqlParams.addValue("status", status.toString())
+        sqlParams.addValue("format", format)
 
         return jdbcNamedTemplate.query<List<Card>>(query, sqlParams) { row: ResultSet ->
             val cardList = ArrayList<Card>()

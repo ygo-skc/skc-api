@@ -1,5 +1,3 @@
-
-
 CREATE VIEW card_info
 AS
 SELECT
@@ -12,7 +10,7 @@ WHERE
 CREATE VIEW ban_list_info
 AS
 SELECT
-	card_name, monster_type, card_color, card_effect, card_attribute, card_info.card_number, ban_status, ban_list_date, color_id, monster_association
+	card_name, monster_type, card_color, card_effect, card_attribute, card_info.card_number, ban_status, ban_list_date, color_id, monster_association, duel_format
 FROM
 	card_info, ban_lists
 WHERE

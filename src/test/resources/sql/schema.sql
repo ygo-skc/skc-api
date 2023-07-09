@@ -23,10 +23,12 @@ CREATE TABLE cards
 
 CREATE TABLE ban_lists
 (
+	duel_format VARCHAR(8) NOT NULL,
 	ban_list_date DATE NOT NULL,
 	card_number CHAR(8) NOT NULL,
 	ban_status VARCHAR(15) NOT NULL,
-	PRIMARY KEY(ban_list_date, card_number),
+	notes VARCHAR(150) NOT NULL,
+	PRIMARY KEY(ban_list_date, card_number, duel_format),
 	FOREIGN KEY(card_number) REFERENCES cards(card_number)
 );
 
