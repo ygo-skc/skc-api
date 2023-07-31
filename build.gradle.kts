@@ -7,7 +7,7 @@ val mysqlVersion = "8.0.33"
 val jacksonKotlinVersion = "2.15.2"
 val jacksonCoreVersion = "2.15.2"
 val snakeYamlVersion = "2.0"
-val guavaVersion = "32.1.1-jre"
+val guavaVersion = "32.1.2-jre"
 val kotlinCoroutineVersion = "1.7.3"
 val slf4jVersion = "2.0.7"
 
