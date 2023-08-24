@@ -41,7 +41,7 @@ INSERT INTO cards (
     );
 
 
-INSERT INTO ban_lists(ban_list_date, card_number, ban_status)
-	VALUES ('2015-11-09', '40044918', 'Forbidden')
-	, ('2015-11-09', '08949584', 'Limited')
-	, ('2015-11-09', '09411399', 'Limited');
+INSERT INTO ban_lists(duel_format, ban_list_date, card_number, ban_status, notes)
+	VALUES ('TCG', '2015-11-09', '40044918', 'Forbidden', '')
+	, ('TCG', '2015-11-09', '08949584', 'Limited', '')
+	, ('TCG', '2015-11-09', '09411399', 'Limited', '');

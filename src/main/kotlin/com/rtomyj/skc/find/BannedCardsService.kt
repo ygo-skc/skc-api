@@ -5,7 +5,6 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.model.Card
-import com.rtomyj.skc.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
@@ -46,7 +45,7 @@ class BannedCardsService @Autowired constructor(
     fun getBanListByDate(
         banListStartDate: String, saveBandwidth: Boolean, format: String, fetchAllInfo: Boolean
     ): BanListInstance {
-        log.info("Retrieving ban list w/ start date: ( {} ).", banListStartDate)
+        log.info("Retrieving ban list content for ban list w/ start date {} and format {}", banListStartDate, format)
 
         lateinit var forbiddenCards: List<Card>
 

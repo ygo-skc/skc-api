@@ -120,7 +120,7 @@ class BannedCardsController
     ): ResponseEntity<BanListInstance> {
         val reqBanListInstance = bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo)
         log.info(
-            "Successfully retrieved ban list: ( {} ) with saveBandwidth: ( {} ) and format {}.",
+            "Successfully retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} for format {}.",
             banListStartDate,
             saveBandwidth,
             format

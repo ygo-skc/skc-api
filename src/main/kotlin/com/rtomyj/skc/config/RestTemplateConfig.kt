@@ -21,7 +21,7 @@ class RestTemplateConfig {
 	}
 
 	internal class SKCSuggestionEngineRestTemplateHeaderInterceptor(
-		val apiKey: String
+		private val apiKey: String
 	) : ClientHttpRequestInterceptor {
 		override fun intercept(request: HttpRequest, body: ByteArray, execution: ClientHttpRequestExecution): ClientHttpResponse {
 			request.headers.set("API-Key", apiKey)
