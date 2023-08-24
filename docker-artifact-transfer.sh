@@ -1,19 +1,13 @@
-server=$1
-user="ec2-user"
+SERVER=$1
+USER="ec2-user"
 
 if [ $# -eq 0 ]
 	then
 		echo "Need server name"
+		exit -1
 fi
 
-ssh -i ~/.ssh/skc-server.pem "${user}@${server}" << EOF
-	mkdir -p api/build/libs/
-EOF
+echo $SERVER
 
-sftp -i ~/.ssh/skc-server.pem "${user}@${server}" << EOF
-	cd api
-	put docker-compose.yml
-	cd build/libs
-	lcd build/libs
-	put *.jar skc-api.jar
-EOF
+rsync -avz -e "ssh -i ~/.ssh/skc-server.pem" docker-compose.yml "${USER}@${SERVER}:skc-api/"
+rsync -avz -e "ssh -i ~/.ssh/skc-server.pem" -R "build/libs/skc-api.jar" "${USER}@${SERVER}:skc-api/"
