@@ -13,7 +13,7 @@ val slf4jVersion = "2.0.7"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "2.1.12"
+version = "2.1.13"
 java.sourceCompatibility = JavaVersion.VERSION_20
 
 plugins {
