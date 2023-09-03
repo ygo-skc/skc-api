@@ -9,7 +9,7 @@ val jacksonCoreVersion = "2.15.2"
 val snakeYamlVersion = "2.2"
 val guavaVersion = "32.1.2-jre"
 val kotlinCoroutineVersion = "1.7.3"
-val slf4jVersion = "2.0.7"
+val slf4jVersion = "2.0.9"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
