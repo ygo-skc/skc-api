@@ -8,7 +8,7 @@ spring:
     username: root
     password:
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
   hateoas:
     use-hal-as-default-json-media-type: true
@@ -41,6 +41,8 @@ api:
 
 ---
 spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-local
   datasource:
@@ -65,6 +67,8 @@ api:
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
 ---
 spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-remote
   datasource:

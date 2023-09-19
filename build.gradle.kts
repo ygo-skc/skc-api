@@ -6,14 +6,14 @@ val springDocVersion = "2.2.0"
 val mysqlVersion = "8.0.33"
 val jacksonKotlinVersion = "2.15.2"
 val jacksonCoreVersion = "2.15.2"
-val snakeYamlVersion = "2.1"
+val snakeYamlVersion = "2.2"
 val guavaVersion = "32.1.2-jre"
 val kotlinCoroutineVersion = "1.7.3"
-val slf4jVersion = "2.0.7"
+val slf4jVersion = "2.0.9"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "2.1.12"
+version = "2.1.13"
 java.sourceCompatibility = JavaVersion.VERSION_20
 
 plugins {
@@ -76,7 +76,7 @@ configurations {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.3")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
     runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
