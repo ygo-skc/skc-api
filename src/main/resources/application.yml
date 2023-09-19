@@ -63,6 +63,8 @@ api:
       status: /api/v1/suggestions/status
       traffic: /api/v1/suggestions/traffic-analysis
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
+
+jetty.ssl.sniRequired: false  # will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS
 ---
 spring:
   config:
@@ -87,3 +89,5 @@ api:
       status: /api/v1/suggestions/status
       traffic: /api/v1/suggestions/traffic-analysis
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
+
+jetty.ssl.sniRequired: false  # will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS
