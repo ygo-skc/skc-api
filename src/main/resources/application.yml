@@ -42,7 +42,7 @@ api:
 ---
 spring:
   jpa:
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-local
   datasource:
@@ -74,7 +74,7 @@ jetty:
 ---
 spring:
   jpa:
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-remote
   datasource:
