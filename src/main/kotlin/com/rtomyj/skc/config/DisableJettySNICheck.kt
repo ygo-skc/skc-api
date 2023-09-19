@@ -13,7 +13,12 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
-@Profile("docker-remote")
+/**
+ * Disabling SSL SNI check for Jetty
+ * Will allow calls using localhost or host name not found in SSL cert (when using an SSL cert / keystore)
+ * Needed for health check calls to work from AWS
+ */
+@Profile("docker-remote", "docker-local")
 @Configuration
 class DisableJettySNICheck {
     companion object {
@@ -22,23 +27,27 @@ class DisableJettySNICheck {
 
     @Bean
     fun disableSniHostCheck(): WebServerFactoryCustomizer<JettyServletWebServerFactory> {
-        log.info("Disabling SSL SNI check for Jetty - will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS")
+        log.info("Disabling SSL SNI check for Jetty")
 
         return WebServerFactoryCustomizer { factory: JettyServletWebServerFactory ->
             factory.addServerCustomizers(JettyServerCustomizer { server: Server ->
                 for (connector in server.getConnectors()) {
                     if (connector is ServerConnector) {
-                        val connectionFactory = connector.getConnectionFactory(HttpConnectionFactory::class.java)
-                        if (connectionFactory != null) {
-                            val secureRequestCustomizer =
-                                connectionFactory.httpConfiguration.getCustomizer(SecureRequestCustomizer::class.java)
-                            if (secureRequestCustomizer != null) {
-                                secureRequestCustomizer.isSniHostCheck = false
-                            }
-                        }
+                        disableSNI(connector)
                     }
                 }
             })
+        }
+    }
+
+    private fun disableSNI(connector: ServerConnector) {
+        val connectionFactory = connector.getConnectionFactory(HttpConnectionFactory::class.java)
+        if (connectionFactory != null) {
+            val secureRequestCustomizer =
+                connectionFactory.httpConfiguration.getCustomizer(SecureRequestCustomizer::class.java)
+            if (secureRequestCustomizer != null) {
+                secureRequestCustomizer.isSniHostCheck = false
+            }
         }
     }
 }
