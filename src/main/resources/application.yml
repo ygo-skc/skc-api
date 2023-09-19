@@ -8,7 +8,7 @@ spring:
     username: root
     password:
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
   hateoas:
     use-hal-as-default-json-media-type: true
@@ -64,7 +64,11 @@ api:
       traffic: /api/v1/suggestions/traffic-analysis
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
 
-jetty.ssl.sniRequired: false  # will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS
+# will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS
+jetty:
+  ssl:
+    sniHostCheck: false
+    sniRequired: false
 ---
 spring:
   config:
@@ -90,4 +94,8 @@ api:
       traffic: /api/v1/suggestions/traffic-analysis
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
 
-jetty.ssl.sniRequired: false  # will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS
+# will allow calls to localhost when using an SSL cert - needed for health check calls to work from AWS
+jetty:
+  ssl:
+    sniHostCheck: false
+    sniRequired: false
