@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   skc-api:
-    image: "eclipse-temurin:20.0.1_9-jre-alpine"
+    image: "eclipse-temurin:21-jre-alpine"
     ports:
       - "9998:8443"
     volumes:
