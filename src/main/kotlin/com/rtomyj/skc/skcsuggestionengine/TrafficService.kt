@@ -1,5 +1,6 @@
 package com.rtomyj.skc.skcsuggestionengine
 
+import com.rtomyj.skc.exception.DownStreamException
 import com.rtomyj.skc.model.ResourceUtilized
 import com.rtomyj.skc.model.Source
 import com.rtomyj.skc.model.Traffic
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.WebClientResponseException
 
 @Service
 class TrafficService @Autowired constructor(
@@ -33,11 +33,13 @@ class TrafficService @Autowired constructor(
             )
         )
 
-        try {
-            suggestionEngineClient.post().uri(trafficEndpoint).body(BodyInserters.fromValue(traffic)).retrieve()
-                .bodyToMono(String::class.java).block()
-        } catch (ex: WebClientResponseException) {
-            log.error("Could not send traffic data to SKC Suggestion Engine. Err: {}", ex.toString())
-        }
+        suggestionEngineClient.post().uri(trafficEndpoint).body(BodyInserters.fromValue(traffic)).retrieve()
+            .bodyToMono(String::class.java).doOnError(DownStreamException::class.java) { error ->
+                log.error(
+                    "Could not send traffic data to SKC Suggestion Engine. Status code: {}, Err: {}",
+                    error.statusCode,
+                    error.message
+                )
+            }.onErrorComplete().subscribe()
     }
 }
