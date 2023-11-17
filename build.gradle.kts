@@ -131,7 +131,7 @@ tasks {
         group = "Util"
 
         doFirst {
-            println("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
+            println("${layout.buildDirectory.get()}/libs/${archivesBaseName}-${project.version}.jar")
         }
     }
 
@@ -141,8 +141,8 @@ tasks {
 
         dependsOn(bootJar)
 
-        from("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
-        into("${buildDir}/libs")
+        from("${layout.buildDirectory.get()}/libs/${archivesBaseName}-${project.version}.jar")
+        into("${layout.buildDirectory.get()}/libs")
 
         rename("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
     }
@@ -166,7 +166,7 @@ tasks {
         mainClass.set("io.gatling.app.Gatling")
         args = listOf(
             "-s", "com.rtomyj.skc.simulations.BrowseSimulation",
-            "-rf", "${buildDir}/gatling-results",
+            "-rf", "${layout.buildDirectory.get()}/gatling-results",
         )
     }
 }
