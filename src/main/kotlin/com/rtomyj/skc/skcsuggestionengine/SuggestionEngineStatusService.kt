@@ -1,5 +1,6 @@
 package com.rtomyj.skc.skcsuggestionengine
 
+import com.rtomyj.skc.exception.DownStreamException
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.SuggestionEngineStatus
@@ -29,9 +30,11 @@ class SuggestionEngineStatusService @Autowired constructor(
 
         try {
             return suggestionEngineClient.get().uri(statusEndpoint).retrieve()
-                .bodyToMono(SuggestionEngineStatus::class.java).block()!!
+                .bodyToMono(SuggestionEngineStatus::class.java).onErrorMap(DownStreamException::class.java) {
+                    log.error("Error occurred while fetching SKC Suggestion Engine status")
+                    throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
+                }.blockOptional().get()
         } catch (ex: WebClientResponseException) {
-            log.error("Could not send traffic data to SKC Suggestion Engine. Err: {}", ex.toString())
             throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
         }
     }

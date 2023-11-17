@@ -65,7 +65,7 @@ class StatusControllerTest {
 			mockMvc
 				.perform(get("/status"))
 				.andExpect(status().isOk)
-				.andExpect(jsonPath("$.status", `is`("API is online and functional.")))
+				.andExpect(jsonPath("$.status", `is`("API is online and functional")))
 				.andExpect(jsonPath("$.downstream[0].name", `is`(DB_NAME)))
 				.andExpect(jsonPath("$.downstream[0].version", `is`(DB_VERSION)))
 				.andExpect(jsonPath("$.downstream[0].status", `is`(DB_STATUS)))
@@ -92,7 +92,7 @@ class StatusControllerTest {
 			mockMvc
 				.perform(get("/status"))
 				.andExpect(status().isOk)
-				.andExpect(jsonPath("$.status", `is`("API is online and functional.")))
+				.andExpect(jsonPath("$.status", `is`("API is online and functional")))
 				.andExpect(jsonPath("$.downstream[0].name", `is`(DB_NAME)))
 				.andExpect(jsonPath("$.downstream[0].version", `is`(DB_VERSION)))
 				.andExpect(jsonPath("$.downstream[0].status", `is`(DB_STATUS)))
@@ -114,13 +114,13 @@ class StatusControllerTest {
 			mockMvc
 				.perform(get("/status"))
 				.andExpect(status().isOk)
-				.andExpect(jsonPath("$.status", `is`("API is online and functional.")))
+				.andExpect(jsonPath("$.status", `is`("API is online and functional")))
 				.andExpect(jsonPath("$.downstream[0].name", `is`(DB_NAME)))
 				.andExpect(jsonPath("$.downstream[0].version", `is`(DB_VERSION)))
 				.andExpect(jsonPath("$.downstream[0].status", `is`(DB_STATUS)))
 				.andExpect(jsonPath("$.downstream[1].name", `is`(SKC_SUGGESTION_ENGINE_NAME)))
 				.andExpect(jsonPath("$.downstream[1].version", `is`("N/A")))
-				.andExpect(jsonPath("$.downstream[1].status", `is`("API is down.")))
+				.andExpect(jsonPath("$.downstream[1].status", `is`("down")))
 		}
 	}
 }
