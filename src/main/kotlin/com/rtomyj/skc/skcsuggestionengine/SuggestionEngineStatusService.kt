@@ -14,28 +14,34 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 @Service
 class SuggestionEngineStatusService @Autowired constructor(
-    @Qualifier("skc-suggestion-engine-web-client") private val suggestionEngineClient: WebClient,
-    @Value("\${api.skcSuggestionEngine.endpoints.status}") private val statusEndpoint: String
+  @Qualifier("skc-suggestion-engine-web-client") private val suggestionEngineClient: WebClient,
+  @Value("\${api.skc-suggestion-engine.status-endpoint}") private val statusEndpoint: String
 ) {
-    companion object {
-        private val log = LoggerFactory.getLogger(this::class.java.name)
-    }
+  companion object {
+    private val log = LoggerFactory.getLogger(this::class.java.name)
+  }
 
 
-    /**
-     * Calls the status endpoint of the Suggestion Engine API to determine the health of the Suggestion Engine.
-     */
-    fun getStatus(): SuggestionEngineStatus {
-        log.info("Retrieving Suggestion Engine status.")
+  /**
+   * Calls the status endpoint of the Suggestion Engine API to determine the health of the Suggestion Engine.
+   */
+  fun getStatus(): SuggestionEngineStatus {
+    log.info("Retrieving Suggestion Engine status.")
 
-        try {
-            return suggestionEngineClient.get().uri(statusEndpoint).retrieve()
-                .bodyToMono(SuggestionEngineStatus::class.java).onErrorMap(DownStreamException::class.java) {
-                    log.error("Error occurred while fetching SKC Suggestion Engine status")
-                    throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
-                }.blockOptional().get()
-        } catch (ex: WebClientResponseException) {
+    try {
+      return suggestionEngineClient
+          .get()
+          .uri(statusEndpoint)
+          .retrieve()
+          .bodyToMono(SuggestionEngineStatus::class.java)
+          .onErrorMap(DownStreamException::class.java) {
+            log.error("Error occurred while fetching SKC Suggestion Engine status")
             throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
-        }
+          }
+          .blockOptional()
+          .get()
+    } catch (ex: WebClientResponseException) {
+      throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
     }
+  }
 }

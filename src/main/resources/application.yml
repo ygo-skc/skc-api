@@ -8,7 +8,6 @@ spring:
     username: root
     password:
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
   hateoas:
     use-hal-as-default-json-media-type: true
@@ -32,17 +31,14 @@ springdoc:
   pathsToMatch: /**
 
 api:
-  skcSuggestionEngine:
-    uri: http://localhost:90
-    endpoints:
-      status: /api/v1/suggestions/status
-      traffic: /api/v1/suggestions/traffic-analysis
+  skc-suggestion-engine:
+    base-uri: http://localhost:90
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
+    status-endpoint: /api/v1/suggestions/status
+    traffic-endpoint: /api/v1/suggestions/traffic-analysis
 
 ---
 spring:
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-local
   datasource:
@@ -59,16 +55,10 @@ server:
     key-alias: skcapi
 
 api:
-  skcSuggestionEngine:
-    uri: https://suggestions.skc-ygo-api.com
-    endpoints:
-      status: /api/v1/suggestions/status
-      traffic: /api/v1/suggestions/traffic-analysis
-    key: ${SKC_SUGGESTION_ENGINE_API_KEY}
+  skc-suggestion-engine:
+    base-uri: https://suggestions.skc-ygo-api.com
 ---
 spring:
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-remote
   datasource:
@@ -85,9 +75,5 @@ server:
     key-alias: skcapi
 
 api:
-  skcSuggestionEngine:
-    uri: https://suggestions.skc-ygo-api.com
-    endpoints:
-      status: /api/v1/suggestions/status
-      traffic: /api/v1/suggestions/traffic-analysis
-    key: ${SKC_SUGGESTION_ENGINE_API_KEY}
+  skc-suggestion-engine:
+    base-uri: https://suggestions.skc-ygo-api.com
