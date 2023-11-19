@@ -1,5 +1,6 @@
 package com.rtomyj.skc.simulations
 
+import com.rtomyj.skc.config.Configuration
 import com.rtomyj.skc.protocols.Protocol._
 import com.rtomyj.skc.scenarios.BrowseScenario
 import io.gatling.core.Predef._
@@ -9,13 +10,13 @@ import scala.language.postfixOps
 class BrowseSimulation extends Simulation
 {
   private val getBrowseCriteriaScenario = BrowseScenario.getBrowseCriteria
-    .inject(atOnceUsers(30))
+    .inject(rampUsers(30).during(Configuration.rampup))
 
   private val getBrowseResultsScenario = BrowseScenario.getBrowseResultsScenario
-    .inject(atOnceUsers(30))
+    .inject(rampUsers(30).during(Configuration.rampup))
 
   private val browseUserLoadScenario = BrowseScenario.browseUserLoad
-    .inject(atOnceUsers(15))
+    .inject(rampUsers(15).during(Configuration.rampup))
 
 
   setUp(getBrowseCriteriaScenario

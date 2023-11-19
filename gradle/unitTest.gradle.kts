@@ -1,4 +1,4 @@
-val springVersion = "3.1.4"
+val springVersion = "3.1.5"
 val h2Version = "2.2.224"
 val mockitKotlinVersion = "1.6.0"
 
@@ -15,7 +15,7 @@ tasks.withType<Test> {
 
     minHeapSize = "256m"
     maxHeapSize = "896m"
-    maxParallelForks = Runtime.getRuntime().availableProcessors() / 2 ?: 1
+    maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
 
     finalizedBy(tasks.withType<JacocoReport>())
 }

@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "3.1.4"
+val springBootVersion = "3.1.5"
 val springDocVersion = "2.2.0"
 val mysqlVersion = "8.0.33"
-val jacksonKotlinVersion = "2.15.3"
-val jacksonCoreVersion = "2.15.3"
+val jacksonKotlinVersion = "2.16.0"
+val jacksonCoreVersion = "2.16.0"
 val snakeYamlVersion = "2.2"
 val guavaVersion = "32.1.3-jre"
 val kotlinCoroutineVersion = "1.7.3"
@@ -13,17 +13,17 @@ val slf4jVersion = "2.0.9"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "2.1.14"
-java.sourceCompatibility = JavaVersion.VERSION_20
+version = "2.2.0"
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 plugins {
-    id("org.springframework.boot") version "3.1.4"
-    id("io.spring.dependency-management") version "1.1.3"
+    id("org.springframework.boot") version "3.1.5"
+    id("io.spring.dependency-management") version "1.1.4"
     id("info.solidsoft.pitest") version "1.15.0"
     id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
 
-    kotlin("jvm") version "1.9.10"
-    kotlin("plugin.spring") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.spring") version "1.9.20"
 
     jacoco
     java
@@ -74,7 +74,7 @@ configurations {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-hateoas:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
@@ -103,7 +103,7 @@ dependencies {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_20.toString()
+            jvmTarget = JavaVersion.VERSION_21.toString()
         }
     }
 
@@ -131,7 +131,7 @@ tasks {
         group = "Util"
 
         doFirst {
-            println("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
+            println("${layout.buildDirectory.get()}/libs/${archivesBaseName}-${project.version}.jar")
         }
     }
 
@@ -141,8 +141,8 @@ tasks {
 
         dependsOn(bootJar)
 
-        from("${buildDir}/libs/${archivesBaseName}-${project.version}.jar")
-        into("${buildDir}/libs")
+        from("${layout.buildDirectory.get()}/libs/${archivesBaseName}-${project.version}.jar")
+        into("${layout.buildDirectory.get()}/libs")
 
         rename("${archivesBaseName}-${project.version}.jar", "${archivesBaseName}.jar")
     }
@@ -166,7 +166,7 @@ tasks {
         mainClass.set("io.gatling.app.Gatling")
         args = listOf(
             "-s", "com.rtomyj.skc.simulations.BrowseSimulation",
-            "-rf", "${buildDir}/gatling-results",
+            "-rf", "${layout.buildDirectory.get()}/gatling-results",
         )
     }
 }
@@ -194,5 +194,5 @@ pitest {
 }
 
 jacoco {
-    toolVersion = "0.8.10"
+    toolVersion = "0.8.11"
 }
