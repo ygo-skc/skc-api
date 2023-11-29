@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "3.1.5"
+val springBootVersion = "3.2.0"
 val springDocVersion = "2.2.0"
 val mysqlVersion = "8.0.33"
 val jacksonKotlinVersion = "2.16.0"
@@ -80,9 +80,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
     runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
-    implementation("org.springframework.boot:spring-boot-starter-jetty:$springBootVersion")
-    runtimeOnly("org.eclipse.jetty:jetty-alpn-java-server")
-    runtimeOnly("org.eclipse.jetty.http2:http2-server")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion")
 

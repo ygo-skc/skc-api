@@ -1,4 +1,8 @@
 spring:
+  webflux:
+    base-path: /api/v1
+  main:
+    web-application-type: reactive
   datasource:
     hikari:
       maximumPoolSize: 30
@@ -17,8 +21,6 @@ spring:
 
 server:
   port: 9999
-  servlet:
-    contextPath: /api/v1
   compression:
     enabled: true
     mime-types: application/json

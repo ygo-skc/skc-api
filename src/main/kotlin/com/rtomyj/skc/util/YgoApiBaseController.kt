@@ -6,6 +6,6 @@ abstract class YgoApiBaseController {
 	/**
 	 * Base endpoint for the API.
 	 */
-	@Value("\${server.servlet.contextPath}")
+	@Value("\${spring.webflux.base-path}")
 	var baseEndpoint: String? = null
 }
