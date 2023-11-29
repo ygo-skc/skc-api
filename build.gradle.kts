@@ -10,6 +10,7 @@ val snakeYamlVersion = "2.2"
 val guavaVersion = "32.1.3-jre"
 val kotlinCoroutineVersion = "1.7.3"
 val slf4jVersion = "2.0.9"
+val jakartaServletApiVersion = "6.0.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
@@ -80,7 +81,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
     runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
-    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    implementation("jakarta.servlet:jakarta.servlet-api:${jakartaServletApiVersion}")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion")
 
