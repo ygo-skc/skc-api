@@ -1,4 +1,4 @@
-package com.rtomyj.skc.util.filter
+package com.rtomyj.skc.config.filter
 
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange

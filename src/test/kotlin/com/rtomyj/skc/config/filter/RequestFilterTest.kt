@@ -1,4 +1,4 @@
-package com.rtomyj.skc.util.filter
+package com.rtomyj.skc.config.filter
 
 import com.google.common.net.HttpHeaders.USER_AGENT
 import org.junit.jupiter.api.BeforeAll
