@@ -1,12 +1,10 @@
 package com.rtomyj.skc.config.filter
 
-import com.google.common.base.Strings
-import com.google.common.net.HttpHeaders.USER_AGENT
 import com.rtomyj.skc.util.constant.AppConstants.CLIENT_IP_MDC
 import org.slf4j.MDC
+import org.springframework.http.HttpHeaders.USER_AGENT
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.stereotype.Component
-import org.springframework.util.StringUtils
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
@@ -26,23 +24,17 @@ class RequestFilter : WebFilter {
     fun configureMDC(request: ServerHttpRequest) {
       val headers = request.headers
       val clientIP =
-        if (StringUtils.hasLength(headers.getFirst(X_FORWARDED_FOR))) headers.getFirst(X_FORWARDED_FOR) else request.remoteAddress?.address?.hostAddress
-          ?: ""
-      val queryParams = if (Strings.isNullOrEmpty(request.uri.query)) "" else "?" + request.uri.query
+        if (headers.getFirst(X_FORWARDED_FOR).isNullOrBlank()) request.remoteAddress?.address?.hostAddress
+          ?: "" else headers.getFirst(X_FORWARDED_FOR)
+      val queryParams = if (request.uri.query.isNullOrBlank()) "" else "?" + request.uri.query
 
       // proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
       MDC.put(
-        CLIENT_IP_MDC,
-        clientIP
-            .replace("[", "")
-            .replace("]", "")
+        CLIENT_IP_MDC, clientIP.replace("[", "").replace("]", "")
       )
       MDC.put("reqPath", request.uri.path + queryParams)
       MDC.put(
-        "reqUUID",
-        UUID
-            .randomUUID()
-            .toString()
+        "reqUUID", UUID.randomUUID().toString()
       )
       MDC.put("clientID", headers.getFirst(CLIENT_ID_NAME))
       MDC.put("userAgent", headers.getFirst(USER_AGENT))
@@ -51,12 +43,9 @@ class RequestFilter : WebFilter {
 
   override fun filter(
     serverWebExchange: ServerWebExchange, chain: WebFilterChain
-  ): Mono<Void> = chain
-      .filter(serverWebExchange)
-      .doOnSubscribe {
-        configureMDC(serverWebExchange.request)
-      }
-      .doFinally {
-        MDC.clear()
-      }
+  ): Mono<Void> = chain.filter(serverWebExchange).doOnSubscribe {
+    configureMDC(serverWebExchange.request)
+  }.doFinally {
+    MDC.clear()
+  }
 }
