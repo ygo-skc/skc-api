@@ -9,9 +9,11 @@ import reactor.core.publisher.Mono
 
 @Component
 class ResponseFilter : WebFilter {
-    override fun filter(
-        serverWebExchange: ServerWebExchange, chain: WebFilterChain
-    ): Mono<Void> = chain.filter(serverWebExchange).doOnSubscribe {
+  override fun filter(
+    serverWebExchange: ServerWebExchange, chain: WebFilterChain
+  ): Mono<Void> = chain
+      .filter(serverWebExchange)
+      .doOnSubscribe {
         serverWebExchange.response.headers.add("Cache-Control", "max-age=300")
-    }
+      }
 }
