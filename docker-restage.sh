@@ -1,10 +1,11 @@
-server=$1
-user="ec2-user"
-
 if [ $# -eq 0 ]
 	then
 		echo "Need server name"
+		exit 1
 fi
+
+server=$1
+user="ec2-user"
 
 ssh -i ~/.ssh/skc-server.pem "${user}@${server}" << EOF
 	cd skc-api

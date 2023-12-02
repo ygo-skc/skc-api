@@ -1,3 +1,9 @@
+if [ $# -eq 0 ]
+	then
+		echo "Doppler env name needs to be provided"
+		exit 1
+fi
+
 ENV=$1
 doppler setup -p skc-api -c $ENV --no-interactive
 
