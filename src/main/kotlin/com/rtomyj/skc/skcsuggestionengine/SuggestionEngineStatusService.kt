@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.WebClientResponseException
 
 @Service
 class SuggestionEngineStatusService @Autowired constructor(
@@ -19,6 +18,7 @@ class SuggestionEngineStatusService @Autowired constructor(
 ) {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
+    private val statusCheckFailedException = SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
   }
 
 
@@ -28,20 +28,26 @@ class SuggestionEngineStatusService @Autowired constructor(
   fun getStatus(): SuggestionEngineStatus {
     log.info("Retrieving Suggestion Engine status.")
 
-    try {
-      return suggestionEngineClient
-          .get()
-          .uri(statusEndpoint)
-          .retrieve()
-          .bodyToMono(SuggestionEngineStatus::class.java)
-          .onErrorMap(DownStreamException::class.java) {
-            log.error("Error occurred while fetching SKC Suggestion Engine status")
-            throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
-          }
-          .blockOptional()
-          .get()
-    } catch (ex: WebClientResponseException) {
-      throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
-    }
+    return suggestionEngineClient
+        .get()
+        .uri(statusEndpoint)
+        .retrieve()
+        .bodyToMono(SuggestionEngineStatus::class.java)
+        .onErrorMap(DownStreamException::class.java) { ex ->
+          log.error(
+            "Error occurred while fetching SKC Suggestion Engine status. Body: {} HTTP Status Code: {}",
+            ex.message,
+            ex.statusCode
+          )
+          throw statusCheckFailedException
+        }
+        .onErrorMap { ex ->
+          log.error(
+            "Error occurred while fetching SKC Suggestion Engine status. Body: {}", ex.message
+          )
+          throw statusCheckFailedException
+        }
+        .blockOptional()
+        .get()
   }
 }
