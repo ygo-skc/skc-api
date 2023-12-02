@@ -20,7 +20,7 @@ ssh -i ~/.ssh/skc-server.pem "${USER}@${SERVER}" << EOF
 	docker-compose kill
 	docker-compose rm -f
 	docker-compose pull
-	docker-compose up -d
+	docker-compose up --scale skc-api=2 -d
 EOF
 
 bash aws-cert-update.sh
