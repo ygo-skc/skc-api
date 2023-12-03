@@ -1,11 +1,7 @@
 package com.rtomyj.skc.status
 
 import com.rtomyj.skc.dao.StatusDao
-import com.rtomyj.skc.exception.ErrorType
-import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.DownstreamStatus
-import com.rtomyj.skc.model.SuggestionEngineDownstreamStatus
-import com.rtomyj.skc.model.SuggestionEngineStatus
 import com.rtomyj.skc.skcsuggestionengine.SuggestionEngineStatusService
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -16,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
 @WebFluxTest(StatusController::class)
 @ContextConfiguration(classes = [StatusController::class])
@@ -41,9 +38,13 @@ class StatusControllerTest {
     private const val SKC_SUGGESTION_ENGINE_STATUS = "All good 😛"
 
     private val SKC_DB_UP = DownstreamStatus(DB_NAME, DB_VERSION, DB_STATUS)
-    private val SKC_SUGGESTION_ENGINE_DB_UP = SuggestionEngineDownstreamStatus("Suggestion Engine DB", "Up")
-    private val SKC_SUGGESTION_ENGINE_MONGO_DB_UP =
-      SuggestionEngineDownstreamStatus("Suggestion Engine MongoDB", "Down")
+    private val SKC_SUGGESTION_ENGINE_UP =
+      DownstreamStatus(SKC_SUGGESTION_ENGINE_NAME, SKC_SUGGESTION_ENGINE_VERSION, SKC_SUGGESTION_ENGINE_STATUS)
+    private val SKC_SUGGESTION_ENGINE_DOWN = DownstreamStatus(
+      SKC_SUGGESTION_ENGINE_NAME,
+      SKC_SUGGESTION_ENGINE_VERSION,
+      "The following services are offline: Suggestion Engine MongoDB"
+    )
   }
 
 
@@ -57,7 +58,11 @@ class StatusControllerTest {
 
       Mockito
           .`when`(suggestionEngineStatusService.getStatus())
-          .thenReturn(SuggestionEngineStatus(SKC_SUGGESTION_ENGINE_VERSION, listOf(SKC_SUGGESTION_ENGINE_DB_UP)))
+          .thenReturn(
+            Mono.just(
+              SKC_SUGGESTION_ENGINE_UP
+            )
+          )
 
       mockMvc
           .get()
@@ -90,8 +95,8 @@ class StatusControllerTest {
       Mockito
           .`when`(suggestionEngineStatusService.getStatus())
           .thenReturn(
-            SuggestionEngineStatus(
-              SKC_SUGGESTION_ENGINE_VERSION, listOf(SKC_SUGGESTION_ENGINE_DB_UP, SKC_SUGGESTION_ENGINE_MONGO_DB_UP)
+            Mono.just(
+              SKC_SUGGESTION_ENGINE_DOWN
             )
           )
 
@@ -125,7 +130,7 @@ class StatusControllerTest {
 
       Mockito
           .`when`(suggestionEngineStatusService.getStatus())
-          .thenThrow(SKCException("Suggestion Engine status check failed.", ErrorType.DS001))
+          .thenReturn(Mono.just(DownstreamStatus("SKC Suggestion Engine", "N/A", "down")))
 
       mockMvc
           .get()
