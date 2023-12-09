@@ -24,17 +24,26 @@ class RequestFilter : WebFilter {
     fun configureMDC(request: ServerHttpRequest) {
       val headers = request.headers
       val clientIP =
-        if (headers.getFirst(X_FORWARDED_FOR).isNullOrBlank()) request.remoteAddress?.address?.hostAddress
+        if (headers
+              .getFirst(X_FORWARDED_FOR)
+              .isNullOrBlank()
+        ) request.remoteAddress?.address?.hostAddress
           ?: "" else headers.getFirst(X_FORWARDED_FOR)
       val queryParams = if (request.uri.query.isNullOrBlank()) "" else "?" + request.uri.query
 
       // proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
       MDC.put(
-        CLIENT_IP_MDC, clientIP.replace("[", "").replace("]", "")
+        CLIENT_IP_MDC,
+        clientIP
+            .replace("[", "")
+            .replace("]", "")
       )
       MDC.put("reqPath", request.uri.path + queryParams)
       MDC.put(
-        "reqUUID", UUID.randomUUID().toString()
+        "reqUUID",
+        UUID
+            .randomUUID()
+            .toString()
       )
       MDC.put("clientID", headers.getFirst(CLIENT_ID_NAME))
       MDC.put("userAgent", headers.getFirst(USER_AGENT))
@@ -43,9 +52,13 @@ class RequestFilter : WebFilter {
 
   override fun filter(
     serverWebExchange: ServerWebExchange, chain: WebFilterChain
-  ): Mono<Void> = chain.filter(serverWebExchange).doOnSubscribe {
-    configureMDC(serverWebExchange.request)
-  }.doFinally {
-    MDC.clear()
-  }
+  ): Mono<Void> = chain
+      .filter(serverWebExchange)
+      .contextWrite {
+        configureMDC(serverWebExchange.request)
+        it.put("MDC", MDC.getCopyOfContextMap())
+      }
+      .doFinally {
+        MDC.clear()
+      }
 }

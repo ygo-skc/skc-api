@@ -1,5 +1,6 @@
 package com.rtomyj.skc.status
 
+import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.StatusResponse
 import com.rtomyj.skc.skcsuggestionengine.SuggestionEngineStatusService
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+
 
 /**
  * Configures endpoint(s) for testing the health of the API.
@@ -44,29 +46,28 @@ class StatusController @Autowired constructor(
     summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME]
   )
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  fun status(): ResponseEntity<Mono<StatusResponse>> {
-    return ResponseEntity.ok(Flux
-        .concat(suggestionEngineStatusService.getStatus(), Mono.just(dao.dbConnection()))
-        .doOnSubscribe {
-          log.info("Status of API was requested")
-        }
-        .collectMultimap {
-          if (it.name == "SKC DB") "critical" else "utility"
-        }
-        .map { downstreamStatus ->
-          val criticalPathDown = downstreamStatus
-              .getValue("critical")
-              .stream()
-              .filter {
-                it.status.equals("down", ignoreCase = true)
-              }
-              .findAny().isPresent
+  fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
+      .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
+      .doOnSubscribe {
+        log.info("Status of API was requested")
+      }
+      .collectMultimap { dsStatus ->
+        if (dsStatus.name == "SKC DB") "critical" else "utility"
+      }
+      .map { downstreamStatus ->
+        val criticalPathDown = downstreamStatus
+            .getValue("critical")
+            .stream()
+            .filter {
+              it.status.equals("down", ignoreCase = true)
+            }
+            .findAny().isPresent
 
-          StatusResponse(
-            if (criticalPathDown) "API is online but functionality is impacted" else "API is online and functional",
-            AppConstants.APP_VERSION,
-            downstreamStatus.values.flatten()
-          )
-        })
-  }
+        StatusResponse(
+          if (criticalPathDown) "API is online but functionality is impacted" else "API is online and functional",
+          AppConstants.APP_VERSION,
+          downstreamStatus.values.flatten()
+        )
+      })
+  )
 }

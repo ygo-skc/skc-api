@@ -20,12 +20,12 @@ class WebClientConfig {
   ): WebClient = WebClient
       .builder()
       .filter(ExchangeFilterFunction.ofRequestProcessor { request ->
-        Mono.just(
+        Mono.fromCallable {
           ClientRequest
               .from(request)
               .header("API-Key", apiKey)
               .build()
-        )
+        }
       })
       .filter(ExchangeFilterFunction.ofResponseProcessor { response ->
         webClientExceptionHandler(response)
@@ -43,7 +43,9 @@ class WebClientConfig {
             Mono.error(DownStreamException(body, statusCode.value()))
           }
     } else {
-      Mono.just(response)
+      Mono.fromCallable {
+        response
+      }
     }
   }
 }
