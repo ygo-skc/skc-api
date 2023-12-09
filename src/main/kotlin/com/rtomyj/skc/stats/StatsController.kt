@@ -1,5 +1,6 @@
 package com.rtomyj.skc.stats
 
+import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
@@ -18,60 +19,62 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping(path = ["/stats"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_STATS_NAME)
 class StatsController @Autowired constructor(private val statsService: StatsService) : YgoApiBaseController() {
 
-	companion object {
-		private val log = LoggerFactory.getLogger(this::class.java.name)
-	}
+  companion object {
+    private val log = LoggerFactory.getLogger(this::class.java.name)
+  }
 
+  @Operation(
+    summary = "Retrieve sum of all unique monster types for a given color of a card."
+  )
+  @GetMapping("/card/monster_type/{cardColor}")
+  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(
+    responseCode = "400",
+    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  @ApiResponse(
+    responseCode = "404",
+    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  fun monsterTypesForgivenCardColor(
+    @Parameter(
+      description = SwaggerConstants.CARD_COLOR_DESCRIPTION, schema = Schema(
+        implementation = String::class, defaultValue = "fusion"
+      )
+    ) @PathVariable("cardColor") cardColor: String
+  ): Mono<ResponseEntity<MonsterTypeStats>> = ReactiveMDC.deferMDC(Mono
+      .fromCallable {
+        ResponseEntity.ok(statsService.getMonsterTypeStats(cardColor))
+      }
+      .doOnSubscribe {
+        log.info("Retrieving monster types for cards with color: {}", cardColor)
+      })
 
-	@Operation(
-		summary = "Retrieve sum of all unique monster types for a given color of a card."
-	)
-	@GetMapping("/card/monster_type/{cardColor}")
-	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400",
-		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = SKCError::class))]
-	)
-	@ApiResponse(
-		responseCode = "404",
-		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = SKCError::class))]
-	)
-	fun monsterTypesForgivenCardColor(
-		@Parameter(
-			description = SwaggerConstants.CARD_COLOR_DESCRIPTION,
-			schema = Schema(
-				implementation = String::class,
-				defaultValue = "fusion"
-			)
-		) @PathVariable("cardColor") cardColor: String
-	): ResponseEntity<MonsterTypeStats> {
-		log.info("Retrieving monster types for cards with color: {}", cardColor)
-		return ResponseEntity.ok(statsService.getMonsterTypeStats(cardColor))
-	}
-
-	@Operation(
-		summary = "Retrieve overview of the data currently in Database."
-	)
-	@ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-	@ApiResponse(responseCode = "400",
-		description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = SKCError::class))]
-	)
-	@ApiResponse(
-		responseCode = "404",
-		description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-		content = [Content(schema = Schema(implementation = SKCError::class))]
-	)
-	@GetMapping
-	fun databaseStats(): ResponseEntity<DatabaseStats> {
-		log.info("Retrieving high level overview of info stored in DB.")
-		return ResponseEntity.ok(statsService.databaseStats())
-	}
+  @Operation(
+    summary = "Retrieve overview of the data currently in Database."
+  )
+  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(
+    responseCode = "400",
+    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  @ApiResponse(
+    responseCode = "404",
+    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  @GetMapping
+  fun databaseStats(): Mono<ResponseEntity<DatabaseStats>> = ReactiveMDC.deferMDC(Mono
+      .fromCallable { ResponseEntity.ok(statsService.databaseStats()) }
+      .doOnSubscribe { log.info("Retrieving high level overview of info stored in DB.") })
 }
