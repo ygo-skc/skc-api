@@ -18,9 +18,13 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.EntityModel
+import org.springframework.hateoas.Links
+import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 /**
@@ -90,39 +94,80 @@ class BanListDiffController
     ) @PathVariable banListStartDate: String, @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<ResponseEntity<BanListNewContent>> = ReactiveMDC.deferMDC(Mono
-      .fromCallable { banListDiffService.getNewContentForGivenBanList(banListStartDate, format) }
-      .map { banListNewContent ->
-        if (format == "DL") {
-          log.info(
-            "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
-            banListNewContent.listRequested,
-            format,
-            banListNewContent.comparedTo,
-            banListNewContent.numNewForbidden,
-            banListNewContent.numNewLimitedOne,
-            banListNewContent.numNewLimitedTwo,
-            banListNewContent.numNewLimitedThree
-          )
-        } else {
-          log.info(
-            "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
-            banListNewContent.listRequested,
-            format,
-            banListNewContent.comparedTo,
-            banListNewContent.numNewForbidden,
-            banListNewContent.numNewLimited,
-            banListNewContent.numNewSemiLimited
-          )
-        }
+  ): Mono<EntityModel<BanListNewContent>> = ReactiveMDC.deferMDC(Mono
+      .zip(Mono
+          .fromCallable {
+            banListDiffService.getNewContentForGivenBanList(
+              banListStartDate, format
+            )
+          }
+          .doOnSuccess { banListNewContent ->
+            if (format == "DL") {
+              log.info(
+                "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
+                banListNewContent.listRequested,
+                format,
+                banListNewContent.comparedTo,
+                banListNewContent.numNewForbidden,
+                banListNewContent.numNewLimitedOne,
+                banListNewContent.numNewLimitedTwo,
+                banListNewContent.numNewLimitedThree
+              )
+            } else {
+              log.info(
+                "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
+                banListNewContent.listRequested,
+                format,
+                banListNewContent.comparedTo,
+                banListNewContent.numNewForbidden,
+                banListNewContent.numNewLimited,
+                banListNewContent.numNewSemiLimited
+              )
+            }
 
-        ResponseEntity.ok(banListNewContent)
+          }, newlyAddedContent(banListStartDate, format)
+      )
+      .map {
+        EntityModel.of(it.t1, it.t2)
       }
       .doOnSubscribe {
         log.info(
           "Retrieving new ban list content for ban list w/ start date {} using format {}", banListStartDate, format
         )
       })
+
+
+  private fun newlyAddedContent(banListStartDate: String, format: String): Mono<Links> = Flux
+      .merge(
+        WebFluxLinkBuilder
+            .linkTo(
+              WebFluxLinkBuilder
+                  .methodOn(this::class.java)
+                  .getNewlyAddedContentForBanList(banListStartDate, format)
+            )
+            .withSelfRel()
+            .toMono(),
+        WebFluxLinkBuilder
+            .linkTo(
+              WebFluxLinkBuilder
+                  .methodOn(this::class.java)
+                  .getNewlyRemovedContentForBanList(banListStartDate, format)
+            )
+            .withRel("Ban List Removed Content")
+            .toMono(),
+        WebFluxLinkBuilder
+            .linkTo(
+              WebFluxLinkBuilder
+                  .methodOn(BannedCardsController::class.java)
+                  .getBannedCards(banListStartDate, false, format, true)
+            )
+            .withRel("Ban List Content")
+            .toMono()
+      )
+      .collectList()
+      .map {
+        Links.of(it)
+      }
 
   @GetMapping(path = ["/{banListStartDate}/removed"])
   @Operation(
