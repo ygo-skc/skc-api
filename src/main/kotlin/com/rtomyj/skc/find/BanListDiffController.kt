@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.Links
 import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -125,7 +124,7 @@ class BanListDiffController
               )
             }
 
-          }, newlyAddedContent(banListStartDate, format)
+          }, newlyAddedContentLinks(banListStartDate, format)
       )
       .map {
         EntityModel.of(it.t1, it.t2)
@@ -137,7 +136,7 @@ class BanListDiffController
       })
 
 
-  private fun newlyAddedContent(banListStartDate: String, format: String): Mono<Links> = Flux
+  private fun newlyAddedContentLinks(banListStartDate: String, format: String): Mono<Links> = Flux
       .merge(
         WebFluxLinkBuilder
             .linkTo(
@@ -206,16 +205,59 @@ class BanListDiffController
     ) @PathVariable(name = "banListStartDate") banListStartDate: String, @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<ResponseEntity<BanListRemovedContent>> = ReactiveMDC.deferMDC(Mono
-      .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
-      .map { banListRemovedContent ->
+  ): Mono<EntityModel<BanListRemovedContent>> = ReactiveMDC.deferMDC(Mono
+      .zip(Mono
+          .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
+          .doOnSuccess { banListRemovedContent ->
+            log.info(
+              "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
+              banListStartDate,
+              format,
+              banListRemovedContent.numRemoved
+            )
+          }, removedContentLinks(banListStartDate, format)
+      )
+      .map {
+        EntityModel.of(it.t1, it.t2)
+      }
+      .doOnSubscribe {
         log.info(
-          "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
+          "Retrieving removed ban list content for ban list w/ start date {} using format {}",
           banListStartDate,
-          format,
-          banListRemovedContent.numRemoved
+          format
         )
-
-        ResponseEntity.ok(banListRemovedContent)
       })
+
+
+  private fun removedContentLinks(banListStartDate: String, format: String): Mono<Links> = Flux
+      .merge(
+        WebFluxLinkBuilder
+            .linkTo(
+              WebFluxLinkBuilder
+                  .methodOn(this::class.java)
+                  .getNewlyRemovedContentForBanList(banListStartDate, format)
+            )
+            .withSelfRel()
+            .toMono(),
+        WebFluxLinkBuilder
+            .linkTo(
+              WebFluxLinkBuilder
+                  .methodOn(BannedCardsController::class.java)
+                  .getBannedCards(banListStartDate, false, format, true)
+            )
+            .withRel("Ban List Content")
+            .toMono(),
+        WebFluxLinkBuilder
+            .linkTo(
+              WebFluxLinkBuilder
+                  .methodOn(this::class.java)
+                  .getNewlyAddedContentForBanList(banListStartDate, format)
+            )
+            .withRel("Ban List New Content")
+            .toMono()
+      )
+      .collectList()
+      .map {
+        Links.of(it)
+      }
 }
