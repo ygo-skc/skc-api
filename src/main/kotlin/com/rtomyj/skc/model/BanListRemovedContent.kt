@@ -30,7 +30,7 @@ data class BanListRemovedContent(
     implementation = Int::class,
     description = "Total number of cards removed in requested ban list compared to previous ban list.",
   ) val numRemoved: Int = removedCards.size
-) : RepresentationModel<BanListRemovedContent?>() {
+) : RepresentationModel<BanListRemovedContent>() {
 
   fun setLinks() {
     removedCards.forEach(CardsPreviousBanListStatus::setLinks)

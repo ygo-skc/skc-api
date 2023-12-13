@@ -94,7 +94,7 @@ data class BanListNewContent(
     description = "Total new cards included in the Limited Three list.",
   )
   val numNewLimitedThree: Int = newLimitedThree.size,
-) : RepresentationModel<BanListNewContent?>() {
+) : RepresentationModel<BanListNewContent>() {
   fun setLinks() {
     newForbidden
         .forEach(CardsPreviousBanListStatus::setLinks)

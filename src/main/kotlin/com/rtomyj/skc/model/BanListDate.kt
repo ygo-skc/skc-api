@@ -27,7 +27,7 @@ data class BanListDate(
     shape = JsonFormat.Shape.STRING,
     pattern = "yyyy-MM-dd"
   ) val effectiveDate: LocalDate
-) : RepresentationModel<BanListDate?>() {
+) : RepresentationModel<BanListDate>() {
   @Schema(
     implementation = String::class,
     description = "What format the ban list dates correspond to."
