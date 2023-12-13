@@ -3,7 +3,6 @@ package com.rtomyj.skc.find
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.hateoas.Links
@@ -29,9 +28,6 @@ class BanListDatesService
   @Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter
 ) {
   companion object {
-    @JvmStatic
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-
     private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
     private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
   }
@@ -53,7 +49,6 @@ class BanListDatesService
       .map { dates ->
         BanListDates(dates.filterNotNull())
       }
-      .doOnSubscribe { log.info("Retrieving ban list dates") }
 
   private fun banListDateLinks(format: String, date: String): Mono<Links> = Flux
       .merge(

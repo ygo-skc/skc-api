@@ -94,38 +94,40 @@ class BanListDiffController
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
   ): Mono<EntityModel<BanListNewContent>> = ReactiveMDC.deferMDC(Mono
-      .zip(Mono
-          .fromCallable {
-            banListDiffService.getNewContentForGivenBanList(
-              banListStartDate, format
-            )
-          }
-          .doOnSuccess { banListNewContent ->
-            if (format == "DL") {
-              log.info(
-                "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
-                banListNewContent.listRequested,
-                format,
-                banListNewContent.comparedTo,
-                banListNewContent.numNewForbidden,
-                banListNewContent.numNewLimitedOne,
-                banListNewContent.numNewLimitedTwo,
-                banListNewContent.numNewLimitedThree
-              )
-            } else {
-              log.info(
-                "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
-                banListNewContent.listRequested,
-                format,
-                banListNewContent.comparedTo,
-                banListNewContent.numNewForbidden,
-                banListNewContent.numNewLimited,
-                banListNewContent.numNewSemiLimited
-              )
-            }
-
-          }, newlyAddedContentLinks(banListStartDate, format)
+      .zip(
+        Mono.fromCallable {
+          banListDiffService.getNewContentForGivenBanList(
+            banListStartDate, format
+          )
+        }, newlyAddedContentLinks(banListStartDate, format)
       )
+      .doOnSuccess {
+        val banListNewContent = it.t1
+
+        if (format == "DL") {
+          log.info(
+            "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
+            banListNewContent.listRequested,
+            format,
+            banListNewContent.comparedTo,
+            banListNewContent.numNewForbidden,
+            banListNewContent.numNewLimitedOne,
+            banListNewContent.numNewLimitedTwo,
+            banListNewContent.numNewLimitedThree
+          )
+        } else {
+          log.info(
+            "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
+            banListNewContent.listRequested,
+            format,
+            banListNewContent.comparedTo,
+            banListNewContent.numNewForbidden,
+            banListNewContent.numNewLimited,
+            banListNewContent.numNewSemiLimited
+          )
+        }
+
+      }
       .map {
         EntityModel.of(it.t1, it.t2)
       }
@@ -206,26 +208,23 @@ class BanListDiffController
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
   ): Mono<EntityModel<BanListRemovedContent>> = ReactiveMDC.deferMDC(Mono
-      .zip(Mono
-          .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
-          .doOnSuccess { banListRemovedContent ->
-            log.info(
-              "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
-              banListStartDate,
-              format,
-              banListRemovedContent.numRemoved
-            )
-          }, removedContentLinks(banListStartDate, format)
+      .zip(
+        Mono.fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) },
+        removedContentLinks(banListStartDate, format)
       )
+      .doOnSuccess {
+        log.info(
+          "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
+          banListStartDate,
+          format,
+          it.t1.numRemoved
+        )
+      }
       .map {
         EntityModel.of(it.t1, it.t2)
       }
       .doOnSubscribe {
-        log.info(
-          "Retrieving removed ban list content for ban list w/ start date {} using format {}",
-          banListStartDate,
-          format
-        )
+        log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)
       })
 
 

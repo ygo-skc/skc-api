@@ -65,27 +65,23 @@ class BanListDatesController
     @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<EntityModel<BanListDates>> = ReactiveMDC.deferMDC(
-    Mono
-        .zip(
-          banListDatesService
-              .retrieveBanListStartDates(format)
-              .map { banListDates ->
-                log.info(
-                  "Successfully retrieved all effective start dates for ban list using format {}. Currently there are {} ban lists",
-                  format,
-                  banListDates.dates.size
-                )
-
-                banListDates
-              }, banListDatesLinks(format)
+  ): Mono<EntityModel<BanListDates>> = ReactiveMDC.deferMDC(Mono
+      .zip(
+        banListDatesService.retrieveBanListStartDates(format), banListDatesLinks(format)
+      )
+      .doOnSuccess {
+        log.info(
+          "Successfully retrieved all effective start dates for ban list using format {}. Currently there are {} ban lists",
+          format,
+          it.t1.dates.size
         )
-        .map {
-          EntityModel.of(it.t1, it.t2)
-        }
-        .doOnSubscribe {
-          log.info("User is retrieving all effective start dates for ban lists using format {}.", format)
-        })
+      }
+      .map {
+        EntityModel.of(it.t1, it.t2)
+      }
+      .doOnSubscribe {
+        log.info("Retrieving all effective start dates for ban lists using format {}.", format)
+      })
 
   private fun banListDatesLinks(format: String): Mono<Link> = WebFluxLinkBuilder
       .linkTo(
