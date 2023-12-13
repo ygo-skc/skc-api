@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.hateoas.EntityModel
+import org.springframework.hateoas.Link
+import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -74,7 +77,23 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
     content = [Content(schema = Schema(implementation = SKCError::class))]
   )
   @GetMapping
-  fun databaseStats(): Mono<ResponseEntity<DatabaseStats>> = ReactiveMDC.deferMDC(Mono
-      .fromCallable { ResponseEntity.ok(statsService.databaseStats()) }
+  fun databaseStats(): Mono<EntityModel<DatabaseStats>> = ReactiveMDC.deferMDC(Mono
+      .zip(Mono.fromCallable { statsService.databaseStats() }, dbStatsLinks())
+      .doOnSuccess {
+        log.info("Successfully retrieved database stats: {}", it.t1.toString())
+      }
+      .map {
+        EntityModel.of(it.t1, listOf(it.t2))
+      }
       .doOnSubscribe { log.info("Retrieving high level overview of info stored in DB.") })
+
+
+  private fun dbStatsLinks(): Mono<Link> = WebFluxLinkBuilder
+      .linkTo(
+        WebFluxLinkBuilder
+            .methodOn(this::class.java)
+            .databaseStats()
+      )
+      .withSelfRel()
+      .toMono()
 }
