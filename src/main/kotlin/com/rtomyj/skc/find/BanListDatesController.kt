@@ -12,7 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
+import org.springframework.hateoas.EntityModel
+import org.springframework.hateoas.Link
+import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -63,20 +65,34 @@ class BanListDatesController
     @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<ResponseEntity<BanListDates>> = ReactiveMDC.deferMDC(Mono
-      .fromCallable {
-        banListDatesService.retrieveBanListStartDates(format)
-      }
-      .map { banListDates ->
-        log.info(
-          "Successfully retrieved all effective start dates for ban list using format {}. Currently there are {} ban lists",
-          format,
-          banListDates.dates.size
-        )
+  ): Mono<EntityModel<BanListDates>> = ReactiveMDC.deferMDC(
+    Mono
+        .zip(
+          banListDatesService
+              .retrieveBanListStartDates(format)
+              .map { banListDates ->
+                log.info(
+                  "Successfully retrieved all effective start dates for ban list using format {}. Currently there are {} ban lists",
+                  format,
+                  banListDates.dates.size
+                )
 
-        ResponseEntity.ok(banListDates)
-      }
-      .doOnSubscribe {
-        log.info("User is retrieving all effective start dates for ban lists using format {}.", format)
-      })
+                banListDates
+              }, banListDatesLinks(format)
+        )
+        .map {
+          EntityModel.of(it.t1, it.t2)
+        }
+        .doOnSubscribe {
+          log.info("User is retrieving all effective start dates for ban lists using format {}.", format)
+        })
+
+  private fun banListDatesLinks(format: String): Mono<Link> = WebFluxLinkBuilder
+      .linkTo(
+        WebFluxLinkBuilder
+            .methodOn(this::class.java)
+            .banListStartDates(format)
+      )
+      .withSelfRel()
+      .toMono()
 }

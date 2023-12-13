@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -41,9 +42,7 @@ class BanListDatesControllerTest {
   inner class HappyPath {
     @Test
     fun `Getting Ban List Dates Using Controller, DB Has Databases - Success`() {
-      `when`(banListDatesService.retrieveBanListStartDates("TCG")).thenReturn(BanListDates(getMockBanListDates()).apply {
-        format = "TCG"
-      })
+      `when`(banListDatesService.retrieveBanListStartDates("TCG")).thenReturn(Mono.just(BanListDates(getMockBanListDates())))
 
 
       // call endpoint to retrieve ban list dates
@@ -70,9 +69,9 @@ class BanListDatesControllerTest {
     @Test
     fun `Getting Ban List Dates Using Controller, But There Are No Ban List Dates To Return - Success`() {
       // mock retrieval of ban list dates - return an empty array (na dates found in DB)
-      `when`(banListDatesService.retrieveBanListStartDates("TCG")).thenReturn(BanListDates(emptyList()).apply {
-        format = "TCG"
-      })
+      `when`(banListDatesService.retrieveBanListStartDates("TCG")).thenReturn(
+        Mono.just(BanListDates(emptyList()))
+      )
 
 
       // call endpoint to retrieve ban list dates
