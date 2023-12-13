@@ -27,7 +27,6 @@ class StatsService @Autowired constructor(
       throw SKCException("Requested monster type not found in DB", ErrorType.DB001)    // flow ends here on err
     }
 
-    monsterTypeStats.setLinks()
     log.info("Successfully retrieved stats for monster typing's: {}", monsterTypeStats.toString())
     return monsterTypeStats
   }

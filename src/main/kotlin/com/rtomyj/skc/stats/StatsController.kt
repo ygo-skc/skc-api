@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityModel
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -54,13 +53,28 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         implementation = String::class, defaultValue = "fusion"
       )
     ) @PathVariable("cardColor") cardColor: String
-  ): Mono<ResponseEntity<MonsterTypeStats>> = ReactiveMDC.deferMDC(Mono
-      .fromCallable {
-        ResponseEntity.ok(statsService.getMonsterTypeStats(cardColor))
-      }
-      .doOnSubscribe {
-        log.info("Retrieving monster types for cards with color: {}", cardColor)
-      })
+  ): Mono<EntityModel<MonsterTypeStats>> = ReactiveMDC.deferMDC(
+    Mono
+        .zip(Mono.fromCallable {
+          statsService.getMonsterTypeStats(cardColor)
+        }, monsterTypesForgivenCardColorLinks(cardColor))
+        .map {
+          EntityModel.of(it.t1, listOf(it.t2))
+        }
+        .doOnSubscribe {
+          log.info("Retrieving monster types for cards with color: {}", cardColor)
+        })
+
+  private fun monsterTypesForgivenCardColorLinks(cardColor: String): Mono<Link> = WebFluxLinkBuilder
+      .linkTo(
+        WebFluxLinkBuilder
+            .methodOn(this::class.java)
+            .monsterTypesForgivenCardColor(
+              cardColor
+            )
+      )
+      .withSelfRel()
+      .toMono()
 
   @Operation(
     summary = "Retrieve overview of the data currently in Database."
