@@ -37,16 +37,24 @@ class CardService @Autowired constructor(
    */
   @Throws(SKCException::class)
   fun getCardInfo(cardId: String, fetchAllInfo: Boolean, clientIP: String): Mono<Card> = if (fetchAllInfo) Mono
-      .zip(getCardInfo(cardId),
+      .zip(
+        getCardInfo(cardId),
         Mono.fromCallable { productDao.getProductDetailsForCard(cardId) },
         getCardRestrictionInfo(cardId),
-        Mono.fromCallable { trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP) })
+        trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
+      )
       .map {
         it.t1.foundIn = it.t2
         it.t1.restrictedIn = it.t3
 
         it.t1
-      } else getCardInfo(cardId)
+      } else Mono
+      .zip(
+        getCardInfo(cardId), trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
+      )
+      .map {
+        it.t1
+      }
 
   fun getCardRestrictionInfo(cardId: String): Mono<Map<BanListFormat, MutableList<CardBanListStatus>>> = Flux
       .merge(Mono.fromCallable {

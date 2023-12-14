@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientRequestException
+import reactor.core.publisher.Mono
 
 @Service
 class TrafficService @Autowired constructor(
@@ -24,7 +26,7 @@ class TrafficService @Autowired constructor(
   }
 
 
-  fun submitTrafficData(resourceType: TrafficResourceType, resourceValue: String, ip: String) {
+  fun submitTrafficData(resourceType: TrafficResourceType, resourceValue: String, ip: String): Mono<String> {
     val trafficData = Traffic(
       ip = ip, source = Source(
         systemName = AppConstants.APP_NAME, version = AppConstants.APP_VERSION
@@ -33,7 +35,7 @@ class TrafficService @Autowired constructor(
       )
     )
 
-    suggestionEngineClient
+    return suggestionEngineClient
         .post()
         .uri(trafficEndpoint)
         .body(BodyInserters.fromValue(trafficData))
@@ -46,7 +48,11 @@ class TrafficService @Autowired constructor(
             error.message
           )
         }
-        .onErrorComplete()
-        .subscribe()
+        .doOnError(WebClientRequestException::class.java) { wcError ->
+          log.error("General exception occurred while sending traffic data: {}", wcError.message)
+        }
+        .onErrorResume {
+          Mono.just("")
+        }
   }
 }

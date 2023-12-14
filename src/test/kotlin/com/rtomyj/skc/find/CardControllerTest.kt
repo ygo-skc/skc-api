@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
 @WebFluxTest(CardController::class)
 @Tag("Controller")
@@ -38,7 +39,11 @@ class CardControllerTest {
       val mockCardData: Card =
         mapper.readValue(ClassPathResource(TestConstants.CARD_INSTANCE_STRATOS).file, Card::class.java)
 
-      `when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)).thenReturn(mockCardData)
+      `when`(cardService.getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)).thenReturn(
+        Mono.just(
+          mockCardData
+        )
+      )
 
 
       // call controller and verify correct status, code and message are returned
