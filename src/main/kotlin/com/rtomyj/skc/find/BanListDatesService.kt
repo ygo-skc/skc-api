@@ -30,6 +30,39 @@ class BanListDatesService
   companion object {
     private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
     private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
+
+    @JvmStatic
+    fun bannedContentLinks(format: String, date: String): Mono<Links> = Flux
+        .merge(
+          WebFluxLinkBuilder
+              .linkTo(
+                WebFluxLinkBuilder
+                    .methodOn(BANNED_CARDS_CONTROLLER_CLASS)
+                    .getBannedCards(date, true, format, false)
+              )
+              .withRel("Ban List Content")
+              .toMono(),
+          WebFluxLinkBuilder
+              .linkTo(
+                WebFluxLinkBuilder
+                    .methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
+                    .getNewlyAddedContentForBanList(date, format)
+              )
+              .withRel("Ban List New Content")
+              .toMono(),
+          WebFluxLinkBuilder
+              .linkTo(
+                WebFluxLinkBuilder
+                    .methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
+                    .getNewlyRemovedContentForBanList(date, format)
+              )
+              .withRel("Ban List Removed Content")
+              .toMono()
+        )
+        .collectList()
+        .map {
+          Links.of(it)
+        }
   }
 
   /**
@@ -41,44 +74,12 @@ class BanListDatesService
       .fromIterable(banListDao.getBanListDates(format).dates)
       .flatMap { date ->
         date.format = format
-        banListDateLinks(format, date.effectiveDate.format(dbDateFormatter)).map { links ->
+        bannedContentLinks(format, date.effectiveDate.format(dbDateFormatter)).map { links ->
           date.add(links)
         }
       }
       .collectList()
       .map { dates ->
         BanListDates(dates.filterNotNull())
-      }
-
-  private fun banListDateLinks(format: String, date: String): Mono<Links> = Flux
-      .merge(
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(BANNED_CARDS_CONTROLLER_CLASS)
-                  .getBannedCards(date, true, format, false)
-            )
-            .withRel("Ban List Content")
-            .toMono(),
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                  .getNewlyAddedContentForBanList(date, format)
-            )
-            .withRel("Ban List New Content")
-            .toMono(),
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                  .getNewlyRemovedContentForBanList(date, format)
-            )
-            .withRel("Ban List Removed Content")
-            .toMono()
-      )
-      .collectList()
-      .map {
-        Links.of(it)
       }
 }

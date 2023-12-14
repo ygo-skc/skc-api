@@ -19,11 +19,8 @@ import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.hateoas.EntityModel
-import org.springframework.hateoas.Links
-import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 /**
@@ -99,7 +96,7 @@ class BanListDiffController
           banListDiffService.getNewContentForGivenBanList(
             banListStartDate, format
           )
-        }, newlyAddedContentLinks(banListStartDate, format)
+        }, BanListDatesService.bannedContentLinks(format, date = banListStartDate)
       )
       .doOnSuccess {
         val banListNewContent = it.t1
@@ -136,39 +133,6 @@ class BanListDiffController
           "Retrieving new ban list content for ban list w/ start date {} using format {}", banListStartDate, format
         )
       })
-
-
-  private fun newlyAddedContentLinks(banListStartDate: String, format: String): Mono<Links> = Flux
-      .merge(
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(this::class.java)
-                  .getNewlyAddedContentForBanList(banListStartDate, format)
-            )
-            .withSelfRel()
-            .toMono(),
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(this::class.java)
-                  .getNewlyRemovedContentForBanList(banListStartDate, format)
-            )
-            .withRel("Ban List Removed Content")
-            .toMono(),
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(BannedCardsController::class.java)
-                  .getBannedCards(banListStartDate, false, format, true)
-            )
-            .withRel("Ban List Content")
-            .toMono()
-      )
-      .collectList()
-      .map {
-        Links.of(it)
-      }
 
   @GetMapping(path = ["/{banListStartDate}/removed"])
   @Operation(
@@ -210,7 +174,7 @@ class BanListDiffController
   ): Mono<EntityModel<BanListRemovedContent>> = ReactiveMDC.deferMDC(Mono
       .zip(
         Mono.fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) },
-        removedContentLinks(banListStartDate, format)
+        BanListDatesService.bannedContentLinks(format, date = banListStartDate)
       )
       .doOnSuccess {
         log.info(
@@ -227,36 +191,4 @@ class BanListDiffController
         log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)
       })
 
-
-  private fun removedContentLinks(banListStartDate: String, format: String): Mono<Links> = Flux
-      .merge(
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(this::class.java)
-                  .getNewlyRemovedContentForBanList(banListStartDate, format)
-            )
-            .withSelfRel()
-            .toMono(),
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(BannedCardsController::class.java)
-                  .getBannedCards(banListStartDate, false, format, true)
-            )
-            .withRel("Ban List Content")
-            .toMono(),
-        WebFluxLinkBuilder
-            .linkTo(
-              WebFluxLinkBuilder
-                  .methodOn(this::class.java)
-                  .getNewlyAddedContentForBanList(banListStartDate, format)
-            )
-            .withRel("Ban List New Content")
-            .toMono()
-      )
-      .collectList()
-      .map {
-        Links.of(it)
-      }
 }
