@@ -5,6 +5,7 @@ if [ $# -eq 0 ]
 fi
 
 ENV=$1
+echo -e "Downloading latest certs and creating truststore\n"
 doppler setup -p skc-api -c $ENV --no-interactive
 
 mkdir -p certs
@@ -22,6 +23,7 @@ cd certs || exit
 openssl pkcs12 -export -name skcapi -in certificate.crt -inkey private.key -out skc-api.p12 -password "pass:$PK_PASSWORD"
 keytool -importkeystore -deststorepass "$SSL_KEYSTORE_PASSWORD" -destkeystore skc-api.jks \
  -srckeystore skc-api.p12 -srcstoretype PKCS12 -srcstorepass "$PK_PASSWORD"
+# update keystore created above with ca bundle
 keytool -import -alias skc-api -trustcacerts -file ca_bundle.crt -keystore skc-api.jks -storepass "$SSL_KEYSTORE_PASSWORD"
 
 cd ..
