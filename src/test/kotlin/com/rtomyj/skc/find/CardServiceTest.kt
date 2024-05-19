@@ -122,7 +122,7 @@ class CardServiceTest {
             )
           )
           .verifyError()
-//      Assertions.assertThrows(SKCException::class.java) {
+//      Assertions.assertThrows(SKCException::class.java) { todo how ot catch speicifc error from stepverififier
 //
 //      }
 
