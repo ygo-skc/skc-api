@@ -1,5 +1,5 @@
 val scalaLibraryVersion = "2.13.14"
-val gatlingVersion = "3.11.2"
+val gatlingVersion = "3.11.3"
 
 
 configurations {
