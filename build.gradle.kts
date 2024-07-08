@@ -19,7 +19,7 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 
 plugins {
     id("org.springframework.boot") version "3.3.1"
-    id("io.spring.dependency-management") version "1.1.5"
+    id("io.spring.dependency-management") version "1.1.6"
     id("info.solidsoft.pitest") version "1.15.0"
     id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
 
