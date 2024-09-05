@@ -14,32 +14,32 @@ import org.springframework.stereotype.Service
  */
 @Service
 class CardSearchService @Autowired constructor(
-	@Qualifier("ban-list-jdbc") val banListDao: BanListDao,
-	@Qualifier("jdbc") val dao: CardSearchDao
+  @Qualifier("ban-list-jdbc") val banListDao: BanListDao,
+  @Qualifier("jdbc") val dao: CardSearchDao
 ) {
 
-	companion object {
-		private val log = LoggerFactory.getLogger(this::class.java.name)
-	}
+  companion object {
+    private val log = LoggerFactory.getLogger(this::class.java.name)
+  }
 
 
-	@Throws(SKCException::class)
-	fun getCardSearchResults(
-		cardId: String,
-		cardName: String,
-		cardAttribute: String,
-		cardColor: String,
-		monsterType: String,
-		limit: Int,
-		saveBandwidth: Boolean
-	): List<Card> {
-		val searchResults =
-			dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false)
+  @Throws(SKCException::class)
+  fun getCardSearchResults(
+    cardId: String,
+    cardName: String,
+    cardAttribute: String,
+    cardColor: String,
+    monsterType: String,
+    limit: Int,
+    saveBandwidth: Boolean
+  ): List<Card> {
+    val searchResults =
+      dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false)
 
-		if (saveBandwidth) {
-			log.debug("Trimming card effects to save bandwidth.")
-			Card.trimEffects(searchResults)
-		}
-		return searchResults
-	}
+    if (saveBandwidth) {
+      log.debug("Trimming card effects to save bandwidth.")
+      Card.trimEffects(searchResults)
+    }
+    return searchResults
+  }
 }

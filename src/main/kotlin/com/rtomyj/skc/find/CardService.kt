@@ -67,7 +67,10 @@ class CardService @Autowired constructor(
           BanListFormat.MD to mutableListOf(),
           BanListFormat.DL to mutableListOf()
         )
-        Collections.unmodifiableMap(restrictions.flatten().groupByTo(m) { it.format })
+        Collections.unmodifiableMap(
+          restrictions
+              .flatten()
+              .groupByTo(m) { it.format })
       }
 
   fun getCardInfo(cardId: String): Mono<Card> = Mono

@@ -14,28 +14,33 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 class ExceptionProvider : ResponseEntityExceptionHandler() {
-	companion object {
-		private val log: Logger = LoggerFactory.getLogger(this::class.java)
-	}
+  companion object {
+    private val log: Logger = LoggerFactory.getLogger(this::class.java)
+  }
 
 
-	@ResponseBody
-	@ExceptionHandler(SKCException::class)
-	fun onYgoException(exception: SKCException): ResponseEntity<SKCError> {
-		log.error(LogConstants.EXCEPTION_PROVIDER_LOG, exception.message, exception.errorType, exception.errorType.httpStatus)
+  @ResponseBody
+  @ExceptionHandler(SKCException::class)
+  fun onYgoException(exception: SKCException): ResponseEntity<SKCError> {
+    log.error(
+      LogConstants.EXCEPTION_PROVIDER_LOG,
+      exception.message,
+      exception.errorType,
+      exception.errorType.httpStatus
+    )
 
-		return ResponseEntity(
-			SKCError(exception.errorType.error, exception.errorType.name), exception.errorType.httpStatus
-		)
-	}
+    return ResponseEntity(
+      SKCError(exception.errorType.error, exception.errorType.name), exception.errorType.httpStatus
+    )
+  }
 
 
-	@ResponseBody
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException::class)
-	fun onValidationFail(exception: ConstraintViolationException): SKCError {
-		log.error("Request did not conform to spec. Constraints violated: {}", exception.toString())
+  @ResponseBody
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(ConstraintViolationException::class)
+  fun onValidationFail(exception: ConstraintViolationException): SKCError {
+    log.error("Request did not conform to spec. Constraints violated: {}", exception.toString())
 
-		return SKCError(ErrorType.G001.error, ErrorType.G001.name)
-	}
+    return SKCError(ErrorType.G001.error, ErrorType.G001.name)
+  }
 }

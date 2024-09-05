@@ -13,5 +13,5 @@ class SKCApi
  * Inits the program. Main method for program.
  */
 fun main() {
-    SpringApplication.run(SKCApi::class.java)
+  SpringApplication.run(SKCApi::class.java)
 }

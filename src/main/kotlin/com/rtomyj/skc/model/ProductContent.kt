@@ -3,7 +3,6 @@ package com.rtomyj.skc.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import java.util.function.Consumer
 
 @JsonInclude(
   JsonInclude.Include.NON_EMPTY

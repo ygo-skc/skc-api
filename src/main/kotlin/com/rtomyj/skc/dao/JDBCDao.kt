@@ -21,41 +21,41 @@ import java.sql.ResultSet
 @Repository
 @Qualifier("jdbc")
 class JDBCDao @Autowired constructor(
-	val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-	val objectMapper: ObjectMapper
+  val jdbcNamedTemplate: NamedParameterJdbcTemplate,
+  val objectMapper: ObjectMapper
 ) : Dao {
-	companion object {
-		private val log = LoggerFactory.getLogger(this::class.java.name)
-	}
+  companion object {
+    private val log = LoggerFactory.getLogger(this::class.java.name)
+  }
 
 
-	@Throws(SKCException::class)
-	override fun getCardInfo(cardID: String): Card {
-		val query = DBQueryConstants.GET_CARD_BY_ID
-		val sqlParams = MapSqlParameterSource()
-		sqlParams.addValue("cardId", cardID)
-		log.debug("Fetching card info from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams)
-		return jdbcNamedTemplate.query<Card?>(query, sqlParams) { row: ResultSet ->
-			if (row.next()) {
-				return@query Card(
-					cardID,
-					row.getString(2),
-					row.getString(1),
-					row.getString(3),
-					row.getString(4)
-				)
-					.apply {
-						monsterType = row.getString(5)
-						monsterAttack = row.getObject(6, Int::class.javaObjectType)
-						monsterDefense = row.getObject(7, Int::class.javaObjectType)
-						monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), objectMapper)
-					}
-			}
-			null
-		}
-			?: throw SKCException(
-				String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID),
-				ErrorType.DB001
-			)
-	}
+  @Throws(SKCException::class)
+  override fun getCardInfo(cardID: String): Card {
+    val query = DBQueryConstants.GET_CARD_BY_ID
+    val sqlParams = MapSqlParameterSource()
+    sqlParams.addValue("cardId", cardID)
+    log.debug("Fetching card info from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams)
+    return jdbcNamedTemplate.query<Card?>(query, sqlParams) { row: ResultSet ->
+      if (row.next()) {
+        return@query Card(
+          cardID,
+          row.getString(2),
+          row.getString(1),
+          row.getString(3),
+          row.getString(4)
+        )
+            .apply {
+              monsterType = row.getString(5)
+              monsterAttack = row.getObject(6, Int::class.javaObjectType)
+              monsterDefense = row.getObject(7, Int::class.javaObjectType)
+              monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), objectMapper)
+            }
+      }
+      null
+    }
+      ?: throw SKCException(
+        String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID),
+        ErrorType.DB001
+      )
+  }
 }

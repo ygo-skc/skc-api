@@ -7,6 +7,6 @@ import com.rtomyj.skc.model.DownstreamStatus
  * Contract for database operations.
  */
 interface StatusDao {
-	@Throws(SKCException::class)
-	fun dbConnection(): DownstreamStatus
+  @Throws(SKCException::class)
+  fun dbConnection(): DownstreamStatus
 }

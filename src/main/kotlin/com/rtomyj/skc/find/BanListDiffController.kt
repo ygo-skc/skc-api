@@ -89,40 +89,43 @@ class BanListDiffController
     ) @PathVariable banListStartDate: String, @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<BanListNewContent> = ReactiveMDC.deferMDC(Mono.fromCallable {
-    banListDiffService.getNewContentForGivenBanList(
-      banListStartDate, format
-    )
-  }.doOnSuccess { banListNewContent ->
-        if (format == "DL") {
-          log.info(
-            "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
-            banListNewContent.listRequested,
-            format,
-            banListNewContent.comparedTo,
-            banListNewContent.numNewForbidden,
-            banListNewContent.numNewLimitedOne,
-            banListNewContent.numNewLimitedTwo,
-            banListNewContent.numNewLimitedThree
-          )
-        } else {
-          log.info(
-            "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
-            banListNewContent.listRequested,
-            format,
-            banListNewContent.comparedTo,
-            banListNewContent.numNewForbidden,
-            banListNewContent.numNewLimited,
-            banListNewContent.numNewSemiLimited
+  ): Mono<BanListNewContent> = ReactiveMDC.deferMDC(
+    Mono
+        .fromCallable {
+          banListDiffService.getNewContentForGivenBanList(
+            banListStartDate, format
           )
         }
+        .doOnSuccess { banListNewContent ->
+          if (format == "DL") {
+            log.info(
+              "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
+              banListNewContent.listRequested,
+              format,
+              banListNewContent.comparedTo,
+              banListNewContent.numNewForbidden,
+              banListNewContent.numNewLimitedOne,
+              banListNewContent.numNewLimitedTwo,
+              banListNewContent.numNewLimitedThree
+            )
+          } else {
+            log.info(
+              "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
+              banListNewContent.listRequested,
+              format,
+              banListNewContent.comparedTo,
+              banListNewContent.numNewForbidden,
+              banListNewContent.numNewLimited,
+              banListNewContent.numNewSemiLimited
+            )
+          }
 
-      }
-      .doOnSubscribe {
-        log.info(
-          "Retrieving new ban list content for ban list w/ start date {} using format {}", banListStartDate, format
-        )
-      })
+        }
+        .doOnSubscribe {
+          log.info(
+            "Retrieving new ban list content for ban list w/ start date {} using format {}", banListStartDate, format
+          )
+        })
 
   @GetMapping(path = ["/{banListStartDate}/removed"])
   @Operation(
@@ -161,17 +164,19 @@ class BanListDiffController
     ) @PathVariable(name = "banListStartDate") banListStartDate: String, @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<BanListRemovedContent> = ReactiveMDC.deferMDC(Mono.fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
-      .doOnSuccess {
-        log.info(
-          "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
-          banListStartDate,
-          format,
-          it.numRemoved
-        )
-      }
-      .doOnSubscribe {
-        log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)
-      })
+  ): Mono<BanListRemovedContent> = ReactiveMDC.deferMDC(
+    Mono
+        .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
+        .doOnSuccess {
+          log.info(
+            "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
+            banListStartDate,
+            format,
+            it.numRemoved
+          )
+        }
+        .doOnSubscribe {
+          log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)
+        })
 
 }

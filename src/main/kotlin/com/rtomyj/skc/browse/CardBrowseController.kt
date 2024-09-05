@@ -134,9 +134,11 @@ class CardBrowseController @Autowired constructor(
     description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
     content = [Content(schema = Schema(implementation = SKCError::class))]
   )
-  fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(Mono.fromCallable { cardBrowseCriteriaSupplier.get() }
-      .doOnSuccess {
-        log.info("Successfully retrieved browse criteria for cards.")
-      }
-      .doOnSubscribe { log.info("Retrieving browse criteria.") })
+  fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(
+    Mono
+        .fromCallable { cardBrowseCriteriaSupplier.get() }
+        .doOnSuccess {
+          log.info("Successfully retrieved browse criteria for cards.")
+        }
+        .doOnSubscribe { log.info("Retrieving browse criteria.") })
 }

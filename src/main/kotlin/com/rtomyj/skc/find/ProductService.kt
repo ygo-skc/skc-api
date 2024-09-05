@@ -15,28 +15,28 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductService @Autowired constructor(
-	@Qualifier("product-jdbc") private val productDao: ProductDao,
-	private val trafficService: TrafficService
+  @Qualifier("product-jdbc") private val productDao: ProductDao,
+  private val trafficService: TrafficService
 ) {
-	@OptIn(DelicateCoroutinesApi::class)
-	fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Product {
-		GlobalScope.launch {
-			trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
-		}
+  @OptIn(DelicateCoroutinesApi::class)
+  fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Product {
+    GlobalScope.launch {
+      trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
+    }
 
-		val product = productDao.getProductInfo(productId, locale)
+    val product = productDao.getProductInfo(productId, locale)
 
-		product.productContent.addAll(productDao.getProductContents(productId, locale))
+    product.productContent.addAll(productDao.getProductContents(productId, locale))
 
-		MonsterAssociation
-			.transformMonsterLinkRating(
-				product
-					.productContent
-					.stream()
-					.filter { it.card != null }
-					.map { productContent: ProductContent -> productContent.card!! }
-					.toList()
-			)
-		return product
-	}
+    MonsterAssociation
+        .transformMonsterLinkRating(
+          product
+              .productContent
+              .stream()
+              .filter { it.card != null }
+              .map { productContent: ProductContent -> productContent.card!! }
+              .toList()
+        )
+    return product
+  }
 }

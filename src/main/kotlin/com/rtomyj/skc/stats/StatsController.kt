@@ -50,7 +50,9 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         implementation = String::class, defaultValue = "fusion"
       )
     ) @PathVariable("cardColor") cardColor: String
-  ): Mono<MonsterTypeStats> = ReactiveMDC.deferMDC(Mono.fromCallable { statsService.getMonsterTypeStats(cardColor) }
+  ): Mono<MonsterTypeStats> = ReactiveMDC.deferMDC(
+    Mono
+        .fromCallable { statsService.getMonsterTypeStats(cardColor) }
         .doOnSubscribe {
           log.info("Retrieving monster types for cards with color: {}", cardColor)
         })
@@ -70,9 +72,11 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
     content = [Content(schema = Schema(implementation = SKCError::class))]
   )
   @GetMapping
-  fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(Mono.fromCallable { statsService.databaseStats() }
-      .doOnSuccess {
-        log.info("Successfully retrieved database stats: {}", it.toString())
-      }
-      .doOnSubscribe { log.info("Retrieving high level overview of info stored in DB.") })
+  fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
+    Mono
+        .fromCallable { statsService.databaseStats() }
+        .doOnSuccess {
+          log.info("Successfully retrieved database stats: {}", it.toString())
+        }
+        .doOnSubscribe { log.info("Retrieving high level overview of info stored in DB.") })
 }
