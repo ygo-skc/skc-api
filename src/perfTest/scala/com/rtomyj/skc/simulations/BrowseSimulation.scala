@@ -7,8 +7,7 @@ import io.gatling.core.Predef._
 
 import scala.language.postfixOps
 
-class BrowseSimulation extends Simulation
-{
+class BrowseSimulation extends Simulation {
   private val getBrowseCriteriaScenario = BrowseScenario.getBrowseCriteria
     .inject(rampUsers(30).during(Configuration.rampup))
 
@@ -20,9 +19,9 @@ class BrowseSimulation extends Simulation
 
 
   setUp(getBrowseCriteriaScenario
-      .andThen(getBrowseResultsScenario)
-      .andThen(browseUserLoadScenario)
-    )
+    .andThen(getBrowseResultsScenario)
+    .andThen(browseUserLoadScenario)
+  )
     .assertions(
       global.failedRequests.count.is(0)
       , details("Card Browse Criteria Request").responseTime.mean.lt(150)

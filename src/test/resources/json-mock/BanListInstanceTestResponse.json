@@ -1,46 +1,46 @@
 {
-	"effectiveDate": "2018-12-03",
-	"comparedTo": "2018-09-17",
-	"numForbidden": 1,
-	"numLimited": 1,
-	"numSemiLimited": 1,
-	"numLimitedOne": 0,
-	"numLimitedTwo": 0,
-	"numLimitedThree": 0,
-	"forbidden": [
-		{
-			"cardName": "Elemental HERO Stratos",
-			"monsterType": "Warrior/Effect",
-			"cardColor": "Effect",
-			"cardEffect": "When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; You can destroy Spell/Trap Cards on the field, up to the number of \"HERO\" monsters you control, except this card.\n&bull; Add 1 \"HERO\" monster from your Deck to your hand.",
-			"cardID": "40044918",
-			"cardAttribute": "Wind",
-			"monsterAttack": 1800,
-			"monsterDefense": 300
-		}
-	],
-	"limited": [
-		{
-			"cardName": "A Hero Lives",
-			"cardColor": "Spell",
-			"cardEffect": "If you control no face-up monsters: Pay half your LP; Special Summon 1 Level 4 or lower \"Elemental HERO\" monster from your Deck.",
-			"cardID": "08949584",
-			"cardAttribute": "Spell"
-		}
-	],
-	"semiLimited": [
-		{
-			"cardName": "Destiny HERO - Malicious",
-			"monsterType": "Warrior/Effect",
-			"cardColor": "Effect",
-			"cardEffect": "You can banish this card from your GY; Special Summon 1 \"Destiny HERO - Malicious\" from your Deck.",
-			"cardID": "09411399",
-			"cardAttribute": "Dark",
-			"monsterAttack": 800,
-			"monsterDefense": 800
-		}
-	],
-	"limitedOne": [],
-	"limitedTwo": [],
-	"limitedThree": []
+  "effectiveDate": "2018-12-03",
+  "comparedTo": "2018-09-17",
+  "numForbidden": 1,
+  "numLimited": 1,
+  "numSemiLimited": 1,
+  "numLimitedOne": 0,
+  "numLimitedTwo": 0,
+  "numLimitedThree": 0,
+  "forbidden": [
+    {
+      "cardName": "Elemental HERO Stratos",
+      "monsterType": "Warrior/Effect",
+      "cardColor": "Effect",
+      "cardEffect": "When this card is Normal or Special Summoned: You can activate 1 of these effects.\n&bull; You can destroy Spell/Trap Cards on the field, up to the number of \"HERO\" monsters you control, except this card.\n&bull; Add 1 \"HERO\" monster from your Deck to your hand.",
+      "cardID": "40044918",
+      "cardAttribute": "Wind",
+      "monsterAttack": 1800,
+      "monsterDefense": 300
+    }
+  ],
+  "limited": [
+    {
+      "cardName": "A Hero Lives",
+      "cardColor": "Spell",
+      "cardEffect": "If you control no face-up monsters: Pay half your LP; Special Summon 1 Level 4 or lower \"Elemental HERO\" monster from your Deck.",
+      "cardID": "08949584",
+      "cardAttribute": "Spell"
+    }
+  ],
+  "semiLimited": [
+    {
+      "cardName": "Destiny HERO - Malicious",
+      "monsterType": "Warrior/Effect",
+      "cardColor": "Effect",
+      "cardEffect": "You can banish this card from your GY; Special Summon 1 \"Destiny HERO - Malicious\" from your Deck.",
+      "cardID": "09411399",
+      "cardAttribute": "Dark",
+      "monsterAttack": 800,
+      "monsterDefense": 800
+    }
+  ],
+  "limitedOne": [],
+  "limitedTwo": [],
+  "limitedThree": []
 }

@@ -8,27 +8,23 @@ import io.gatling.core.structure.ScenarioBuilder
 
 import scala.language.postfixOps
 
-object BrowseScenario
-{
+object BrowseScenario {
   val cardBrowseFeed: BatchableFeederBuilder[String] = ssv("gatling/browse_cards_three_or_more_criteria.ssv").random.circular
 
   val getBrowseResultsScenario: ScenarioBuilder = scenario("Card Browse Details Scenario")
     .feed(cardBrowseFeed)
-    .during(Configuration.simulationMaxTime)
-    {
+    .during(Configuration.simulationMaxTime) {
       exec(BrowseRequest.get_browse_results)
     }
 
   val getBrowseCriteria: ScenarioBuilder = scenario("Card Browse Criteria Scenario")
-    .during(Configuration.simulationMaxTime)
-    {
+    .during(Configuration.simulationMaxTime) {
       exec(BrowseRequest.get_browse_criteria)
     }
 
   val browseUserLoad: ScenarioBuilder = scenario("User Loads Browse Page & Uses Browse Functionality")
     .feed(cardBrowseFeed)
-    .during(Configuration.simulationMaxTime)
-    {
+    .during(Configuration.simulationMaxTime) {
       exec(BrowseRequest.get_browse_results)
       exec(BrowseRequest.get_browse_criteria)
     }

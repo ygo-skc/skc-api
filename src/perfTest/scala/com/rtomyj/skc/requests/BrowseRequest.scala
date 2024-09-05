@@ -5,8 +5,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 
-object BrowseRequest
-{
+object BrowseRequest {
   val get_browse_results: HttpRequestBuilder = http("Card Browse Details Request")
     .get(Url.browseCardsEndpoint)
     .header(Header.CLIENT_ID_HEADER_NAME, Header.CLIENT_ID_HEADER_VALUE)
