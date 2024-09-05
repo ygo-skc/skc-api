@@ -4,7 +4,6 @@ import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.CardSearchDao
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
-import com.rtomyj.skc.util.HateoasLinks
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -41,8 +40,6 @@ class CardSearchService @Autowired constructor(
 			log.debug("Trimming card effects to save bandwidth.")
 			Card.trimEffects(searchResults)
 		}
-
-		HateoasLinks.setLinks(searchResults)
 		return searchResults
 	}
 }

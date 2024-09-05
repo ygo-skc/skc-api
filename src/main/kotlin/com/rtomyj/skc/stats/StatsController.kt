@@ -14,9 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityModel
-import org.springframework.hateoas.Link
-import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -53,28 +50,10 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         implementation = String::class, defaultValue = "fusion"
       )
     ) @PathVariable("cardColor") cardColor: String
-  ): Mono<EntityModel<MonsterTypeStats>> = ReactiveMDC.deferMDC(
-    Mono
-        .zip(Mono.fromCallable {
-          statsService.getMonsterTypeStats(cardColor)
-        }, monsterTypesForgivenCardColorLinks(cardColor))
-        .map {
-          EntityModel.of(it.t1, listOf(it.t2))
-        }
+  ): Mono<MonsterTypeStats> = ReactiveMDC.deferMDC(Mono.fromCallable { statsService.getMonsterTypeStats(cardColor) }
         .doOnSubscribe {
           log.info("Retrieving monster types for cards with color: {}", cardColor)
         })
-
-  private fun monsterTypesForgivenCardColorLinks(cardColor: String): Mono<Link> = WebFluxLinkBuilder
-      .linkTo(
-        WebFluxLinkBuilder
-            .methodOn(this::class.java)
-            .monsterTypesForgivenCardColor(
-              cardColor
-            )
-      )
-      .withSelfRel()
-      .toMono()
 
   @Operation(
     summary = "Retrieve overview of the data currently in Database."
@@ -91,23 +70,9 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
     content = [Content(schema = Schema(implementation = SKCError::class))]
   )
   @GetMapping
-  fun databaseStats(): Mono<EntityModel<DatabaseStats>> = ReactiveMDC.deferMDC(Mono
-      .zip(Mono.fromCallable { statsService.databaseStats() }, dbStatsLinks())
+  fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(Mono.fromCallable { statsService.databaseStats() }
       .doOnSuccess {
-        log.info("Successfully retrieved database stats: {}", it.t1.toString())
-      }
-      .map {
-        EntityModel.of(it.t1, listOf(it.t2))
+        log.info("Successfully retrieved database stats: {}", it.toString())
       }
       .doOnSubscribe { log.info("Retrieving high level overview of info stored in DB.") })
-
-
-  private fun dbStatsLinks(): Mono<Link> = WebFluxLinkBuilder
-      .linkTo(
-        WebFluxLinkBuilder
-            .methodOn(this::class.java)
-            .databaseStats()
-      )
-      .withSelfRel()
-      .toMono()
 }

@@ -57,35 +57,17 @@ class CardService @Autowired constructor(
       }
 
   fun getCardRestrictionInfo(cardId: String): Mono<Map<BanListFormat, MutableList<CardBanListStatus>>> = Flux
-      .merge(Mono.fromCallable {
-        banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG)
-      }, Mono.fromCallable {
-        banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD)
-      }, Mono.fromCallable {
-        banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL)
-      })
+      .merge(Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG) },
+        Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD) },
+        Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL) })
       .collectList()
-      .flatMap { restrictions ->
-        Flux
-            .fromIterable(restrictions.flatten())
-            .flatMap { cardBanListStatus ->
-              BanListDatesService
-                  .bannedContentLinks(
-                    cardBanListStatus.format.toString(), cardBanListStatus.banListDate.format(dbDateFormatter)
-                  )
-                  .map { links ->
-                    cardBanListStatus.add(links)
-                  }
-            }
-            .collectList()
-      }
       .map { restrictions ->
         val m = mutableMapOf(
           BanListFormat.TCG to mutableListOf<CardBanListStatus>(),
           BanListFormat.MD to mutableListOf(),
           BanListFormat.DL to mutableListOf()
         )
-        Collections.unmodifiableMap(restrictions.groupByTo(m) { it.format })
+        Collections.unmodifiableMap(restrictions.flatten().groupByTo(m) { it.format })
       }
 
   fun getCardInfo(cardId: String): Mono<Card> = Mono

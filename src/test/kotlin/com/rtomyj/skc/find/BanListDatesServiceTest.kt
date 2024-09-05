@@ -66,32 +66,6 @@ class BanListDatesServiceTest {
 
             // assertions on returned value
             Assertions.assertEquals(1, dates.size)
-
-            Assertions.assertNotNull(dates[0].links)
-
-            Assertions.assertNotNull(dates[0].links.getLink("Ban List Content"))
-            Assertions.assertEquals(
-              "/ban_list/2020-01-20/cards?saveBandwidth=true&format=TCG&allInfo=false",
-              dates[0].links
-                  .getLink("Ban List Content")
-                  .get().href
-            )
-
-            Assertions.assertNotNull(dates[0].links.getLink("Ban List New Content"))
-            Assertions.assertEquals(
-              "/ban_list/2020-01-20/new?format=TCG",
-              dates[0].links
-                  .getLink("Ban List New Content")
-                  .get().href
-            )
-
-            Assertions.assertNotNull(dates[0].links.getLink("Ban List Removed Content"))
-            Assertions.assertEquals(
-              "/ban_list/2020-01-20/removed?format=TCG",
-              dates[0].links
-                  .getLink("Ban List Removed Content")
-                  .get().href
-            )
           }
           .verifyComplete()
 

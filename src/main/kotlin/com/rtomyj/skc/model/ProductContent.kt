@@ -3,7 +3,6 @@ package com.rtomyj.skc.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 import java.util.function.Consumer
 
 @JsonInclude(
@@ -28,17 +27,4 @@ data class ProductContent(
     description = SwaggerConstants.CARD_RARITIES_FOR_POSITION_DESCRIPTION
   )
   val rarities: Set<String>
-) : RepresentationModel<ProductContent>() {
-
-  companion object {
-    fun setLinks(packContents: List<ProductContent>) {
-      packContents
-          .forEach(Consumer { obj: ProductContent -> obj.setLinks() })
-    }
-  }
-
-
-  fun setLinks() {
-    card?.setLinks()
-  }
-}
+)

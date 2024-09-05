@@ -1,9 +1,7 @@
 package com.rtomyj.skc.model
 
 import com.rtomyj.skc.browse.CardBrowseController
-import com.rtomyj.skc.util.HateoasLinks
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 
 @Schema(
     implementation = CardBrowseResults::class,
@@ -21,7 +19,7 @@ class CardBrowseResults(
         description = "Total browse results.",
     )
     val numResults: Int = 0
-) : RepresentationModel<CardBrowseResults>(), HateoasLinks {
+) {
 
     companion object {
         private val cardBrowseController = CardBrowseController::class.java
@@ -33,15 +31,4 @@ class CardBrowseResults(
         description = "Criteria used to fetch these results.",
     )
     var requestedCriteria: CardBrowseCriteria? = null
-
-
-    override fun setSelfLink() {
-        // TODO: add links
-    }
-
-
-    override fun setLinks() {
-        setSelfLink()
-        HateoasLinks.setLinks(results)
-    }
 }

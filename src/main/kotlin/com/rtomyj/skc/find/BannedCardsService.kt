@@ -92,7 +92,6 @@ class BannedCardsService @Autowired constructor(
             }
 
             validateBanListInstance(this, banListStartDate)
-            setLinks()
 
             if (fetchAllInfo) {
                 newContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)

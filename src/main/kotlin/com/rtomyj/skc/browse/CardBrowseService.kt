@@ -50,9 +50,6 @@ class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: CardB
     val cardBrowseResults = dao.getBrowseResults(criteria, monsterLevelSet, monsterRankSet, monsterLinkRatingsSet)
 
     cardBrowseResults.requestedCriteria = criteria
-
-    cardBrowseResults.setLinks()
-
     watch.stop()
     Card.trimEffects(cardBrowseResults.results)
     MonsterAssociation.transformMonsterLinkRating(cardBrowseResults.results)

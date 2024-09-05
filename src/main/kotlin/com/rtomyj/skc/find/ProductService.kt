@@ -27,7 +27,6 @@ class ProductService @Autowired constructor(
 		val product = productDao.getProductInfo(productId, locale)
 
 		product.productContent.addAll(productDao.getProductContents(productId, locale))
-		product.setLinks()
 
 		MonsterAssociation
 			.transformMonsterLinkRating(

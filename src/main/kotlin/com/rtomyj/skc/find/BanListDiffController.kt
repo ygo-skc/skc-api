@@ -18,7 +18,6 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityModel
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
@@ -90,17 +89,11 @@ class BanListDiffController
     ) @PathVariable banListStartDate: String, @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<EntityModel<BanListNewContent>> = ReactiveMDC.deferMDC(Mono
-      .zip(
-        Mono.fromCallable {
-          banListDiffService.getNewContentForGivenBanList(
-            banListStartDate, format
-          )
-        }, BanListDatesService.bannedContentLinks(format, date = banListStartDate)
-      )
-      .doOnSuccess {
-        val banListNewContent = it.t1
-
+  ): Mono<BanListNewContent> = ReactiveMDC.deferMDC(Mono.fromCallable {
+    banListDiffService.getNewContentForGivenBanList(
+      banListStartDate, format
+    )
+  }.doOnSuccess { banListNewContent ->
         if (format == "DL") {
           log.info(
             "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
@@ -124,9 +117,6 @@ class BanListDiffController
           )
         }
 
-      }
-      .map {
-        EntityModel.of(it.t1, it.t2)
       }
       .doOnSubscribe {
         log.info(
@@ -171,21 +161,14 @@ class BanListDiffController
     ) @PathVariable(name = "banListStartDate") banListStartDate: String, @RequestParam(
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
-  ): Mono<EntityModel<BanListRemovedContent>> = ReactiveMDC.deferMDC(Mono
-      .zip(
-        Mono.fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) },
-        BanListDatesService.bannedContentLinks(format, date = banListStartDate)
-      )
+  ): Mono<BanListRemovedContent> = ReactiveMDC.deferMDC(Mono.fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
       .doOnSuccess {
         log.info(
           "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
           banListStartDate,
           format,
-          it.t1.numRemoved
+          it.numRemoved
         )
-      }
-      .map {
-        EntityModel.of(it.t1, it.t2)
       }
       .doOnSubscribe {
         log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)

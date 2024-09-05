@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 import java.time.LocalDate
 
 /**
@@ -27,7 +26,7 @@ data class BanListDate(
     shape = JsonFormat.Shape.STRING,
     pattern = "yyyy-MM-dd"
   ) val effectiveDate: LocalDate
-) : RepresentationModel<BanListDate>() {
+) {
   @Schema(
     implementation = String::class,
     description = "What format the ban list dates correspond to."

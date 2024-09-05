@@ -137,7 +137,6 @@ class BanListDiffService @Autowired constructor(
       if (format == "DL") newContentDuelLinksFormat(banListStartDate, previousBanListDate, format)
       else newContentNormalFormat(banListStartDate, previousBanListDate, format)
 
-    newCardsMeta.setLinks()
     return newCardsMeta
   }
 
@@ -162,7 +161,6 @@ class BanListDiffService @Autowired constructor(
       removedCards
     )
 
-    removedCardsMeta.setLinks()
     return removedCardsMeta
   }
 

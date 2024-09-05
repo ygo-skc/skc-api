@@ -1,7 +1,6 @@
 package com.rtomyj.skc.model
 
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 
 @Schema(
   implementation = CardsPreviousBanListStatus::class,
@@ -19,8 +18,4 @@ data class CardsPreviousBanListStatus(
     description = "The previous ban status the card had when compared to current ban list.",
   )
   val previousBanStatus: String
-) : RepresentationModel<CardsPreviousBanListStatus>() {
-  fun setLinks() {
-    card.setLinks()
-  }
-}
+)

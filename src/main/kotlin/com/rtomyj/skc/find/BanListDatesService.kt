@@ -5,8 +5,6 @@ import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.hateoas.Links
-import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -30,39 +28,6 @@ class BanListDatesService
   companion object {
     private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
     private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
-
-    @JvmStatic
-    fun bannedContentLinks(format: String, date: String): Mono<Links> = Flux
-        .merge(
-          WebFluxLinkBuilder
-              .linkTo(
-                WebFluxLinkBuilder
-                    .methodOn(BANNED_CARDS_CONTROLLER_CLASS)
-                    .getBannedCards(date, true, format, false)
-              )
-              .withRel("Ban List Content")
-              .toMono(),
-          WebFluxLinkBuilder
-              .linkTo(
-                WebFluxLinkBuilder
-                    .methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyAddedContentForBanList(date, format)
-              )
-              .withRel("Ban List New Content")
-              .toMono(),
-          WebFluxLinkBuilder
-              .linkTo(
-                WebFluxLinkBuilder
-                    .methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyRemovedContentForBanList(date, format)
-              )
-              .withRel("Ban List Removed Content")
-              .toMono()
-        )
-        .collectList()
-        .map {
-          Links.of(it)
-        }
   }
 
   /**
@@ -72,12 +37,6 @@ class BanListDatesService
   @Throws(SKCException::class)
   fun retrieveBanListStartDates(format: String): Mono<BanListDates> = Flux
       .fromIterable(banListDao.getBanListDates(format).dates)
-      .flatMap { date ->
-        date.format = format
-        bannedContentLinks(format, date.effectiveDate.format(dbDateFormatter)).map { links ->
-          date.add(links)
-        }
-      }
       .collectList()
       .map { dates ->
         BanListDates(dates.filterNotNull())

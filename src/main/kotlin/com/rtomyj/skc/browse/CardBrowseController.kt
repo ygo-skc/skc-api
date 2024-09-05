@@ -15,9 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityModel
-import org.springframework.hateoas.Link
-import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -137,22 +134,9 @@ class CardBrowseController @Autowired constructor(
     description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
     content = [Content(schema = Schema(implementation = SKCError::class))]
   )
-  fun browseCriteria(): Mono<EntityModel<CardBrowseCriteria>> = ReactiveMDC.deferMDC(Mono
-      .zip(Mono.fromCallable { cardBrowseCriteriaSupplier.get() }, browseCriteriaLinks())
+  fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(Mono.fromCallable { cardBrowseCriteriaSupplier.get() }
       .doOnSuccess {
         log.info("Successfully retrieved browse criteria for cards.")
       }
-      .map {
-        EntityModel.of(it.t1, it.t2)
-      }
       .doOnSubscribe { log.info("Retrieving browse criteria.") })
-
-  fun browseCriteriaLinks(): Mono<Link> = WebFluxLinkBuilder
-      .linkTo(
-        WebFluxLinkBuilder
-            .methodOn(this::class.java)
-            .browseCriteria()
-      )
-      .withSelfRel()
-      .toMono()
 }

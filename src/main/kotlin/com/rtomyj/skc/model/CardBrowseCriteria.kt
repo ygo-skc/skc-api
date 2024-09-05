@@ -2,7 +2,6 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Schema(
@@ -51,4 +50,4 @@ data class CardBrowseCriteria(
     description = "Unique set of link rating values for Link monster cards in database.",
     example = "1, 2, 3, 4, 5, 6",
   ) val linkRatings: Set<Int>
-) : RepresentationModel<CardBrowseCriteria>()
+)

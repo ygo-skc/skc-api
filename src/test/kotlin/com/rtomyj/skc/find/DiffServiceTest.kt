@@ -132,26 +132,6 @@ class DiffServiceTest {
             Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].card.cardID)
             Assertions.assertEquals("Forbidden", newLimitedCards[1].previousBanStatus)
 
-            // ensure self link is present
-            Assertions.assertNotNull(newForbiddenCards[0].card.links.getLink("self"))
-            Assertions.assertNotNull(newLimitedCards[0].card.links.getLink("self"))
-            Assertions.assertNotNull(newLimitedCards[1].card.links.getLink("self"))
-
-            // ensure href is as expected
-            Assertions.assertEquals(
-                "/card/${TestConstants.STRATOS_ID}?allInfo=true",
-                newForbiddenCards[0].card.links.getLink("self").get().href
-            )
-            Assertions.assertEquals(
-                "/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=true",
-                newLimitedCards[0].card.links.getLink("self").get().href
-            )
-            Assertions.assertEquals(
-                "/card/${TestConstants.D_MALICIOUS_ID}?allInfo=true",
-                newLimitedCards[1].card.links.getLink("self").get().href
-            )
-
-
             // ensure mocks are called appropriate number of times
             Mockito.verify(banListDao, Mockito.times(1))
                 .getNewContentOfBanList(
@@ -238,25 +218,6 @@ class DiffServiceTest {
             Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].card.cardID)
             Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].card.cardName)
             Assertions.assertEquals("Semi-Limited", removedCards[2].previousBanStatus)
-
-            // ensure self link is present
-            Assertions.assertNotNull(removedCards[0].card.links.getLink("self"))
-            Assertions.assertNotNull(removedCards[1].card.links.getLink("self"))
-            Assertions.assertNotNull(removedCards[2].card.links.getLink("self"))
-
-            // ensure href is as expected
-            Assertions.assertEquals(
-                "/card/${TestConstants.STRATOS_ID}?allInfo=true", removedCards[0].card.links.getLink("self").get().href
-            )
-            Assertions.assertEquals(
-                "/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=true",
-                removedCards[1].card.links.getLink("self").get().href
-            )
-            Assertions.assertEquals(
-                "/card/${TestConstants.D_MALICIOUS_ID}?allInfo=true",
-                removedCards[2].card.links.getLink("self").get().href
-            )
-
 
             // verify mocks are called the correct number of times
             Mockito.verify(banListDao, Mockito.times(1))

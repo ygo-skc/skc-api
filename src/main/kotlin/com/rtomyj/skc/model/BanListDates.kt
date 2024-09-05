@@ -2,7 +2,6 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 
 @Schema(
   implementation = BanListDates::class,
@@ -15,4 +14,4 @@ data class BanListDates(
   )
   @JsonProperty(value = "banListDates", index = 1)
   val dates: List<BanListDate>
-) : RepresentationModel<BanListDates>()
+)

@@ -1,7 +1,6 @@
 package com.rtomyj.skc.model
 
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 
 @Schema(
   implementation = DatabaseStats::class, description = "High level stats for data in the database."
@@ -19,4 +18,4 @@ data class DatabaseStats(
     implementation = Int::class,
     description = "Total number of years spanned/covered by ban lists stored in database.",
   ) val yearsOfBanListCoverage: Int
-) : RepresentationModel<DatabaseStats>()
+)

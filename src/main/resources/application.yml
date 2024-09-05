@@ -13,8 +13,6 @@ spring:
     password:
   jpa:
     open-in-view: false
-  hateoas:
-    use-hal-as-default-json-media-type: true
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher # fixes spring-fox error on spring-boot >= v2.6

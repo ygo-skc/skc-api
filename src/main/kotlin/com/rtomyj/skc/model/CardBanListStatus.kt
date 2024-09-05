@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 import java.time.LocalDate
 import java.util.*
 
@@ -50,4 +49,4 @@ data class CardBanListStatus(
   val banStatus: String,
 //    @JsonIgnore
   val format: BanListFormat
-) : RepresentationModel<CardBanListStatus>()
+)

@@ -3,7 +3,6 @@ package com.rtomyj.skc.model
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
 
 @JsonPropertyOrder("listRequested", "comparedTo", "numRemoved", "removedCards")
 @Schema(
@@ -30,9 +29,4 @@ data class BanListRemovedContent(
     implementation = Int::class,
     description = "Total number of cards removed in requested ban list compared to previous ban list.",
   ) val numRemoved: Int = removedCards.size
-) : RepresentationModel<BanListRemovedContent>() {
-
-  fun setLinks() {
-    removedCards.forEach(CardsPreviousBanListStatus::setLinks)
-  }
-}
+)

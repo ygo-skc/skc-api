@@ -5,11 +5,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonTypeName
 import com.rtomyj.skc.find.BanListDiffController
 import com.rtomyj.skc.find.BannedCardsController
-import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 
 @JsonTypeName("banListInstance")
 @JsonPropertyOrder(
@@ -82,7 +79,7 @@ data class BanListInstance(
         description = "Total number of cards semi-limited in this ban list instance; ie size of semi-limited list.",
     )
     val numSemiLimited: Int = semiLimited.size
-) : RepresentationModel<BanListInstance>(), HateoasLinks {
+) {
 
 
     companion object {
@@ -137,33 +134,4 @@ data class BanListInstance(
         description = "Object containing info of cards that are removed from this ban list compared to previous logical ban list. Note: this field will be null unless specified otherwise.",
     )
     var removedContent: BanListRemovedContent? = null
-
-
-    override fun setSelfLink() {
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(banListController).getBannedCards(effectiveDate, false, "TCG", true)
-            )
-                .withSelfRel()
-        )
-    }
-
-
-    override fun setLinks() {
-        setSelfLink()
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS).getNewlyAddedContentForBanList(effectiveDate)
-            ).withRel("Ban List New Content")
-        )
-        this.add(
-            WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(BAN_LIST_DIFF_CONTROLLER_CLASS)
-                    .getNewlyRemovedContentForBanList(effectiveDate)
-            ).withRel("Ban List Removed Content")
-        )
-        HateoasLinks.setLinks(forbidden)
-        HateoasLinks.setLinks(limited)
-        HateoasLinks.setLinks(semiLimited)
-    }
 }

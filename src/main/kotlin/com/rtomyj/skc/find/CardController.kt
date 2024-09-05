@@ -19,9 +19,6 @@ import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.hateoas.EntityModel
-import org.springframework.hateoas.Link
-import org.springframework.hateoas.server.reactive.WebFluxLinkBuilder
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
@@ -42,18 +39,6 @@ class CardController @Autowired constructor(
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
-
-    @JvmStatic
-    fun cardLinks(cardID: String): Mono<Link> = WebFluxLinkBuilder
-        .linkTo(
-          WebFluxLinkBuilder
-              .methodOn(CardController::class.java)
-              .getCard(
-                cardID, true
-              )
-        )
-        .withSelfRel()
-        .toMono()
   }
 
   /**
@@ -105,13 +90,7 @@ class CardController @Autowired constructor(
         implementation = Boolean::class
       )
     ) @RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean,
-  ): Mono<EntityModel<Card>> = ReactiveMDC.deferMDC(Mono
-      .zip(
-        cardService.getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC)), cardLinks(cardId)
-      )
-      .map {
-        EntityModel.of(it.t1, listOf(it.t2))
-      }
+  ): Mono<Card> = ReactiveMDC.deferMDC(cardService.getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
       .doOnSuccess {
         log.info(
           "Successfully retrieved card info for: {}, w/ all info: {}.", cardId, fetchAllInfo

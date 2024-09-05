@@ -3,12 +3,9 @@ package com.rtomyj.skc.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.find.CardController
-import com.rtomyj.skc.util.HateoasLinks
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import java.util.function.Consumer
 
 /**
@@ -51,7 +48,7 @@ data class Card(
 		description = SwaggerConstants.CARD_EFFECT_DESCRIPTION
 	)
 	var cardEffect: String
-) : RepresentationModel<Card>(), HateoasLinks {
+) {
 
 	companion object {
 		@JvmStatic
@@ -135,20 +132,4 @@ data class Card(
 		description = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION
 	)
 	var foundIn: MutableList<Product>? = null
-
-
-	override fun setSelfLink() {
-		this.add(
-			WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(cardController).getCard(
-					cardID, true
-				)
-			).withSelfRel()
-		)
-	}
-
-	override fun setLinks() {
-		setSelfLink()
-	}
-
 }

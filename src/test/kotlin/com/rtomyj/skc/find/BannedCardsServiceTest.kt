@@ -267,36 +267,6 @@ class BannedCardsServiceTest {
 			Assertions.assertEquals(TestConstants.D_MALICIOUS_ATTRIBUTE, semiLimited[0].cardAttribute)
 			Assertions.assertEquals(TestConstants.D_MALICIOUS_ATK, semiLimited[0].monsterAttack)
 			Assertions.assertEquals(TestConstants.D_MALICIOUS_DEF, semiLimited[0].monsterDefense)
-
-			// ensure HATEOAS links are sent
-			Assertions.assertNotNull(banListInstance.links.getLink("self"))
-			Assertions.assertNotNull(banListInstance.links.getLink("Ban List New Content"))
-			Assertions.assertNotNull(banListInstance.links.getLink("Ban List Removed Content"))
-
-			Assertions.assertNotNull(forbidden[0].links.getLink("self"))
-			Assertions.assertNotNull(limited[0].links.getLink("self"))
-			Assertions.assertNotNull(semiLimited[0].links.getLink("self"))
-
-			// ensure href is as expected
-			Assertions.assertEquals(
-				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/cards?saveBandwidth=false&format=TCG&allInfo=true", banListInstance.links.getLink("self").get().href
-			)
-			Assertions.assertEquals(
-				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/new?format=TCG", banListInstance.links.getLink("Ban List New Content").get().href
-			)
-			Assertions.assertEquals(
-				"/ban_list/${TestConstants.BAN_LIST_START_DATE}/removed?format=TCG", banListInstance.links.getLink("Ban List Removed Content").get().href
-			)
-
-			Assertions.assertEquals(
-				"/card/${TestConstants.STRATOS_ID}?allInfo=true", forbidden[0].links.getLink("self").get().href
-			)
-			Assertions.assertEquals(
-				"/card/${TestConstants.A_HERO_LIVES_ID}?allInfo=true", limited[0].links.getLink("self").get().href
-			)
-			Assertions.assertEquals(
-				"/card/${TestConstants.D_MALICIOUS_ID}?allInfo=true", semiLimited[0].links.getLink("self").get().href
-			)
 		}
 
 

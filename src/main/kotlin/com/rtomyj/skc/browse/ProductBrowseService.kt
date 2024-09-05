@@ -16,7 +16,6 @@ class ProductBrowseService @Autowired constructor(
         val allProductsForLocale = Products(locale)
             .apply {
                 products = productDao.getProductsByLocale(locale)
-                setLinks()
             }
 
         return allProductsForLocale
@@ -27,7 +26,6 @@ class ProductBrowseService @Autowired constructor(
         val products = productDao.getAllProductsByType(productType, locale)
             .apply {
                 this.productType = productType
-                setLinks()
             }
 
         return products

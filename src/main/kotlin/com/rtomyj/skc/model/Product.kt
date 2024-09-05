@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.find.ProductController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import org.springframework.hateoas.RepresentationModel
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import java.util.*
 import java.util.function.Consumer
 
@@ -28,17 +26,7 @@ data class Product(
     description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
   )
   val productLocale: String
-) : RepresentationModel<Product>() {
-
-  companion object {
-    private val controllerClass = ProductController::class.java
-    fun setLinks(products: List<Product>) {
-      products
-          .forEach(Consumer { obj: Product -> obj.setLinks() })
-    }
-  }
-
-
+) {
   @Schema(
     implementation = String::class,
     description = SwaggerConstants.PRODUCT_NAME_DESCRIPTION,
@@ -83,24 +71,4 @@ data class Product(
     description = SwaggerConstants.PRODUCT_CONTENT_DESCRIPTION,
   )
   var productContent: MutableList<ProductContent> = mutableListOf()
-
-
-  private fun setLink() {
-    this.add(
-      WebMvcLinkBuilder
-          .linkTo(
-            WebMvcLinkBuilder
-                .methodOn(controllerClass)
-                .productInfo(
-                  productId, productLocale
-                )
-          )
-          .withSelfRel()
-    )
-  }
-
-  fun setLinks() {
-    setLink()
-    if (productContent.isNotEmpty()) ProductContent.setLinks(productContent) // set links for pack contents
-  }
 }
