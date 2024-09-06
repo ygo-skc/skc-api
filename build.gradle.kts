@@ -78,15 +78,12 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
   implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
-  runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
 
   implementation("jakarta.servlet:jakarta.servlet-api:${jakartaServletApiVersion}")
 
   implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$springDocVersion")
 
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
-
-  runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 
   implementation("com.fasterxml.jackson.core:jackson-core:$jacksonCoreVersion")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion")
@@ -96,6 +93,9 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutineVersion")
 
   implementation("com.google.guava:guava:$guavaVersion")
+  
+  runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
+  runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
 }
 
 tasks {
