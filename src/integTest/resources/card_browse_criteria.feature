@@ -3,7 +3,7 @@ Feature: Search the database and return available criteria a user can use when b
 
   Scenario: Client requests all browsing criteria for Cards in the SKC database.
     When user requests browsing criteria
-    Then browse criteria request status should be 200 and body should contain 8 elements
+    Then browse criteria request status should be 200 and body should contain 7 elements
     And cardColor criteria array should contain the following:
       | Effect           |
       | Fusion           |
