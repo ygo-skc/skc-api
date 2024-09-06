@@ -42,3 +42,5 @@ logs/
 # Certs
 **/certs/
 **/skc-api.jks
+
+.**env**
