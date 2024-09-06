@@ -18,6 +18,23 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker-remote
       - SKC_SUGGESTION_ENGINE_API_KEY=${SKC_SUGGESTION_ENGINE_API_KEY}
+    labels:
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"host":"%%host%%", "port": "%%port%%"}]'
+      com.datadoghq.ad.logs: >-
+        [{
+          "source": "java", 
+          "service": "skc-api",
+          "auto_multi_line_detection": true,
+          "log_processing_rules": [{
+            "type": "exclude_at_match",
+            "name": "exclude_health_check",
+            "pattern" : "/api/v1/status"
+          }]
+        }]
+      com.datadoghq.tags.env: 'prod'
+      com.datadoghq.tags.service: 'skc-api'
+#      com.datadoghq.tags.version: ""
 
 networks:
   skc-network:
