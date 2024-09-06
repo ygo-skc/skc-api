@@ -82,7 +82,7 @@ dependencies {
 
   implementation("jakarta.servlet:jakarta.servlet-api:${jakartaServletApiVersion}")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springDocVersion")
+  implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$springDocVersion")
 
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
