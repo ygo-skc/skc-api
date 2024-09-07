@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
-import org.springframework.web.reactive.function.client.ClientRequest
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
@@ -50,14 +49,9 @@ class WebClientConfig {
               }
         )
       )
-      .filter(ExchangeFilterFunction.ofRequestProcessor { request ->
-        Mono.fromCallable {
-          ClientRequest
-              .from(request)
-              .header("API-Key", apiKey)
-              .build()
-        }
-      })
+      .defaultHeaders { headers ->
+        headers["API-Key"] = apiKey
+      }
       .filter(ExchangeFilterFunction.ofResponseProcessor { response ->
         webClientExceptionHandler(response)
       })
