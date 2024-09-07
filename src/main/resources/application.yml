@@ -8,7 +8,7 @@ spring:
       maximumPoolSize: 30
       minimumIdle: 10
     # using custom timezone for this API, so connection url needs these serverTimezone, useLegacyDatetimeCode and cacheDefaultTimezone set else dates will be off if API TZ is behind DB TZ  - more info here https://stackoverflow.com/questions/47228265/spring-jpa-hibernate-mysql-localdate-off-one-day-after-persist
-    url: jdbc:mysql://localhost:3306/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
+    url: jdbc:mariadb://localhost:3306/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
     username: root
     password:
   jpa:
@@ -39,13 +39,11 @@ api:
 
 ---
 spring:
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-local
   datasource:
     # using custom timezone for this API, so connection url needs these serverTimezone, useLegacyDatetimeCode and cacheDefaultTimezone set else dates will be off if API TZ is behind DB TZ  - more info here https://stackoverflow.com/questions/47228265/spring-jpa-hibernate-mysql-localdate-off-one-day-after-persist
-    url: jdbc:mysql://skc-api-db:3306/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
+    url: jdbc:mariadb://skc-api-db:3306/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 
@@ -61,13 +59,11 @@ api:
     base-uri: https://suggestions.skc-ygo-api.com
 ---
 spring:
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
   config:
     activate.on-profile: docker-remote
   datasource:
     # using custom timezone for this API, so connection url needs these serverTimezone, useLegacyDatetimeCode and cacheDefaultTimezone set else dates will be off if API TZ is behind DB TZ  - more info here https://stackoverflow.com/questions/47228265/spring-jpa-hibernate-mysql-localdate-off-one-day-after-persist
-    url: jdbc:mysql://skc-api-db/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
+    url: jdbc:mariadb://skc-api-db/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 

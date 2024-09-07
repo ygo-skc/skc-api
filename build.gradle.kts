@@ -3,7 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val springBootVersion = "3.3.3"
 val springDocVersion = "2.6.0"
-val mysqlVersion = "8.0.33"
+val mysqlVersion = "3.4.1"
 val jacksonKotlinVersion = "2.17.2"
 val jacksonCoreVersion = "2.17.2"
 val snakeYamlVersion = "2.3"
@@ -93,9 +93,9 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinCoroutineVersion")
 
   implementation("com.google.guava:guava:$guavaVersion")
-  
+
   runtimeOnly("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
-  runtimeOnly("mysql:mysql-connector-java:$mysqlVersion")
+  runtimeOnly("org.mariadb.jdbc:mariadb-java-client:$mysqlVersion")
 }
 
 tasks {
