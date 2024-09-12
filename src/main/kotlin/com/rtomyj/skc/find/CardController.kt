@@ -92,10 +92,10 @@ class CardController @Autowired constructor(
     ) @RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean,
   ): Mono<Card> = ReactiveMDC.deferMDC(cardService
       .getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
+      .doOnSubscribe { log.info("Retrieving card info for using ID: {}.", cardId) }
       .doOnSuccess {
         log.info(
           "Successfully retrieved card info for: {}, w/ all info: {}.", cardId, fetchAllInfo
         )
-      }
-      .doOnSubscribe { log.info("Retrieving card info for using ID: {}.", cardId) })
+      })
 }

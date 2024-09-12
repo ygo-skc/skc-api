@@ -110,8 +110,11 @@ class CardSearchJDBCDao @Autowired constructor(
               )
                   .apply {
                     this.monsterType = row.getString(6)
-                    this.monsterAttack = row.getObject(7, Int::class.java)
-                    this.monsterDefense = row.getObject(8, Int::class.java)
+
+                    val atk = row.getInt(7)
+                    this.monsterAttack = if (row.wasNull()) null else atk
+                    val def = row.getInt(8)
+                    this.monsterDefense = if (row.wasNull()) null else def
                   }
               cardInfoTracker[card.cardID] = card
             }
@@ -170,8 +173,11 @@ class CardSearchJDBCDao @Autowired constructor(
               )
                   .apply {
                     this.monsterType = row.getString(6)
-                    this.monsterAttack = row.getObject(7, Int::class.java)
-                    this.monsterDefense = row.getObject(8, Int::class.java)
+                    
+                    val atk = row.getInt(7)
+                    this.monsterAttack = if (row.wasNull()) null else atk
+                    val def = row.getInt(8)
+                    this.monsterDefense = if (row.wasNull()) null else def
                   }
               cardInfoTracker[card.cardID] = card
 

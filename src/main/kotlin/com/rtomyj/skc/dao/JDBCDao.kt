@@ -45,10 +45,13 @@ class JDBCDao @Autowired constructor(
           row.getString(4)
         )
             .apply {
-              monsterType = row.getString(5)
-              monsterAttack = row.getObject(6, Int::class.javaObjectType)
-              monsterDefense = row.getObject(7, Int::class.javaObjectType)
-              monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), objectMapper)
+              this.monsterType = row.getString(5)
+              this.monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), objectMapper)
+
+              val atk = row.getInt(6)
+              this.monsterAttack = if (row.wasNull()) null else atk
+              val def = row.getInt(7)
+              this.monsterDefense = if (row.wasNull()) null else def
             }
       }
       null
