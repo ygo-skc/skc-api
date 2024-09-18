@@ -7,11 +7,10 @@ import com.rtomyj.skc.model.ProductContent
 import com.rtomyj.skc.skcsuggestionengine.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
 class ProductService @Autowired constructor(
@@ -19,24 +18,24 @@ class ProductService @Autowired constructor(
   private val trafficService: TrafficService
 ) {
   @OptIn(DelicateCoroutinesApi::class)
-  fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Product {
-    GlobalScope.launch {
-      trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
-    }
+  fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Mono<Product> = Mono
+      .zip(
+        Mono.fromCallable { productDao.getProductInfo(productId, locale) },
+        Mono.fromCallable { productDao.getProductContents(productId, locale) },
+        trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
+      )
+      .map {
+        it.t1.productContent.addAll(it.t2)
+        MonsterAssociation
+            .transformMonsterLinkRating(
+              it.t1
+                  .productContent
+                  .stream()
+                  .filter { it.card != null }
+                  .map { productContent: ProductContent -> productContent.card!! }
+                  .toList()
+            )
 
-    val product = productDao.getProductInfo(productId, locale)
-
-    product.productContent.addAll(productDao.getProductContents(productId, locale))
-
-    MonsterAssociation
-        .transformMonsterLinkRating(
-          product
-              .productContent
-              .stream()
-              .filter { it.card != null }
-              .map { productContent: ProductContent -> productContent.card!! }
-              .toList()
-        )
-    return product
-  }
+        it.t1
+      }
 }

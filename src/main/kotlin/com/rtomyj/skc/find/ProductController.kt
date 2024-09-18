@@ -70,14 +70,13 @@ class ProductController @Autowired constructor(private val availablePacksService
     ) @Pattern(
       regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly"
     ) @NotNull @PathVariable("locale") locale: String,
-  ): ResponseEntity<Mono<Product>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Mono
-      .fromCallable {
-        availablePacksService.getSingleProductUsingLocale(
+  ): ResponseEntity<Mono<Product>> = ResponseEntity.ok(
+    ReactiveMDC.deferMDC(availablePacksService
+        .getSingleProductUsingLocale(
           productId, locale.uppercase(), MDC.get(AppConstants.CLIENT_IP_MDC)
         )
-      }
-      .doOnSubscribe {
-        log.info("Retrieving product info for product w/ ID: {} and locale: {}", productId, locale.uppercase())
-      })
+        .doOnSubscribe {
+          log.info("Retrieving product info for product w/ ID: {} and locale: {}", productId, locale.uppercase())
+        })
   )
 }
