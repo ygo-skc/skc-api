@@ -27,8 +27,7 @@ class RequestFilter : WebFilter {
         if (headers
               .getFirst(X_FORWARDED_FOR)
               .isNullOrBlank()
-        ) request.remoteAddress?.address?.hostAddress
-          ?: "" else headers.getFirst(X_FORWARDED_FOR)
+        ) request.remoteAddress?.address?.hostAddress ?: "" else headers.getFirst(X_FORWARDED_FOR)
       val queryParams = if (request.uri.query.isNullOrBlank()) "" else "?" + request.uri.query
 
       // proxies and load balancers will forward client IP address in HTTP_X_FORWARDED_FOR header. If header exists, use value. Otherwise, use requests IP
