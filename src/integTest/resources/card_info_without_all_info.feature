@@ -1,5 +1,6 @@
 @Card
 Feature: Fetch information about an individual card. There are two flows within the same endpoint: users can either retrieve product/ban list info for a card (fetchAllInfo is true) or they can choose to not retrieve the info (fetchAllInfo is false).
+
   Scenario Outline: Fetching information (without all info flag) about a monster card and checking if response has the necessary attributes and values (see other scenarios for more specific value checks).
     Given I want basic info for card with ID "<cardID>" - IE, no info on ban lists, products, etc
     When I request info for the card
@@ -27,7 +28,6 @@ Feature: Fetch information about an individual card. There are two flows within 
       | 10547580 | Ancient Gear Ballista                   | Link             | Earth         | Machine/Link/Effect             | 1500       |            |       |      | 200        |
 
 
-
   Scenario Outline: Fetching information (without all info flag) about a spell/trap card and checking if response has the necessary attributes and values (see other scenarios for more specific value checks).
     Given I want basic info for card with ID "<cardID>" - IE, no info on ban lists, products, etc
     When I request info for the card
@@ -39,6 +39,6 @@ Feature: Fetch information about an individual card. There are two flows within 
     And ban lists card is found in should not be included
 
     Examples:
-      | cardID   | cardName                                | cardColor        | cardAttribute |  httpStatus |
-      | 08949584 | A Hero Lives                            | Spell            | Spell         | 200         |
-      | 74414885 | NEXT                                    | Trap             | Trap          | 200         |
+      | cardID   | cardName     | cardColor | cardAttribute | httpStatus |
+      | 08949584 | A Hero Lives | Spell     | Spell         | 200        |
+      | 74414885 | NEXT         | Trap      | Trap          | 200        |

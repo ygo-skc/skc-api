@@ -32,6 +32,7 @@
 
 ### Java ###
 bin/
+.kotlin
 
 ### Mac ###
 .DS_Store
@@ -41,3 +42,5 @@ logs/
 # Certs
 **/certs/
 **/skc-api.jks
+
+.**env**

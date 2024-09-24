@@ -17,36 +17,36 @@ import java.sql.ResultSet
 @Repository
 @Qualifier("jdbc")
 class StatsJDBCDao @Autowired constructor(
-	val jdbcNamedTemplate: NamedParameterJdbcTemplate,
+  val jdbcNamedTemplate: NamedParameterJdbcTemplate,
 ) : StatsDao {
-	companion object {
-		private val log = LoggerFactory.getLogger(this::class.java.name)
-	}
+  companion object {
+    private val log = LoggerFactory.getLogger(this::class.java.name)
+  }
 
-	override fun getMonsterTypeStats(cardColor: String): MonsterTypeStats {
-		val query =
-			"SELECT monster_type, count(*) AS 'Total' FROM card_info WHERE monster_type IS NOT NULL AND card_color = :cardColor GROUP BY monster_type ORDER BY monster_type"
-		val sqlParams = MapSqlParameterSource()
-		sqlParams.addValue("cardColor", cardColor)
-		val monsterType = MonsterTypeStats(cardColor, HashMap())
-		jdbcNamedTemplate.query<Any?>(query, sqlParams) { row: ResultSet, _: Int ->
-			monsterType.monsterTypes[row.getString(1)] = row.getInt(2)
-			null
-		}
-		return monsterType
-	}
+  override fun getMonsterTypeStats(cardColor: String): MonsterTypeStats {
+    val query =
+      "SELECT monster_type, count(*) AS 'Total' FROM card_info WHERE monster_type IS NOT NULL AND card_color = :cardColor GROUP BY monster_type ORDER BY monster_type"
+    val sqlParams = MapSqlParameterSource()
+    sqlParams.addValue("cardColor", cardColor)
+    val monsterType = MonsterTypeStats(cardColor, HashMap())
+    jdbcNamedTemplate.query<Any?>(query, sqlParams) { row: ResultSet, _: Int ->
+      monsterType.monsterTypes[row.getString(1)] = row.getInt(2)
+      null
+    }
+    return monsterType
+  }
 
-	override fun getDatabaseStats(): DatabaseStats {
-		return jdbcNamedTemplate
-			.queryForObject(
-				DBQueryConstants.GET_DATABASE_TOTALS, MapSqlParameterSource()
-			) { row: ResultSet, _: Int ->
-				DatabaseStats(
-					row.getInt(1),
-					row.getInt(2),
-					row.getInt(3),
-					row.getInt(4)
-				)
-			}!!
-	}
+  override fun getDatabaseStats(): DatabaseStats {
+    return jdbcNamedTemplate
+        .queryForObject(
+          DBQueryConstants.GET_DATABASE_TOTALS, MapSqlParameterSource()
+        ) { row: ResultSet, _: Int ->
+          DatabaseStats(
+            row.getInt(1),
+            row.getInt(2),
+            row.getInt(3),
+            row.getInt(4)
+          )
+        }!!
+  }
 }

@@ -1,8 +1,6 @@
-version: '3.9'
-
 services:
   skc-api:
-    image: "eclipse-temurin:21.0.1_12-jre-alpine"
+    image: "eclipse-temurin:21.0.4_7-jre-alpine"
     ports:
       - "9998:8443"
     volumes:
@@ -12,7 +10,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 700M
+          memory: 500M
     networks:
       - skc-network
     environment:
@@ -25,3 +23,4 @@ networks:
   skc-network:
     name: skc-network
     driver: bridge
+    external: false

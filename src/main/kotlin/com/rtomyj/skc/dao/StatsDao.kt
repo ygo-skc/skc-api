@@ -7,7 +7,7 @@ import com.rtomyj.skc.model.MonsterTypeStats
  * Contract for database operations.
  */
 interface StatsDao {
-	fun getMonsterTypeStats(cardColor: String): MonsterTypeStats
+  fun getMonsterTypeStats(cardColor: String): MonsterTypeStats
 
-	fun getDatabaseStats(): DatabaseStats
+  fun getDatabaseStats(): DatabaseStats
 }

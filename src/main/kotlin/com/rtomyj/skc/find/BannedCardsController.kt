@@ -1,5 +1,6 @@
 package com.rtomyj.skc.find
 
+import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Mono
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
@@ -31,100 +33,85 @@ class BannedCardsController
  * Create object instance.
  * @param bannedCardsService Service object to use to accomplish functionality needed by this endpoint.
  */ @Autowired constructor(
-    /**
-     * Service object used to get information about banned cards from the database.
-     */
-    val bannedCardsService: BannedCardsService
+  /**
+   * Service object used to get information about banned cards from the database.
+   */
+  val bannedCardsService: BannedCardsService
 ) : YgoApiBaseController() {
 
-    companion object{
-        private val log = LoggerFactory.getLogger(this::class.java.name)
-    }
+  companion object {
+    private val log = LoggerFactory.getLogger(this::class.java.name)
+  }
 
-
-    /**
-     * User can get the contents of a ban list by the start date of the ban list.
-     * User data will be validated. A regular expression is used to ensure that the
-     * user passed a valid date. The ban list cache will be utilized to speed up
-     * delivery. If desired ban list contents are not in query , the ban list
-     * contents will be fetched from DB.
-     *
-     * @param banListStartDate The date the desired ban list took effect.
-     * @return ban list for specified ban list start date.
-     */
-    @ResponseBody
-    @GetMapping(path = ["{banListStartDate}/cards"])
-    @Operation(
-        summary = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates).",
-        tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
-    )
-    @ApiResponse(
-        responseCode = "200",
-        description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-    )
-    @ApiResponse(
-        responseCode = "400",
-        description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = SKCError::class))]
-    )
-    @ApiResponse(
-        responseCode = "404",
-        description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = SKCError::class))]
-    )
-    @ApiResponse(
-        responseCode = "500",
-        description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-        content = [Content(schema = Schema(implementation = SKCError::class))]
-    )
-    @Throws(
-        SKCException::class
-    )
-    fun getBannedCards(
-        @Parameter(
-            description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-            example = "2020-04-01",
-            required = true,
-            schema = Schema(implementation = String::class)
-        )
-        @Pattern(
-            regexp = SKCRegex.DB_DATE,
-            message = "Date doesn't have correct format."
-        )
-        @PathVariable banListStartDate: String,
-        @Parameter(
-            description = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
-            required = false,
-            schema = Schema(implementation = Boolean::class)
-        )
-        @RequestParam(
-            name = "saveBandwidth",
-            required = false,
-            defaultValue = "true"
-        ) saveBandwidth: Boolean = true,
-        @RequestParam(
-            name = "format",
-            required = true,
-            defaultValue = "TCG"
-        ) format: String = "TCG",
-        @Parameter(
-            description = SwaggerConstants.BAN_LIST_FETCH_ALL_DESCRIPTION,
-            required = false,
-            schema = Schema(implementation = Boolean::class)
-        )
-        @RequestParam(
-            name = "allInfo",
-            required = false,
-            defaultValue = "false"
-        ) fetchAllInfo: Boolean = false
-    ): ResponseEntity<BanListInstance> {
-        val reqBanListInstance = bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo)
+  /**
+   * User can get the contents of a ban list by the start date of the ban list.
+   * User data will be validated. A regular expression is used to ensure that the
+   * user passed a valid date. The ban list cache will be utilized to speed up
+   * delivery. If desired ban list contents are not in query , the ban list
+   * contents will be fetched from DB.
+   *
+   * @param banListStartDate The date the desired ban list took effect.
+   * @return ban list for specified ban list start date.
+   */
+  @ResponseBody
+  @GetMapping(path = ["{banListStartDate}/cards"])
+  @Operation(
+    summary = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates).",
+    tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
+  )
+  @ApiResponse(
+    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
+  )
+  @ApiResponse(
+    responseCode = "400",
+    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  @ApiResponse(
+    responseCode = "404",
+    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  @ApiResponse(
+    responseCode = "500",
+    description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
+    content = [Content(schema = Schema(implementation = SKCError::class))]
+  )
+  @Throws(
+    SKCException::class
+  )
+  fun getBannedCards(
+    @Parameter(
+      description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
+      example = "2020-04-01",
+      required = true,
+      schema = Schema(implementation = String::class)
+    ) @Pattern(
+      regexp = SKCRegex.DB_DATE, message = "Date doesn't have correct format."
+    ) @PathVariable banListStartDate: String, @Parameter(
+      description = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
+      required = false,
+      schema = Schema(implementation = Boolean::class)
+    ) @RequestParam(
+      name = "saveBandwidth", required = false, defaultValue = "true"
+    ) saveBandwidth: Boolean = true, @RequestParam(
+      name = "format", required = true, defaultValue = "TCG"
+    ) format: String = "TCG", @Parameter(
+      description = SwaggerConstants.BAN_LIST_FETCH_ALL_DESCRIPTION,
+      required = false,
+      schema = Schema(implementation = Boolean::class)
+    ) @RequestParam(
+      name = "allInfo", required = false, defaultValue = "false"
+    ) fetchAllInfo: Boolean = false
+  ): Mono<ResponseEntity<BanListInstance>> = ReactiveMDC.deferMDC(Mono
+      .fromCallable { bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo) }
+      .map { banListInstance ->
         log.info(
-            "Successfully retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} for format {}.",
-            banListStartDate,
-            saveBandwidth,
-            format
+          "Successfully retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} for format {}.",
+          banListStartDate,
+          saveBandwidth,
+          format
         )
-        return ResponseEntity.ok(reqBanListInstance)
-    }
+        ResponseEntity.ok(banListInstance)
+      })
 }

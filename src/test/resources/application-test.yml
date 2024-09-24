@@ -6,7 +6,7 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: none	# When using @Entity (Hibernate) don't do anything before setting up bean - default behavior is that on bean creation the table is dropped
+      ddl-auto: none    # When using @Entity (Hibernate) don't do anything before setting up bean - default behavior is that on bean creation the table is dropped
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   h2:
     console:

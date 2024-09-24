@@ -1,7 +1,7 @@
-val cucumberVersion = "7.14.0"
-val restAssuredVersion = "5.3.2"
-val groovyVersion = "4.0.15"
-val commonsLoggingVersion = "1.2"
+val cucumberVersion = "7.19.0"
+val restAssuredVersion = "5.5.0"
+val groovyVersion = "4.0.23"
+val commonsLoggingVersion = "1.3.4"
 
 dependencies {
     "integTestImplementation"("commons-logging:commons-logging:$commonsLoggingVersion")

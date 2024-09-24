@@ -1,59 +1,23 @@
 package com.rtomyj.skc.testingutil
 
 import com.rtomyj.skc.exception.ErrorType
-import org.hamcrest.Matchers
-import org.springframework.test.web.servlet.ResultActions
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.reactive.server.WebTestClient
 
 class ControllerTestUtil {
-	companion object {
-		/**
-		 * Helper method that will validate message and code from controller body for when a resource is not in DB.
-		 */
-		@JvmStatic
-		fun validateBadRequestHelper(resultActions: ResultActions) {
-			resultActions
-				.andExpect(MockMvcResultMatchers.status().isBadRequest)
-				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.message", Matchers.`is`(ErrorType.G001.error))
-				)
-				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.G001.name))
-				)
-		}
-
-
-		/**
-		 * Helper method that will validate message and code from controller body for when a resource is not in DB.
-		 */
-		@JvmStatic
-		fun validateNotFoundHelper(resultActions: ResultActions) {
-			resultActions
-				.andExpect(MockMvcResultMatchers.status().isNotFound)
-				.andExpect(
-					MockMvcResultMatchers.jsonPath(
-						"$.message", Matchers.`is`(ErrorType.DB001.error)
-					)
-				)
-				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.DB001.name))
-				)
-		}
-
-
-		/**
-		 * Helper method that will validate message and code from controller body for when a DB doesn't have expected table.
-		 */
-		@JvmStatic
-		fun validateSTableNotCreatedHelper(resultActions: ResultActions) {
-			resultActions
-				.andExpect(MockMvcResultMatchers.status().isInternalServerError)
-				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.message", Matchers.`is`(ErrorType.DB002.error))
-				)
-				.andExpect(
-					MockMvcResultMatchers.jsonPath("$.code", Matchers.`is`(ErrorType.DB002.name))
-				)
-		}
-	}
+  companion object {
+    /**
+     * Helper method that will validate message and code from controller body for when a DB doesn't have expected table.
+     */
+    @JvmStatic
+    fun validateErrorByErrorType(resultActions: WebTestClient.ResponseSpec, status: Int, error: ErrorType) {
+      resultActions
+          .expectStatus()
+          .isEqualTo(status)
+          .expectBody()
+          .jsonPath("$.message")
+          .isEqualTo(error.error)
+          .jsonPath("$.code")
+          .isEqualTo(error.name)
+    }
+  }
 }

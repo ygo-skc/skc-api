@@ -1,12 +1,12 @@
 package com.rtomyj.skc.util.enumeration
 
 enum class ProductType(
-    private val product: String
+  private val product: String
 ) {
-    PACK("PACK"),
-    DECK("DECK"),
-    SET("SET");
+  PACK("PACK"),
+  DECK("DECK"),
+  SET("SET");
 
 
-    override fun toString(): String = product
+  override fun toString(): String = product
 }

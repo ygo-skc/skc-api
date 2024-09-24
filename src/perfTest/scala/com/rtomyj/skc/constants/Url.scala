@@ -1,7 +1,6 @@
 package com.rtomyj.skc.constants
 
-object Url
-{
+object Url {
   // hosts
   val localhost = "http://localhost:9999"
   val localhostDocker = "http://localhost:9998"

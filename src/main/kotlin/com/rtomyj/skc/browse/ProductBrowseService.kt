@@ -9,27 +9,26 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductBrowseService @Autowired constructor(
-    @Qualifier("product-jdbc") private val productDao: ProductDao
+  @Qualifier("product-jdbc") private val productDao: ProductDao
 ) {
 
-    fun getAllProductsWithLocale(locale: String): Products {
-        val allProductsForLocale = Products(locale)
-            .apply {
-                products = productDao.getProductsByLocale(locale)
-                setLinks()
-            }
+  fun getAllProductsWithLocale(locale: String): Products {
+    val allProductsForLocale = Products(locale)
+        .apply {
+          products = productDao.getProductsByLocale(locale)
+        }
 
-        return allProductsForLocale
-    }
+    return allProductsForLocale
+  }
 
 
-    fun getProductsUsingLocaleAndProductType(productType: ProductType, locale: String): Products {
-        val products = productDao.getAllProductsByType(productType, locale)
-            .apply {
-                this.productType = productType
-                setLinks()
-            }
+  fun getProductsUsingLocaleAndProductType(productType: ProductType, locale: String): Products {
+    val products = productDao
+        .getAllProductsByType(productType, locale)
+        .apply {
+          this.productType = productType
+        }
 
-        return products
-    }
+    return products
+  }
 }

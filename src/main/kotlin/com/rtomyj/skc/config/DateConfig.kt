@@ -9,9 +9,9 @@ import java.time.format.DateTimeFormatter
 @Configuration
 @Lazy
 class DateConfig {
-	@Bean("dbSimpleDateFormat")
-	fun dBSimpleDateFormat(): SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+  @Bean("dbSimpleDateFormat")
+  fun dBSimpleDateFormat(): SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
-	@Bean("dbDateTimeFormatter")
-	fun dbDateTimeFormatter(): DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+  @Bean("dbDateTimeFormatter")
+  fun dbDateTimeFormatter(): DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 }
