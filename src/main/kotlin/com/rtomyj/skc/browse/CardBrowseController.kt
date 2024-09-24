@@ -5,7 +5,6 @@ import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -28,7 +27,7 @@ import java.util.concurrent.TimeUnit
 @Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
 class CardBrowseController @Autowired constructor(
   private val cardBrowseService: CardBrowseService
-) : YgoApiBaseController() {
+) {
 
   private val cardBrowseCriteriaSupplier =
     Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria() }, 10, TimeUnit.MINUTES)

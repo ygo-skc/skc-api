@@ -5,7 +5,6 @@ import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListNewContent
 import com.rtomyj.skc.model.BanListRemovedContent
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -39,7 +38,7 @@ class BanListDiffController
    * Service used to interface with dao.
    */
   val banListDiffService: BanListDiffService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     @JvmStatic

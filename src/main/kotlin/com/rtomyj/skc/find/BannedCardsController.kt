@@ -4,7 +4,6 @@ import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -37,7 +36,7 @@ class BannedCardsController
    * Service object used to get information about banned cards from the database.
    */
   val bannedCardsService: BannedCardsService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)

@@ -4,7 +4,6 @@ import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.StatusResponse
 import com.rtomyj.skc.skcsuggestionengine.SuggestionEngineStatusService
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -30,7 +29,7 @@ import reactor.core.publisher.Mono
 @Tag(name = SwaggerConstants.STATUS_CALL_TAG_NAME)
 class StatusController @Autowired constructor(
   @Qualifier("jdbc") val dao: StatusDao, val suggestionEngineStatusService: SuggestionEngineStatusService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)

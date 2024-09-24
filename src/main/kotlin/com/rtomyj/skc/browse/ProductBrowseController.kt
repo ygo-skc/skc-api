@@ -3,7 +3,6 @@ package com.rtomyj.skc.browse
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.Products
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
@@ -27,13 +26,11 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(path = ["/products"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
-class ProductBrowseController @Autowired constructor(private val availableProductsService: ProductBrowseService) :
-  YgoApiBaseController() {
+class ProductBrowseController @Autowired constructor(private val availableProductsService: ProductBrowseService) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
   }
-
 
   @GetMapping("/{locale}")
   @Operation(

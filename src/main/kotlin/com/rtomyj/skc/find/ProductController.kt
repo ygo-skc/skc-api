@@ -3,7 +3,6 @@ package com.rtomyj.skc.find
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.Product
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -30,8 +29,7 @@ import reactor.core.publisher.Mono
 @RequestMapping(path = ["/product"], produces = ["application/json; charset=UTF-8"])
 @Validated
 @Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
-class ProductController @Autowired constructor(private val availablePacksService: ProductService) :
-  YgoApiBaseController() {
+class ProductController @Autowired constructor(private val availablePacksService: ProductService) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)

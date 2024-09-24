@@ -4,7 +4,6 @@ import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -23,7 +22,7 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(path = ["/stats"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_STATS_NAME)
-class StatsController @Autowired constructor(private val statsService: StatsService) : YgoApiBaseController() {
+class StatsController @Autowired constructor(private val statsService: StatsService) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)

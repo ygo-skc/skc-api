@@ -4,7 +4,6 @@ import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -35,7 +34,7 @@ class CardController @Autowired constructor(
    * Service object used to interface with DB DAO.
    */
   private val cardService: CardService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)

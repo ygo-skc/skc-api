@@ -3,7 +3,6 @@ package com.rtomyj.skc.search
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -25,7 +24,7 @@ import reactor.core.publisher.Mono
 @Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
 class CardSearchController @Autowired constructor(
   private val cardSearchService: CardSearchService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
