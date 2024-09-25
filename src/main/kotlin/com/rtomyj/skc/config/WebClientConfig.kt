@@ -17,7 +17,6 @@ import reactor.netty.resources.ConnectionProvider
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 
-
 @Configuration
 class WebClientConfig {
   @Bean("skc-suggestion-engine-web-client")

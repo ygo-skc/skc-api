@@ -106,7 +106,7 @@ class BanListDiffControllerTest {
         mockMvc
             .get()
             .uri("/ban_list/incorrect-date-format/new")
-            .exchange(), 400, ErrorType.G001
+            .exchange(), 422, ErrorType.G001
       )
     }
 

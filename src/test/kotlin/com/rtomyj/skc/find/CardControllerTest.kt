@@ -89,7 +89,7 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 400, ErrorType.G001)
+          .exchange(), 422, ErrorType.G001)
     }
 
 
