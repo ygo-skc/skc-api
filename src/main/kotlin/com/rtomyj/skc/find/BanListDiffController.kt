@@ -1,7 +1,6 @@
 package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListNewContent
 import com.rtomyj.skc.model.BanListRemovedContent
@@ -9,7 +8,6 @@ import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -56,24 +54,11 @@ class BanListDiffController
     summary = "Retrieve cards that are either newly added to desired ban list or cards that have switched statuses (ie: from forbidden to limited) relative to desired ban list " + "using a valid start/effective date of a ban list (use /api/v1/ban/dates to see a valid list of start dates).",
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "500",
-    description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "Bad Request")
+  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "500", ref = "Internal Server Error")
   @Throws(
     SKCException::class
   )
@@ -131,24 +116,11 @@ class BanListDiffController
     summary = "Retrieve cards removed from the desired ban list compared to the previous logical ban list (use /api/v1/ban/dates to see a valid list of start dates).",
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "500",
-    description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "Bad Request")
+  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "500", ref = "Internal Server Error")
   @Throws(
     SKCException::class
   )

@@ -1,14 +1,12 @@
 package com.rtomyj.skc.browse
 
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -36,19 +34,10 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
   @Operation(
     summary = "Retrieve all products for a given locale."
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "Bad Request")
+  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
   fun getProductsByLocale(
     @Parameter(
       description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
@@ -67,19 +56,10 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
   @Operation(
     summary = "Retrieve products that fit a certain product type and locale."
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "Bad Request")
+  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
   fun getAllProductsForProductTypeAndLocale(
     @Parameter(
       description = "A specific product type used to limit results.",

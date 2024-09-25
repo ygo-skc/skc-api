@@ -41,9 +41,7 @@ class StatusController @Autowired constructor(
    * @return Status info.
    */
   @GetMapping
-  @Operation(
-    summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME]
-  )
+  @Operation(summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME])
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
   fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
       .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))

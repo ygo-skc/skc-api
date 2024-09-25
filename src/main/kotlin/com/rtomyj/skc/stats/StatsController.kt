@@ -1,13 +1,11 @@
 package com.rtomyj.skc.stats
 
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -33,16 +31,9 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
   )
   @GetMapping("/card/monster_type/{cardColor}")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "400", ref = "Bad Request")
+  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
   fun monsterTypesForgivenCardColor(
     @Parameter(
       description = SwaggerConstants.CARD_COLOR_DESCRIPTION, schema = Schema(
@@ -56,20 +47,10 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
           log.info("Retrieving monster types for cards with color: {}", cardColor)
         })
 
-  @Operation(
-    summary = "Retrieve overview of the data currently in Database."
-  )
+  @Operation(summary = "Retrieve overview of the data currently in Database.")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "400", ref = "Bad Request")
+  @ApiResponse(responseCode = "404", ref = "Not Found")
   @GetMapping
   fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
     Mono

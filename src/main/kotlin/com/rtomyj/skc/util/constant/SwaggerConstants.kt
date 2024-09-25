@@ -1,15 +1,9 @@
 package com.rtomyj.skc.util.constant
 
 object SwaggerConstants {
-  // Success
   const val HTTP_200_SWAGGER_MESSAGE = "Request processed successfully."
 
-  // Client Error
-  const val HTTP_400_SWAGGER_MESSAGE = "Malformed request. Look at API spec and conform to expected pattern(s)."
-  const val HTTP_404_SWAGGER_MESSAGE = "No resource found for requested item."
-
   // Server Error
-  const val HTTP_500_SWAGGER_MESSAGE = "Server encountered an exception."
   const val RESULT_LIMIT_DESCRIPTION = "Max number of records/results to return."
   const val SAVE_BANDWIDTH_DESCRIPTION =
     "If true, certain data values retrieved from DB will be truncated to save bandwidth on transit."
