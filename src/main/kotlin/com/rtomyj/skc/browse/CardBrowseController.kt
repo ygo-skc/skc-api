@@ -40,9 +40,9 @@ class CardBrowseController @Autowired constructor(
     summary = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
   )
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun browse(
     @Parameter(
       description = "Desired set of card types to include in browse results.",
@@ -110,9 +110,9 @@ class CardBrowseController @Autowired constructor(
     summary = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
   )
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(
     Mono
         .fromCallable { cardBrowseCriteriaSupplier.get() }

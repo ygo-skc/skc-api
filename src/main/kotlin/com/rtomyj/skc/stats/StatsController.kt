@@ -26,14 +26,12 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
     private val log = LoggerFactory.getLogger(this::class.java.name)
   }
 
-  @Operation(
-    summary = "Retrieve sum of all unique monster types for a given color of a card."
-  )
+  @Operation(summary = "Retrieve sum of all unique monster types for a given color of a card.")
   @GetMapping("/card/monster_type/{cardColor}")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun monsterTypesForgivenCardColor(
     @Parameter(
       description = SwaggerConstants.CARD_COLOR_DESCRIPTION, schema = Schema(
@@ -49,8 +47,8 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 
   @Operation(summary = "Retrieve overview of the data currently in Database.")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
   @GetMapping
   fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
     Mono

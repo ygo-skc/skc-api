@@ -11,18 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema
   implementation = Products::class,
   description = "Contains information about Yu-Gi-Oh! products."
 )
-data class Products(
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-  )
-  val locale: String
-) {
-
+data class Products(@Schema(ref = "locale") val locale: String) {
   companion object {
     private val controllerClass = ProductBrowseController::class.java
   }
-
 
   @Schema(
     implementation = Product::class,

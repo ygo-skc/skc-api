@@ -42,8 +42,8 @@ class BanListDatesController
    * @return Map that contains a list of all dates of the ban lists in database.
    */
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
-  @ApiResponse(responseCode = "500", ref = "Internal Server Error")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   @Operation(
     summary = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]

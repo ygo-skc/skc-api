@@ -7,7 +7,6 @@ import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotNull
@@ -28,35 +27,23 @@ import reactor.core.publisher.Mono
 @Validated
 @Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
 class ProductController @Autowired constructor(private val availablePacksService: ProductService) {
-
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
   }
 
-
   @GetMapping("/{productId}/{locale}")
-  @Operation(
-    summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami."
-  )
+  @Operation(summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "404", ref = "notFound")
   fun productInfo(
-    @Parameter(
-      description = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.",
-      example = "LOB",
-      schema = Schema(implementation = String::class)
-    ) @Pattern(
-      regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly"
-    ) @NotNull @PathVariable("productId") productId: String,
-    @Parameter(
-      description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-      example = "en",
-      schema = Schema(implementation = String::class)
-    ) @Pattern(
-      regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly"
-    ) @NotNull @PathVariable("locale") locale: String,
+    @Parameter(ref = "productID")
+    @NotNull @Pattern(regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly")
+    @PathVariable("productId") productId: String,
+    @Parameter(ref = "locale")
+    @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
+    @PathVariable("locale") locale: String,
   ): ResponseEntity<Mono<Product>> = ResponseEntity.ok(
     ReactiveMDC.deferMDC(availablePacksService
         .getSingleProductUsingLocale(

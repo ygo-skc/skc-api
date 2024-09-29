@@ -19,10 +19,7 @@ data class Product(
     description = SwaggerConstants.PRODUCT_ID_DESCRIPTION,
   )
   val productId: String,
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-  )
+  @Schema(ref = "locale")
   val productLocale: String
 ) {
   @Schema(

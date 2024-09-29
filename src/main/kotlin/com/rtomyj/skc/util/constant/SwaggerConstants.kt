@@ -32,8 +32,6 @@ object SwaggerConstants {
   const val MONSTER_ATK_DESCRIPTION = "The attack stat of a monster card."
   const val MONSTER_DEF_DESCRIPTION = "The defence stat of a monster card."
   const val CARD_EFFECT_DESCRIPTION = "The text provided in a Yu-Gi-Oh! card either describing its effect or lore."
-  const val PRODUCT_LOCALE_DESCRIPTION =
-    "A locale denoting products release region. As of now the only locale available is \"en\" but in the future other locales can be added to support products in other regions like Japan."
   const val PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION =
     "Product information for all the products the card in question can be found in."
   const val PRODUCT_ID_DESCRIPTION = "Unique identifier given by Konami to all products."

@@ -7,7 +7,6 @@ import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotNull
@@ -31,21 +30,15 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
   }
 
   @GetMapping("/{locale}")
-  @Operation(
-    summary = "Retrieve all products for a given locale."
-  )
+  @Operation(summary = "Retrieve all products for a given locale.")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun getProductsByLocale(
-    @Parameter(
-      description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-      example = "en",
-      schema = Schema(implementation = String::class)
-    ) @Pattern(
-      regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly"
-    ) @NotNull @PathVariable("locale") locale: String
+    @Parameter(ref = "locale")
+    @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
+    @PathVariable("locale") locale: String
   ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(Mono.fromCallable {
     log.info("Retrieving all products for given locale: {}", locale)
 
@@ -53,27 +46,18 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
   })
 
   @GetMapping("/{productType}/{locale}")
-  @Operation(
-    summary = "Retrieve products that fit a certain product type and locale."
-  )
+  @Operation(summary = "Retrieve products that fit a certain product type and locale.")
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun getAllProductsForProductTypeAndLocale(
-    @Parameter(
-      description = "A specific product type used to limit results.",
-      example = "pack",
-      schema = Schema(implementation = String::class)
-    ) @NotNull @Pattern(
-      regexp = SKCRegex.PRODUCT_TYPE, message = "Product Type not formatted correctly"
-    ) @PathVariable("productType") productType: ProductType, @Parameter(
-      description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-      example = "en",
-      schema = Schema(implementation = String::class)
-    ) @NotNull @Pattern(
-      regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly"
-    ) @PathVariable("locale") locale: String
+    @Parameter(ref = "productType")
+    @NotNull @Pattern(regexp = SKCRegex.PRODUCT_TYPE, message = "Product Type not formatted correctly")
+    @PathVariable("productType") productType: ProductType,
+    @Parameter(ref = "locale")
+    @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
+    @PathVariable("locale") locale: String
   ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(Mono.fromCallable {
     log.info("Retrieving all products categorized as {} product type for locale {}", productType, locale)
 

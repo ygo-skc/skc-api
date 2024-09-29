@@ -55,10 +55,10 @@ class CardController @Autowired constructor(
   )
 
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "422", ref = "Unprocessable Entity")
-  @ApiResponse(responseCode = "500", ref = "Internal Server Error")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   @Throws(SKCException::class)
   fun getCard(
     @Parameter(

@@ -57,9 +57,9 @@ class BannedCardsController
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
   )
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "Bad Request")
-  @ApiResponse(responseCode = "404", ref = "Not Found")
-  @ApiResponse(responseCode = "500", ref = "Internal Server Error")
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   @Throws(
     SKCException::class
   )
