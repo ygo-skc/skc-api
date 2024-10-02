@@ -48,32 +48,49 @@ class SwaggerConfig {
 
   private fun components() = Components()
       // schemas
+      .addSchemas("serviceStatus",
+        Schema<String>().type("string")
+            .description("Current status of a service")
+            .example("API is online and functional"))
+      .addSchemas("serviceVersion",
+        Schema<String>().type("string")
+            .description("Current version of a service")
+            .example("1.2.3"))
       .addSchemas("locale",
         Schema<String>().type("string")
             .example("en"))
       .addSchemas("productID",
         Schema<String>().type("string")
             .example("LOB"))
+      .addSchemas("skcError", Schema<SKCError>()
+          .type("object")
+          .description("Error response")
+          .example(SKCError(message = "Error occurred calling service", code = "DS001"))
+          .properties(mapOf("message" to Schema<String>().type("string")
+              .description("Error message"),
+            "code" to Schema<String>().type("string")
+                .description("Error code"))))
+      .addSchemas("skcErrorBadRequest", Schema<SKCError>().`$ref`("skcError")
+          .example(SKCError(message = "Bad Request", code = "XXX")))
+      .addSchemas("skcErrorNotFound", Schema<SKCError>().`$ref`("skcError")
+          .example(SKCError(message = "Requested resource was not found", code = "DB001")))
+      .addSchemas("skcErrorUnprocessableEntity", Schema<SKCError>().`$ref`("skcError")
+          .example(SKCError(message = "URL parameter, URL path parameter or data in body is not valid", code = "G001")))
+      .addSchemas("skcErrorInternalServerError", Schema<SKCError>().`$ref`("skcError")
+          .example(SKCError(message = "Error occurred calling service", code = "DS001")))
       // responses
       .addResponses("badRequest", ApiResponse()
           .description("Malformed request. Make sure request is valid JSON and data is using correct data types.")
-          .content(Content().addMediaType(APPLICATION_JSON_VALUE,
-            MediaType().schema(skcErrorSchema(SKCError(message = "Bad Request", code = "XXX"))))))
+          .content(Content().addMediaType(APPLICATION_JSON_VALUE, MediaType().schema(Schema<SKCError>().`$ref`("skcErrorBadRequest")))))
       .addResponses("notFound", ApiResponse()
           .description("No resource found for requested item.")
-          .content(Content().addMediaType(APPLICATION_JSON_VALUE,
-            MediaType()
-                .schema(skcErrorSchema(SKCError(message = "Requested resource was not found", code = "DB001"))))))
+          .content(Content().addMediaType(APPLICATION_JSON_VALUE, MediaType().schema(Schema<SKCError>().`$ref`("skcErrorNotFound")))))
       .addResponses("unprocessableEntity", ApiResponse()
           .description("Request is using data that is wrong - for example using a card ID with 7 digits instead of 8.")
-          .content(Content().addMediaType(APPLICATION_JSON_VALUE,
-            MediaType()
-                .schema(skcErrorSchema(SKCError(message = "URL parameter, URL path parameter or data in body is not valid", code = "G001"))))))
+          .content(Content().addMediaType(APPLICATION_JSON_VALUE, MediaType().schema(Schema<SKCError>().`$ref`("skcErrorUnprocessableEntity")))))
       .addResponses("internalServerError", ApiResponse()
           .description("Server encountered an exception.")
-          .content(Content().addMediaType(APPLICATION_JSON_VALUE,
-            MediaType()
-                .schema(skcErrorSchema(SKCError(message = "Error occurred calling service", code = "DS001"))))))
+          .content(Content().addMediaType(APPLICATION_JSON_VALUE, MediaType().schema(Schema<SKCError>().`$ref`("skcErrorInternalServerError")))))
       // parameters
       .addParameters("locale", Parameter()
           .description("A locale denoting a geographical region. As of now the only locale available is \"en\" but in the future other locales can be added to support releases in other regions like Japan.")
@@ -93,13 +110,4 @@ class SwaggerConfig {
           .required(true)
           .example("PACK")
           .`in`("path"))
-
-  private fun skcErrorSchema(example: SKCError) = Schema<SKCError>()
-      .type("object")
-      .description("Error response")
-      .properties(mapOf("message" to Schema<String>().type("string")
-          .description("Error message"),
-        "code" to Schema<String>().type("string")
-            .description("Error code")))
-      .example(example)
 }

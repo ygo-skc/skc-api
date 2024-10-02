@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono
 @RequestMapping(path = ["/products"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
 class ProductBrowseController @Autowired constructor(private val availableProductsService: ProductBrowseService) {
-
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
   }

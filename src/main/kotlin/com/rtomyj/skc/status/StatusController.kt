@@ -20,21 +20,17 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-
 /**
  * Configures endpoint(s) for testing the health of the API.
  */
 @RestController
 @RequestMapping(path = ["/status"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.STATUS_CALL_TAG_NAME)
-class StatusController @Autowired constructor(
-  @Qualifier("jdbc") val dao: StatusDao, val suggestionEngineStatusService: SuggestionEngineStatusService
-) {
-
+class StatusController @Autowired constructor(@Qualifier("jdbc") val dao: StatusDao,
+                                              val suggestionEngineStatusService: SuggestionEngineStatusService) {
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
   }
-
 
   /**
    * Retrieve basic info of the API and status on all dependant downstream services.
@@ -43,6 +39,7 @@ class StatusController @Autowired constructor(
   @GetMapping
   @Operation(summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME])
   @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
       .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
       .doOnSubscribe {

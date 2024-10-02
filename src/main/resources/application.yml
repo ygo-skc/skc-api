@@ -29,6 +29,7 @@ server:
 springdoc:
   packagesToScan: com.rtomyj.skc
   pathsToMatch: /**
+  remove-broken-reference-definitions: false
 
 api:
   skc-suggestion-engine:
