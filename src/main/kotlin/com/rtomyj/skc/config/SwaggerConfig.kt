@@ -5,6 +5,7 @@ import com.rtomyj.skc.util.constant.AppConstants
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.examples.Example
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
 import io.swagger.v3.oas.models.media.Content
@@ -21,6 +22,11 @@ import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
  */
 @Configuration
 class SwaggerConfig {
+  companion object {
+    const val CARD_COLOR_DESCRIPTION =
+      "A simple identifier for card type. If the card is synchro, the card color is synchro."
+  }
+
   /**
    * Create and returns an object that has information about me.
    * @return info about me. Will be used by swagger to display contact information and licenses.
@@ -47,6 +53,10 @@ class SwaggerConfig {
       )
 
   private fun components() = Components()
+      // examples
+      .addExamples("fusion", Example().value("fusion"))
+      .addExamples("effect", Example().value("effect"))
+      .addExamples("synchro", Example().value("synchro"))
       // schemas
       .addSchemas("serviceStatus",
         Schema<String>().type("string")
@@ -59,6 +69,10 @@ class SwaggerConfig {
       .addSchemas("locale",
         Schema<String>().type("string")
             .example("en"))
+      .addSchemas("cardColor",
+        Schema<String>().type("string")
+            .description(CARD_COLOR_DESCRIPTION)
+            .examples(listOf(Example().`$ref`("fusion"), Example().`$ref`("effect"), Example().`$ref`("synchro"))))
       .addSchemas("productID",
         Schema<String>().type("string")
             .example("LOB"))

@@ -31,10 +31,7 @@ data class Card(
   )
   val cardName: String,
 
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.CARD_COLOR_DESCRIPTION
-  )
+  @Schema(ref = "cardColor")
   val cardColor: String,
 
   @Schema(

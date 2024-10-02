@@ -24,8 +24,6 @@ object SwaggerConstants {
   const val CARD_ID_DESCRIPTION = "ID given to mostly all Yu-Gi-Oh! cards by Konami that uniquely identifies it."
   const val CARD_NAME_DESCRIPTION = "The mame of a particular Yu-Gi-Oh! card."
   const val CARD_ATTRIBUTE_DESCRIPTION = "One of the six monster attributes (seven including 'Divine')"
-  const val CARD_COLOR_DESCRIPTION =
-    "A simple identifier for card type. If the card is synchro, the card color is synchro."
   const val MONSTER_TYPE_DESCRIPTION = "Monster type such as Spellcaster."
   const val MONSTER_ASSOCIATION_DESCRIPTION =
     "Description off monsters associations such as Level, Link Rating, Rank, etc."

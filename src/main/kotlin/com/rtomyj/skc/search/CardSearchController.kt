@@ -49,11 +49,8 @@ class CardSearchController @Autowired constructor(
       description = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
       example = "water",
       schema = Schema(implementation = String::class)
-    ) @RequestParam(name = "cAttribute", required = false, defaultValue = "") cardAttribute: String = "", @Parameter(
-      description = SwaggerConstants.CARD_COLOR_DESCRIPTION,
-      example = "effect",
-      schema = Schema(implementation = String::class)
-    ) @RequestParam(name = "cColor", required = false, defaultValue = "") cardColor: String = "", @Parameter(
+    ) @RequestParam(name = "cAttribute", required = false, defaultValue = "") cardAttribute: String = "",
+    @Parameter(ref = "cardColor") @RequestParam(name = "cColor", required = false, defaultValue = "") cardColor: String = "", @Parameter(
       description = SwaggerConstants.MONSTER_TYPE_DESCRIPTION,
       example = "war",
       schema = Schema(implementation = String::class)

@@ -1,12 +1,14 @@
 package com.rtomyj.skc.stats
 
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
@@ -21,7 +23,6 @@ import reactor.core.publisher.Mono
 @RequestMapping(path = ["/stats"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_STATS_NAME)
 class StatsController @Autowired constructor(private val statsService: StatsService) {
-
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
   }
@@ -32,12 +33,14 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  fun monsterTypesForgivenCardColor(
-    @Parameter(
-      description = SwaggerConstants.CARD_COLOR_DESCRIPTION, schema = Schema(
-        implementation = String::class, defaultValue = "fusion"
-      )
-    ) @PathVariable("cardColor") cardColor: String
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
+  fun monsterTypeStats(
+    @Parameter(description = SwaggerConfig.CARD_COLOR_DESCRIPTION,
+      `in` = ParameterIn.PATH,
+      required = true,
+      examples = [ExampleObject(ref = "fusion", name = "fusion"), ExampleObject(ref = "effect", name = "effect"),
+        ExampleObject(ref = "synchro", name = "synchro")])
+    @PathVariable("cardColor") cardColor: String
   ): Mono<MonsterTypeStats> = ReactiveMDC.deferMDC(
     Mono
         .fromCallable { statsService.getMonsterTypeStats(cardColor) }

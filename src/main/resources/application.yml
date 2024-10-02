@@ -30,6 +30,9 @@ springdoc:
   packagesToScan: com.rtomyj.skc
   pathsToMatch: /**
   remove-broken-reference-definitions: false
+  enable-kotlin: true
+  api-docs:
+    version: OPENAPI_3_1
 
 api:
   skc-suggestion-engine:
