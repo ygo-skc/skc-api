@@ -1,8 +1,6 @@
 package com.rtomyj.skc.util.constant
 
 object SwaggerConstants {
-  const val HTTP_200_SWAGGER_MESSAGE = "Request processed successfully."
-
   // Server Error
   const val RESULT_LIMIT_DESCRIPTION = "Max number of records/results to return."
   const val SAVE_BANDWIDTH_DESCRIPTION =

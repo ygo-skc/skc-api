@@ -1,6 +1,7 @@
 package com.rtomyj.skc.status
 
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.StatusResponse
 import com.rtomyj.skc.skcsuggestionengine.SuggestionEngineStatusService
@@ -38,7 +39,7 @@ class StatusController @Autowired constructor(@Qualifier("jdbc") val dao: Status
    */
   @GetMapping
   @Operation(summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME])
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
       .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))

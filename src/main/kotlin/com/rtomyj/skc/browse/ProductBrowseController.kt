@@ -1,6 +1,7 @@
 package com.rtomyj.skc.browse
 
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -30,7 +31,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
 
   @GetMapping("/{locale}")
   @Operation(summary = "Retrieve all products for a given locale.")
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
@@ -46,7 +47,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
 
   @GetMapping("/{productType}/{locale}")
   @Operation(summary = "Retrieve products that fit a certain product type and locale.")
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")

@@ -2,6 +2,7 @@ package com.rtomyj.skc.browse
 
 import com.google.common.base.Suppliers
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -39,7 +40,7 @@ class CardBrowseController @Autowired constructor(
   @Operation(
     summary = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
   )
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
@@ -109,7 +110,7 @@ class CardBrowseController @Autowired constructor(
   @Operation(
     summary = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
   )
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")

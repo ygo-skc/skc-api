@@ -1,6 +1,7 @@
 package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.util.constant.SKCRegex
@@ -56,7 +57,7 @@ class BannedCardsController
     summary = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates).",
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
   )
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "500", ref = "internalServerError")

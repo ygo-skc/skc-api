@@ -29,7 +29,7 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 
   @Operation(summary = "Retrieve sum of all unique monster types for a given color of a card.")
   @GetMapping("/card/monster_type/{cardColor}")
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
@@ -49,7 +49,7 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         })
 
   @Operation(summary = "Retrieve overview of the data currently in Database.")
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @GetMapping

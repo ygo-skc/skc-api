@@ -25,6 +25,7 @@ class SwaggerConfig {
   companion object {
     const val CARD_COLOR_DESCRIPTION =
       "A simple identifier for card type. If the card is synchro, the card color is synchro."
+    const val HTTP_200_SWAGGER_MESSAGE = "Request processed successfully."
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
@@ -33,7 +34,7 @@ class ProductController @Autowired constructor(private val availablePacksService
 
   @GetMapping("/{productId}/{locale}")
   @Operation(summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.")
-  @ApiResponse(responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @ApiResponse(responseCode = "404", ref = "notFound")
