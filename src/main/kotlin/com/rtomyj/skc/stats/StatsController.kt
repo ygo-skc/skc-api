@@ -53,8 +53,10 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         })
 
   @Operation(summary = "Retrieve overview of the data currently in Database.")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = DatabaseStats::class))])
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   @GetMapping
   fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
     Mono

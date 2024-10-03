@@ -2,7 +2,6 @@ package com.rtomyj.skc.model
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(implementation = DatabaseStats::class, description = "High level stats for data in the database.")
 data class DatabaseStats(
   @Schema(implementation = Int::class, description = "Total number of products in the database.", example = "340")
   val productTotal: Int,
