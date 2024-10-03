@@ -80,7 +80,6 @@ class SwaggerConfig {
       .addSchemas("skcError", Schema<SKCError>()
           .type("object")
           .description("Error response")
-          .example(SKCError(message = "Error occurred calling service", code = "DS001"))
           .properties(mapOf("message" to Schema<String>().type("string")
               .description("Error message"),
             "code" to Schema<String>().type("string")
