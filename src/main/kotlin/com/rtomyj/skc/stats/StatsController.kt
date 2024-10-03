@@ -8,11 +8,14 @@ import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,7 +32,8 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 
   @Operation(summary = "Retrieve sum of all unique monster types for a given color of a card.")
   @GetMapping("/card/monster_type/{cardColor}")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = MonsterTypeStats::class))])
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
@@ -50,8 +54,7 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
 
   @Operation(summary = "Retrieve overview of the data currently in Database.")
   @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "badRequest")
-  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @GetMapping
   fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
     Mono
