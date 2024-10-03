@@ -141,7 +141,7 @@ class ProductJDBCDao @Autowired constructor(
       }.productContent
 
       val productWithID =
-        productContent.find { it.productPosition == cardPosition }    // there should always be a value here since its hard coded in line 135
+        productContent.find { it.productPosition == cardPosition }    // there should always be a value here since it's hard coded in line 135
       (productWithID!!.rarities as HashSet).add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
     }
 
@@ -187,7 +187,7 @@ class ProductJDBCDao @Autowired constructor(
         ProductContent(
           card,
           row.getString(ProductsTableDefinition.PRODUCT_POSITION.toString()),
-          rarities[card.cardID]!!
+          rarities[card.cardID] ?: emptySet()
         )
       }
     }

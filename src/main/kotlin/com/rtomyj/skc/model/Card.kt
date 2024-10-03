@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.util.function.Consumer
 
 /**
- * Class defines properties a Yugioh card can contain.
+ * Class defines properties a Yu-Gi-Oh! card can contain.
  */
 @JsonInclude(
   JsonInclude.Include.NON_EMPTY

@@ -6,7 +6,6 @@ import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.model.ProductContent
 import com.rtomyj.skc.skcsuggestionengine.TrafficService
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
-import kotlinx.coroutines.DelicateCoroutinesApi
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
@@ -17,7 +16,6 @@ class ProductService @Autowired constructor(
   @Qualifier("product-jdbc") private val productDao: ProductDao,
   private val trafficService: TrafficService
 ) {
-  @OptIn(DelicateCoroutinesApi::class)
   fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Mono<Product> = Mono
       .zip(
         Mono.fromCallable { productDao.getProductInfo(productId, locale) },
@@ -31,7 +29,7 @@ class ProductService @Autowired constructor(
               it.t1
                   .productContent
                   .stream()
-                  .filter { it.card != null }
+                  .filter { productContent -> productContent.card != null }
                   .map { productContent: ProductContent -> productContent.card!! }
                   .toList()
             )

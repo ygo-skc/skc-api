@@ -32,7 +32,7 @@ class SwaggerConfig {
   }
 
   @Bean
-  fun infoSection() = OpenAPI()
+  fun infoSection(): OpenAPI = OpenAPI()
       .info(
         Info()
             .title("SKC API")

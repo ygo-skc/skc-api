@@ -9,7 +9,7 @@ import com.rtomyj.skc.model.Card
 interface Dao {
   /**
    * Retrieve the information about a Card given the ID.
-   * @param cardID The ID of a Yugioh card.
+   * @param cardID The ID of a Yu-Gi-Oh! card.
    * @return The Card requested.
    */
   @Throws(SKCException::class)
