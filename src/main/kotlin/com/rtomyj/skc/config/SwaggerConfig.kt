@@ -2,13 +2,12 @@ package com.rtomyj.skc.config
 
 import com.rtomyj.skc.exception.SKCError
 import com.rtomyj.skc.util.constant.AppConstants
-import io.swagger.v3.oas.annotations.ExternalDocumentation
-import io.swagger.v3.oas.annotations.OpenAPIDefinition
-import io.swagger.v3.oas.annotations.info.Info
-import io.swagger.v3.oas.annotations.info.License
 import io.swagger.v3.oas.models.Components
+import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.examples.Example
+import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.info.License
 import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.media.Schema
@@ -22,24 +21,36 @@ import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
  * Configuration class for Swagger UI
  */
 @Configuration
-@OpenAPIDefinition(
-  info = Info(title = "SKC API", termsOfService = "https://github.com/ygo-skc/skc-api#readme",
-    license = License(name = "Apache License Version 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-    description = "Application Programming Interface (or API for short) for interfacing with a Database that contains information such as Ban List dates/content, Yu-Gi-Oh! product information, card information, etc."),
-  externalDocs = ExternalDocumentation(description = "GitHub", url = "https://github.com/ygo-skc/skc-api"),
-)
 class SwaggerConfig {
   companion object {
     const val CARD_COLOR_DESCRIPTION =
       "A simple identifier for card type. If the card is synchro, the card color is synchro."
     const val HTTP_200_SWAGGER_MESSAGE = "Request processed successfully."
+
+    private const val LOCALE_DESCRIPTION =
+      "A locale denoting a geographical region. As of now the only locale available is \"en\" but in the future other locales can be added to support releases in other regions like Japan."
   }
 
   @Bean
   fun infoSection() = OpenAPI()
-      .info(io.swagger.v3.oas.models.info.Info()
-          .version(AppConstants.APP_VERSION))
+      .info(
+        Info()
+            .title("SKC API")
+            .description("Application Programming Interface (or API for short) for interfacing with a Database that contains information such as Ban List dates/content, Yu-Gi-Oh! product information, card information, etc.")
+            .version(AppConstants.APP_VERSION)
+            .license(
+              License()
+                  .name("Apache License Version 2.0")
+                  .url("https://www.apache.org/licenses/LICENSE-2.0")
+            )
+            .termsOfService("https://github.com/ygo-skc/skc-api#readme")
+      )
       .components(components())
+      .externalDocs(
+        ExternalDocumentation()
+            .description("GitHub")
+            .url("https://github.com/ygo-skc/skc-api")
+      )
 
   private fun components() = Components()
       // examples
@@ -57,6 +68,9 @@ class SwaggerConfig {
             .example("1.2.3"))
       .addSchemas("locale",
         Schema<String>().type("string")
+            .description(LOCALE_DESCRIPTION)
+            .minLength(2)
+            .maxLength(2)
             .example("en"))
       .addSchemas("cardColor",
         Schema<String>().type("string")
@@ -64,11 +78,22 @@ class SwaggerConfig {
             .examples(listOf(Example().`$ref`("fusion"), Example().`$ref`("effect"), Example().`$ref`("synchro"))))
       .addSchemas("productID",
         Schema<String>().type("string")
+            .description("Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.")
+            .minLength(3)
+            .maxLength(4)
             .example("LOB"))
+      .addSchemas("productName",
+        Schema<String>().type("string")
+            .description("Konami's offical name for the product.")
+            .example("Legend of Blue Eyes White Dragon"))
       .addSchemas("productType",
         Schema<String>().type("string")
-            .description("A string identifier used by API/DB to separate or distinguish products.")
-            .example("Legend of Blue Eyes White Dragon"))
+            .description("A string identifier used by API/DB to separate, distinguish and group products.")
+            .example("Pack"))
+      .addSchemas("productSubType",
+        Schema<String>().type("string")
+            .description("A string identifier used by API/DB to separate, distinguish and group product types to further distinguish products.")
+            .example("Core Set"))
       .addSchemas("skcError", Schema<SKCError>()
           .type("object")
           .description("Error response")
@@ -99,7 +124,7 @@ class SwaggerConfig {
           .content(Content().addMediaType(APPLICATION_JSON_VALUE, MediaType().schema(Schema<SKCError>().`$ref`("skcErrorInternalServerError")))))
       // parameters
       .addParameters("locale", Parameter()
-          .description("A locale denoting a geographical region. As of now the only locale available is \"en\" but in the future other locales can be added to support releases in other regions like Japan.")
+          .description(LOCALE_DESCRIPTION)
           .name("locale")
           .required(true)
           .example("en")

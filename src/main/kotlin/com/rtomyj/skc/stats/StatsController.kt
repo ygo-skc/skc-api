@@ -34,7 +34,6 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
   @GetMapping("/card/monster_type/{cardColor}")
   @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
     content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = MonsterTypeStats::class))])
-  @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @ApiResponse(responseCode = "500", ref = "internalServerError")

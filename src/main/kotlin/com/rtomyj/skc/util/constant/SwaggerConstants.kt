@@ -30,8 +30,6 @@ object SwaggerConstants {
   const val CARD_EFFECT_DESCRIPTION = "The text provided in a Yu-Gi-Oh! card either describing its effect or lore."
   const val PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION =
     "Product information for all the products the card in question can be found in."
-  const val PRODUCT_SUB_TYPE_DESCRIPTION =
-    "A string identifier used by API/DB to separate or distinguish product types, ie, further distinguish products."
   const val PRODUCT_RELEASE_DATE_DESCRIPTION = "Date product was released in locale specified by locale property."
   const val PRODUCT_TOTAL_DESCRIPTION = "Total number of cards in the product."
   const val PRODUCT_RARITY_STATS_DESCRIPTION = "Statistics on card rarities for the product."

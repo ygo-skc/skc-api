@@ -14,16 +14,13 @@ data class Product(
   val productId: String,
   @Schema(ref = "locale")
   val productLocale: String) {
-  @Schema(implementation = String::class, description = "Full product name.")
+  @Schema(ref = "productName")
   var productName: String? = null
 
   @Schema(ref = "productType")
   var productType: String? = null
 
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.PRODUCT_SUB_TYPE_DESCRIPTION,
-  )
+  @Schema(ref = "productSubType")
   var productSubType: String? = null
 
   @Schema(

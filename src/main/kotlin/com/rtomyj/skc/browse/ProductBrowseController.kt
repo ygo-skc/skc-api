@@ -8,12 +8,15 @@ import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,8 +34,8 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
 
   @GetMapping("/{locale}")
   @Operation(summary = "Retrieve all products for a given locale.")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = Products::class))])
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @ApiResponse(responseCode = "500", ref = "internalServerError")
@@ -48,8 +51,8 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
 
   @GetMapping("/{productType}/{locale}")
   @Operation(summary = "Retrieve products that fit a certain product type and locale.")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = Products::class))])
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @ApiResponse(responseCode = "500", ref = "internalServerError")
