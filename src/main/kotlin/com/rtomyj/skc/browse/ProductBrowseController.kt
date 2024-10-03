@@ -35,6 +35,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun getProductsByLocale(
     @Parameter(ref = "locale")
     @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
@@ -51,6 +52,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
   @ApiResponse(responseCode = "400", ref = "badRequest")
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun getAllProductsForProductTypeAndLocale(
     @Parameter(ref = "productType")
     @NotNull @Pattern(regexp = SKCRegex.PRODUCT_TYPE, message = "Product Type not formatted correctly")

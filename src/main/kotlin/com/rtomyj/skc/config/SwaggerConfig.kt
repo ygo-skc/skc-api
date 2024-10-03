@@ -65,6 +65,10 @@ class SwaggerConfig {
       .addSchemas("productID",
         Schema<String>().type("string")
             .example("LOB"))
+      .addSchemas("productType",
+        Schema<String>().type("string")
+            .description("A string identifier used by API/DB to separate or distinguish products.")
+            .example("Legend of Blue Eyes White Dragon"))
       .addSchemas("skcError", Schema<SKCError>()
           .type("object")
           .description("Error response")

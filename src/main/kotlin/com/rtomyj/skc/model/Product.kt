@@ -9,29 +9,15 @@ import java.util.*
 @JsonInclude(
   JsonInclude.Include.NON_EMPTY
 )
-@Schema(
-  implementation = Product::class,
-  description = "Information about a Yu-Gi-Oh! product such as a booster pack or tin."
-)
 data class Product(
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.PRODUCT_ID_DESCRIPTION,
-  )
+  @Schema(ref = "productID")
   val productId: String,
   @Schema(ref = "locale")
-  val productLocale: String
-) {
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.PRODUCT_NAME_DESCRIPTION,
-  )
+  val productLocale: String) {
+  @Schema(implementation = String::class, description = "Full product name.")
   var productName: String? = null
 
-  @Schema(
-    implementation = String::class,
-    description = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
-  )
+  @Schema(ref = "productType")
   var productType: String? = null
 
   @Schema(

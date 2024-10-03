@@ -2,7 +2,6 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.browse.ProductBrowseController
-import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -22,9 +21,6 @@ data class Products(@Schema(ref = "locale") val locale: String) {
   )
   var products: List<Product>? = null
 
-  @Schema(
-    implementation = ProductType::class,
-    description = SwaggerConstants.PRODUCT_TYPE_DESCRIPTION,
-  )
+  @Schema(ref = "productType")
   var productType: ProductType? = null
 }

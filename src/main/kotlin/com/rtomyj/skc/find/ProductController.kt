@@ -8,6 +8,8 @@ import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.NotNull
@@ -15,6 +17,7 @@ import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -34,10 +37,12 @@ class ProductController @Autowired constructor(private val availablePacksService
 
   @GetMapping("/{productId}/{locale}")
   @Operation(summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = Product::class))])
   @ApiResponse(responseCode = "400", ref = "badRequest")
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun productInfo(
     @Parameter(ref = "productID")
     @NotNull @Pattern(regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly")
