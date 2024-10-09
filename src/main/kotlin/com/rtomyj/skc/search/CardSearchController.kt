@@ -1,9 +1,9 @@
 package com.rtomyj.skc.search
 
 import com.rtomyj.skc.config.ReactiveMDC
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono
 @Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
 class CardSearchController @Autowired constructor(
   private val cardSearchService: CardSearchService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -35,9 +35,7 @@ class CardSearchController @Autowired constructor(
   @Operation(
     summary = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)",
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
   @Throws(
     SKCException::class
   )
@@ -52,11 +50,8 @@ class CardSearchController @Autowired constructor(
       description = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
       example = "water",
       schema = Schema(implementation = String::class)
-    ) @RequestParam(name = "cAttribute", required = false, defaultValue = "") cardAttribute: String = "", @Parameter(
-      description = SwaggerConstants.CARD_COLOR_DESCRIPTION,
-      example = "effect",
-      schema = Schema(implementation = String::class)
-    ) @RequestParam(name = "cColor", required = false, defaultValue = "") cardColor: String = "", @Parameter(
+    ) @RequestParam(name = "cAttribute", required = false, defaultValue = "") cardAttribute: String = "",
+    @Parameter(ref = "cardColor") @RequestParam(name = "cColor", required = false, defaultValue = "") cardColor: String = "", @Parameter(
       description = SwaggerConstants.MONSTER_TYPE_DESCRIPTION,
       example = "war",
       schema = Schema(implementation = String::class)

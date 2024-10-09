@@ -1,13 +1,10 @@
 package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.BanListDates
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
@@ -33,7 +30,7 @@ class BanListDatesController
    * Service object used to interface the database DAO
    */
   val banListDatesService: BanListDatesService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     @JvmStatic
@@ -45,14 +42,9 @@ class BanListDatesController
    * Looks in the database for the start dates of all ban lists stored in database.
    * @return Map that contains a list of all dates of the ban lists in database.
    */
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "500",
-    description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   @Operation(
     summary = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]

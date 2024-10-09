@@ -88,7 +88,7 @@ class MonsterAssociation(
 
 
   /**
-   * Takes monster link rating retrieved from DB (constants denoting position of arrow, eg: T-L (top left), T-R (top right)... etc) and converts them to emojis.
+   * Takes monster link rating retrieved from DB (constants denoting position of arrow, eg: T-L (top left), T-R (top right)... etc.) and converts them to emojis.
    */
   fun transformMonsterLinkRating() {
     if (this.linkArrows?.isNotEmpty() == true) {

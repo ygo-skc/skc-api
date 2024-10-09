@@ -96,10 +96,10 @@ class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: CardB
 
 
   /**
-   * Parses a comma delimited string supplied by the user that contains values for a specific monster association key that a user wants to retrieve contents for.
+   * Parses a comma-delimited string supplied by the user that contains values for a specific monster association key that a user wants to retrieve contents for.
    * User also supplies a pattern defining a key-value pair where the key is a valid monster association and the value is a parametrized String token that will be replaced by
    * String.format()
-   * Eg) "level": "%s"
+   * For example: "level": "%s"
    * This updated patterns will be inserted in the returned Set for use in a SQL query.
    * @param monsterAssociationValues Set containing the browse monster association values wanted by user.
    * @param monsterAssociationAttributeSQLPattern Key-value pair to use in a SQL query, with a parametrized value.

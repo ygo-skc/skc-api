@@ -1,15 +1,13 @@
 package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -37,7 +35,7 @@ class BannedCardsController
    * Service object used to get information about banned cards from the database.
    */
   val bannedCardsService: BannedCardsService
-) : YgoApiBaseController() {
+) {
 
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -59,24 +57,10 @@ class BannedCardsController
     summary = "Retrieves information about a ban list using a valid effective ban list start date (use /api/v1/ban/dates to see a valid list of start dates).",
     tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "500",
-    description = SwaggerConstants.HTTP_500_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   @Throws(
     SKCException::class
   )

@@ -2,14 +2,12 @@ package com.rtomyj.skc.browse
 
 import com.google.common.base.Suppliers
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -28,7 +26,7 @@ import java.util.concurrent.TimeUnit
 @Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
 class CardBrowseController @Autowired constructor(
   private val cardBrowseService: CardBrowseService
-) : YgoApiBaseController() {
+) {
 
   private val cardBrowseCriteriaSupplier =
     Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria() }, 10, TimeUnit.MINUTES)
@@ -42,19 +40,10 @@ class CardBrowseController @Autowired constructor(
   @Operation(
     summary = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun browse(
     @Parameter(
       description = "Desired set of card types to include in browse results.",
@@ -121,19 +110,10 @@ class CardBrowseController @Autowired constructor(
   @Operation(
     summary = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
   )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(
     Mono
         .fromCallable { cardBrowseCriteriaSupplier.get() }

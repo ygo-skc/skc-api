@@ -1,9 +1,8 @@
 package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
-import com.rtomyj.skc.exception.SKCError
+import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.Product
-import com.rtomyj.skc.util.YgoApiBaseController
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -18,6 +17,7 @@ import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -30,46 +30,26 @@ import reactor.core.publisher.Mono
 @RequestMapping(path = ["/product"], produces = ["application/json; charset=UTF-8"])
 @Validated
 @Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
-class ProductController @Autowired constructor(private val availablePacksService: ProductService) :
-  YgoApiBaseController() {
-
+class ProductController @Autowired constructor(private val availablePacksService: ProductService) {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
   }
 
-
   @GetMapping("/{productId}/{locale}")
-  @Operation(
-    summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami."
-  )
-  @ApiResponse(
-    responseCode = "200", description = SwaggerConstants.HTTP_200_SWAGGER_MESSAGE
-  )
-  @ApiResponse(
-    responseCode = "400",
-    description = SwaggerConstants.HTTP_400_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
-  @ApiResponse(
-    responseCode = "404",
-    description = SwaggerConstants.HTTP_404_SWAGGER_MESSAGE,
-    content = [Content(schema = Schema(implementation = SKCError::class))]
-  )
+  @Operation(summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.")
+  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = Product::class))])
+  @ApiResponse(responseCode = "400", ref = "badRequest")
+  @ApiResponse(responseCode = "404", ref = "notFound")
+  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+  @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun productInfo(
-    @Parameter(
-      description = "Unique identifier each Yu-Gi-Oh! product has. It is the 3 or 4 alpha numeric string found on every card.",
-      example = "LOB",
-      schema = Schema(implementation = String::class)
-    ) @Pattern(
-      regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly"
-    ) @NotNull @PathVariable("productId") productId: String,
-    @Parameter(
-      description = SwaggerConstants.PRODUCT_LOCALE_DESCRIPTION,
-      example = "en",
-      schema = Schema(implementation = String::class)
-    ) @Pattern(
-      regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly"
-    ) @NotNull @PathVariable("locale") locale: String,
+    @Parameter(ref = "productID")
+    @NotNull @Pattern(regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly")
+    @PathVariable("productId") productId: String,
+    @Parameter(ref = "locale")
+    @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
+    @PathVariable("locale") locale: String,
   ): ResponseEntity<Mono<Product>> = ResponseEntity.ok(
     ReactiveMDC.deferMDC(availablePacksService
         .getSingleProductUsingLocale(

@@ -47,7 +47,7 @@ class CardBrowseJDBCDao @Autowired constructor(
 
   private fun transformCollectionToSQLOr(monsterAssociationValueSet: Collection<String>): String {
     var monsterAssociationStr = ""
-    if (!monsterAssociationValueSet.isEmpty()) {
+    if (monsterAssociationValueSet.isNotEmpty()) {
       monsterAssociationStr = java.lang.String.join("|", monsterAssociationValueSet)
     }
     return monsterAssociationStr

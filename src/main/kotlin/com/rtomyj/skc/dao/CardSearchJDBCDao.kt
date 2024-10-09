@@ -149,7 +149,7 @@ class CardSearchJDBCDao @Autowired constructor(
       Objects.requireNonNull(
         jdbcNamedTemplate.query<Collection<Card?>>(query, sqlParams) { row: ResultSet ->
           /*
-          Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc) but with different ban info.
+          Since a join between ban lists and card info is done, there will be multiple rows having the same card info (id, name, atk, etc.) but with different ban info.
           ie:	ID		Name		BanList
               1234	Stratos	2019-07-15
               1234	Stratos	2019-04-29
@@ -173,7 +173,7 @@ class CardSearchJDBCDao @Autowired constructor(
               )
                   .apply {
                     this.monsterType = row.getString(6)
-                    
+
                     val atk = row.getInt(7)
                     this.monsterAttack = if (row.wasNull()) null else atk
                     val def = row.getInt(8)
