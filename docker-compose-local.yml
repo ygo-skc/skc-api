@@ -12,7 +12,7 @@ services:
         limits:
           memory: 500M
     networks:
-      - skc-network
+      - skc
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -20,7 +20,7 @@ services:
       - SKC_SUGGESTION_ENGINE_API_KEY=${SKC_SUGGESTION_ENGINE_API_KEY}
 
 networks:
-  skc-network:
-    name: skc-network
+  skc:
+    name: skc
     driver: bridge
-    external: false
+    external: true # network was alredy created, if you need to recreate the network - make this false
