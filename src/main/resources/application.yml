@@ -22,7 +22,7 @@ server:
   compression:
     enabled: true
     mime-types: application/json
-    min-response-size: 4096
+    min-response-size: 1024
   http2:
     enabled: true
 
@@ -37,7 +37,8 @@ springdoc:
 
 api:
   skc-suggestion-engine:
-    base-uri: http://localhost:90
+    cert-hostname: suggestions.skc-ygo-api.com
+    base-uri: https://localhost:9000
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
     status-endpoint: /api/v1/suggestions/status
     traffic-endpoint: /api/v1/suggestions/traffic-analysis
@@ -61,7 +62,7 @@ server:
 
 api:
   skc-suggestion-engine:
-    base-uri: https://suggestions.skc-ygo-api.com
+    base-uri: https://skc-suggestion-engine
 ---
 spring:
   config:
@@ -81,4 +82,4 @@ server:
 
 api:
   skc-suggestion-engine:
-    base-uri: https://suggestions.skc-ygo-api.com
+    base-uri: https://skc-suggestion-engine
