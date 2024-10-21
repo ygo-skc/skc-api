@@ -55,10 +55,6 @@ class JDBCDao @Autowired constructor(
             }
       }
       null
-    }
-      ?: throw SKCException(
-        String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID),
-        ErrorType.DB001
-      )
+    } ?: throw SKCException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID), ErrorType.DB001)
   }
 }

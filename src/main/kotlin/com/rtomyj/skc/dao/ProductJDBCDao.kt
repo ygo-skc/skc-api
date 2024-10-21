@@ -1,17 +1,21 @@
 package com.rtomyj.skc.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rtomyj.skc.exception.ErrorType
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.model.ProductContent
 import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.util.constant.DBQueryConstants
+import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.ProductType
 import com.rtomyj.skc.util.enumeration.table.definitions.ProductsTableDefinition
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -66,25 +70,29 @@ class ProductJDBCDao @Autowired constructor(
     sqlParams.addValue(PRODUCT_ID, productId)
     sqlParams.addValue(LOCALE, locale)
 
-    return jdbcNamedTemplate.queryForObject(GET_PRODUCT_DETAILS, sqlParams) { row: ResultSet, _: Int ->
-      return@queryForObject Product(productId, locale)
-          .apply {
-            productName = row.getString(ProductsTableDefinition.PRODUCT_NAME.toString())
-            productTotal = row.getInt(ProductsTableDefinition.PRODUCT_CONTENT_TOTAL.toString())
-            productType = row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString())
-            productSubType = row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString())
-            productRarityStats =
-              getProductRarityCount(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
+    return try {
+      jdbcNamedTemplate.queryForObject(GET_PRODUCT_DETAILS, sqlParams) { row: ResultSet, _: Int ->
+        return@queryForObject Product(productId, locale)
+            .apply {
+              productName = row.getString(ProductsTableDefinition.PRODUCT_NAME.toString())
+              productTotal = row.getInt(ProductsTableDefinition.PRODUCT_CONTENT_TOTAL.toString())
+              productType = row.getString(ProductsTableDefinition.PRODUCT_TYPE.toString())
+              productSubType = row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString())
+              productRarityStats =
+                getProductRarityCount(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
 
-            try {
-              productReleaseDate =
-                dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
-            } catch (e: ParseException) {
-              log.error(DATE_PARSE_EXCEPTION_LOGGER, productId, e.toString())
-              return@queryForObject null
+              try {
+                productReleaseDate =
+                  dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
+              } catch (e: ParseException) {
+                log.error(DATE_PARSE_EXCEPTION_LOGGER, productId, e.toString())
+                return@queryForObject null
+              }
             }
-          }
-    }!!
+      } ?: throw SKCException(String.format(ErrConstants.PRODUCT_ID_REQUESTED_NOT_FOUND_IN_DB, productId), ErrorType.DB001)
+    } catch (e: EmptyResultDataAccessException) {
+      throw SKCException(String.format(ErrConstants.PRODUCT_ID_REQUESTED_NOT_FOUND_IN_DB, productId), ErrorType.DB001)
+    }
   }
 
   override fun getProductsByLocale(locale: String): List<Product> {
