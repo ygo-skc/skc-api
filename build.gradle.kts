@@ -14,7 +14,7 @@ val jakartaServletApiVersion = "6.1.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.0"
+version = "3.0.2"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 plugins {
@@ -23,8 +23,8 @@ plugins {
   id("info.solidsoft.pitest") version "1.15.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
 
-  kotlin("jvm") version "2.0.20"
-  kotlin("plugin.spring") version "2.0.20"
+  kotlin("jvm") version "2.0.21"
+  kotlin("plugin.spring") version "2.0.21"
 
   jacoco
   java

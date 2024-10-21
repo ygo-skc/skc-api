@@ -22,7 +22,7 @@ server:
   compression:
     enabled: true
     mime-types: application/json
-    min-response-size: 4096
+    min-response-size: 1024
   http2:
     enabled: true
 
@@ -37,7 +37,8 @@ springdoc:
 
 api:
   skc-suggestion-engine:
-    base-uri: http://localhost:90
+    cert-hostname: suggestions.skc-ygo-api.com
+    base-uri: https://localhost:9000
     key: ${SKC_SUGGESTION_ENGINE_API_KEY}
     status-endpoint: /api/v1/suggestions/status
     traffic-endpoint: /api/v1/suggestions/traffic-analysis
@@ -48,7 +49,7 @@ spring:
     activate.on-profile: docker-local
   datasource:
     # using custom timezone for this API, so connection url needs these serverTimezone, useLegacyDatetimeCode and cacheDefaultTimezone set else dates will be off if API TZ is behind DB TZ  - more info here https://stackoverflow.com/questions/47228265/spring-jpa-hibernate-mysql-localdate-off-one-day-after-persist
-    url: jdbc:mariadb://skc-api-db:3306/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
+    url: jdbc:mariadb://skc-api-db/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
     username: root
     password: ${MYSQL_ROOT_PASSWORD}
 
@@ -61,7 +62,7 @@ server:
 
 api:
   skc-suggestion-engine:
-    base-uri: https://suggestions.skc-ygo-api.com
+    base-uri: https://skc-suggestion-engine:9000
 ---
 spring:
   config:
@@ -81,4 +82,4 @@ server:
 
 api:
   skc-suggestion-engine:
-    base-uri: https://suggestions.skc-ygo-api.com
+    base-uri: https://skc-suggestion-engine:9000

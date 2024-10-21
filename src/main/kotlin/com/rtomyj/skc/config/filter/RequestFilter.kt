@@ -49,9 +49,7 @@ class RequestFilter : WebFilter {
     }
   }
 
-  override fun filter(
-    serverWebExchange: ServerWebExchange, chain: WebFilterChain
-  ): Mono<Void> = chain
+  override fun filter(serverWebExchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> = chain
       .filter(serverWebExchange)
       .contextWrite {
         configureMDC(serverWebExchange.request)
