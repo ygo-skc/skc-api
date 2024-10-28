@@ -4,6 +4,7 @@ import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.CardSearchDao
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardSearchParameters
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -24,19 +25,9 @@ class CardSearchService @Autowired constructor(
 
 
   @Throws(SKCException::class)
-  fun getCardSearchResults(
-    cardId: String,
-    cardName: String,
-    cardAttribute: String,
-    cardColor: String,
-    monsterType: String,
-    limit: Int,
-    saveBandwidth: Boolean
-  ): List<Card> {
-    val searchResults =
-      dao.searchForCardWithCriteria(cardId, cardName, cardAttribute, cardColor, monsterType, limit, false)
-
-    if (saveBandwidth) {
+  fun getCardSearchResults(cardSearchParameters: CardSearchParameters): List<Card> {
+    val searchResults = dao.searchForCardWithCriteria(cardSearchParameters, false)
+    if (cardSearchParameters.saveBandwidth) {
       log.debug("Trimming card effects to save bandwidth.")
       Card.trimEffects(searchResults)
     }

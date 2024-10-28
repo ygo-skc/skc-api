@@ -2,6 +2,7 @@ package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBanListStatus
+import com.rtomyj.skc.model.CardSearchParameters
 import com.rtomyj.skc.util.constant.DBQueryConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import org.slf4j.LoggerFactory
@@ -28,72 +29,46 @@ class CardSearchJDBCDao @Autowired constructor(
 ) : CardSearchDao {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
+
+    @JvmStatic
+    private fun prepSearchParams(cardSearchParameters: CardSearchParameters): MapSqlParameterSource {
+      val sqlParams = MapSqlParameterSource()
+      sqlParams.addValue("cardId", "%${cardSearchParameters.cId}%")
+      sqlParams.addValue("cardName", fullTextQueryTransformer(cardSearchParameters.cName))
+      sqlParams.addValue("cardAttribute", cardSearchParameters.cAttribute)
+      sqlParams.addValue("cardColor", cardSearchParameters.cColor)
+      sqlParams.addValue("monsterType", cardSearchParameters.mType)
+      sqlParams.addValue("limit", cardSearchParameters.limit)
+
+      return sqlParams
+    }
+
+    @JvmStatic
+    private fun fullTextQueryTransformer(oldQuery: String): String {
+      val newQuery = oldQuery
+          .replace("-", " ")
+          .trim()
+          .replace(" ", " +")
+      return "+$newQuery*"
+    }
   }
 
-  override fun searchForCardWithCriteria(
-    cardId: String?,
-    cardName: String?,
-    cardAttribute: String?,
-    cardColor: String?,
-    monsterType: String?,
-    limit: Int,
-    getBanInfo: Boolean
-  ): List<Card> {
-    return if (getBanInfo) searchForCardsIncludeBanInfo(
-      cardId,
-      cardName,
-      cardAttribute,
-      cardColor,
-      monsterType,
-      limit
-    ) else searchForCards(cardId, cardName, cardAttribute, cardColor, monsterType, limit)
+  override fun searchForCardWithCriteria(cardSearchParameters: CardSearchParameters, getBanInfo: Boolean): List<Card> {
+    return if (getBanInfo) searchForCardsIncludeBanInfo(cardSearchParameters) else searchForCards(cardSearchParameters)
   }
 
-  private fun prepSearchParams(
-    cardId: String?,
-    cardName: String?,
-    cardAttribute: String?,
-    cardColor: String?,
-    monsterType: String?,
-    limit: Int
-  ): MapSqlParameterSource {
-    val sqlParams = MapSqlParameterSource()
-    sqlParams.addValue("cardId", "%$cardId%")
-    sqlParams.addValue("cardName", cardName)
-    sqlParams.addValue("cardAttribute", if (cardAttribute!!.isEmpty()) ".*" else cardAttribute)
-    sqlParams.addValue("cardColor", if (cardColor!!.isEmpty()) ".*" else cardColor)
-    sqlParams.addValue("monsterType", if (monsterType!!.isEmpty()) ".*" else monsterType)
-    sqlParams.addValue("limit", limit)
-
-    return sqlParams
-  }
-
-  private fun fullTextQueryTransformer(oldQuery: String): String {
-    val newQuery = oldQuery
-        .replace("-", " ")
-        .trim()
-        .replace(" ", " +")
-    return "+$newQuery*"
-  }
-
-  private fun searchForCards(
-    cardId: String?,
-    cardName: String?,
-    cardAttribute: String?,
-    cardColor: String?,
-    monsterType: String?,
-    limit: Int
-  ): List<Card> {
-    val stopwatch = StopWatch()
-    stopwatch.start()
+  private fun searchForCards(cardSearchParameters: CardSearchParameters): List<Card> {
     val sqlParams =
-      prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit)
+      prepSearchParams(cardSearchParameters)
     val query = DBQueryConstants.SEARCH_QUERY
     log.debug(
       "Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
       query,
       sqlParams
     )
+
+    val stopwatch = StopWatch()
+    stopwatch.start()
     val searchResults = ArrayList<Card>(
       Objects.requireNonNull(
         jdbcNamedTemplate.query<Collection<Card?>>(query, sqlParams) { row: ResultSet ->
@@ -127,24 +102,18 @@ class CardSearchJDBCDao @Autowired constructor(
     return searchResults
   }
 
-  private fun searchForCardsIncludeBanInfo(
-    cardId: String?,
-    cardName: String?,
-    cardAttribute: String?,
-    cardColor: String?,
-    monsterType: String?,
-    limit: Int
-  ): List<Card> {
-    val stopwatch = StopWatch()
-    stopwatch.start()
+  private fun searchForCardsIncludeBanInfo(cardSearchParameters: CardSearchParameters): List<Card> {
     val sqlParams =
-      prepSearchParams(cardId, fullTextQueryTransformer(cardName!!), cardAttribute, cardColor, monsterType, limit)
+      prepSearchParams(cardSearchParameters)
     val query = DBQueryConstants.SEARCH_QUERY_WITH_BAN_INFO
     log.debug(
       "Fetching card search results from DB using query: ( {} ) with sql params ( {} ).",
       query,
       sqlParams
     )
+
+    val stopwatch = StopWatch()
+    stopwatch.start()
     val searchResults = ArrayList<Card>(
       Objects.requireNonNull(
         jdbcNamedTemplate.query<Collection<Card?>>(query, sqlParams) { row: ResultSet ->
@@ -163,7 +132,7 @@ class CardSearchJDBCDao @Autowired constructor(
             var card = cardInfoTracker[row.getString(1)]
 
             if (card == null) {
-              if (numUniqueCardsParsed == limit) break
+              if (numUniqueCardsParsed == cardSearchParameters.limit) break
               card = Card(
                 row.getString(1),
                 row.getString(3),
@@ -189,7 +158,7 @@ class CardSearchJDBCDao @Autowired constructor(
               try {
                 val cardBanListStatus = CardBanListStatus(
                   LocalDate.parse(row.getString(9), dbDateFormatter),
-                  cardId!!,
+                  cardSearchParameters.cId,
                   row.getString(10),
                   format
                 )
