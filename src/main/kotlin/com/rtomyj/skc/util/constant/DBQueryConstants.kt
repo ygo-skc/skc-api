@@ -43,26 +43,24 @@ object DBQueryConstants {
       " ORDER BY ban_list_date DESC"
 
   const val SEARCH_QUERY =
-    "SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense" +
-        " FROM search" +
-        " WHERE card_number LIKE :cardId" +
-        " AND MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE)" +
-        " AND card_attribute REGEXP :cardAttribute" +
-        " AND card_color REGEXP :cardColor" +
-        " AND IFNULL(monster_type, '') REGEXP :monsterType" +
-        " ORDER BY color_id, card_name ASC" +
-        " LIMIT :limit"
+    """SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense
+FROM search
+WHERE (card_number LIKE :cardId OR MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE))
+AND card_attribute REGEXP :cardAttribute
+AND card_color REGEXP :cardColor
+AND IFNULL(monster_type, '') REGEXP :monsterType
+ORDER BY color_id, card_name ASC
+LIMIT :limit"""
 
   const val SEARCH_QUERY_WITH_BAN_INFO =
-    "SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, duel_format" +
-        " FROM search_with_ban_info" +
-        " WHERE card_number LIKE :cardId" +
-        " AND MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE)" +
-        " AND card_attribute REGEXP :cardAttribute" +
-        " AND card_color REGEXP :cardColor" +
-        " AND IFNULL(monster_type, '') REGEXP :monsterType" +
-        " ORDER BY color_id, card_name ASC" +
-        " LIMIT :limit"
+    """SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense, ban_list_date, ban_status, duel_format
+FROM search_with_ban_info
+WHERE (card_number LIKE :cardId OR MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE))
+AND card_attribute REGEXP :cardAttribute
+AND card_color REGEXP :cardColor
+AND IFNULL(monster_type, '') REGEXP :monsterType 
+ORDER BY color_id, card_name ASC
+LIMIT :limit"""
 
   const val GET_CARD_BROWSE_RESULTS =
     "SELECT card_number, card_name, card_color, monster_type, card_effect, card_attribute, monster_association" +

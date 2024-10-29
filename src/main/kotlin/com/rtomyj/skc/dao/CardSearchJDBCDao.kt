@@ -33,7 +33,7 @@ class CardSearchJDBCDao @Autowired constructor(
     @JvmStatic
     private fun prepSearchParams(cardSearchParameters: CardSearchParameters): MapSqlParameterSource {
       val sqlParams = MapSqlParameterSource()
-      sqlParams.addValue("cardId", "%${cardSearchParameters.cId}%")
+      sqlParams.addValue("cardId", if (cardSearchParameters.cId.isEmpty()) "" else "%${cardSearchParameters.cId}%")
       sqlParams.addValue("cardName", fullTextQueryTransformer(cardSearchParameters.cName))
       sqlParams.addValue("cardAttribute", cardSearchParameters.cAttribute)
       sqlParams.addValue("cardColor", cardSearchParameters.cColor)
@@ -45,11 +45,10 @@ class CardSearchJDBCDao @Autowired constructor(
 
     @JvmStatic
     private fun fullTextQueryTransformer(oldQuery: String): String {
-      val newQuery = oldQuery
+      return if (oldQuery.isNotBlank()) "+$oldQuery"
           .replace("-", " ")
           .trim()
-          .replace(" ", " +")
-      return "+$newQuery*"
+          .replace(" ", " +") else oldQuery
     }
   }
 
