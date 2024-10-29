@@ -44,11 +44,11 @@ class CardSearchJDBCDao @Autowired constructor(
     }
 
     @JvmStatic
-    private fun fullTextQueryTransformer(oldQuery: String): String {
-      return if (oldQuery.isNotBlank()) "+$oldQuery"
+    private fun fullTextQueryTransformer(query: String): String {
+      return if (query.isNotBlank()) "+$query"
           .replace("-", " ")
           .trim()
-          .replace(" ", " +") else oldQuery
+          .replace(" ", "* +") + "*" else query
     }
   }
 
