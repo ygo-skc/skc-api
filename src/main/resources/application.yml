@@ -66,7 +66,27 @@ api:
 ---
 spring:
   config:
-    activate.on-profile: docker-remote
+    activate.on-profile: dev
+  datasource:
+    # using custom timezone for this API, so connection url needs these serverTimezone, useLegacyDatetimeCode and cacheDefaultTimezone set else dates will be off if API TZ is behind DB TZ  - more info here https://stackoverflow.com/questions/47228265/spring-jpa-hibernate-mysql-localdate-off-one-day-after-persist
+    url: jdbc:mariadb://skc-api-db/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false
+    username: root
+    password: ${MYSQL_ROOT_PASSWORD}
+
+server:
+  port: 8450
+  ssl:
+    key-store: classpath:skc-api.jks
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-alias: skcapi
+
+api:
+  skc-suggestion-engine:
+    base-uri: https://skc-suggestion-engine:9000
+---
+spring:
+  config:
+    activate.on-profile: prod
   datasource:
     # using custom timezone for this API, so connection url needs these serverTimezone, useLegacyDatetimeCode and cacheDefaultTimezone set else dates will be off if API TZ is behind DB TZ  - more info here https://stackoverflow.com/questions/47228265/spring-jpa-hibernate-mysql-localdate-off-one-day-after-persist
     url: jdbc:mariadb://skc-api-db/skc_api_db?serverTimezone=${user.timezone}&useLegacyDatetimeCode=false&cacheDefaultTimezone=false

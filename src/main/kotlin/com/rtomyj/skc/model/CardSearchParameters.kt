@@ -3,8 +3,10 @@ package com.rtomyj.skc.model
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.web.bind.annotation.RequestParam
 
+@ParameterObject
 data class CardSearchParameters(
   @Parameter(
     description = SwaggerConstants.CARD_ID_DESCRIPTION, example = "5", schema = Schema(implementation = Int::class)
