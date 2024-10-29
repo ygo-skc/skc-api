@@ -17,7 +17,7 @@ services:
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=docker,prod
       - SKC_SUGGESTION_ENGINE_API_KEY=${SKC_SUGGESTION_ENGINE_API_KEY}
     labels:
       com.datadoghq.ad.init_configs: '[{}]'
