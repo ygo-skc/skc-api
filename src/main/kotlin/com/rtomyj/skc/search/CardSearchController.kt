@@ -38,19 +38,20 @@ class CardSearchController @Autowired constructor(
   @Throws(
     SKCException::class
   )
-  fun searchByCriteria(@Valid cardSearchParameters: CardSearchParameters): Mono<ResponseEntity<List<Card>>> = ReactiveMDC.deferMDC(Mono
-      .fromCallable {
-        cardSearchService.getCardSearchResults(cardSearchParameters)
-      }
-      .map { searchResult ->
-        log.info(
-          "Successfully retrieved search results using the following criteria: {}. Found {} matching results.",
-          cardSearchParameters,
-          searchResult.size
-        )
-        ResponseEntity(searchResult, HttpStatus.OK)
-      }
-      .doOnSubscribe {
-        log.info("User is searching for card")
-      })
+  fun searchByCriteria(@Valid cardSearchParameters: CardSearchParameters): Mono<ResponseEntity<List<Card>>> =
+    ReactiveMDC.deferMDC(Mono
+        .fromCallable {
+          cardSearchService.getCardSearchResults(cardSearchParameters)
+        }
+        .map { searchResult ->
+          log.info(
+            "Successfully retrieved search results using the following criteria: {}. Found {} matching results.",
+            cardSearchParameters,
+            searchResult.size
+          )
+          ResponseEntity(searchResult, HttpStatus.OK)
+        }
+        .doOnSubscribe {
+          log.info("User is searching for card")
+        })
 }
