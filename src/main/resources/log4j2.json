@@ -51,7 +51,7 @@
         "appender-ref": [
           {
             "ref": "STD_Out_JSON",
-            "level": "INFO"
+            "level": "${env:LOG_LEVEL}"
           }
         ]
       },

@@ -2,7 +2,7 @@ services:
   skc-api:
     image: "eclipse-temurin:21.0.5_11-jre-alpine"
     ports:
-      - "4443-4444:8443"
+      - "4450:8450"
     volumes:
       - ./build/libs/skc-api.jar:/skc-api.jar
     command: java -jar skc-api.jar
@@ -10,13 +10,13 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M
+          memory: 400M
     networks:
       - skc
     environment:
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - SPRING_PROFILES_ACTIVE=docker,prod
+      - SPRING_PROFILES_ACTIVE=docker,dev
       - SKC_SUGGESTION_ENGINE_API_KEY=${SKC_SUGGESTION_ENGINE_API_KEY}
     labels:
       com.datadoghq.ad.init_configs: '[{}]'
@@ -32,9 +32,8 @@ services:
             "pattern" : "/api/v1/status"
           }]
         }]
-      com.datadoghq.tags.env: 'prod'
+      com.datadoghq.tags.env: 'dev'
       com.datadoghq.tags.service: 'skc-api'
-#      com.datadoghq.tags.version: ""
 
 networks:
   skc:
