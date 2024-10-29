@@ -1,5 +1,6 @@
 services:
   skc-api:
+    container_name: skc-api-local
     image: "eclipse-temurin:21.0.5_11-jre-alpine"
     ports:
       - "9998:8443"
