@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val springBootVersion = "3.4.0"
-val springDocVersion = "2.6.0"
+val springDocVersion = "2.7.0"
 val mysqlVersion = "3.5.1"
 val jacksonKotlinVersion = "2.18.1"
 val jacksonCoreVersion = "2.18.1"
