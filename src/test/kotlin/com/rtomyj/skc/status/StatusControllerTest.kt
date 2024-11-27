@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 
@@ -21,10 +21,10 @@ class StatusControllerTest {
   @Autowired
   private lateinit var mockMvc: WebTestClient
 
-  @MockBean(name = "jdbc")
+  @MockitoBean(name = "jdbc")
   private lateinit var dao: StatusDao
 
-  @MockBean
+  @MockitoBean
   private lateinit var suggestionEngineStatusService: SuggestionEngineStatusService
 
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import reactor.test.StepVerifier
 import java.time.LocalDate
@@ -23,7 +23,7 @@ import java.time.LocalDate
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 class BanListDatesServiceTest {
-  @MockBean(name = "ban-list-hibernate")
+  @MockitoBean(name = "ban-list-hibernate")
   private lateinit var banListDao: BanListDao
 
   @Autowired
