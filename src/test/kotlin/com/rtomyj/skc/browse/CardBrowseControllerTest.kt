@@ -41,7 +41,7 @@ class CardBrowseControllerTest {
       // perform call
       mockMvc
           .get()
-          .uri() {
+          .uri {
             it
                 .path("/card/browse")
                 .queryParam("levels", "4")
