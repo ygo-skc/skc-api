@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val springBootVersion = "3.4.0"
+val springBootVersion = "3.4.1"
 val springDocVersion = "2.7.0"
 val mysqlVersion = "3.5.1"
 val jacksonKotlinVersion = "2.18.2"
@@ -18,7 +18,7 @@ version = "3.0.3"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 plugins {
-  id("org.springframework.boot") version "3.4.0"
+  id("org.springframework.boot") version "3.4.1"
   id("io.spring.dependency-management") version "1.1.7"
   id("info.solidsoft.pitest") version "1.15.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
