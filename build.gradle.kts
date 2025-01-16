@@ -165,8 +165,9 @@ tasks {
     mainClass.set("io.gatling.app.Gatling")
     args = listOf(
       "-s", "com.rtomyj.skc.simulations.BrowseSimulation",
-      "-rf", "${layout.buildDirectory.get()}/gatling-results",
+      "-rf", "${layout.buildDirectory.get()}/reports/gatling",
     )
+    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
   }
 }
 
