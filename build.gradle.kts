@@ -1,6 +1,8 @@
+import io.gatling.gradle.GatlingRunTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
+val scalaLibraryVersion = "2.13.16"
 val springBootVersion = "3.4.1"
 val springDocVersion = "2.8.3"
 val mysqlVersion = "3.5.1"
@@ -18,17 +20,18 @@ version = "3.0.3"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 plugins {
+  jacoco
+  java
+  scala
+
   id("org.springframework.boot") version "3.4.1"
   id("io.spring.dependency-management") version "1.1.7"
   id("info.solidsoft.pitest") version "1.15.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
+  id("io.gatling.gradle") version "3.13.1.2"
 
   kotlin("jvm") version "2.1.0"
   kotlin("plugin.spring") version "2.1.0"
-
-  jacoco
-  java
-  scala
 }
 
 repositories {
@@ -37,15 +40,11 @@ repositories {
 
 sourceSets {
   create("integTest")
-
-  create("perfTest") {
-    scala.srcDir("src/perfTest/scala")
-  }
 }
 
 apply(from = "gradle/unitTest.gradle.kts")
 apply(from = "gradle/integTest.gradle.kts")
-apply(from = "gradle/perfTest.gradle.kts")
+apply(from = "gradle/gatling.gradle.kts")
 
 configurations {
   all {
@@ -75,6 +74,8 @@ configurations {
 }
 
 dependencies {
+  compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
+
   implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
   implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion")    // needed for @Validated to work
@@ -156,18 +157,10 @@ tasks {
     mainClass.set("io.cucumber.core.cli.Main")
   }
 
-  register("perfTest", JavaExec::class) {
-    description = "Performance test executed using Gatling"
+  register("skcAPIPerf", GatlingRunTask::class) {
+    description = "Performance test executed using Gatling for SKC API"
     group = "Verification"
-
-    classpath = sourceSets["perfTest"].runtimeClasspath
-
-    mainClass.set("io.gatling.app.Gatling")
-    args = listOf(
-      "-s", "com.rtomyj.skc.simulations.BrowseSimulation",
-      "-rf", "${layout.buildDirectory.get()}/reports/gatling",
-    )
-    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+    simulationClassName = "com.rtomyj.skc.simulations.BrowseSimulation"
   }
 }
 
@@ -195,6 +188,11 @@ pitest {
   mutators.set(listOf("STRONGER"))
 
   avoidCallsTo.set(setOf("kotlin.jvm.internal", "org.springframework.util.StopWatch", "org.slf4j.Logger"))
+}
+
+gatling {
+  includeMainOutput = false
+  includeTestOutput = false
 }
 
 jacoco {
