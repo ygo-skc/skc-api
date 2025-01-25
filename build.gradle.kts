@@ -158,6 +158,7 @@ tasks {
   }
 
   register("skcAPIPerf", GatlingRunTask::class) {
+    dependsOn(gatlingClasses)
     description = "Performance test executed using Gatling for SKC API"
     group = "Verification"
     simulationClassName = "com.rtomyj.skc.simulations.BrowseSimulation"
