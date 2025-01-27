@@ -30,8 +30,8 @@ plugins {
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
   id("io.gatling.gradle") version "3.13.3"
 
-  kotlin("jvm") version "2.1.0"
-  kotlin("plugin.spring") version "2.1.0"
+  kotlin("jvm") version "2.1.10"
+  kotlin("plugin.spring") version "2.1.10"
 }
 
 repositories {
