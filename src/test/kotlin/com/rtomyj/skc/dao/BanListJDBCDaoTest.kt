@@ -3,7 +3,6 @@ package com.rtomyj.skc.dao
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
-import com.rtomyj.skc.dao.BanListJDBCDao
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.junit.jupiter.api.Assertions
