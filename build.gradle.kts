@@ -11,7 +11,7 @@ val jacksonCoreVersion = "2.18.2"
 val snakeYamlVersion = "2.4"
 val guavaVersion = "33.4.0-jre"
 val kotlinCoroutineVersion = "1.10.1"
-val slf4jVersion = "2.0.16"
+val slf4jVersion = "2.0.17"
 val jakartaServletApiVersion = "6.1.0"
 
 val archivesBaseName = "skc-api"
