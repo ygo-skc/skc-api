@@ -17,19 +17,6 @@ data class CardSearchParameters(
     schema = Schema(implementation = String::class)
   ) @RequestParam(name = "cName", required = false, defaultValue = "") val cName: String = "",
   @Parameter(
-    description = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION,
-    example = "water",
-    schema = Schema(implementation = String::class)
-  ) @RequestParam(name = "cAttribute", required = false, defaultValue = "") val cAttribute: String = "",
-  @Parameter(ref = "cardColor") @RequestParam(name = "cColor",
-    required = false,
-    defaultValue = "") val cColor: String = "",
-  @Parameter(
-    description = SwaggerConstants.MONSTER_TYPE_DESCRIPTION,
-    example = "war",
-    schema = Schema(implementation = String::class)
-  ) @RequestParam(name = "mType", required = false, defaultValue = "") val mType: String = "",
-  @Parameter(
     description = SwaggerConstants.RESULT_LIMIT_DESCRIPTION,
     example = "10",
     schema = Schema(implementation = Int::class, defaultValue = "5")

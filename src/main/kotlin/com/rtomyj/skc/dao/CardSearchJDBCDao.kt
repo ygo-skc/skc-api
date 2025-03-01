@@ -35,9 +35,6 @@ class CardSearchJDBCDao @Autowired constructor(
       val sqlParams = MapSqlParameterSource()
       sqlParams.addValue("cardId", if (cardSearchParameters.cId.isEmpty()) "" else "%${cardSearchParameters.cId}%")
       sqlParams.addValue("cardName", fullTextQueryTransformer(cardSearchParameters.cName))
-      sqlParams.addValue("cardAttribute", cardSearchParameters.cAttribute)
-      sqlParams.addValue("cardColor", cardSearchParameters.cColor)
-      sqlParams.addValue("monsterType", cardSearchParameters.mType)
       sqlParams.addValue("limit", cardSearchParameters.limit)
 
       return sqlParams
@@ -53,7 +50,7 @@ class CardSearchJDBCDao @Autowired constructor(
     }
   }
 
-  override fun searchForCardWithCriteria(cardSearchParameters: CardSearchParameters, getBanInfo: Boolean): List<Card> {
+  override fun searchCard(cardSearchParameters: CardSearchParameters, getBanInfo: Boolean): List<Card> {
     return if (getBanInfo) searchForCardsIncludeBanInfo(cardSearchParameters) else searchForCards(cardSearchParameters)
   }
 
