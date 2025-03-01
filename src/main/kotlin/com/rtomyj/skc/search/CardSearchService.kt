@@ -25,8 +25,8 @@ class CardSearchService @Autowired constructor(
 
 
   @Throws(SKCException::class)
-  fun getCardSearchResults(cardSearchParameters: CardSearchParameters): List<Card> {
-    val searchResults = dao.searchForCardWithCriteria(cardSearchParameters, false)
+  fun searchCard(cardSearchParameters: CardSearchParameters): List<Card> {
+    val searchResults = dao.searchCard(cardSearchParameters, false)
     if (cardSearchParameters.saveBandwidth) {
       log.debug("Trimming card effects to save bandwidth.")
       Card.trimEffects(searchResults)

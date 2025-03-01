@@ -46,9 +46,6 @@ ORDER BY ban_list_date DESC"""
     """SELECT card_number, card_color, card_name, card_attribute, card_effect, monster_type, monster_attack, monster_defense
 FROM search
 WHERE (card_number LIKE :cardId OR MATCH(card_name) AGAINST(:cardName IN BOOLEAN MODE))
-AND card_attribute REGEXP :cardAttribute
-AND card_color REGEXP :cardColor
-AND IFNULL(monster_type, '') REGEXP :monsterType
 ORDER BY color_id, card_name ASC
 LIMIT :limit"""
 
@@ -67,5 +64,5 @@ LIMIT :limit"""
 FROM card_info
 WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes
 AND IFNULL(monster_type, '') REGEXP :monsterTypes
-AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s ORDER BY card_name"""
+AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s AND color_id != 16 ORDER BY card_name"""
 }

@@ -34,7 +34,6 @@ services:
         }]
       com.datadoghq.tags.env: 'prod'
       com.datadoghq.tags.service: 'skc-api'
-#      com.datadoghq.tags.version: ""
 
 networks:
   skc:
