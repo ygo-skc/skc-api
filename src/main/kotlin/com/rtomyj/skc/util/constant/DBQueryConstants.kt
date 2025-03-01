@@ -67,5 +67,5 @@ LIMIT :limit"""
 FROM card_info
 WHERE card_color REGEXP :cardColors AND card_attribute REGEXP :attributes
 AND IFNULL(monster_type, '') REGEXP :monsterTypes
-AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s ORDER BY card_name"""
+AND IFNULL(monster_type, '') REGEXP :monsterSubTypes %s AND color_id != 16 ORDER BY card_name"""
 }
