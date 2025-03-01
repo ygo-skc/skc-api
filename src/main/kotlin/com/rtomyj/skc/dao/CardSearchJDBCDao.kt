@@ -47,6 +47,7 @@ class CardSearchJDBCDao @Autowired constructor(
     private fun fullTextQueryTransformer(query: String): String {
       return if (query.isNotBlank()) "+$query"
           .replace("-", " ")
+          .replace(Regex("\\s+"), " ")
           .trim()
           .replace(" ", "* +") + "*" else query
     }
