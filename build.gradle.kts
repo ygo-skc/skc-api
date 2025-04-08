@@ -10,7 +10,7 @@ val jacksonKotlinVersion = "2.18.3"
 val jacksonCoreVersion = "2.18.3"
 val snakeYamlVersion = "2.4"
 val guavaVersion = "33.4.6-jre"
-val kotlinCoroutineVersion = "1.10.1"
+val kotlinCoroutineVersion = "1.10.2"
 val slf4jVersion = "2.0.17"
 val jakartaServletApiVersion = "6.1.0"
 
