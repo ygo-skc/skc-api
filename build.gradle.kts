@@ -3,20 +3,20 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.16"
-val springBootVersion = "3.4.3"
-val springDocVersion = "2.8.5"
-val mysqlVersion = "3.5.2"
+val springBootVersion = "3.4.4"
+val springDocVersion = "2.8.6"
+val mysqlVersion = "3.5.3"
 val jacksonKotlinVersion = "2.18.3"
 val jacksonCoreVersion = "2.18.3"
 val snakeYamlVersion = "2.4"
-val guavaVersion = "33.4.0-jre"
-val kotlinCoroutineVersion = "1.10.1"
+val guavaVersion = "33.4.8-jre"
+val kotlinCoroutineVersion = "1.10.2"
 val slf4jVersion = "2.0.17"
 val jakartaServletApiVersion = "6.1.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.5"
+version = "3.0.6"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 plugins {
@@ -24,14 +24,14 @@ plugins {
   java
   scala
 
-  id("org.springframework.boot") version "3.4.3"
+  id("org.springframework.boot") version "3.4.4"
   id("io.spring.dependency-management") version "1.1.7"
   id("info.solidsoft.pitest") version "1.15.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
-  id("io.gatling.gradle") version "3.13.4.1"
+  id("io.gatling.gradle") version "3.13.5.4"
 
-  kotlin("jvm") version "2.1.10"
-  kotlin("plugin.spring") version "2.1.10"
+  kotlin("jvm") version "2.1.20"
+  kotlin("plugin.spring") version "2.1.20"
 }
 
 repositories {
@@ -197,5 +197,5 @@ gatling {
 }
 
 jacoco {
-  toolVersion = "0.8.12"
+  toolVersion = "0.8.13"
 }
