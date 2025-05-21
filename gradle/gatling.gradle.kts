@@ -1,4 +1,4 @@
-val gatlingVersion = "3.14.2"
+val gatlingVersion = "3.14.3"
 
 
 configurations {
