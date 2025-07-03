@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 
 @Service
 class ProductService @Autowired constructor(
-  @Qualifier("product-jdbc") private val productDao: ProductDao,
+  @param:Qualifier("product-jdbc") private val productDao: ProductDao,
   private val trafficService: TrafficService
 ) {
   fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Mono<Product> = Mono

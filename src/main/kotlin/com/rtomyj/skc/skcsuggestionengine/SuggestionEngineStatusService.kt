@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono
 
 @Service
 class SuggestionEngineStatusService @Autowired constructor(
-  @Qualifier("skc-suggestion-engine-web-client") private val suggestionEngineClient: WebClient,
-  @Value("\${api.skc-suggestion-engine.status-endpoint}") private val statusEndpoint: String
+  @param:Qualifier("skc-suggestion-engine-web-client") private val suggestionEngineClient: WebClient,
+  @param:Value($$"${api.skc-suggestion-engine.status-endpoint}") private val statusEndpoint: String
 ) {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)

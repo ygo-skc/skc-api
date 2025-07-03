@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat
 @Qualifier("product-jdbc")
 class ProductJDBCDao @Autowired constructor(
   private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  @Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
+  @param:Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
   private val objectMapper: ObjectMapper
 ) : ProductDao {
   companion object {

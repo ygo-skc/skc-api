@@ -3,8 +3,6 @@ package com.rtomyj.skc.model
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.annotation.JsonTypeName
-import com.rtomyj.skc.find.BanListDiffController
-import com.rtomyj.skc.find.BannedCardsController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -31,61 +29,55 @@ import io.swagger.v3.oas.annotations.media.Schema
   description = "Describes and contains information about a specific ban list.",
 )
 data class BanListInstance(
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
   )
   val effectiveDate: String,
 
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.PREVIOUS_BAN_LIST_START_DATE_DESCRIPTION,
   )
   val comparedTo: String,
 
 
-  @Schema(
+  @field:Schema(
     implementation = List::class,
     description = "List of cards forbidden in this ban list instance.",
   )
   val forbidden: List<Card>,
 
-  @Schema(
+  @field:Schema(
     implementation = List::class,
     description = "List of cards limited in this ban list instance.",
   )
   val limited: List<Card>,
 
-  @Schema(
+  @field:Schema(
     implementation = List::class,
     description = "List of cards semi-limited in this ban list instance.",
   )
   val semiLimited: List<Card>,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Total number of cards forbidden in this ban list instance; ie size of forbidden list.",
   )
   val numForbidden: Int = forbidden.size,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Total number of cards limited in this ban list instance; ie size of limited list.",
   )
   val numLimited: Int = limited.size,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Total number of cards semi-limited in this ban list instance; ie size of semi-limited list.",
   )
   val numSemiLimited: Int = semiLimited.size
 ) {
-
-
-  companion object {
-    private val banListController = BannedCardsController::class.java
-    private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
-  }
 
   @Schema(
     implementation = Int::class,

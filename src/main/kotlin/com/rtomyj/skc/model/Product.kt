@@ -10,9 +10,9 @@ import java.util.*
   JsonInclude.Include.NON_EMPTY
 )
 data class Product(
-  @Schema(ref = "productID")
+  @field:Schema(ref = "productID")
   val productId: String,
-  @Schema(ref = "locale")
+  @field:Schema(ref = "locale")
   val productLocale: String) {
   @Schema(ref = "productName")
   var productName: String? = null

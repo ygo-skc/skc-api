@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProductBrowseService @Autowired constructor(
-  @Qualifier("product-jdbc") private val productDao: ProductDao
+  @param:Qualifier("product-jdbc") private val productDao: ProductDao
 ) {
 
   fun getAllProductsWithLocale(locale: String): Products {

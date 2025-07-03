@@ -12,35 +12,35 @@ import java.util.function.Consumer
  * Class defines properties a Yu-Gi-Oh! card can contain.
  */
 @JsonInclude(
-  JsonInclude.Include.NON_EMPTY
+  JsonInclude.Include.NON_NULL
 ) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
   implementation = Card::class,
   description = "Describes attributes of a Yu-Gi-Oh! card.",
 )
 data class Card(
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.CARD_ID_DESCRIPTION
   )
   val cardID: String,
 
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.CARD_NAME_DESCRIPTION
   )
   val cardName: String,
 
-  @Schema(ref = "cardColor")
+  @field:Schema(ref = "cardColor")
   val cardColor: String,
 
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.CARD_ATTRIBUTE_DESCRIPTION
   )
   val cardAttribute: String,
 
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.CARD_EFFECT_DESCRIPTION
   )
@@ -122,11 +122,11 @@ data class Card(
     implementation = MutableList::class,
     description = SwaggerConstants.RESTRICTED_IN_DESCRIPTION
   )
-  var restrictedIn: Map<BanListFormat, MutableList<CardBanListStatus>>? = null
+  var restrictedIn: Map<BanListFormat, MutableList<CardBanListStatus>> = emptyMap()
 
   @Schema(
     implementation = MutableList::class,
     description = SwaggerConstants.PRODUCTS_CARD_IS_FOUND_IN_DESCRIPTION
   )
-  var foundIn: MutableList<Product>? = null
+  var foundIn: MutableList<Product> = mutableListOf()
 }

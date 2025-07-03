@@ -19,10 +19,10 @@ data class BanListDate(
   /**
    * Start date of ban list.
    */
-  @Schema(
+  @field:Schema(
     implementation = LocalDate::class,
     description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-  ) @JsonFormat(
+  ) @field:JsonFormat(
     shape = JsonFormat.Shape.STRING,
     pattern = "yyyy-MM-dd"
   ) val effectiveDate: LocalDate

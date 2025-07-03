@@ -20,7 +20,7 @@ import java.util.*
 
 @Service
 class BanListDiffService @Autowired constructor(
-  @Qualifier("ban-list-jdbc") val banListDao: BanListDao
+  @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao
 ) {
   /**
    * This method should be used when newly added cards are needed for a given ban list.

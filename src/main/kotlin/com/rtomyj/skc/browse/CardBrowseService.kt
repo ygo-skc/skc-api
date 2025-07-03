@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
 
 @Service
-class CardBrowseService @Autowired constructor(@Qualifier("jdbc") val dao: CardBrowseDao) {
+class CardBrowseService @Autowired constructor(@param:Qualifier("jdbc") val dao: CardBrowseDao) {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
 

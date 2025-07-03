@@ -11,17 +11,17 @@ import io.swagger.v3.oas.annotations.media.Schema
   implementation = Products::class,
 )
 data class ProductContent(
-  @Schema(
+  @field:Schema(
     implementation = Card::class,
     description = "Information about card."
   )
   val card: Card?,
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.CARD_POSITION_IN_PRODUCT_DESCRIPTION
   )
   val productPosition: String,
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = SwaggerConstants.CARD_RARITIES_FOR_POSITION_DESCRIPTION
   )

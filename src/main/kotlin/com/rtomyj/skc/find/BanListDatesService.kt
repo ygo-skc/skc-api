@@ -22,14 +22,9 @@ class BanListDatesService
   /**
    * Object used to interface with DB.
    */
-  @Qualifier("ban-list-hibernate") val banListDao: BanListDao,
-  @Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter
+  @param:Qualifier("ban-list-hibernate") val banListDao: BanListDao,
+  @param:Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter
 ) {
-  companion object {
-    private val BANNED_CARDS_CONTROLLER_CLASS = BannedCardsController::class.java
-    private val BAN_LIST_DIFF_CONTROLLER_CLASS = BanListDiffController::class.java
-  }
-
   /**
    * Uses banListDao helper object to retrieve start dates of all ban lists in the database.
    * @return List of BanList objects

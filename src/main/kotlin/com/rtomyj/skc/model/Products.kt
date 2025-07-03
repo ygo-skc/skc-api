@@ -5,7 +5,7 @@ import com.rtomyj.skc.util.enumeration.ProductType
 import io.swagger.v3.oas.annotations.media.Schema
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-data class Products(@Schema(ref = "locale") val locale: String) {
+data class Products(@field:Schema(ref = "locale") val locale: String) {
   @Schema(implementation = List::class, description = "List of Yu-Gi-Oh! products.")
   var products: List<Product>? = null
 

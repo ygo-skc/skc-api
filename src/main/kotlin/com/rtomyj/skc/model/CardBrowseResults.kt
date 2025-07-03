@@ -8,13 +8,13 @@ import io.swagger.v3.oas.annotations.media.Schema
   description = "Card information for cards that fit requested browse criteria.",
 )
 class CardBrowseResults(
-  @Schema(
+  @field:Schema(
     implementation = List::class,
     description = "Card info of all cards that fit criteria requested by user.",
   )
   val results: List<Card>,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Total browse results.",
   )

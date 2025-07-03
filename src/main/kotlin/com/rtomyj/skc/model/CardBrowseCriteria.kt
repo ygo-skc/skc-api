@@ -9,43 +9,43 @@ import io.swagger.v3.oas.annotations.media.Schema
   implementation = CardBrowseCriteria::class
 )
 data class CardBrowseCriteria(
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of identifiers for the type of card.",
     example = "normal, effect, fusion"
   ) val cardColors: Set<String>,
 
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of identifiers of card attributes.",
     example = "Dark, Light, Earth, Wind, Water, Fire"
   ) val attributes: Set<String>,
 
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of identifiers for monster types.",
     example = "Spellcaster, Wyrm, Warrior, etc"
   ) val monsterTypes: Set<String>,
 
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of identifiers for monster sub types.",
     example = "Flip, Toon, Gemini, etc",
   ) val monsterSubTypes: Set<String>,
 
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of levels for monster cards in database.",
     example = "1, 2, 3, 4, 5, 6",
   ) val levels: Set<Int>,
 
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of ranks for monster cards in database.",
     example = "1, 2, 3, 4, 5, 6",
   ) val ranks: Set<Int>,
 
-  @Schema(
+  @field:Schema(
     implementation = Set::class,
     description = "Unique set of link rating values for Link monster cards in database.",
     example = "1, 2, 3, 4, 5, 6",

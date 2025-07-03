@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter
 @Qualifier("ban-list-jdbc")
 class BanListJDBCDao @Autowired constructor(
   private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  @Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
+  @param:Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
   val objectMapper: ObjectMapper
 ) : BanListDao {
   companion object {

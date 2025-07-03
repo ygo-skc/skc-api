@@ -25,7 +25,7 @@ import java.util.*
 @Qualifier("jdbc")
 class CardSearchJDBCDao @Autowired constructor(
   val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  @Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
+  @param:Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
 ) : CardSearchDao {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)

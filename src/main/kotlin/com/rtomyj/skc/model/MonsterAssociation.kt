@@ -13,31 +13,31 @@ import org.slf4j.LoggerFactory
   description = "Information about various properties only monster cards have that usually associate distinct monster cards (not in the same archetype) together."
 )
 class MonsterAssociation(
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "The star rating of a monster card - determines tribute count.",
   )
   val level: Int? = null,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Like level, except it determines which monsters can be used to summon the card.",
   )
   val rank: Int? = null,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Pendulum rating used to perform pendulum summoning.",
   )
   val scaleRating: Int? = null,
 
-  @Schema(
+  @field:Schema(
     implementation = Int::class,
     description = "Number value determining link cost in summoning Link monster.",
   )
   val linkRating: Int? = null,
 
-  @Schema(
+  @field:Schema(
     implementation = List::class,
     description = "Positions of Link arrows for link monster.",
   )

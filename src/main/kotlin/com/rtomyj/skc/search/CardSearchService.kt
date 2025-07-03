@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service
  */
 @Service
 class CardSearchService @Autowired constructor(
-  @Qualifier("ban-list-jdbc") val banListDao: BanListDao,
-  @Qualifier("jdbc") val dao: CardSearchDao
+  @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao,
+  @param:Qualifier("jdbc") val dao: CardSearchDao
 ) {
 
   companion object {
