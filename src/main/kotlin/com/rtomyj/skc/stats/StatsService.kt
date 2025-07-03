@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class StatsService @Autowired constructor(
-  @Qualifier("jdbc") val dao: StatsDao
+  @param:Qualifier("jdbc") val dao: StatsDao
 ) {
 
   companion object {

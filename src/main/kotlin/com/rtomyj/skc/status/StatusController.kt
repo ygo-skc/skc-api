@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(path = ["/status"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.STATUS_CALL_TAG_NAME)
-class StatusController @Autowired constructor(@Qualifier("jdbc") val dao: StatusDao,
+class StatusController @Autowired constructor(@param:Qualifier("jdbc") val dao: StatusDao,
                                               val suggestionEngineStatusService: SuggestionEngineStatusService) {
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)

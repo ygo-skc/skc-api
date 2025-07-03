@@ -20,11 +20,11 @@ data class CardBanListStatus(
   /**
    * Start date of ban list.
    */
-  @Schema(
+  @field:Schema(
     implementation = Date::class,
     description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
   )
-  @JsonFormat(
+  @field:JsonFormat(
     shape = JsonFormat.Shape.STRING,
     pattern = "yyyy-MM-dd"
   )
@@ -33,7 +33,7 @@ data class CardBanListStatus(
   /**
    * The ID of the card.
    */
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = SwaggerConstants.CARD_ID_DESCRIPTION,
   )
@@ -42,7 +42,7 @@ data class CardBanListStatus(
   /**
    * Whether card is forbidden, limited, or semi-limited
    */
-  @Schema(
+  @field:Schema(
     implementation = String::class,
     description = "The ban status for the card (forbidden, limited, semi-limited).",
   )

@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @ParameterObject
 data class CardSearchParameters(
-  @Parameter(
+  @field:Parameter(
     description = SwaggerConstants.CARD_ID_DESCRIPTION, example = "5", schema = Schema(implementation = Int::class)
   ) @RequestParam(name = "cId", required = false, defaultValue = "") val cId: String = "",
-  @Parameter(
+  @field:Parameter(
     description = SwaggerConstants.CARD_NAME_DESCRIPTION,
     example = "hero",
     schema = Schema(implementation = String::class)
   ) @RequestParam(name = "cName", required = false, defaultValue = "") val cName: String = "",
-  @Parameter(
+  @field:Parameter(
     description = SwaggerConstants.RESULT_LIMIT_DESCRIPTION,
     example = "10",
     schema = Schema(implementation = Int::class, defaultValue = "5")
   ) @RequestParam(name = "limit", required = false, defaultValue = "5") val limit: Int = 5,
-  @Parameter(
+  @field:Parameter(
     description = SwaggerConstants.SAVE_BANDWIDTH_DESCRIPTION,
     example = "false",
     schema = Schema(implementation = Boolean::class, defaultValue = "false")

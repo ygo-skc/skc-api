@@ -25,7 +25,7 @@ import java.util.*
 @Service
 @OptIn(DelicateCoroutinesApi::class)
 class BannedCardsService @Autowired constructor(
-  @Qualifier("ban-list-jdbc") private val banListDao: BanListDao, private val banListDiffService: BanListDiffService
+  @param:Qualifier("ban-list-jdbc") private val banListDao: BanListDao, private val banListDiffService: BanListDiffService
 ) {
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)

@@ -30,9 +30,9 @@ import javax.net.ssl.X509TrustManager
 class WebClientConfig {
   @Bean("skc-suggestion-engine-web-client")
   fun skcSuggestionEngineWebClient(
-    @Value("\${api.skc-suggestion-engine.key}") apiKey: String,
-    @Value("\${api.skc-suggestion-engine.base-uri}") skcSuggestionEngineBaseUri: String,
-    @Value("\${api.skc-suggestion-engine.cert-hostname}") skcSuggestionEngineCertHostname: String
+    @Value($$"${api.skc-suggestion-engine.key}") apiKey: String,
+    @Value($$"${api.skc-suggestion-engine.base-uri}") skcSuggestionEngineBaseUri: String,
+    @Value($$"${api.skc-suggestion-engine.cert-hostname}") skcSuggestionEngineCertHostname: String
   ): WebClient = WebClient
       .builder()
       .clientConnector(

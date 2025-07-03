@@ -9,13 +9,11 @@ import com.rtomyj.skc.model.CardBanListStatus
 import com.rtomyj.skc.skcsuggestionengine.TrafficService
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
-import kotlinx.coroutines.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -23,11 +21,10 @@ import java.util.*
  */
 @Service
 class CardService @Autowired constructor(
-  @Qualifier("product-jdbc") val productDao: ProductDao,
-  @Qualifier("ban-list-jdbc") val banListDao: BanListDao,
-  @Qualifier("jdbc") val cardDao: Dao,
+  @param:Qualifier("product-jdbc") val productDao: ProductDao,
+  @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao,
+  @param:Qualifier("jdbc") val cardDao: Dao,
   val trafficService: TrafficService,
-  @Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter
 ) {
   /**
    * @param cardId The unique identifier of the card desired. Must be an 8 digit String.
