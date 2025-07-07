@@ -1,4 +1,4 @@
-val cucumberVersion = "7.23.0"
+val cucumberVersion = "7.24.0"
 val restAssuredVersion = "5.5.5"
 val groovyVersion = "4.0.27"
 val commonsLoggingVersion = "1.3.5"
