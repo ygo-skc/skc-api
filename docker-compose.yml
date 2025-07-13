@@ -2,7 +2,7 @@ services:
   skc-api:
     image: "eclipse-temurin:21.0.7_6-jre-alpine"
     ports:
-      - "4443-4444:8443"
+      - "4443:8443"
     volumes:
       - ./build/libs/skc-api.jar:/skc-api.jar
     command: java -jar skc-api.jar
