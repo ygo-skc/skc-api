@@ -31,7 +31,7 @@ plugins {
   id("io.gatling.gradle") version "3.14.3.5"
 
   kotlin("jvm") version "2.2.10"
-  kotlin("plugin.spring") version "2.2.0"
+  kotlin("plugin.spring") version "2.2.10"
 }
 
 repositories {
