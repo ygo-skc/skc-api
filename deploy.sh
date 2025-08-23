@@ -1,6 +1,6 @@
 USER="ec2-user"
 DIR_ON_SERVER="api/skc-api"
-INSTANCES=2
+INSTANCES=1
 COMPOSE_FILE="docker-compose.yml"
 
 while [[ $# -gt 0 ]]; do
