@@ -16,8 +16,8 @@ val jakartaServletApiVersion = "6.1.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.7"
-java.sourceCompatibility = JavaVersion.VERSION_21
+version = "3.0.8"
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 plugins {
   jacoco
@@ -102,8 +102,8 @@ dependencies {
 tasks {
   withType<KotlinCompile> {
     compilerOptions {
-      apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
-      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+      apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2)
+      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24
     }
   }
 
