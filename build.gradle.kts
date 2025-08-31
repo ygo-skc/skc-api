@@ -28,7 +28,7 @@ plugins {
   id("io.spring.dependency-management") version "1.1.7"
   id("info.solidsoft.pitest") version "1.15.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
-  id("io.gatling.gradle") version "3.14.3.6"
+  id("io.gatling.gradle") version "3.14.3.7"
 
   kotlin("jvm") version "2.2.10"
   kotlin("plugin.spring") version "2.2.10"
