@@ -6,8 +6,9 @@ val scalaLibraryVersion = "2.13.16"
 val springBootVersion = "3.5.5"
 val springDocVersion = "2.8.11"
 val mysqlVersion = "3.5.5"
-val jacksonKotlinVersion = "2.19.2"
-val jacksonCoreVersion = "2.19.2"
+val jacksonKotlinVersion = "2.20.0"
+val jacksonCoreVersion = "2.20.0"
+val jacksonAnnotationsVersion = "2.20"
 val snakeYamlVersion = "2.5"
 val guavaVersion = "33.4.8-jre"
 val kotlinCoroutineVersion = "1.10.2"
@@ -50,7 +51,11 @@ configurations {
   all {
     resolutionStrategy.eachDependency {
       if (this.requested.group == ("com.fasterxml.jackson.core")) {
-        this.useVersion(jacksonCoreVersion)
+        if (this.requested.name == ("jackson-annotations")) {
+          this.useVersion(jacksonAnnotationsVersion)
+        } else {
+          this.useVersion(jacksonCoreVersion)
+        }
       }
     }
   }
