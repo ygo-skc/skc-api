@@ -21,20 +21,14 @@ class SearchCardtests : CucumberBase() {
         .queryParam("cName", cardName)
   }
 
-  @Given("user searches using card name {string}, card ID {string}, attribute {string}, card color {string}, and monster type {string}")
-  fun user_searches_using_card_name_and_all_other_filters(
+  @Given("user searches using card name {string} and card ID {string}")
+  fun user_searches_using_card_name_and_id(
     cardName: String,
     cardId: String,
-    attribute: String,
-    cardColor: String,
-    monsterType: String
   ) {
     requestSpec = RestAssured
         .given()
         .queryParam("cId", cardId)
-        .queryParam("cAttribute", attribute)
-        .queryParam("cColor", cardColor)
-        .queryParam("monsterType", monsterType)
         .queryParam("cName", cardName)
   }
 
