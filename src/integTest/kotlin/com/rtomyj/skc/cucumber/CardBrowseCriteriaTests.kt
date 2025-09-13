@@ -12,7 +12,8 @@ class CardBrowseCriteriaTests : CucumberBase() {
 
   @When("user requests browsing criteria")
   fun user_requests_browsing_criteria() {
-    val res = RestAssured.get(requestEndpoint)
+    val res = RestAssured
+        .get(requestEndpoint)
 
     jsonPath = res.jsonPath()
     validatableResponse = res.then()

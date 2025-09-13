@@ -4,11 +4,12 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "2.13.16"
 val springBootVersion = "3.5.5"
-val springDocVersion = "2.8.10"
-val mysqlVersion = "3.5.5"
-val jacksonKotlinVersion = "2.19.2"
-val jacksonCoreVersion = "2.19.2"
-val snakeYamlVersion = "2.4"
+val springDocVersion = "2.8.13"
+val mysqlVersion = "3.5.6"
+val jacksonKotlinVersion = "2.20.0"
+val jacksonCoreVersion = "2.20.0"
+val jacksonAnnotationsVersion = "2.20"
+val snakeYamlVersion = "2.5"
 val guavaVersion = "33.4.8-jre"
 val kotlinCoroutineVersion = "1.10.2"
 val slf4jVersion = "2.0.17"
@@ -16,7 +17,7 @@ val jakartaServletApiVersion = "6.1.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.8"
+version = "3.0.9"
 java.sourceCompatibility = JavaVersion.VERSION_24
 
 plugins {
@@ -28,10 +29,10 @@ plugins {
   id("io.spring.dependency-management") version "1.1.7"
   id("info.solidsoft.pitest") version "1.15.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
-  id("io.gatling.gradle") version "3.14.3.5"
+  id("io.gatling.gradle") version "3.14.3.7"
 
-  kotlin("jvm") version "2.2.10"
-  kotlin("plugin.spring") version "2.2.10"
+  kotlin("jvm") version "2.2.20"
+  kotlin("plugin.spring") version "2.2.20"
 }
 
 repositories {
@@ -50,7 +51,11 @@ configurations {
   all {
     resolutionStrategy.eachDependency {
       if (this.requested.group == ("com.fasterxml.jackson.core")) {
-        this.useVersion(jacksonCoreVersion)
+        if (this.requested.name == ("jackson-annotations")) {
+          this.useVersion(jacksonAnnotationsVersion)
+        } else {
+          this.useVersion(jacksonCoreVersion)
+        }
       }
     }
   }

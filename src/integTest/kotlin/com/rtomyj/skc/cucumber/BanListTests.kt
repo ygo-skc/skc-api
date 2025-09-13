@@ -44,7 +44,7 @@ class BanListTests : CucumberBase() {
     newestBanListEffectiveDate: String
   ) {
     validatableResponse.body("banListDates[0].effectiveDate", Matchers.equalTo(newestBanListEffectiveDate))
-    validatableResponse.body("banListDates[29].effectiveDate", Matchers.equalTo(oldestBanListEffectiveDate))
+    validatableResponse.body("banListDates[-1].effectiveDate", Matchers.equalTo(oldestBanListEffectiveDate))
   }
 
 

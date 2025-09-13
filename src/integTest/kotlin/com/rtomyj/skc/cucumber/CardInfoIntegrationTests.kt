@@ -72,12 +72,12 @@ class CardInfoIntegrationTests : CucumberBase() {
 
   @And("products card is found in should not be included")
   fun productInfoShouldBeAvailable() {
-    validatableResponse.body("foundIn", Matchers.nullValue())
+    validatableResponse.body("foundIn", Matchers.emptyIterable<String>())
   }
 
   @And("ban lists card is found in should not be included")
   fun restrictedInMissing() {
-    validatableResponse.body("restrictedIn", Matchers.nullValue())
+    validatableResponse.body("restrictedIn", Matchers.anEmptyMap<Object, Object>())
   }
 
   @And("card will not be found in any ban list")
