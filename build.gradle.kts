@@ -21,18 +21,18 @@ version = "3.0.9"
 java.sourceCompatibility = JavaVersion.VERSION_24
 
 plugins {
-  jacoco
-  java
-  scala
+  kotlin("jvm") version "2.2.20"
+  kotlin("plugin.spring") version "2.2.20"
 
   id("org.springframework.boot") version "3.5.6"
   id("io.spring.dependency-management") version "1.1.7"
-  id("info.solidsoft.pitest") version "1.15.0"
+  id("info.solidsoft.pitest") version "1.19.0-rc.1"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
   id("io.gatling.gradle") version "3.14.5"
 
-  kotlin("jvm") version "2.2.20"
-  kotlin("plugin.spring") version "2.2.20"
+  jacoco
+  java
+  scala
 }
 
 repositories {
