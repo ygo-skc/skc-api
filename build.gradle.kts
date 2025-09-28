@@ -17,7 +17,7 @@ val jakartaServletApiVersion = "6.1.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.9"
+version = "3.0.10"
 java.sourceCompatibility = JavaVersion.VERSION_24
 
 plugins {
