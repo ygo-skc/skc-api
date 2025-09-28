@@ -23,6 +23,8 @@ if [ -z "$SERVER" ]; then
   exit 1
 fi
 
+bash create-keystore.sh
+
 echo "Using server $SERVER and directory $DIR_ON_SERVER to deploy API using $COMPOSE_FILE to scale to $INSTANCES instances"
 echo "Uploading API files"
 
