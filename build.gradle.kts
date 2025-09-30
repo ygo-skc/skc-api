@@ -2,7 +2,7 @@ import io.gatling.gradle.GatlingRunTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val scalaLibraryVersion = "2.13.16"
+val scalaLibraryVersion = "2.13.17"
 val springBootVersion = "3.5.6"
 val springDocVersion = "2.8.13"
 val mysqlVersion = "3.5.6"
