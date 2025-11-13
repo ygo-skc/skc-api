@@ -20,11 +20,11 @@ val commonLang3Version = "3.18.0"
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
 version = "3.0.11"
-java.sourceCompatibility = JavaVersion.VERSION_24
+java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
-  kotlin("jvm") version "2.2.21"
-  kotlin("plugin.spring") version "2.2.21"
+  kotlin("jvm") version "2.3.0-Beta2"
+  kotlin("plugin.spring") version "2.3.0-Beta2"
 
   id("org.springframework.boot") version "3.5.7"
   id("io.spring.dependency-management") version "1.1.7"
@@ -112,8 +112,8 @@ dependencies {
 tasks {
   withType<KotlinCompile> {
     compilerOptions {
-      apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2)
-      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24
+      apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3)
+      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
     }
   }
 
