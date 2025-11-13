@@ -15,9 +15,11 @@ val kotlinCoroutineVersion = "1.10.2"
 val slf4jVersion = "2.0.17"
 val jakartaServletApiVersion = "6.1.0"
 
+val commonLang3Version = "3.18.0"
+
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.10"
+version = "3.0.11"
 java.sourceCompatibility = JavaVersion.VERSION_24
 
 plugins {
@@ -50,12 +52,15 @@ apply(from = "gradle/gatling.gradle.kts")
 configurations {
   all {
     resolutionStrategy.eachDependency {
-      if (this.requested.group == ("com.fasterxml.jackson.core")) {
-        if (this.requested.name == ("jackson-annotations")) {
+      if (this.requested.group == "com.fasterxml.jackson.core") {
+        if (this.requested.name == "jackson-annotations") {
           this.useVersion(jacksonAnnotationsVersion)
         } else {
           this.useVersion(jacksonCoreVersion)
         }
+      }
+      if (this.requested.group == "org.apache.commons" && this.requested.name == "commons-lang3") {
+        this.useVersion(commonLang3Version)
       }
     }
   }
