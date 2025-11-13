@@ -2,12 +2,12 @@ import io.gatling.gradle.GatlingRunTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val scalaLibraryVersion = "2.13.16"
-val springBootVersion = "3.5.6"
-val springDocVersion = "2.8.13"
+val scalaLibraryVersion = "2.13.17"
+val springBootVersion = "3.5.7"
+val springDocVersion = "2.8.14"
 val mysqlVersion = "3.5.6"
-val jacksonKotlinVersion = "2.20.0"
-val jacksonCoreVersion = "2.20.0"
+val jacksonKotlinVersion = "2.20.1"
+val jacksonCoreVersion = "2.20.1"
 val jacksonAnnotationsVersion = "2.20"
 val snakeYamlVersion = "2.5"
 val guavaVersion = "33.5.0-jre"
@@ -15,20 +15,22 @@ val kotlinCoroutineVersion = "1.10.2"
 val slf4jVersion = "2.0.17"
 val jakartaServletApiVersion = "6.1.0"
 
+val commonLang3Version = "3.18.0"
+
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.0.10"
-java.sourceCompatibility = JavaVersion.VERSION_24
+version = "3.0.11"
+java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
-  kotlin("jvm") version "2.2.20"
-  kotlin("plugin.spring") version "2.2.20"
+  kotlin("jvm") version "2.3.0-Beta2"
+  kotlin("plugin.spring") version "2.3.0-Beta2"
 
-  id("org.springframework.boot") version "3.5.6"
+  id("org.springframework.boot") version "3.5.7"
   id("io.spring.dependency-management") version "1.1.7"
-  id("info.solidsoft.pitest") version "1.19.0-rc.1"
+  id("info.solidsoft.pitest") version "1.19.0-rc.2"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
-  id("io.gatling.gradle") version "3.14.5"
+  id("io.gatling.gradle") version "3.14.9"
 
   jacoco
   java
@@ -50,12 +52,15 @@ apply(from = "gradle/gatling.gradle.kts")
 configurations {
   all {
     resolutionStrategy.eachDependency {
-      if (this.requested.group == ("com.fasterxml.jackson.core")) {
-        if (this.requested.name == ("jackson-annotations")) {
+      if (this.requested.group == "com.fasterxml.jackson.core") {
+        if (this.requested.name == "jackson-annotations") {
           this.useVersion(jacksonAnnotationsVersion)
         } else {
           this.useVersion(jacksonCoreVersion)
         }
+      }
+      if (this.requested.group == "org.apache.commons" && this.requested.name == "commons-lang3") {
+        this.useVersion(commonLang3Version)
       }
     }
   }
@@ -107,8 +112,8 @@ dependencies {
 tasks {
   withType<KotlinCompile> {
     compilerOptions {
-      apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2)
-      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_24
+      apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3)
+      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
     }
   }
 
@@ -202,5 +207,5 @@ gatling {
 }
 
 jacoco {
-  toolVersion = "0.8.13"
+  toolVersion = "0.8.14"
 }
