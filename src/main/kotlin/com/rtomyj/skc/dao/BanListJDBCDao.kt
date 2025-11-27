@@ -1,6 +1,8 @@
 package com.rtomyj.skc.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.rtomyj.skc.exception.ErrorType
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBanListStatus
@@ -61,7 +63,7 @@ class BanListJDBCDao @Autowired constructor(
         )
       }
       cardList
-    }!!
+    }
   }
 
 
@@ -72,8 +74,8 @@ class BanListJDBCDao @Autowired constructor(
       if (row.next()) {
         row.getInt(1)
       }
-      null
-    } ?: return 0
+      0
+    }
   }
 
 
@@ -84,6 +86,7 @@ class BanListJDBCDao @Autowired constructor(
     val query = "select distinct ban_list_date from ban_lists WHERE duel_format = :format order by ban_list_date"
 
     return jdbcNamedTemplate.queryForList(query, sqlParams, String::class.java)
+        .filterNotNull()
   }
 
 
@@ -143,7 +146,7 @@ class BanListJDBCDao @Autowired constructor(
         removedCards.add(removedCard)
       }
       return@query removedCards
-    }!!
+    }
   }
 
 
@@ -156,8 +159,8 @@ class BanListJDBCDao @Autowired constructor(
 
     return jdbcNamedTemplate.query<String>(query, sqlParams) { row: ResultSet ->
       if (row.next()) return@query row.getString(1)
-      return@query null
-    } ?: "Unlimited"
+      return@query "Unlimited"
+    }
   }
 
 
@@ -230,7 +233,7 @@ class BanListJDBCDao @Autowired constructor(
           newCards.add(cardsPreviousBanListStatus)
         }
         newCards
-      }!!
+      }
 
     stopwatch.stop()
     log.debug("Time taken to fetch new {} cards ({}ms)", status, stopwatch.totalTimeMillis)
@@ -266,7 +269,7 @@ class BanListJDBCDao @Autowired constructor(
           cardId,
           e.toString()
         )
-        return@query null
+        throw SKCException(message = "Error parsing date from DB", ErrorType.DB002)
       }
     }
   }

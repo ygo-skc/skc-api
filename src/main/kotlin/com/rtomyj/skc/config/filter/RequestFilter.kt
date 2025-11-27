@@ -34,8 +34,8 @@ class RequestFilter : WebFilter {
       MDC.put(
         CLIENT_IP_MDC,
         clientIP
-            .replace("[", "")
-            .replace("]", "")
+            ?.replace("[", "")
+            ?.replace("]", "")
       )
       MDC.put("reqPath", request.uri.path + queryParams)
       MDC.put(

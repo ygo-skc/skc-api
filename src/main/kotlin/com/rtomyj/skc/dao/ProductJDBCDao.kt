@@ -239,7 +239,7 @@ class ProductJDBCDao @Autowired constructor(
       val products = Products(locale)
       products.products = availableProductsList
       products
-    }!!
+    }
   }
 
   override fun getProductRarityCount(productId: String): Map<String, Int> {
@@ -254,7 +254,7 @@ class ProductJDBCDao @Autowired constructor(
         rarities[row.getString(1)] = row.getInt(2)
       }
       rarities
-    }!!
+    }
   }
 
 }

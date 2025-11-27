@@ -161,8 +161,8 @@ class CardSearchJDBCDao @Autowired constructor(
                 )
 
                 card.restrictedIn
-                    ?.getOrDefault(format, mutableListOf())
-                    ?.add(cardBanListStatus)
+                    .getOrDefault(format, mutableListOf())
+                    .add(cardBanListStatus)
               } catch (e: ParseException) {
                 log.error(
                   "Error occurred while parsing date for ban list, date: {}.",
