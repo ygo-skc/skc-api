@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
@@ -99,7 +99,7 @@ class BannedCardsControllerTest {
   @Nested
   inner class UnhappyPath {
     @Test
-    fun `Getting All Banned Cards For A Ban List - Date Used Isn't In Correct Format - 400 HTTP Exception`() {
+    fun `Getting All Banned Cards For A Ban List - Date Used Isn't In Correct Format - 422 HTTP Exception`() {
       // ensure calling endpoint fails with expected status and body
       ControllerTestUtil.validateErrorByErrorType(
         mockMvc
