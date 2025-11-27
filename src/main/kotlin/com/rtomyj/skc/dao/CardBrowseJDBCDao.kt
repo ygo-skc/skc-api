@@ -1,6 +1,5 @@
 package com.rtomyj.skc.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
@@ -15,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.util.StopWatch
+import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
 
 /**
@@ -24,7 +24,7 @@ import java.sql.ResultSet
 @Qualifier("jdbc")
 class CardBrowseJDBCDao @Autowired constructor(
   val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  val objectMapper: ObjectMapper
+  val jsonMapper: JsonMapper
 ) : CardBrowseDao {
   companion object {
     private const val UNIQUE_CARD_ATTRIBUTES =
@@ -117,7 +117,7 @@ class CardBrowseJDBCDao @Autowired constructor(
           .apply {
             this.monsterType = row.getString(BrowseQueryDefinition.MONSTER_TYPE.toString())
             this.monsterAssociation = MonsterAssociation.parseDBString(
-              row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), objectMapper
+              row.getString(BrowseQueryDefinition.MONSTER_ASSOCIATION.toString()), jsonMapper
             )
           }
     }

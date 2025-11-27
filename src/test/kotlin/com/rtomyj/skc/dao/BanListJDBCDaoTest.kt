@@ -1,6 +1,5 @@
 package com.rtomyj.skc.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.model.Card
@@ -18,9 +17,10 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.jdbc.SqlGroup
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import tools.jackson.databind.json.JsonMapper
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [BanListJDBCDao::class, DateConfig::class, ObjectMapper::class])
+@ContextConfiguration(classes = [BanListJDBCDao::class, DateConfig::class, JsonMapper::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 @JdbcTest
 @ActiveProfiles("test") // Loading test props with H2 in memory DB configurations

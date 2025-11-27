@@ -1,6 +1,5 @@
 package com.rtomyj.skc.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
@@ -19,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.util.StopWatch
+import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
 import java.text.ParseException
 import java.time.LocalDate
@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 class BanListJDBCDao @Autowired constructor(
   private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
   @param:Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
-  val objectMapper: ObjectMapper
+  val jsonMapper: JsonMapper
 ) : BanListDao {
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -58,7 +58,7 @@ class BanListJDBCDao @Autowired constructor(
           )
               .apply {
                 monsterType = row.getString(2)
-                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), jsonMapper)
               }
         )
       }
@@ -139,7 +139,7 @@ class BanListJDBCDao @Autowired constructor(
           )
               .apply {
                 monsterType = row.getString(2)
-                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), jsonMapper)
               },
           row.getString(8)
         )
@@ -225,7 +225,7 @@ class BanListJDBCDao @Autowired constructor(
             )
                 .apply {
                   monsterType = row.getString(2)
-                  monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                  monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), jsonMapper)
                 },
             previousStatus
           )

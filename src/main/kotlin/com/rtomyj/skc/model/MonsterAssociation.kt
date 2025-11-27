@@ -2,10 +2,10 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.util.enumeration.LinkArrow.Companion.transformDBStringToEnum
 import io.swagger.v3.oas.annotations.media.Schema
 import org.slf4j.LoggerFactory
+import tools.jackson.databind.json.JsonMapper
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
@@ -48,9 +48,9 @@ class MonsterAssociation(
     private val log = LoggerFactory.getLogger(this::class.java.name)
 
     @JvmStatic
-    fun parseDBString(dbMonsterAssociationJson: String?, objectMapper: ObjectMapper): MonsterAssociation? {
+    fun parseDBString(dbMonsterAssociationJson: String?, jsonMapper: JsonMapper): MonsterAssociation? {
       try {
-        if (dbMonsterAssociationJson != null) return objectMapper.readValue(
+        if (dbMonsterAssociationJson != null) return jsonMapper.readValue(
           dbMonsterAssociationJson,
           MonsterAssociation::class.java
         )

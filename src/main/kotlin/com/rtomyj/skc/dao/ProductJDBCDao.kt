@@ -1,6 +1,5 @@
 package com.rtomyj.skc.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
@@ -19,6 +18,7 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
+import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat
 class ProductJDBCDao @Autowired constructor(
   private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
   @param:Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
-  private val objectMapper: ObjectMapper
+  private val jsonMapper: JsonMapper
 ) : ProductDao {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -189,7 +189,7 @@ class ProductJDBCDao @Autowired constructor(
           monsterType = row.getString(15)
           monsterAttack = row.getInt(16)
           monsterDefense = row.getInt(17)
-          monsterAssociation = MonsterAssociation.parseDBString(row.getString(18), objectMapper)
+          monsterAssociation = MonsterAssociation.parseDBString(row.getString(18), jsonMapper)
         }
 
         ProductContent(

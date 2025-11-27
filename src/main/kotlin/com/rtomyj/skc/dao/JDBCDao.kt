@@ -1,6 +1,5 @@
 package com.rtomyj.skc.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
+import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
 
 /**
@@ -22,7 +22,7 @@ import java.sql.ResultSet
 @Qualifier("jdbc")
 class JDBCDao @Autowired constructor(
   val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  val objectMapper: ObjectMapper
+  val jsonMapper: JsonMapper
 ) : Dao {
   companion object {
     private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -46,7 +46,7 @@ class JDBCDao @Autowired constructor(
         )
             .apply {
               this.monsterType = row.getString(5)
-              this.monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), objectMapper)
+              this.monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), jsonMapper)
 
               val atk = row.getInt(6)
               this.monsterAttack = if (row.wasNull()) null else atk
