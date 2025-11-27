@@ -89,7 +89,8 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 422, ErrorType.G001)
+          .exchange(),
+        ErrorType.G001)
     }
 
 
@@ -113,7 +114,8 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 404, ErrorType.DB001)
+          .exchange(),
+        ErrorType.DB001)
 
 
       // verify mocks are called
@@ -141,7 +143,8 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 500, ErrorType.DB002)
+          .exchange(),
+        ErrorType.DB002)
 
       // verify mocks are called
       verify(cardService).getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)

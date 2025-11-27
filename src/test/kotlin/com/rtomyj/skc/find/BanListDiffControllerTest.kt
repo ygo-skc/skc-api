@@ -106,7 +106,8 @@ class BanListDiffControllerTest {
         mockMvc
             .get()
             .uri("/ban_list/incorrect-date-format/new")
-            .exchange(), 422, ErrorType.G001
+            .exchange(),
+        ErrorType.G001
       )
     }
 
@@ -131,7 +132,8 @@ class BanListDiffControllerTest {
         mockMvc
             .get()
             .uri(NEW_CONTENT_ENDPOINT)
-            .exchange(), 404, ErrorType.DB001
+            .exchange(),
+        ErrorType.DB001
       )
 
       // ensure mocks are called the correct number of times
@@ -154,7 +156,8 @@ class BanListDiffControllerTest {
         mockMvc
             .get()
             .uri(NEW_CONTENT_ENDPOINT)
-            .exchange(), 500, ErrorType.DB002
+            .exchange(),
+        ErrorType.DB002
       )
 
       // ensure mocks are called the correct number of times

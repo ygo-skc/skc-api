@@ -105,7 +105,8 @@ class BannedCardsControllerTest {
         mockMvc
             .get()
             .uri("/ban_list/2020-04-0/cards")
-            .exchange(), 422, ErrorType.G001
+            .exchange(),
+        ErrorType.G001
       )
     }
 
@@ -134,7 +135,8 @@ class BannedCardsControllerTest {
                 .queryParam("allInfo", "false")
                 .build()
           }
-          .exchange(), 404, ErrorType.DB001)
+          .exchange(),
+        ErrorType.DB001)
 
       // ensure mocks are called the correct number of times
       verify(bannedCardsServiceMock).getBanListByDate(
@@ -165,7 +167,8 @@ class BannedCardsControllerTest {
                 .queryParam("allInfo", "false")
                 .build()
           }
-          .exchange(), 500, ErrorType.DB002)
+          .exchange(),
+        ErrorType.DB002)
 
       // ensure mocks are called the correct number of times
       verify(bannedCardsServiceMock).getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, false, "TCG", false)

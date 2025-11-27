@@ -103,7 +103,8 @@ class BanListDatesControllerTest {
         mockMvc
             .get()
             .uri(BAN_LIST_DATES_ENDPOINT)
-            .exchange(), 500, ErrorType.DB002
+            .exchange(),
+        ErrorType.DB002
       )
 
 
