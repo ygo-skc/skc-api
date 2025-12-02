@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
@@ -89,7 +89,8 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 422, ErrorType.G001)
+          .exchange(),
+        ErrorType.G001)
     }
 
 
@@ -113,7 +114,8 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 404, ErrorType.DB001)
+          .exchange(),
+        ErrorType.DB001)
 
 
       // verify mocks are called
@@ -141,7 +143,8 @@ class CardControllerTest {
                 .build()
           }
           .header(X_FORWARDED_FOR, TestConstants.MOCK_IP)
-          .exchange(), 500, ErrorType.DB002)
+          .exchange(),
+        ErrorType.DB002)
 
       // verify mocks are called
       verify(cardService).getCardInfo(TestConstants.STRATOS_ID, true, TestConstants.MOCK_IP)

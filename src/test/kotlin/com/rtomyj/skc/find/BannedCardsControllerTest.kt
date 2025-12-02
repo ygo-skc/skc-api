@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
@@ -99,13 +99,14 @@ class BannedCardsControllerTest {
   @Nested
   inner class UnhappyPath {
     @Test
-    fun `Getting All Banned Cards For A Ban List - Date Used Isn't In Correct Format - 400 HTTP Exception`() {
+    fun `Getting All Banned Cards For A Ban List - Date Used Isn't In Correct Format - 422 HTTP Exception`() {
       // ensure calling endpoint fails with expected status and body
       ControllerTestUtil.validateErrorByErrorType(
         mockMvc
             .get()
             .uri("/ban_list/2020-04-0/cards")
-            .exchange(), 422, ErrorType.G001
+            .exchange(),
+        ErrorType.G001
       )
     }
 
@@ -134,7 +135,8 @@ class BannedCardsControllerTest {
                 .queryParam("allInfo", "false")
                 .build()
           }
-          .exchange(), 404, ErrorType.DB001)
+          .exchange(),
+        ErrorType.DB001)
 
       // ensure mocks are called the correct number of times
       verify(bannedCardsServiceMock).getBanListByDate(
@@ -165,7 +167,8 @@ class BannedCardsControllerTest {
                 .queryParam("allInfo", "false")
                 .build()
           }
-          .exchange(), 500, ErrorType.DB002)
+          .exchange(),
+        ErrorType.DB002)
 
       // ensure mocks are called the correct number of times
       verify(bannedCardsServiceMock).getBanListByDate(REQUESTED_BAN_LIST_MOCK_DATE, false, "TCG", false)

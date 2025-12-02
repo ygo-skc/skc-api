@@ -47,6 +47,6 @@ class StatsJDBCDao @Autowired constructor(
             row.getInt(3),
             row.getInt(4)
           )
-        }!!
+        }
   }
 }

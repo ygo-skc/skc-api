@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
@@ -100,13 +100,14 @@ class BanListDiffControllerTest {
   @Nested
   inner class UnhappyPath {
     @Test
-    fun `Getting Newly Added Cards For A Ban List - Date Used Isn't In Correct Format - 400 HTTP Exception`() {
+    fun `Getting Newly Added Cards For A Ban List - Date Used Isn't In Correct Format - 422 HTTP Exception`() {
 
       ControllerTestUtil.validateErrorByErrorType(
         mockMvc
             .get()
             .uri("/ban_list/incorrect-date-format/new")
-            .exchange(), 422, ErrorType.G001
+            .exchange(),
+        ErrorType.G001
       )
     }
 
@@ -131,7 +132,8 @@ class BanListDiffControllerTest {
         mockMvc
             .get()
             .uri(NEW_CONTENT_ENDPOINT)
-            .exchange(), 404, ErrorType.DB001
+            .exchange(),
+        ErrorType.DB001
       )
 
       // ensure mocks are called the correct number of times
@@ -154,7 +156,8 @@ class BanListDiffControllerTest {
         mockMvc
             .get()
             .uri(NEW_CONTENT_ENDPOINT)
-            .exchange(), 500, ErrorType.DB002
+            .exchange(),
+        ErrorType.DB002
       )
 
       // ensure mocks are called the correct number of times

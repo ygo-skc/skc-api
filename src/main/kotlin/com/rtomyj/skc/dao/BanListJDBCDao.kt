@@ -1,6 +1,7 @@
 package com.rtomyj.skc.dao
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.rtomyj.skc.exception.ErrorType
+import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBanListStatus
@@ -17,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.util.StopWatch
+import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
 import java.text.ParseException
 import java.time.LocalDate
@@ -27,7 +29,7 @@ import java.time.format.DateTimeFormatter
 class BanListJDBCDao @Autowired constructor(
   private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
   @param:Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
-  val objectMapper: ObjectMapper
+  val jsonMapper: JsonMapper
 ) : BanListDao {
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
@@ -56,12 +58,12 @@ class BanListJDBCDao @Autowired constructor(
           )
               .apply {
                 monsterType = row.getString(2)
-                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), jsonMapper)
               }
         )
       }
       cardList
-    }!!
+    }
   }
 
 
@@ -72,8 +74,8 @@ class BanListJDBCDao @Autowired constructor(
       if (row.next()) {
         row.getInt(1)
       }
-      null
-    } ?: return 0
+      0
+    }
   }
 
 
@@ -84,6 +86,7 @@ class BanListJDBCDao @Autowired constructor(
     val query = "select distinct ban_list_date from ban_lists WHERE duel_format = :format order by ban_list_date"
 
     return jdbcNamedTemplate.queryForList(query, sqlParams, String::class.java)
+        .filterNotNull()
   }
 
 
@@ -136,14 +139,14 @@ class BanListJDBCDao @Autowired constructor(
           )
               .apply {
                 monsterType = row.getString(2)
-                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), jsonMapper)
               },
           row.getString(8)
         )
         removedCards.add(removedCard)
       }
       return@query removedCards
-    }!!
+    }
   }
 
 
@@ -156,8 +159,8 @@ class BanListJDBCDao @Autowired constructor(
 
     return jdbcNamedTemplate.query<String>(query, sqlParams) { row: ResultSet ->
       if (row.next()) return@query row.getString(1)
-      return@query null
-    } ?: "Unlimited"
+      return@query "Unlimited"
+    }
   }
 
 
@@ -222,7 +225,7 @@ class BanListJDBCDao @Autowired constructor(
             )
                 .apply {
                   monsterType = row.getString(2)
-                  monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), objectMapper)
+                  monsterAssociation = MonsterAssociation.parseDBString(row.getString(7), jsonMapper)
                 },
             previousStatus
           )
@@ -230,7 +233,7 @@ class BanListJDBCDao @Autowired constructor(
           newCards.add(cardsPreviousBanListStatus)
         }
         newCards
-      }!!
+      }
 
     stopwatch.stop()
     log.debug("Time taken to fetch new {} cards ({}ms)", status, stopwatch.totalTimeMillis)
@@ -266,7 +269,7 @@ class BanListJDBCDao @Autowired constructor(
           cardId,
           e.toString()
         )
-        return@query null
+        throw SKCException(message = "Error parsing date from DB", ErrorType.DB002)
       }
     }
   }

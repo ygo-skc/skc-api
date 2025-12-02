@@ -9,10 +9,10 @@ class ControllerTestUtil {
      * Helper method that will validate message and code from controller body for when a DB doesn't have expected table.
      */
     @JvmStatic
-    fun validateErrorByErrorType(resultActions: WebTestClient.ResponseSpec, status: Int, error: ErrorType) {
+    fun validateErrorByErrorType(resultActions: WebTestClient.ResponseSpec, error: ErrorType) {
       resultActions
           .expectStatus()
-          .isEqualTo(status)
+          .isEqualTo(error.httpStatus)
           .expectBody()
           .jsonPath("$.message")
           .isEqualTo(error.error)

@@ -1,4 +1,4 @@
-val springVersion = "3.5.7"
+val springVersion = "4.0.0"
 val h2Version = "2.4.240"
 val mockitKotlinVersion = "1.6.0"
 val reactorTestVersion = "3.8.0"
@@ -7,7 +7,11 @@ dependencies {
   "testImplementation"(kotlin("test"))
 
   "testImplementation"("com.nhaarman:mockito-kotlin:$mockitKotlinVersion")    // provides helper functions needed for mockito to work in Kotlin
+
   "testImplementation"("org.springframework.boot:spring-boot-starter-test:$springVersion")
+  "testImplementation"("org.springframework.boot:spring-boot-starter-jdbc-test:$springVersion")
+  "testImplementation"("org.springframework.boot:spring-boot-starter-webflux-test:$springVersion")
+
   "testImplementation"("io.projectreactor:reactor-test:$reactorTestVersion")
   "testRuntimeOnly"("com.h2database:h2:$h2Version")
 }

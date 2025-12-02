@@ -1,6 +1,6 @@
 services:
   skc-api:
-    image: "eclipse-temurin:25.0.1_8-jre-alpine"
+    image: "eclipse-temurin:25.0.1_8-jre-ubi10-minimal"
     ports:
       - "4450:8450"
     volumes:
