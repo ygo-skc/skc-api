@@ -1,10 +1,10 @@
 package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.rtomyj.skc.util.enumeration.LinkArrow.Companion.transformDBStringToEnum
 import io.swagger.v3.oas.annotations.media.Schema
 import org.slf4j.LoggerFactory
+import tools.jackson.databind.exc.InvalidFormatException
 import tools.jackson.databind.json.JsonMapper
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non-null fields - ie returns non-null fields from REST request
@@ -54,10 +54,10 @@ class MonsterAssociation(
           dbMonsterAssociationJson,
           MonsterAssociation::class.java
         )
-      } catch (e: JsonProcessingException) {
-        log.error(
-          "Exception occurred when parsing monster association column, {}",
-          e.toString()
+      } catch (e: InvalidFormatException) {
+        log.warn(
+          "Monster association value was not an int: {}",
+          e.localizedMessage
         )
         return null
       }
