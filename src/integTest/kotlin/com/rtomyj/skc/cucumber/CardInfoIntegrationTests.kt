@@ -77,7 +77,7 @@ class CardInfoIntegrationTests : CucumberBase() {
 
   @And("ban lists card is found in should not be included")
   fun restrictedInMissing() {
-    validatableResponse.body("restrictedIn", Matchers.anEmptyMap<Object, Object>())
+    validatableResponse.body("restrictedIn", Matchers.anEmptyMap<Any, Any>())
   }
 
   @And("card will not be found in any ban list")
