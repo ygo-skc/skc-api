@@ -27,11 +27,11 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Execute Gradle Build
-        uses: gradle/gradle-build-action@v3.5.0
-        with:
-          gradle-version: wrapper
-          arguments: build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build API
+        run: ./gradlew build
 
       - name: Upload Results
         uses: actions/upload-artifact@v6.0.0
