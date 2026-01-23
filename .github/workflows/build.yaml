@@ -37,4 +37,6 @@ jobs:
         uses: actions/upload-artifact@v6.0.0
         with:
           name: junit-results
-          path: build/reports/tests/test
+          path: |
+            build/reports/tests/test
+            build/reports/jacoco/test
