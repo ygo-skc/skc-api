@@ -17,6 +17,8 @@ dependencies {
 }
 
 tasks.withType<Test> {
+  environment["LOG_LEVEL"] = "INFO"
+
   useJUnitPlatform()
 
   minHeapSize = "256m"
