@@ -17,7 +17,11 @@ import jakarta.validation.constraints.Pattern
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 /**
@@ -81,7 +85,7 @@ class BanListDiffController
             banListStartDate, format
           )
         }
-        .doOnSuccess { banListNewContent ->
+        .doOnNext { banListNewContent ->
           if (format == "DL") {
             log.info(
               "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
@@ -139,7 +143,7 @@ class BanListDiffController
   ): Mono<BanListRemovedContent> = ReactiveMDC.deferMDC(
     Mono
         .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
-        .doOnSuccess {
+        .doOnNext {
           log.info(
             "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
             banListStartDate,

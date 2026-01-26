@@ -2,13 +2,13 @@ import io.gatling.gradle.GatlingRunTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
-val scalaLibraryVersion = "2.13.18"
-val springBootVersion = "4.0.0"
-val springDocVersion = "3.0.0"
-val mysqlVersion = "3.5.6"
-val jacksonKotlinVersion = "2.20.1"
-val jacksonCoreVersion = "2.20.1"
-val jacksonAnnotationsVersion = "2.20"
+val scalaLibraryVersion = "3.8.1"
+val springBootVersion = "4.0.2"
+val springDocVersion = "3.0.1"
+val mysqlVersion = "3.5.7"
+val jacksonKotlinVersion = "2.21.0"
+val jacksonCoreVersion = "2.21.0"
+val jacksonAnnotationsVersion = "2.21"
 val snakeYamlVersion = "2.5"
 val guavaVersion = "33.5.0-jre"
 val kotlinCoroutineVersion = "1.10.2"
@@ -19,18 +19,18 @@ val commonLang3Version = "3.18.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.1.1"
+version = "3.1.2"
 java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
-  kotlin("jvm") version "2.3.0-RC2"
-  kotlin("plugin.spring") version "2.3.0-RC2"
+  kotlin("jvm") version "2.3.0"
+  kotlin("plugin.spring") version "2.3.0"
 
-  id("org.springframework.boot") version "4.0.0"
+  id("org.springframework.boot") version "4.0.2"
   id("io.spring.dependency-management") version "1.1.7"
-  id("info.solidsoft.pitest") version "1.19.0-rc.2"
+  id("info.solidsoft.pitest") version "1.19.0-rc.3"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
-  id("io.gatling.gradle") version "3.14.9"
+  id("io.gatling.gradle") version "3.14.9.5"
 
   jacoco
   java

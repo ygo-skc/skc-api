@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 import scala.language.postfixOps
 
 object Configuration {
-  val baseUrl: String = Url.prod
+  val baseUrl: String = Url.localhost
 
   val rampup: FiniteDuration = 60 seconds
   val simulationMaxTime: FiniteDuration = 1 minutes

@@ -46,7 +46,7 @@ class CardSearchController @Autowired constructor(
         .map { searchResult ->
           ResponseEntity(searchResult, HttpStatus.OK)
         }
-        .doOnSuccess { searchResult ->
+        .doOnNext { searchResult ->
           log.info(
             "Successfully retrieved search results using the following criteria: {}. Found {} matching results.",
             cardSearchParameters,

@@ -92,7 +92,7 @@ class CardBrowseController @Autowired constructor(
 
         Tuples.of(criteria, cardBrowseService.browseResults(criteria))
       }
-      .doOnSuccess {
+      .doOnNext {
         log.info(
           "Successfully retrieved card browse results using criteria: [ {} ]. Found {} matching results.",
           it.t1.toString(),

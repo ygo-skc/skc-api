@@ -56,7 +56,7 @@ class BanListDatesController
     ) format: String = "TCG"
   ): Mono<BanListDates> = ReactiveMDC.deferMDC(banListDatesService
       .retrieveBanListStartDates(format)
-      .doOnSuccess {
+      .doOnNext {
         log.info(
           "Successfully retrieved all effective start dates for ban list using format {}. Currently there are {} ban lists",
           format,

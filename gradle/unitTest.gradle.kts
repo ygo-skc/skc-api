@@ -1,7 +1,7 @@
-val springVersion = "4.0.0"
+val springVersion = "4.0.2"
 val h2Version = "2.4.240"
 val mockitKotlinVersion = "1.6.0"
-val reactorTestVersion = "3.8.0"
+val reactorTestVersion = "3.8.2"
 
 dependencies {
   "testImplementation"(kotlin("test"))
@@ -17,6 +17,8 @@ dependencies {
 }
 
 tasks.withType<Test> {
+  environment["LOG_LEVEL"] = "INFO"
+
   useJUnitPlatform()
 
   minHeapSize = "256m"

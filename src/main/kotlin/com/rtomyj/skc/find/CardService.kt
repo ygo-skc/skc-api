@@ -74,7 +74,7 @@ class CardService @Autowired constructor(
       .fromCallable {
         cardDao.getCardInfo(cardId)
       }
-      .doOnSuccess { card ->
+      .doOnNext { card ->
         card.monsterAssociation?.transformMonsterLinkRating()
       }
 }
