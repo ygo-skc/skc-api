@@ -48,12 +48,12 @@ class CardSearchController @Autowired constructor(
         }
         .doOnNext { searchResult ->
           log.info(
-            "Successfully retrieved search results using the following criteria: {}. Found {} matching results.",
+            "Retrieved search results using the following criteria [{}]. Found {} results",
             cardSearchParameters,
             searchResult.body?.size
           )
         }
         .doOnSubscribe {
-          log.info("User is searching for card")
+          log.info("Card search triggered")
         })
 }

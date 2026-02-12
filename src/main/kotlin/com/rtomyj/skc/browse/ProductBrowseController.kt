@@ -44,7 +44,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
     @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
     @PathVariable("locale") locale: String
   ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(Mono.fromCallable {
-    log.info("Retrieving all products for given locale: {}", locale)
+    log.info("Retrieving all products w/ locale: {}", locale)
 
     ResponseEntity.ok(availableProductsService.getAllProductsWithLocale(locale))
   })
@@ -64,7 +64,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
     @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
     @PathVariable("locale") locale: String
   ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(Mono.fromCallable {
-    log.info("Retrieving all products categorized as {} product type for locale {}", productType, locale)
+    log.info("Retrieving products matching product type {} and locale {}", productType, locale)
 
     ResponseEntity.ok(availableProductsService.getProductsUsingLocaleAndProductType(productType, locale))
   })

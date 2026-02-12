@@ -45,7 +45,7 @@ class BannedCardsService @Autowired constructor(
   fun getBanListByDate(
     banListStartDate: String, saveBandwidth: Boolean, format: String, fetchAllInfo: Boolean
   ): BanListInstance {
-    log.info("Retrieving ban list content for ban list w/ start date {} and format {}", banListStartDate, format)
+    log.info("Retrieving ban list content for ban list w/ start date {} & format {}", banListStartDate, format)
 
     lateinit var forbiddenCards: List<Card>
 

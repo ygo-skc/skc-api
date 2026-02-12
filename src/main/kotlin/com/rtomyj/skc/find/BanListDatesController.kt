@@ -58,7 +58,7 @@ class BanListDatesController
       .retrieveBanListStartDates(format)
       .doOnNext {
         log.info(
-          "Successfully retrieved all effective start dates for ban list using format {}. Currently there are {} ban lists",
+          "Retrieved all effective start dates for ban list using format {}. {} ban lists total",
           format,
           it.dates.size
         )

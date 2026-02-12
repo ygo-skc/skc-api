@@ -48,7 +48,7 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
     Mono
         .fromCallable { statsService.getMonsterTypeStats(cardColor) }
         .doOnSubscribe {
-          log.info("Retrieving monster types for cards with color: {}", cardColor)
+          log.info("Retrieving monster types for cards with color {}", cardColor)
         })
 
   @Operation(summary = "Retrieve overview of the data currently in Database.")
@@ -63,5 +63,5 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         .doOnSuccess {
           log.info("Successfully retrieved database stats: {}", it.toString())
         }
-        .doOnSubscribe { log.info("Retrieving high level overview of info stored in DB.") })
+        .doOnSubscribe { log.info("Retrieving high level DB overview") })
 }

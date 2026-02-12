@@ -54,7 +54,7 @@ class CardBrowseService @Autowired constructor(@param:Qualifier("jdbc") val dao:
     Card.trimEffects(cardBrowseResults.results)
     MonsterAssociation.transformMonsterLinkRating(cardBrowseResults.results)
 
-    log.debug("Time taken to build card browse results {}ms", watch.totalTimeMillis)
+    log.debug("Time taken to get card browse results {}ms", watch.totalTimeMillis)
     return cardBrowseResults
   }
 

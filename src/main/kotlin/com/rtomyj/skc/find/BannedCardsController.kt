@@ -96,7 +96,7 @@ class BannedCardsController
       .fromCallable { bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo) }
       .map { banListInstance ->
         log.info(
-          "Successfully retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} for format {}.",
+          "Retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} & format {}.",
           banListStartDate,
           saveBandwidth,
           format

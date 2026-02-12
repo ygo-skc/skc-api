@@ -18,7 +18,11 @@ import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 /**
@@ -77,10 +81,10 @@ class CardController @Autowired constructor(
     ) @RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean,
   ): Mono<Card> = ReactiveMDC.deferMDC(cardService
       .getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
-      .doOnSubscribe { log.info("Retrieving card info for using ID: {}.", cardId) }
+      .doOnSubscribe { log.info("Retrieving card info using ID: {}.", cardId) }
       .doOnSuccess {
         log.info(
-          "Successfully retrieved card info for: {}, w/ all info: {}.", cardId, fetchAllInfo
+          "Retrieved card info for {} w/ all info {}.", cardId, fetchAllInfo
         )
       })
 }

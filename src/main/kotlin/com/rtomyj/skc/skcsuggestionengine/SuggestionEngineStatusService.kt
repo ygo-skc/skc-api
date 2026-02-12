@@ -48,7 +48,7 @@ class SuggestionEngineStatusService @Autowired constructor(
           throw SKCException("Suggestion Engine status check failed.", ErrorType.DS001)
         }
         .doOnRequest {
-          log.info("Retrieving Suggestion Engine status.")
+          log.info("Retrieving Suggestion Engine status")
         }
         .map { suggestionEngineStatus ->
           // get a list of services used by Suggestion Engine whose status isn't "Up"

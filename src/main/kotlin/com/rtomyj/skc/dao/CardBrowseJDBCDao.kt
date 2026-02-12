@@ -102,7 +102,7 @@ class CardBrowseJDBCDao @Autowired constructor(
     }
     val sql = String.format(DBQueryConstants.GET_CARD_BROWSE_RESULTS, monsterAssociationWhereClause)
     log.debug(
-      "Fetching card browse results from DB using query: ( {} ) with sql params ( {} ).",
+      "Fetching card browse results from DB using query: ({}) with sql params ({}).",
       sql,
       sqlParams
     )

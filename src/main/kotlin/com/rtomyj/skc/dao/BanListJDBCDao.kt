@@ -204,7 +204,7 @@ class BanListJDBCDao @Autowired constructor(
     sqlParams.addValue("oldBanList", previousBanListDate)
 
     log.debug(
-      "Fetching new {} cards in ban list from DB using query ({}) with sql params ({}).",
+      "Fetching new {} cards in ban list using query ({}) with sql params ({}).",
       status,
       query,
       sqlParams
@@ -265,7 +265,7 @@ class BanListJDBCDao @Autowired constructor(
         )
       } catch (e: ParseException) {
         log.error(
-          "Cannot parse date from DB when retrieving ban list info for card {} with exception: {}",
+          "Error parsing ban list date for card {}, exception: {}",
           cardId,
           e.toString()
         )

@@ -93,17 +93,13 @@ class CardBrowseController @Autowired constructor(
         Tuples.of(criteria, cardBrowseService.browseResults(criteria))
       }
       .doOnNext {
-        log.info(
-          "Successfully retrieved card browse results using criteria: [ {} ]. Found {} matching results.",
-          it.t1.toString(),
-          it.t2
-        )
+        log.info("Found {} matching results using criteria: [{}]", it.t2, it.t1.toString())
       }
       .map {
         it.t2
       }
       .doOnSubscribe {
-        log.info("Retrieving browse results.")
+        log.info("Retrieving browse results")
       })
 
   @GetMapping("/criteria")
@@ -118,7 +114,7 @@ class CardBrowseController @Autowired constructor(
     Mono
         .fromCallable { cardBrowseCriteriaSupplier.get() }
         .doOnSuccess {
-          log.info("Successfully retrieved browse criteria for cards.")
+          log.info("Retrieved card browse criteria")
         }
-        .doOnSubscribe { log.info("Retrieving browse criteria.") })
+        .doOnSubscribe { log.info("Retrieving card browse criteria") })
 }

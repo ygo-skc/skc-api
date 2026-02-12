@@ -56,7 +56,7 @@ class ProductController @Autowired constructor(private val availablePacksService
           productId, locale.uppercase(), MDC.get(AppConstants.CLIENT_IP_MDC)
         )
         .doOnSubscribe {
-          log.info("Retrieving product info for product w/ ID: {} and locale: {}", productId, locale.uppercase())
+          log.info("Retrieving product info for product w/ ID {} & locale {}", productId, locale.uppercase())
         })
   )
 }

@@ -49,7 +49,7 @@ class StatusController @Autowired constructor(@param:Qualifier("jdbc") val dao: 
   fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
       .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
       .doOnSubscribe {
-        log.info("Status of API was requested")
+        log.info("Health check")
       }
       .collectMultimap { dsStatus ->
         if (dsStatus.name == "SKC DB") "critical" else "utility"

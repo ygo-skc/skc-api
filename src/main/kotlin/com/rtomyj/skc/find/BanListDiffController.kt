@@ -88,7 +88,7 @@ class BanListDiffController
         .doOnNext { banListNewContent ->
           if (format == "DL") {
             log.info(
-              "Successfully retrieved new content for ban list w/ start date {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
+              "Retrieved new content for ban list w/ start date {} & format {}, using previous ban list ({}) for comparison. Newly; forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
               banListNewContent.listRequested,
               format,
               banListNewContent.comparedTo,
@@ -99,7 +99,7 @@ class BanListDiffController
             )
           } else {
             log.info(
-              "Successfully retrieved new content for ban list {} for format {}, using previous ban list ({}) for comparison. Newly... forbidden ({}), limited ({}), semi-limited ({})",
+              "Retrieved new content for ban list {} & format {}, using previous ban list ({}) for comparison. Newly; forbidden ({}), limited ({}), semi-limited ({})",
               banListNewContent.listRequested,
               format,
               banListNewContent.comparedTo,
@@ -112,7 +112,7 @@ class BanListDiffController
         }
         .doOnSubscribe {
           log.info(
-            "Retrieving new ban list content for ban list w/ start date {} using format {}", banListStartDate, format
+            "Retrieving new ban list content for ban list w/ start date {} & format {}", banListStartDate, format
           )
         })
 
@@ -145,14 +145,14 @@ class BanListDiffController
         .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
         .doOnNext {
           log.info(
-            "Successfully retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
+            "Retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",
             banListStartDate,
             format,
             it.numRemoved
           )
         }
         .doOnSubscribe {
-          log.info("Retrieving removed content for ban list w/ start date {} and format {}", banListStartDate, format)
+          log.info("Retrieving removed content for ban list w/ start date {} & format {}", banListStartDate, format)
         })
 
 }

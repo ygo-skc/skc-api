@@ -34,7 +34,7 @@ class ProductJDBCDao @Autowired constructor(
     private val log = LoggerFactory.getLogger(this::class.java.name)
 
     private const val DATE_PARSE_EXCEPTION_LOGGER =
-      "Cannot parse date retrieved from DB when retrieving product {}. Exception: {}"
+      "Cannot parse product release date {}. Exception: {}"
     private const val PRODUCT_ID = "productId"
     private const val LOCALE = "locale"
 
@@ -138,7 +138,7 @@ class ProductJDBCDao @Autowired constructor(
                   dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
               } catch (e: ParseException) {
                 log.error(
-                  "Cannot parse date from DB when retrieving product info for card {} with exception: {}",
+                  "Error parsing product date for card {} with exception: {}",
                   cardId,
                   e.toString()
                 )
@@ -230,7 +230,7 @@ class ProductJDBCDao @Autowired constructor(
             dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
         } catch (e: ParseException) {
           log.error(
-            "Cannot parse date from DB when retrieving all packs with exception: {}",
+            "Error parsing date while retrieving all packs with exception: {}",
             e.toString()
           )
         }

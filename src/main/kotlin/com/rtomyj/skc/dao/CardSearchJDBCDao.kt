@@ -165,7 +165,7 @@ class CardSearchJDBCDao @Autowired constructor(
                     .add(cardBanListStatus)
               } catch (e: ParseException) {
                 log.error(
-                  "Error occurred while parsing date for ban list, date: {}.",
+                  "Error parsing ban list date {}.",
                   row.getString(9)
                 )
               }
