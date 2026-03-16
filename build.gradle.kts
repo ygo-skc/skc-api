@@ -23,7 +23,7 @@ version = "3.1.3"
 java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
-  kotlin("jvm") version "2.3.10"
+  kotlin("jvm") version "2.3.20"
   kotlin("plugin.spring") version "2.3.20"
 
   id("org.springframework.boot") version "4.0.3"
