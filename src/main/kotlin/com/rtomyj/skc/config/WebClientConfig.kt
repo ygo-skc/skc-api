@@ -14,6 +14,7 @@ import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import reactor.netty.http.HttpProtocol
 import reactor.netty.http.client.HttpClient
 import reactor.netty.resources.ConnectionProvider
 import reactor.netty.tcp.SslProvider
@@ -38,12 +39,14 @@ class WebClientConfig {
                 ConnectionProvider
                     .builder("skc-suggestion-engine-pool")
                     .maxConnections(5)
+                    .pendingAcquireMaxCount(50)
                     .maxIdleTime(Duration.ofMinutes(5))
                     .maxLifeTime(Duration.ofMinutes(10))
                     .pendingAcquireTimeout(Duration.ofSeconds(5))
                     .evictInBackground(Duration.ofSeconds(5))
                     .build()
               )
+              .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
               .responseTimeout(Duration.ofMillis(250))
               .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 250)
               .option(ChannelOption.SO_KEEPALIVE, true)
