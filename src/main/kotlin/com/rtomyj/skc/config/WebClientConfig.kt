@@ -17,13 +17,9 @@ import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
 import reactor.netty.resources.ConnectionProvider
 import reactor.netty.tcp.SslProvider
-import java.security.KeyStore
-import java.security.cert.CertificateException
-import java.security.cert.X509Certificate
 import java.time.Duration
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
+import javax.net.ssl.SNIHostName
 
 
 @Configuration
@@ -86,30 +82,9 @@ class WebClientConfig {
     }
   }
 
-  private fun createCustomSslContext(hostname: String): SslContext {
-    val defaultTrustManager = TrustManagerFactory
-        .getInstance(TrustManagerFactory.getDefaultAlgorithm())
-        .apply { init(null as KeyStore?) }  // by specifying no truststore, the default one will be used
-        .trustManagers[0] as X509TrustManager
-
-    return SslContextBuilder.forClient()
-        .trustManager(object : X509TrustManager {
-          @Throws(CertificateException::class)
-          override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
-            defaultTrustManager.checkClientTrusted(chain, authType)
-          }
-
-          @Throws(CertificateException::class)
-          override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
-            defaultTrustManager.checkServerTrusted(chain, authType)
-
-            if (chain.isEmpty() || chain[0].subjectX500Principal.name != "CN=$hostname") {
-              throw CertificateException("Cert using incorrect hostname")
-            }
-          }
-
-          override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
-        })
+  private fun createCustomSslContext(hostname: String): SslContext =
+    SslContextBuilder.forClient()
+        .protocols("TLSv1.3")
+        .serverName(SNIHostName(hostname))
         .build()
-  }
 }
