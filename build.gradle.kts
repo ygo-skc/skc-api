@@ -19,7 +19,7 @@ val commonLang3Version = "3.18.0"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.1.7"
+version = "3.1.8"
 java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
