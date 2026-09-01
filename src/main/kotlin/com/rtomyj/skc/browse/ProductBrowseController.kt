@@ -2,6 +2,7 @@ package com.rtomyj.skc.browse
 
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
+import com.rtomyj.skc.config.blockingMono
 import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -43,7 +44,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
     @Parameter(ref = "locale")
     @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
     @PathVariable("locale") locale: String
-  ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(Mono.fromCallable {
+  ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(blockingMono {
     log.info("Retrieving all products w/ locale: {}", locale)
 
     ResponseEntity.ok(availableProductsService.getAllProductsWithLocale(locale))
@@ -63,7 +64,7 @@ class ProductBrowseController @Autowired constructor(private val availableProduc
     @Parameter(ref = "locale")
     @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
     @PathVariable("locale") locale: String
-  ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(Mono.fromCallable {
+  ): Mono<ResponseEntity<Products>> = ReactiveMDC.deferMDC(blockingMono {
     log.info("Retrieving products matching product type {} and locale {}", productType, locale)
 
     ResponseEntity.ok(availableProductsService.getProductsUsingLocaleAndProductType(productType, locale))

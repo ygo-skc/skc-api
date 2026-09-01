@@ -2,6 +2,7 @@ package com.rtomyj.skc.status
 
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
+import com.rtomyj.skc.config.blockingMono
 import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.StatusResponse
 import com.rtomyj.skc.skcsuggestionengine.SuggestionEngineStatusService
@@ -47,7 +48,7 @@ class StatusController @Autowired constructor(@param:Qualifier("jdbc") val dao: 
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   @ApiResponse(responseCode = "500", ref = "internalServerError")
   fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
-      .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
+      .concat(suggestionEngineStatusService.getStatus(), blockingMono(dao::dbConnection))
       .doOnSubscribe {
         log.info("Health check")
       }

@@ -3,6 +3,7 @@ package com.rtomyj.skc.browse
 import com.google.common.base.Suppliers
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
+import com.rtomyj.skc.config.blockingMono
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -74,24 +75,23 @@ class CardBrowseController @Autowired constructor(
       example = "4,7,8",
       schema = Schema(implementation = Int::class)
     ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = ""
-  ): Mono<CardBrowseResults> = ReactiveMDC.deferMDC(Mono
-      .fromCallable {
-        val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
-        val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
-        val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
-        val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
+  ): Mono<CardBrowseResults> = ReactiveMDC.deferMDC(blockingMono {
+    val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
+    val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
+    val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
+    val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
 
-        val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
-        val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
-        val linkRatingSet =
-          CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
+    val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
+    val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
+    val linkRatingSet =
+      CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
 
-        val criteria = CardBrowseCriteria(
-          cardColorsSet, attributeSet, monsterTypeSet, monsterSubTypeSet, levelSet, rankSet, linkRatingSet
-        )
+    val criteria = CardBrowseCriteria(
+      cardColorsSet, attributeSet, monsterTypeSet, monsterSubTypeSet, levelSet, rankSet, linkRatingSet
+    )
 
-        Tuples.of(criteria, cardBrowseService.browseResults(criteria))
-      }
+    Tuples.of(criteria, cardBrowseService.browseResults(criteria))
+  }
       .doOnNext {
         log.info("Found {} matching results using criteria: [{}]", it.t2, it.t1.toString())
       }
@@ -111,8 +111,7 @@ class CardBrowseController @Autowired constructor(
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(
-    Mono
-        .fromCallable { cardBrowseCriteriaSupplier.get() }
+    blockingMono { cardBrowseCriteriaSupplier.get() }
         .doOnSuccess {
           log.info("Retrieved card browse criteria")
         }

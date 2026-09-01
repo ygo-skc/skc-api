@@ -1,5 +1,6 @@
 package com.rtomyj.skc.config.filter
 
+import com.rtomyj.skc.config.MDC_CONTEXT_KEY
 import com.rtomyj.skc.util.constant.AppConstants.CLIENT_IP_MDC
 import org.slf4j.MDC
 import org.springframework.http.HttpHeaders.USER_AGENT
@@ -53,7 +54,7 @@ class RequestFilter : WebFilter {
       .filter(serverWebExchange)
       .contextWrite {
         configureMDC(serverWebExchange.request)
-        it.put("MDC", MDC.getCopyOfContextMap())
+        it.put(MDC_CONTEXT_KEY, MDC.getCopyOfContextMap())
       }
       .doFinally {
         MDC.clear()
