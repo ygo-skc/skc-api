@@ -3,6 +3,9 @@ spring:
     base-path: /api/v1
   main:
     web-application-type: reactive
+  threads:
+    virtual:
+      enabled: true
   datasource:
     hikari:
       maximumPoolSize: 30
