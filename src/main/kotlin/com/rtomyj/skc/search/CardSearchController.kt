@@ -2,7 +2,7 @@ package com.rtomyj.skc.search
 
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.config.blockingMono
+import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardSearchParameters
@@ -40,7 +40,7 @@ class CardSearchController @Autowired constructor(
     SKCException::class
   )
   fun searchCard(@Valid cardSearchParameters: CardSearchParameters): Mono<ResponseEntity<List<Card>>> =
-    ReactiveMDC.deferMDC(blockingMono {
+    ReactiveMDC.deferMDC(blockingJDBCMono {
       cardSearchService.searchCard(cardSearchParameters)
     }
         .map { searchResult ->

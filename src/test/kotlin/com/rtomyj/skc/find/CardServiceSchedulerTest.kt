@@ -1,7 +1,9 @@
 package com.rtomyj.skc.find
 
 import com.nhaarman.mockito_kotlin.eq
+import com.rtomyj.skc.config.BlockingJDBCSchedulerConfig
 import com.rtomyj.skc.config.DateConfig
+import com.rtomyj.skc.config.JDBC_SCHEDULER_NAME
 import com.rtomyj.skc.config.MDC_CONTEXT_KEY
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.constant.TestObjects
@@ -19,6 +21,7 @@ import org.mockito.Mockito
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import reactor.core.publisher.Mono
@@ -31,7 +34,8 @@ import java.util.concurrent.atomic.AtomicReference
  * the whole server.
  */
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [CardService::class, DateConfig::class])
+@ContextConfiguration(classes = [CardService::class, DateConfig::class, BlockingJDBCSchedulerConfig::class])
+@TestPropertySource(properties = ["spring.datasource.hikari.maximumPoolSize=${TestConstants.JDBC_POOL_SIZE}"])
 class CardServiceSchedulerTest {
   @MockitoBean(name = "jdbc")
   private lateinit var cardDao: Dao
@@ -94,8 +98,8 @@ class CardServiceSchedulerTest {
     Assertions.assertTrue(
       daoThreadName
           .get()
-          .startsWith("boundedElastic"),
-      "Expected blocking call on a boundedElastic worker but it ran on ${daoThreadName.get()}"
+          .startsWith(JDBC_SCHEDULER_NAME),
+      "Expected blocking call on the dedicated JDBC scheduler but it ran on ${daoThreadName.get()}"
     )
   }
 

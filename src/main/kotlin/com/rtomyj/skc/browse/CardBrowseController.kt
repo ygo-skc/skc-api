@@ -3,7 +3,7 @@ package com.rtomyj.skc.browse
 import com.google.common.base.Suppliers
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.config.blockingMono
+import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.constant.SwaggerConstants
@@ -75,7 +75,7 @@ class CardBrowseController @Autowired constructor(
       example = "4,7,8",
       schema = Schema(implementation = Int::class)
     ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = ""
-  ): Mono<CardBrowseResults> = ReactiveMDC.deferMDC(blockingMono {
+  ): Mono<CardBrowseResults> = ReactiveMDC.deferMDC(blockingJDBCMono {
     val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
     val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
     val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
@@ -111,7 +111,7 @@ class CardBrowseController @Autowired constructor(
   @ApiResponse(responseCode = "404", ref = "notFound")
   @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
   fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(
-    blockingMono { cardBrowseCriteriaSupplier.get() }
+    blockingJDBCMono { cardBrowseCriteriaSupplier.get() }
         .doOnSuccess {
           log.info("Retrieved card browse criteria")
         }

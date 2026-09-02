@@ -3,6 +3,9 @@ package com.rtomyj.skc.constant
 object TestConstants {
   const val MOCK_IP = "213.11.159.100"
 
+  // the scheduler holder is process wide, so tests asserting on it must agree on the pool size
+  const val JDBC_POOL_SIZE = 3
+
   // JSON res files
   const val BAN_LIST_INSTANCE_JSON_FILE = "json-mock/BanListInstanceTestResponse.json"
   const val BAN_LIST_NEW_CONTENT = "json-mock/BanListNewContent.json"

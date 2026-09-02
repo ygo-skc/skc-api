@@ -2,7 +2,7 @@ package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.config.blockingMono
+import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.util.constant.SKCRegex
@@ -93,7 +93,7 @@ class BannedCardsController
     ) @RequestParam(
       name = "allInfo", required = false, defaultValue = "false"
     ) fetchAllInfo: Boolean = false
-  ): Mono<ResponseEntity<BanListInstance>> = ReactiveMDC.deferMDC(blockingMono {
+  ): Mono<ResponseEntity<BanListInstance>> = ReactiveMDC.deferMDC(blockingJDBCMono {
     bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo)
   }
       .map { banListInstance ->

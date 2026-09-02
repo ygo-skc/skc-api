@@ -2,7 +2,7 @@ package com.rtomyj.skc.find
 
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.config.blockingMono
+import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListNewContent
 import com.rtomyj.skc.model.BanListRemovedContent
@@ -80,7 +80,7 @@ class BanListDiffController
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
   ): Mono<BanListNewContent> = ReactiveMDC.deferMDC(
-    blockingMono {
+    blockingJDBCMono {
       banListDiffService.getNewContentForGivenBanList(
         banListStartDate, format
       )
@@ -141,7 +141,7 @@ class BanListDiffController
       name = "format", required = true, defaultValue = "TCG"
     ) format: String = "TCG"
   ): Mono<BanListRemovedContent> = ReactiveMDC.deferMDC(
-    blockingMono { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
+    blockingJDBCMono { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
         .doOnNext {
           log.info(
             "Retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",

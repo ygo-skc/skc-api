@@ -1,6 +1,6 @@
 package com.rtomyj.skc.find
 
-import com.rtomyj.skc.config.blockingMono
+import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
@@ -30,7 +30,7 @@ class BanListDatesService
    * @return List of BanList objects
    */
   @Throws(SKCException::class)
-  fun retrieveBanListStartDates(format: String): Mono<BanListDates> = blockingMono {
+  fun retrieveBanListStartDates(format: String): Mono<BanListDates> = blockingJDBCMono {
     banListDao.getBanListDates(format)
   }
 }
