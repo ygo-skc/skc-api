@@ -1,7 +1,7 @@
 package com.rtomyj.skc.config.filter
 
-import com.rtomyj.skc.config.MDC_CONTEXT_KEY
 import com.rtomyj.skc.util.constant.AppConstants.CLIENT_IP_MDC
+import com.rtomyj.skc.util.constant.AppConstants.MDC_CONTEXT_KEY
 import org.slf4j.MDC
 import org.springframework.http.HttpHeaders.USER_AGENT
 import org.springframework.http.server.reactive.ServerHttpRequest

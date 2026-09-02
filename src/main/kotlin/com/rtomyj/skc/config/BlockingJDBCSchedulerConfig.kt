@@ -1,5 +1,6 @@
 package com.rtomyj.skc.config
 
+import com.rtomyj.skc.util.constant.AppConstants.MDC_CONTEXT_KEY
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import org.slf4j.MDC
@@ -10,7 +11,6 @@ import reactor.core.scheduler.Scheduler
 import reactor.core.scheduler.Schedulers
 
 const val JDBC_SCHEDULER_NAME = "jdbc"
-const val MDC_CONTEXT_KEY = "MDC"
 
 private val SCHEDULER_FACTORY = object : Schedulers.Factory {}
 

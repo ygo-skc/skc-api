@@ -4,7 +4,6 @@ import com.nhaarman.mockito_kotlin.eq
 import com.rtomyj.skc.config.BlockingJDBCSchedulerConfig
 import com.rtomyj.skc.config.DateConfig
 import com.rtomyj.skc.config.JDBC_SCHEDULER_NAME
-import com.rtomyj.skc.config.MDC_CONTEXT_KEY
 import com.rtomyj.skc.constant.TestConstants
 import com.rtomyj.skc.constant.TestObjects
 import com.rtomyj.skc.dao.BanListDao
@@ -12,6 +11,7 @@ import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.dao.ProductDao
 import com.rtomyj.skc.skcsuggestionengine.TrafficService
 import com.rtomyj.skc.util.constant.AppConstants
+import com.rtomyj.skc.util.constant.AppConstants.MDC_CONTEXT_KEY
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
