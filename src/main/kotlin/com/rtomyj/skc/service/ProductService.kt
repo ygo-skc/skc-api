@@ -1,6 +1,5 @@
 package com.rtomyj.skc.service
 
-import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.dao.ProductDao
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.model.Product
@@ -19,8 +18,8 @@ class ProductService @Autowired constructor(
 ) {
   fun getSingleProductUsingLocale(productId: String, locale: String, clientIP: String): Mono<Product> = Mono
       .zip(
-        blockingJDBCMono { productDao.getProductInfo(productId, locale) },
-        blockingJDBCMono { productDao.getProductContents(productId, locale) },
+        Mono.fromCallable { productDao.getProductInfo(productId, locale) },
+        Mono.fromCallable { productDao.getProductContents(productId, locale) },
         trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP)
       )
       .map {

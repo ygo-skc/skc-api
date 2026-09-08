@@ -2,7 +2,6 @@ package com.rtomyj.skc.controller
 
 import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
 import com.rtomyj.skc.service.StatsService
@@ -47,7 +46,8 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
         ExampleObject(ref = "synchro", name = "synchro")])
     @PathVariable("cardColor") cardColor: String
   ): Mono<MonsterTypeStats> = ReactiveMDC.deferMDC(
-    blockingJDBCMono { statsService.getMonsterTypeStats(cardColor) }
+    Mono
+        .fromCallable { statsService.getMonsterTypeStats(cardColor) }
         .doOnSubscribe {
           log.info("Retrieving monster types for cards with color {}", cardColor)
         })
@@ -59,7 +59,8 @@ class StatsController @Autowired constructor(private val statsService: StatsServ
   @ApiResponse(responseCode = "500", ref = "internalServerError")
   @GetMapping
   fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
-    blockingJDBCMono { statsService.databaseStats() }
+    Mono
+        .fromCallable { statsService.databaseStats() }
         .doOnSuccess {
           log.info("Successfully retrieved database stats: {}", it.toString())
         }

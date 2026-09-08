@@ -4,5 +4,4 @@ object AppConstants {
   var APP_VERSION: String = AppConstants::class.java.getPackage().implementationVersion ?: "LOCAL"
   const val APP_NAME = "skc-api"
   const val CLIENT_IP_MDC = "reqIp"
-  const val MDC_CONTEXT_KEY = "MDC"
 }

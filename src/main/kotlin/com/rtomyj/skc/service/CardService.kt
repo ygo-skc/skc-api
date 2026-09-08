@@ -1,6 +1,5 @@
 package com.rtomyj.skc.service
 
-import com.rtomyj.skc.config.blockingJDBCMono
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.dao.Dao
 import com.rtomyj.skc.dao.ProductDao
@@ -37,7 +36,7 @@ class CardService @Autowired constructor(
   fun getCardInfo(cardId: String, fetchAllInfo: Boolean, clientIP: String): Mono<Card> = if (fetchAllInfo) Mono
       .zip(
         getCardInfo(cardId),
-        blockingJDBCMono { productDao.getProductDetailsForCard(cardId) },
+        Mono.fromCallable { productDao.getProductDetailsForCard(cardId) },
         getCardRestrictionInfo(cardId),
         trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP)
       )
@@ -55,9 +54,9 @@ class CardService @Autowired constructor(
       }
 
   fun getCardRestrictionInfo(cardId: String): Mono<Map<BanListFormat, MutableList<CardBanListStatus>>> = Flux
-      .merge(blockingJDBCMono { banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG) },
-        blockingJDBCMono { banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD) },
-        blockingJDBCMono { banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL) })
+      .merge(Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG) },
+        Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD) },
+        Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL) })
       .collectList()
       .map { restrictions ->
         val m = mutableMapOf(
@@ -71,9 +70,10 @@ class CardService @Autowired constructor(
               .groupByTo(m) { it.format })
       }
 
-  fun getCardInfo(cardId: String): Mono<Card> = blockingJDBCMono {
-    cardDao.getCardInfo(cardId)
-  }
+  fun getCardInfo(cardId: String): Mono<Card> = Mono
+      .fromCallable {
+        cardDao.getCardInfo(cardId)
+      }
       .doOnNext { card ->
         card.monsterAssociation?.transformMonsterLinkRating()
       }
