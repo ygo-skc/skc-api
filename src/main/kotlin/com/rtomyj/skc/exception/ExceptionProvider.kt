@@ -35,7 +35,7 @@ class ExceptionProvider {
 
 
   @ResponseBody
-  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
   @ExceptionHandler(ConstraintViolationException::class)
   fun onValidationFail(exception: ConstraintViolationException): SKCError {
     log.error("Request did not conform to spec. Constraints violated: {}", exception.toString())
