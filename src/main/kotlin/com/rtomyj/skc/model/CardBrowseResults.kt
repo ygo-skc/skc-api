@@ -1,6 +1,6 @@
 package com.rtomyj.skc.model
 
-import com.rtomyj.skc.browse.CardBrowseController
+import com.rtomyj.skc.controller.CardBrowseController
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(

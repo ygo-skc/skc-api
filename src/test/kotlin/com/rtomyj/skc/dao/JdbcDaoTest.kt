@@ -1,7 +1,7 @@
 package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.constant.TestObjects
+import com.rtomyj.skc.util.constant.TestObjects
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
 import org.junit.jupiter.api.Assertions

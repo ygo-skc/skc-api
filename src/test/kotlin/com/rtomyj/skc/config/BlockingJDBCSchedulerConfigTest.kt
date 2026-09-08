@@ -1,6 +1,6 @@
 package com.rtomyj.skc.config
 
-import com.rtomyj.skc.constant.TestConstants
+import com.rtomyj.skc.util.constant.TestConstants
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.test.context.TestPropertySource
