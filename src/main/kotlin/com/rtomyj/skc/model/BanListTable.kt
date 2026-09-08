@@ -5,8 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import jakarta.persistence.Temporal
-import jakarta.persistence.TemporalType
 import java.io.Serializable
 import java.time.LocalDate
 
@@ -23,7 +21,6 @@ class BanListTable : Serializable {
    * Start date of ban list.
    */
   @Id
-  @Temporal(TemporalType.DATE)
   @Column(name = "ban_list_date")
   var banListDate: LocalDate? = null
 
@@ -52,7 +49,7 @@ class BanListTable : Serializable {
       return false
 
     val o = other as BanListTable
-    return this.banListDate === o.banListDate && this.cardNumber === o.cardNumber && this.format === o.format
+    return this.banListDate == o.banListDate && this.cardNumber == o.cardNumber && this.format == o.format
   }
 
   override fun hashCode(): Int {
