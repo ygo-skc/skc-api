@@ -79,28 +79,13 @@ class BanListJDBCDao @Autowired constructor(
   }
 
 
-  override fun banListDatesInOrder(format: String): List<String> {
-    val sqlParams = MapSqlParameterSource()
-    sqlParams.addValue("format", format)
-
-    val query = "select distinct ban_list_date from ban_lists WHERE duel_format = :format order by ban_list_date"
-
-    return jdbcNamedTemplate.queryForList(query, sqlParams, String::class.java)
-        .filterNotNull()
-  }
-
-
-  override fun getPreviousBanListDate(currentBanList: String, format: String): String {
-    val sortedBanListDates = banListDatesInOrder(format)
-    val currentBanListPosition = sortedBanListDates.indexOf(currentBanList)
-
-    if (currentBanListPosition == 0) {
-      return ""
-    }
-
-    val previousBanListPosition = currentBanListPosition - 1
-    return sortedBanListDates[previousBanListPosition]
-  }
+  override fun getPreviousBanListDate(currentBanList: String, format: String): String =
+    jdbcNamedTemplate.queryForObject(
+      """SELECT MAX(ban_list_date) FROM ban_lists
+WHERE duel_format = :format AND ban_list_date < :currentBanList""",
+      MapSqlParameterSource(mapOf("format" to format, "currentBanList" to currentBanList)),
+      String::class.java
+    ) ?: ""
 
   override fun getRemovedContentOfBanList(
     banListDate: String,

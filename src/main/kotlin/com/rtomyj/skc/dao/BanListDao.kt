@@ -24,12 +24,6 @@ interface BanListDao {
   fun numberOfBanLists(): Int
 
   /**
-   * Returns a list of ban lists for a given format in order (newest to oldest).
-   * @return sorted list.
-   */
-  fun banListDatesInOrder(format: String): List<String>
-
-  /**
    * Checks the database and returns the date of the previous ban list as the one passed into the method.
    *
    * Returns an empty string if there are no previous ban lists or if the ban list date requested doesn't exist in database,
