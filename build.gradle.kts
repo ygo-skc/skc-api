@@ -22,7 +22,7 @@ val ktlintKotlinVersion = "2.2.21"
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.2.0"
+version = "3.2.1"
 java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
