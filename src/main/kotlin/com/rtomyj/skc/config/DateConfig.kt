@@ -8,6 +8,6 @@ import java.time.format.DateTimeFormatter
 @Configuration
 @Lazy
 class DateConfig {
-  @Bean("dbDateTimeFormatter")
-  fun dbDateTimeFormatter(): DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    @Bean("dbDateTimeFormatter")
+    fun dbDateTimeFormatter(): DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 }

@@ -31,33 +31,46 @@ import reactor.core.publisher.Mono
 @RequestMapping(path = ["/product"], produces = ["application/json; charset=UTF-8"])
 @Validated
 @Tag(name = SwaggerConstants.TAG_PRODUCT_TAG_NAME)
-class ProductController @Autowired constructor(private val availablePacksService: ProductService) {
-  companion object {
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
+class ProductController
+    @Autowired
+    constructor(
+        private val availablePacksService: ProductService,
+    ) {
+        companion object {
+            private val log = LoggerFactory.getLogger(this::class.java.name)
+        }
 
-  @GetMapping("/{productId}/{locale}")
-  @Operation(summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
-    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = Product::class))])
-  @ApiResponse(responseCode = "400", ref = "badRequest")
-  @ApiResponse(responseCode = "404", ref = "notFound")
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  @ApiResponse(responseCode = "500", ref = "internalServerError")
-  fun productInfo(
-    @Parameter(ref = "productID")
-    @NotNull @Pattern(regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly")
-    @PathVariable("productId") productId: String,
-    @Parameter(ref = "locale")
-    @NotNull @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
-    @PathVariable("locale") locale: String,
-  ): ResponseEntity<Mono<Product>> = ResponseEntity.ok(
-    ReactiveMDC.deferMDC(availablePacksService
-        .getSingleProductUsingLocale(
-          productId, locale.uppercase(), MDC.get(AppConstants.CLIENT_IP_MDC)
+        @GetMapping("/{productId}/{locale}")
+        @Operation(summary = "Fetch information about a particular Yu-Gi-Oh! product using product ID given by Konami.")
+        @ApiResponse(
+            responseCode = "200",
+            description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+            content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = Product::class))],
         )
-        .doOnSubscribe {
-          log.info("Retrieving product info for product w/ ID {} & locale {}", productId, locale.uppercase())
-        })
-  )
-}
+        @ApiResponse(responseCode = "400", ref = "badRequest")
+        @ApiResponse(responseCode = "404", ref = "notFound")
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+        fun productInfo(
+            @Parameter(ref = "productID")
+            @NotNull
+            @Pattern(regexp = SKCRegex.PRODUCT_ID, message = "Product ID is formatted incorrectly")
+            @PathVariable("productId") productId: String,
+            @Parameter(ref = "locale")
+            @NotNull
+            @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
+            @PathVariable("locale") locale: String,
+        ): ResponseEntity<Mono<Product>> =
+            ResponseEntity.ok(
+                ReactiveMDC.deferMDC(
+                    availablePacksService
+                        .getSingleProductUsingLocale(
+                            productId,
+                            locale.uppercase(),
+                            MDC.get(AppConstants.CLIENT_IP_MDC),
+                        ).doOnSubscribe {
+                            log.info("Retrieving product info for product w/ ID {} & locale {}", productId, locale.uppercase())
+                        },
+                ),
+            )
+    }

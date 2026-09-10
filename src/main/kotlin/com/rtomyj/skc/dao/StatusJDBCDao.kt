@@ -14,38 +14,40 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 @Qualifier("jdbc")
-class StatusJDBCDao @Autowired constructor(
-  val jdbcNamedTemplate: NamedParameterJdbcTemplate
-) : StatusDao {
-  companion object {
-    private const val VERSION_QUERY = "select version() as version"
+class StatusJDBCDao
+    @Autowired
+    constructor(
+        val jdbcNamedTemplate: NamedParameterJdbcTemplate,
+    ) : StatusDao {
+        companion object {
+            private const val VERSION_QUERY = "select version() as version"
 
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
+            private val log = LoggerFactory.getLogger(this::class.java.name)
+        }
 
+        @Throws(SKCException::class)
+        override fun dbConnection(): DownstreamStatus {
+            val dbName = "SKC DB"
+            var versionMajor = "---"
+            var status = "down"
+            var downstreamStatus: DownstreamStatus
 
-  @Throws(SKCException::class)
-  override fun dbConnection(): DownstreamStatus {
-    val dbName = "SKC DB"
-    var versionMajor = "---"
-    var status = "down"
-    var downstreamStatus: DownstreamStatus
+            try {
+                val version =
+                    jdbcNamedTemplate.queryForObject(VERSION_QUERY, MapSqlParameterSource(), String::class.java)
+                status = "up"
+                assert(version != null)
 
-    try {
-      val version =
-        jdbcNamedTemplate.queryForObject(VERSION_QUERY, MapSqlParameterSource(), String::class.java)
-      status = "up"
-      assert(version != null)
-
-      val versionStringTokens = version!!
-          .split("-")
-          .toTypedArray()
-      versionMajor = if (versionStringTokens.isNotEmpty()) versionStringTokens[0].split(".")[0] else "---"
-      downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
-    } catch (e: Exception) {
-      log.error("Could not get version of the DB. Exception occurred: {}", e.toString())
-      downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
+                val versionStringTokens =
+                    version!!
+                        .split("-")
+                        .toTypedArray()
+                versionMajor = if (versionStringTokens.isNotEmpty()) versionStringTokens[0].split(".")[0] else "---"
+                downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
+            } catch (e: Exception) {
+                log.error("Could not get version of the DB. Exception occurred: {}", e.toString())
+                downstreamStatus = DownstreamStatus(dbName, versionMajor, status)
+            }
+            return downstreamStatus
+        }
     }
-    return downstreamStatus
-  }
-}

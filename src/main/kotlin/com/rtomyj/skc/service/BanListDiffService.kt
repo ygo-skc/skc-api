@@ -19,146 +19,164 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class BanListDiffService @Autowired constructor(
-  @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao
-) {
-  /**
-   * This method should be used when newly added cards are needed for a given ban list.
-   * Using the BanListCardStatus, this method will use the DAO to fetch appropriate cards.
-   */
-  private fun getNewContent(
-    banStatus: BanListCardStatus,
-    newContents: MutableMap<BanListCardStatus, List<CardsPreviousBanListStatus>>,
-    banListStartDate: String,
-    previousBanListDate: String,
-    format: String
-  ) {
-    val newlyAdded = banListDao.getNewContentOfBanList(banListStartDate, previousBanListDate, banStatus, format)
-    newlyAdded.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
-    newContents[banStatus] = newlyAdded
-  }
+class BanListDiffService
+    @Autowired
+    constructor(
+        @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao,
+    ) {
+        /**
+         * This method should be used when newly added cards are needed for a given ban list.
+         * Using the BanListCardStatus, this method will use the DAO to fetch appropriate cards.
+         */
+        private fun getNewContent(
+            banStatus: BanListCardStatus,
+            newContents: MutableMap<BanListCardStatus, List<CardsPreviousBanListStatus>>,
+            banListStartDate: String,
+            previousBanListDate: String,
+            format: String,
+        ) {
+            val newlyAdded = banListDao.getNewContentOfBanList(banListStartDate, previousBanListDate, banStatus, format)
+            newlyAdded.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+            newContents[banStatus] = newlyAdded
+        }
 
-  @OptIn(DelicateCoroutinesApi::class)
-  private fun newContentNormalFormat(
-    banListStartDate: String,
-    previousBanListDate: String,
-    format: String
-  ): BanListNewContent {
-    val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
+        @OptIn(DelicateCoroutinesApi::class)
+        private fun newContentNormalFormat(
+            banListStartDate: String,
+            previousBanListDate: String,
+            format: String,
+        ): BanListNewContent {
+            val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
 
+            runBlocking {
+                val deferredNewlyForbidden =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
+                    }
 
-    runBlocking {
-      val deferredNewlyForbidden = GlobalScope.async {
-        getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
-      }
+                val deferredNewlyLimited =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.LIMITED, content, banListStartDate, previousBanListDate, format)
+                    }
 
-      val deferredNewlyLimited = GlobalScope.async {
-        getNewContent(BanListCardStatus.LIMITED, content, banListStartDate, previousBanListDate, format)
-      }
+                val deferredNewlySemiLimited =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, previousBanListDate, format)
+                    }
 
-      val deferredNewlySemiLimited = GlobalScope.async {
-        getNewContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, previousBanListDate, format)
-      }
+                deferredNewlyForbidden.await()
+                deferredNewlyLimited.await()
+                deferredNewlySemiLimited.await()
+            }
 
-      deferredNewlyForbidden.await()
-      deferredNewlyLimited.await()
-      deferredNewlySemiLimited.await()
+            return BanListNewContent(
+                banListStartDate,
+                previousBanListDate,
+                content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                content[BanListCardStatus.LIMITED] ?: emptyList(),
+                content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+            )
+        }
+
+        @OptIn(DelicateCoroutinesApi::class)
+        private fun newContentDuelLinksFormat(
+            banListStartDate: String,
+            previousBanListDate: String,
+            format: String,
+        ): BanListNewContent {
+            val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
+
+            runBlocking {
+                val deferredNewlyForbidden =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
+                    }
+
+                val deferredNewlyLimitedOne =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, previousBanListDate, format)
+                    }
+
+                val deferredNewlyLimitedTwo =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, previousBanListDate, format)
+                    }
+
+                val deferredNewlyLimitedThree =
+                    GlobalScope.async {
+                        getNewContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, previousBanListDate, format)
+                    }
+
+                deferredNewlyForbidden.await()
+                deferredNewlyLimitedOne.await()
+                deferredNewlyLimitedTwo.await()
+                deferredNewlyLimitedThree.await()
+            }
+
+            return BanListNewContent(
+                banListStartDate,
+                previousBanListDate,
+                content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                emptyList(),
+                emptyList(),
+                content[BanListCardStatus.LIMITED_ONE] ?: emptyList(),
+                content[BanListCardStatus.LIMITED_TWO] ?: emptyList(),
+                content[BanListCardStatus.LIMITED_THREE] ?: emptyList(),
+            )
+        }
+
+        @Throws(SKCException::class)
+        fun getNewContentForGivenBanList(
+            banListStartDate: String,
+            format: String,
+        ): BanListNewContent {
+            if (!banListDao.isBanListValid(banListStartDate, format)) {
+                throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+            }
+
+            val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
+
+            // builds meta data object for new cards request
+            val newCardsMeta =
+                if (format == "DL") {
+                    newContentDuelLinksFormat(banListStartDate, previousBanListDate, format)
+                } else {
+                    newContentNormalFormat(banListStartDate, previousBanListDate, format)
+                }
+
+            return newCardsMeta
+        }
+
+        @Throws(SKCException::class)
+        fun getRemovedContentForGivenBanList(
+            banListStartDate: String,
+            format: String,
+        ): BanListRemovedContent {
+            if (!banListDao.isBanListValid(banListStartDate, format)) {
+                throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+            }
+
+            val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
+
+            val removedCards = banListDao.getRemovedContentOfBanList(banListStartDate, previousBanListDate, format)
+            removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+
+            // builds meta data object for removed cards request
+            val removedCardsMeta =
+                BanListRemovedContent(
+                    banListStartDate,
+                    previousBanListDate,
+                    removedCards,
+                )
+
+            return removedCardsMeta
+        }
+
+        private fun getPreviousBanListDate(
+            banList: String?,
+            format: String,
+        ): String = banListDao.getPreviousBanListDate(banList!!, format)
     }
-
-    return BanListNewContent(
-      banListStartDate,
-      previousBanListDate,
-      content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-      content[BanListCardStatus.LIMITED] ?: emptyList(),
-      content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
-      emptyList(),
-      emptyList(),
-      emptyList()
-    )
-  }
-
-  @OptIn(DelicateCoroutinesApi::class)
-  private fun newContentDuelLinksFormat(
-    banListStartDate: String,
-    previousBanListDate: String,
-    format: String
-  ): BanListNewContent {
-    val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
-
-    runBlocking {
-      val deferredNewlyForbidden = GlobalScope.async {
-        getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
-      }
-
-      val deferredNewlyLimitedOne = GlobalScope.async {
-        getNewContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, previousBanListDate, format)
-      }
-
-      val deferredNewlyLimitedTwo = GlobalScope.async {
-        getNewContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, previousBanListDate, format)
-      }
-
-      val deferredNewlyLimitedThree = GlobalScope.async {
-        getNewContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, previousBanListDate, format)
-      }
-
-      deferredNewlyForbidden.await()
-      deferredNewlyLimitedOne.await()
-      deferredNewlyLimitedTwo.await()
-      deferredNewlyLimitedThree.await()
-    }
-
-    return BanListNewContent(
-      banListStartDate,
-      previousBanListDate,
-      content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-      emptyList(),
-      emptyList(),
-      content[BanListCardStatus.LIMITED_ONE] ?: emptyList(),
-      content[BanListCardStatus.LIMITED_TWO] ?: emptyList(),
-      content[BanListCardStatus.LIMITED_THREE] ?: emptyList(),
-    )
-  }
-
-
-  @Throws(SKCException::class)
-  fun getNewContentForGivenBanList(banListStartDate: String, format: String): BanListNewContent {
-    if (!banListDao.isBanListValid(banListStartDate, format)) {
-      throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
-    }
-
-    val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
-
-    // builds meta data object for new cards request
-    val newCardsMeta =
-      if (format == "DL") newContentDuelLinksFormat(banListStartDate, previousBanListDate, format)
-      else newContentNormalFormat(banListStartDate, previousBanListDate, format)
-
-    return newCardsMeta
-  }
-
-  @Throws(SKCException::class)
-  fun getRemovedContentForGivenBanList(banListStartDate: String, format: String): BanListRemovedContent {
-    if (!banListDao.isBanListValid(banListStartDate, format)) {
-      throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
-    }
-
-    val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
-
-    val removedCards = banListDao.getRemovedContentOfBanList(banListStartDate, previousBanListDate, format)
-    removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
-
-    // builds meta data object for removed cards request
-    val removedCardsMeta = BanListRemovedContent(
-      banListStartDate,
-      previousBanListDate,
-      removedCards
-    )
-
-    return removedCardsMeta
-  }
-
-  private fun getPreviousBanListDate(banList: String?, format: String): String {
-    return banListDao.getPreviousBanListDate(banList!!, format)
-  }
-}

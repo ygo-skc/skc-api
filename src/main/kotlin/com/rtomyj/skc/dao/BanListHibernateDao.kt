@@ -24,105 +24,105 @@ import org.springframework.util.StopWatch
  * Hibernate implementation of DB DAO interface.
  */
 @Repository("ban-list-hibernate")
-class BanListHibernateDao @Autowired constructor(private var entityManagerFactory: EntityManagerFactory) : BanListDao {
+class BanListHibernateDao
+    @Autowired
+    constructor(
+        private var entityManagerFactory: EntityManagerFactory,
+    ) : BanListDao {
+        companion object {
+            private val log: Logger = LoggerFactory.getLogger(this::class.java)
+            private const val UNSUPPORTED_OPERATION_MESSAGE = "HibernateDao not able to execute method."
+        }
 
-  companion object {
-    private val log: Logger = LoggerFactory.getLogger(this::class.java)
-    private const val UNSUPPORTED_OPERATION_MESSAGE = "HibernateDao not able to execute method."
-  }
+        override fun isBanListValid(
+            date: String,
+            format: String,
+        ): Boolean = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
 
+        @Throws(SKCException::class)
+        override fun getBanListDates(format: String): BanListDates {
+            val stopwatch = StopWatch()
+            stopwatch.start()
 
-  override fun isBanListValid(date: String, format: String): Boolean {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
+            val dates: List<BanListDate> =
+                try {
+                    entityManagerFactory
+                        .unwrap(SessionFactory::class.java)
+                        .openSession()
+                        .use { session ->
+                            val criteriaBuilder = entityManagerFactory.criteriaBuilder
 
-  @Throws(SKCException::class)
-  override fun getBanListDates(format: String): BanListDates {
-    val stopwatch = StopWatch()
-    stopwatch.start()
+                            val criteriaQuery = criteriaBuilder.createQuery(BanListDate::class.java)
+                            val root = criteriaQuery.from(BanListTable::class.java)
 
-    val dates: List<BanListDate> = try {
-      entityManagerFactory
-          .unwrap(SessionFactory::class.java)
-          .openSession()
-          .use { session ->
-            val criteriaBuilder = entityManagerFactory.criteriaBuilder
+                            criteriaQuery
+                                .select(
+                                    criteriaBuilder
+                                        .construct(BanListDate::class.java, root.get<String>("banListDate")),
+                                ).where(criteriaBuilder.equal(root.get<String>("format"), format))
+                                .distinct(true)
+                                .orderBy(
+                                    criteriaBuilder
+                                        .desc(root.get<Any>("banListDate")),
+                                )
 
-            val criteriaQuery = criteriaBuilder.createQuery(BanListDate::class.java)
-            val root = criteriaQuery.from(BanListTable::class.java)
+                            session
+                                .createQuery(criteriaQuery)
+                                .resultList
+                        }
+                } catch (exception: PersistenceException) {
+                    val causeMessage = exception.cause?.cause?.message
 
-            criteriaQuery
-                .select(
-                  criteriaBuilder
-                      .construct(BanListDate::class.java, root.get<String>("banListDate"))
-                )
-                .where(criteriaBuilder.equal(root.get<String>("format"), format))
-                .distinct(true)
-                .orderBy(
-                  criteriaBuilder
-                      .desc(root.get<Any>("banListDate"))
-                )
+                    if (causeMessage != null && causeMessage.contains("Table") && causeMessage.contains("doesn't exist")) {
+                        throw SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
+                    }
 
-            session
-                .createQuery(criteriaQuery)
-                .resultList
-          }
-    } catch (exception: PersistenceException) {
-      val causeMessage = exception.cause?.cause?.message
+                    log.error("Error fetching ban list effective start dates for format {}", format, exception)
+                    throw SKCException("Error fetching ban list dates from DB", ErrorType.DB002)
+                }
 
-      if (causeMessage != null && causeMessage.contains("Table") && causeMessage.contains("doesn't exist")
-      ) {
-        throw SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
-      }
+            stopwatch.stop()
+            log.debug(
+                "Time taken to fetch ban list effective start dates from DB: {}",
+                stopwatch.totalTimeMillis,
+            )
 
-      log.error("Error fetching ban list effective start dates for format {}", format, exception)
-      throw SKCException("Error fetching ban list dates from DB", ErrorType.DB002)
+            return BanListDates(dates)
+        }
+
+        override fun getBanListByBanStatus(
+            date: String,
+            status: BanListCardStatus,
+            format: String,
+        ): List<Card> = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+
+        override fun numberOfBanLists(): Int = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+
+        override fun getPreviousBanListDate(
+            currentBanList: String,
+            format: String,
+        ): String = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+
+        override fun getNewContentOfBanList(
+            banListDate: String,
+            previousBanListDate: String,
+            status: BanListCardStatus,
+            format: String,
+        ): List<CardsPreviousBanListStatus> = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+
+        override fun getRemovedContentOfBanList(
+            banListDate: String,
+            previousBanListDate: String,
+            format: String,
+        ): List<CardsPreviousBanListStatus> = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+
+        override fun getBanListDetailsForCard(
+            cardId: String,
+            format: BanListFormat,
+        ): List<CardBanListStatus> = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+
+        override fun getCardBanListStatusByDate(
+            cardId: String,
+            banListDate: String,
+        ): String = throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
     }
-
-    stopwatch.stop()
-    log.debug(
-      "Time taken to fetch ban list effective start dates from DB: {}",
-      stopwatch.totalTimeMillis
-    )
-
-    return BanListDates(dates)
-  }
-
-
-  override fun getBanListByBanStatus(date: String, status: BanListCardStatus, format: String): List<Card> {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun numberOfBanLists(): Int {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun getPreviousBanListDate(currentBanList: String, format: String): String {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun getNewContentOfBanList(
-    banListDate: String,
-    previousBanListDate: String,
-    status: BanListCardStatus,
-    format: String
-  ): List<CardsPreviousBanListStatus> {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun getRemovedContentOfBanList(
-    banListDate: String,
-    previousBanListDate: String,
-    format: String
-  ): List<CardsPreviousBanListStatus> {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun getBanListDetailsForCard(cardId: String, format: BanListFormat): List<CardBanListStatus> {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun getCardBanListStatusByDate(cardId: String, banListDate: String): String {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-}
