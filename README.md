@@ -43,6 +43,27 @@ I am also offering the community more content. Check out the links for my YouTub
 In summary, I am trying to provide a free, non-add supported, fast and clean service for everyone I am finding unconventional ways of funding it. Along the way, I am providing not
 only the service, but entertainment. Now how many "Yugi Tubers" can say that?
 
+## Code Style
+
+Formatting follows the official Kotlin code style, enforced by [ktlint](https://pinterest.github.io/ktlint/). Rules live in `.editorconfig`, so IntelliJ and the build agree.
+
+```shell
+./gradlew ktlintFormat   # fix violations
+./gradlew ktlintCheck    # report only (also runs as part of `build`)
+```
+
+After cloning, install the hook that formats staged Kotlin files on commit:
+
+```shell
+./gradlew addKtlintFormatGitPreCommitHook
+```
+
+To keep `git blame` clear of the bulk reformat commit:
+
+```shell
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
 ## Links
 - [Website](https://www.thesupremekingscastle.com)
 - [API Functionality](https://skc-ygo-api.com/api/v1/swagger-ui/index.html)
