@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.media.Schema
-import java.util.*
+import java.time.LocalDate
 
 @JsonInclude(
   JsonInclude.Include.NON_EMPTY
@@ -24,13 +24,13 @@ data class Product(
   var productSubType: String? = null
 
   @Schema(
-    implementation = Date::class,
+    implementation = LocalDate::class,
     description = SwaggerConstants.PRODUCT_RELEASE_DATE_DESCRIPTION,
     pattern = "yyyy-MM-dd",
     format = "yyyy-MM-dd",
   )
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  var productReleaseDate: Date? = null
+  var productReleaseDate: LocalDate? = null
 
   @Schema(
     implementation = Int::class,

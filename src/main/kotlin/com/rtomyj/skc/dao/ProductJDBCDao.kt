@@ -20,14 +20,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 @Repository
 @Qualifier("product-jdbc")
 class ProductJDBCDao @Autowired constructor(
   private val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  @param:Qualifier("dbSimpleDateFormat") private val dateFormat: SimpleDateFormat,
+  @param:Qualifier("dbDateTimeFormatter") private val dbDateFormatter: DateTimeFormatter,
   private val jsonMapper: JsonMapper
 ) : ProductDao {
   companion object {
@@ -82,9 +83,10 @@ class ProductJDBCDao @Autowired constructor(
                 getProductRarityCount(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
 
               try {
-                productReleaseDate =
-                  dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
-              } catch (e: ParseException) {
+                productReleaseDate = LocalDate.parse(
+                  row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()), dbDateFormatter
+                )
+              } catch (e: DateTimeParseException) {
                 log.error(DATE_PARSE_EXCEPTION_LOGGER, productId, e.toString())
                 return@queryForObject null
               }
@@ -107,9 +109,10 @@ class ProductJDBCDao @Autowired constructor(
             productSubType = row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString())
 
             try {
-              productReleaseDate =
-                dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
-            } catch (e: ParseException) {
+              productReleaseDate = LocalDate.parse(
+                row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()), dbDateFormatter
+              )
+            } catch (e: DateTimeParseException) {
               log.error(DATE_PARSE_EXCEPTION_LOGGER, productId, e.toString())
             }
           }
@@ -134,9 +137,10 @@ class ProductJDBCDao @Autowired constructor(
               productSubType = row.getString(ProductsTableDefinition.PRODUCT_SUB_TYPE.toString())
 
               try {
-                productReleaseDate =
-                  dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
-              } catch (e: ParseException) {
+                productReleaseDate = LocalDate.parse(
+                  row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()), dbDateFormatter
+                )
+              } catch (e: DateTimeParseException) {
                 log.error(
                   "Error parsing product date for card {} with exception: {}",
                   cardId,
@@ -226,9 +230,10 @@ class ProductJDBCDao @Autowired constructor(
           getProductRarityCount(row.getString(ProductsTableDefinition.PRODUCT_ID.toString()))
         availableProductsList.add(product)
         try {
-          product.productReleaseDate =
-            dateFormat.parse(row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()))
-        } catch (e: ParseException) {
+          product.productReleaseDate = LocalDate.parse(
+            row.getString(ProductsTableDefinition.PRODUCT_RELEASE_DATE.toString()), dbDateFormatter
+          )
+        } catch (e: DateTimeParseException) {
           log.error(
             "Error parsing date while retrieving all packs with exception: {}",
             e.toString()
