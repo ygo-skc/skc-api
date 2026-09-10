@@ -20,9 +20,9 @@ import org.springframework.stereotype.Repository
 import org.springframework.util.StopWatch
 import tools.jackson.databind.json.JsonMapper
 import java.sql.ResultSet
-import java.text.ParseException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 @Repository
 @Qualifier("ban-list-jdbc")
@@ -248,7 +248,7 @@ WHERE duel_format = :format AND ban_list_date < :currentBanList""",
           row.getString(2),
           format
         )
-      } catch (e: ParseException) {
+      } catch (e: DateTimeParseException) {
         log.error(
           "Error parsing ban list date for card {}, exception: {}",
           cardId,

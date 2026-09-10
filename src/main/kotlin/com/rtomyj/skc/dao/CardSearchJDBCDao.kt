@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import org.springframework.util.StopWatch
 import java.sql.ResultSet
-import java.text.ParseException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.*
 
 /**
@@ -163,7 +163,7 @@ class CardSearchJDBCDao @Autowired constructor(
                 card.restrictedIn
                     .getOrDefault(format, mutableListOf())
                     .add(cardBanListStatus)
-              } catch (e: ParseException) {
+              } catch (e: DateTimeParseException) {
                 log.error(
                   "Error parsing ban list date {}.",
                   row.getString(9)
