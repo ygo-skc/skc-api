@@ -1,6 +1,6 @@
 package com.rtomyj.skc.util.enumeration
 
-import java.util.*
+import java.util.Locale
 
 enum class LinkArrow(
     private val arrowEmoji: String,

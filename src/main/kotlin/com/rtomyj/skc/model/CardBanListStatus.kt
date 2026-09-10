@@ -6,7 +6,7 @@ import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
-import java.util.*
+import java.util.Date
 
 /**
  * Model containing information about a Ban List.

@@ -12,13 +12,10 @@ import java.time.format.DateTimeFormatter
 
 /**
  * Service used to interface with database for basic operations regarding ban lists.
+ * @param banListDao object used to interface with DB.
  */
 @Service
 class BanListDatesService
-/**
-     * Create object instance.
-     * @param banListDao object used to interface with DB.
-     */
     @Autowired
     constructor(
         /**

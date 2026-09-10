@@ -166,7 +166,8 @@ class ProductJDBCDao
                         }.productContent
 
                 val productWithID =
-                    productContent.find { it.productPosition == cardPosition } // there should always be a value here since it's hard coded in line 135
+                    // there should always be a value here since it's hard coded in line 135
+                    productContent.find { it.productPosition == cardPosition }
                 (productWithID!!.rarities as HashSet).add(row.getString(ProductsTableDefinition.CARD_RARITY.toString()))
             }
 

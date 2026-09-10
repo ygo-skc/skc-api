@@ -27,16 +27,13 @@ import reactor.core.publisher.Mono
 
 /**
  * Configures endpoint(s) that can be used to obtain information about cards for a particular ban list.
+ * @param bannedCardsService Service object to use to accomplish functionality needed by this endpoint.
  */
 @RestController
 @RequestMapping(path = ["/ban_list"], produces = ["application/json; charset=UTF-8"])
 @Validated
 @Tag(name = SwaggerConstants.BAN_LIST_TAG_NAME)
 class BannedCardsController
-/**
-     * Create object instance.
-     * @param bannedCardsService Service object to use to accomplish functionality needed by this endpoint.
-     */
     @Autowired
     constructor(
         /**

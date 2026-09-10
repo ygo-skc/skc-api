@@ -173,7 +173,8 @@ class CardBrowseJDBCDao
 
             val cardColors = getCardColors()
             monsterSubTypes.removeAll(cardColors)
-            monsterSubTypes.remove("Pendulum") // removing pendulum individually as pendulum monster color/name is categorized by cards other color: e.g.  Pendulum-Normal, Pendulum-Fusion, etc
+            // removing pendulum individually as pendulum monster color/name is categorized by cards other color: e.g.  Pendulum-Normal, Pendulum-Fusion, etc
+            monsterSubTypes.remove("Pendulum")
             return monsterSubTypes
         }
 

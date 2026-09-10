@@ -30,7 +30,8 @@ import java.lang.Thread.sleep
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [CardService::class, DateConfig::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the card info after one of the tests executes, ruining other tests
+// Re-creates DiffService which is needed since cache will have the card info after one of the tests executes, ruining other tests
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CardServiceTest {
     @MockitoBean(name = "jdbc")
     private lateinit var cardDao: Dao

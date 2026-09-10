@@ -17,7 +17,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @WebFluxTest(CardBrowseController::class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // since we cache Browse Criteria using Guava cache, we need to clean up after each test execution
+// since we cache Browse Criteria using Guava cache, we need to clean up after each test execution
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Tag("Controller")
 class CardBrowseControllerTest {
     @MockitoBean

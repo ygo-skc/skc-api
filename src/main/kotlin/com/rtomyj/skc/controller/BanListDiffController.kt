@@ -28,16 +28,13 @@ import reactor.core.publisher.Mono
 /**
  * Class used as a REST controller for retrieving cards added to a particular ban list compared to previous ban list
  * or cards that switched statuses (Forbidden -&gt; limited, limited -&gt; semi-limited, etc.) compared with the previous ban list.
+ * @param banListDiffService Service object to use to accomplish functionality needed by this endpoint.
  */
 @RestController
 @RequestMapping(path = ["/ban_list"], produces = ["application/json; charset=UTF-8"])
 @Validated
 @Tag(name = SwaggerConstants.BAN_LIST_TAG_NAME)
 class BanListDiffController
-/**
-     * Create object instance.
-     * @param banListDiffService Service object to use to accomplish functionality needed by this endpoint.
-     */
     @Autowired
     constructor(
         /**

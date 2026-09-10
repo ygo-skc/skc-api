@@ -29,7 +29,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [BannedCardsService::class, BanListDiffService::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD) // allows usage of init as opposed to static context
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
+// Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BannedCardsServiceTest {
     @MockitoBean(name = "ban-list-jdbc")
     private lateinit var banListDao: BanListDao

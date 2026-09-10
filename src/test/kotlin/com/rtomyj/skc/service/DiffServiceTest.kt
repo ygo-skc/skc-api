@@ -26,7 +26,8 @@ import kotlin.test.assertNotNull
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [BanListDiffService::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD) // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
+// Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class DiffServiceTest {
     @MockitoBean(name = "ban-list-jdbc")
     private lateinit var banListDao: BanListDao

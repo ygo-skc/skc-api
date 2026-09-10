@@ -18,15 +18,12 @@ import reactor.core.publisher.Mono
 
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
+ * @param banListDatesService Service object to use to accomplish functionality needed by this endpoint.
  */
 @RestController
 @RequestMapping(path = ["/ban_list/dates"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.BAN_LIST_TAG_NAME)
 class BanListDatesController
-/**
-     * Create object instance.
-     * @param banListDatesService Service object to use to accomplish functionality needed by this endpoint.
-     */
     @Autowired
     constructor(
         /**
