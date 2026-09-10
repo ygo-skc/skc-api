@@ -2,7 +2,12 @@ package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
-import com.rtomyj.skc.model.*
+import com.rtomyj.skc.model.BanListDate
+import com.rtomyj.skc.model.BanListDates
+import com.rtomyj.skc.model.BanListTable
+import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.model.CardBanListStatus
+import com.rtomyj.skc.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import com.rtomyj.skc.util.enumeration.BanListFormat
@@ -29,12 +34,10 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
 
   @Throws(SKCException::class)
   override fun getBanListDates(format: String): BanListDates {
-    var dates: List<BanListDate> = emptyList()
-
     val stopwatch = StopWatch()
     stopwatch.start()
 
-    try {
+    val dates: List<BanListDate> = try {
       entityManagerFactory
           .unwrap(SessionFactory::class.java)
           .openSession()
@@ -56,25 +59,27 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
                       .desc(root.get<Any>("banListDate"))
                 )
 
-            dates = session
+            session
                 .createQuery(criteriaQuery)
                 .resultList
-
-            stopwatch.stop()
-            log.debug(
-              "Time taken to fetch ban list effective start dates from DB: {}",
-              stopwatch.totalTimeMillis
-            )
           }
     } catch (exception: PersistenceException) {
       val causeMessage = exception.cause?.cause?.message
 
-      if ((causeMessage != null)
-        && causeMessage.contains("Table") && causeMessage.contains("doesn't exist")
+      if (causeMessage != null && causeMessage.contains("Table") && causeMessage.contains("doesn't exist")
       ) {
         throw SKCException(ErrConstants.DB_MISSING_TABLE, ErrorType.DB002)
       }
+
+      log.error("Error fetching ban list effective start dates for format {}", format, exception)
+      throw SKCException("Error fetching ban list dates from DB", ErrorType.DB002)
     }
+
+    stopwatch.stop()
+    log.debug(
+      "Time taken to fetch ban list effective start dates from DB: {}",
+      stopwatch.totalTimeMillis
+    )
 
     return BanListDates(dates)
   }
