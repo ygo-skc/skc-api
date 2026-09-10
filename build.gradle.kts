@@ -225,7 +225,7 @@ jacoco {
 }
 
 ktlint {
-    version.set(ktlintVersion) // rules come from .editorconfig, not from here
+    version.set(ktlintVersion) // edit .editorconfig to change settings
 
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
