@@ -11,6 +11,14 @@ import com.rtomyj.skc.util.enumeration.BanListFormat
 interface BanListDao {
   /**
    * Checks the databases and returns a list of cards in a specified ban list (date) that has the specified status (forbidden, limited, semi-limited)
+   * @param date Start date of ban list to validate
+   * @param format YGO format for ban list
+   * @return true if valid
+   */
+  fun isBanListValid(date: String, format: String): Boolean
+
+  /**
+   * Checks the databases and returns a list of cards in a specified ban list (date) that has the specified status (forbidden, limited, semi-limited)
    * @param date Valid start date of the ban list desired.
    * @param status The status
    * @return List of Cards that have the status wanted for the desired date.
@@ -59,8 +67,6 @@ interface BanListDao {
     previousBanListDate: String,
     format: String
   ): List<CardsPreviousBanListStatus>
-
-  fun isValidBanList(banListDate: String): Boolean
 
   /**
    * Get the list of dates of all the ban lists stored in the database.

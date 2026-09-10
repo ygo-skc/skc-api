@@ -89,7 +89,7 @@ class DiffServiceTest {
           .thenReturn(banListNewContent.newSemiLimited)
       Mockito
           .`when`(
-            banListDao.isValidBanList(eq(TestConstants.BAN_LIST_START_DATE))
+            banListDao.isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
           )
           .thenReturn(true)
       Mockito
@@ -164,7 +164,7 @@ class DiffServiceTest {
           )
       Mockito
           .verify(banListDao, Mockito.times(1))
-          .isValidBanList(eq(TestConstants.BAN_LIST_START_DATE))
+          .isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
       Mockito
           .verify(banListDao, Mockito.times(1))
           .getPreviousBanListDate(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
@@ -192,9 +192,7 @@ class DiffServiceTest {
           .thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
       Mockito
           .`when`(
-            banListDao.isValidBanList(
-              eq(TestConstants.BAN_LIST_START_DATE)
-            )
+            banListDao.isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
           )
           .thenReturn(true)
 
@@ -244,7 +242,7 @@ class DiffServiceTest {
           .getPreviousBanListDate(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
       Mockito
           .verify(banListDao, Mockito.times(1))
-          .isValidBanList(eq(TestConstants.BAN_LIST_START_DATE))
+          .isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
     }
   }
 
@@ -254,41 +252,14 @@ class DiffServiceTest {
     @Test
     fun testFetchingBanListNewContent_FromDB_Failure() {
       Mockito
-          .`when`(
-            banListDao.getNewContentOfBanList(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(TestConstants.PREVIOUS_BAN_LIST_START_DATE),
-              eq(BanListCardStatus.FORBIDDEN),
-              eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
-      Mockito
-          .`when`(
-            banListDao.getNewContentOfBanList(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(TestConstants.PREVIOUS_BAN_LIST_START_DATE),
-              eq(BanListCardStatus.LIMITED),
-              eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
-      Mockito
-          .`when`(
-            banListDao.getNewContentOfBanList(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(TestConstants.PREVIOUS_BAN_LIST_START_DATE),
-              eq(BanListCardStatus.SEMI_LIMITED),
-              eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
+          .`when`(banListDao.isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG")))
+          .thenReturn(false)
 
 
       Assertions.assertThrows(SKCException::class.java) {
         banListDiffService.getNewContentForGivenBanList(
           TestConstants.BAN_LIST_START_DATE,
-          eq("TCG")
+          "TCG"
         )
       }
 
@@ -319,7 +290,7 @@ class DiffServiceTest {
           )
       Mockito
           .verify(banListDao, Mockito.times(1))
-          .isValidBanList(eq(TestConstants.BAN_LIST_START_DATE))
+          .isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
       Mockito
           .verify(banListDao, Mockito.times(0))
           .getPreviousBanListDate(any<String>(), eq("TCG"))
@@ -329,30 +300,22 @@ class DiffServiceTest {
     @Test
     fun testFetchingBanListRemovedContent_FromDB_Failure() {
       Mockito
-          .`when`(banListDao.isValidBanList(eq(TestConstants.BAN_LIST_START_DATE)))
+          .`when`(banListDao.isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG")))
           .thenReturn(false)
-      Mockito
-          .`when`(
-            banListDao.getRemovedContentOfBanList(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(TestConstants.PREVIOUS_BAN_LIST_START_DATE), eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
 
 
       // call code w/ above mocks, expecting an exception
       Assertions.assertThrows(SKCException::class.java) {
         banListDiffService.getRemovedContentForGivenBanList(
           TestConstants.BAN_LIST_START_DATE,
-          eq("TCG")
+          "TCG"
         )
       }
 
 
       Mockito
           .verify(banListDao, Mockito.times(1))
-          .isValidBanList(eq(TestConstants.BAN_LIST_START_DATE))
+          .isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG"))
       Mockito
           .verify(banListDao, Mockito.times(0))
           .getRemovedContentOfBanList(

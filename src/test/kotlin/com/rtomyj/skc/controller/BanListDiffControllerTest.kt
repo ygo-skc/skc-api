@@ -121,7 +121,7 @@ class BanListDiffControllerTest {
       ).thenThrow(
         SKCException(
           String.format(
-            ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE
+            ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, TestConstants.BAN_LIST_START_DATE
           ), ErrorType.DB001
         )
       )

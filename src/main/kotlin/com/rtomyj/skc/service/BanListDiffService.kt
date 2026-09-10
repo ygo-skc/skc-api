@@ -123,12 +123,9 @@ class BanListDiffService @Autowired constructor(
 
   @Throws(SKCException::class)
   fun getNewContentForGivenBanList(banListStartDate: String, format: String): BanListNewContent {
-    if (!banListDao.isValidBanList(banListStartDate)) throw SKCException(
-      String.format(
-        ErrConstants.NO_NEW_BAN_LIST_CONTENT_FOR_START_DATE,
-        banListStartDate
-      ), ErrorType.DB001
-    )
+    if (!banListDao.isBanListValid(banListStartDate, format)) {
+      throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+    }
 
     val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
 
@@ -141,13 +138,10 @@ class BanListDiffService @Autowired constructor(
   }
 
   @Throws(SKCException::class)
-  fun getRemovedContentForGivenBanList(banListStartDate: String?, format: String): BanListRemovedContent {
-    if (!banListDao.isValidBanList(banListStartDate!!)) throw SKCException(
-      String.format(
-        ErrConstants.NO_REMOVED_BAN_LIST_CONTENT_FOR_START_DATE,
-        banListStartDate
-      ), ErrorType.DB001
-    )
+  fun getRemovedContentForGivenBanList(banListStartDate: String, format: String): BanListRemovedContent {
+    if (!banListDao.isBanListValid(banListStartDate, format)) {
+      throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+    }
 
     val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
 

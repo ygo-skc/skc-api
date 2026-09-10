@@ -73,6 +73,14 @@ class BanListJDBCDaoTest {
     fun testFetchingPreviousBanListDateForOldestBanList_ReturnsEmpty() {
       Assertions.assertEquals("", banListDao.getPreviousBanListDate("2015-07-06", "TCG"))
     }
+
+
+    @Test
+    fun testValidatingBanList_Success() {
+      Assertions.assertTrue(banListDao.isBanListValid("2015-11-09", "TCG"))
+      Assertions.assertTrue(banListDao.isBanListValid("2015-07-06", "TCG"))
+      Assertions.assertTrue(banListDao.isBanListValid("2015-09-01", "DL"))
+    }
   }
 
 
@@ -82,6 +90,20 @@ class BanListJDBCDaoTest {
     fun testFetchingPreviousBanListDateForUnknownDate_DoesNotThrow() {
       Assertions.assertEquals("2015-11-09", banListDao.getPreviousBanListDate("2030-01-01", "TCG"))
       Assertions.assertEquals("", banListDao.getPreviousBanListDate("1999-01-01", "TCG"))
+    }
+
+
+    @Test
+    fun testValidatingBanListForUnknownDate_ReturnsFalse() {
+      Assertions.assertFalse(banListDao.isBanListValid("2030-01-01", "TCG"))
+    }
+
+
+    @Test
+    fun testValidatingBanListForWrongFormat_ReturnsFalse() {
+      // 2015-11-09 only exists for TCG and 2015-09-01 only for DL
+      Assertions.assertFalse(banListDao.isBanListValid("2015-11-09", "DL"))
+      Assertions.assertFalse(banListDao.isBanListValid("2015-09-01", "TCG"))
     }
   }
 }

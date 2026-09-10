@@ -117,6 +117,14 @@ class BannedCardsServiceTest {
       // create mocks
       Mockito
           .`when`(
+            banListDao.isBanListValid(
+              eq(TestConstants.BAN_LIST_START_DATE),
+              eq("TCG")
+            )
+          )
+          .thenReturn(true)
+      Mockito
+          .`when`(
             banListDao.getBanListByBanStatus(
               eq(TestConstants.BAN_LIST_START_DATE),
               eq(BanListCardStatus.FORBIDDEN),
@@ -186,6 +194,12 @@ class BannedCardsServiceTest {
 
 
       // verify mocks are called the exact number of times expected
+      Mockito
+          .verify(banListDao, Mockito.times(1))
+          .isBanListValid(
+            eq(TestConstants.BAN_LIST_START_DATE),
+            eq("TCG")
+          )
       Mockito
           .verify(banListDao, Mockito.times(1))
           .getBanListByBanStatus(
@@ -383,39 +397,12 @@ class BannedCardsServiceTest {
       // mock calls
       Mockito
           .`when`(
-            banListDao.getBanListByBanStatus(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(BanListCardStatus.FORBIDDEN),
-              eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
-      Mockito
-          .`when`(
-            banListDao.getBanListByBanStatus(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(BanListCardStatus.LIMITED),
-              eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
-      Mockito
-          .`when`(
-            banListDao.getBanListByBanStatus(
-              eq(TestConstants.BAN_LIST_START_DATE),
-              eq(BanListCardStatus.SEMI_LIMITED),
-              eq("TCG")
-            )
-          )
-          .thenReturn(ArrayList())
-      Mockito
-          .`when`(
-            banListDao.getPreviousBanListDate(
+            banListDao.isBanListValid(
               eq(TestConstants.BAN_LIST_START_DATE),
               eq("TCG")
             )
           )
-          .thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
+          .thenReturn(false)
 
 
       // call code and assert throws
@@ -438,30 +425,36 @@ class BannedCardsServiceTest {
       Assertions.assertEquals(ErrorType.DB001, ex.errorType)
 
 
-      // verify mocks are called the exact number of times expected
+      // ban list is validated up front, so none of the content queries should be issued
       Mockito
           .verify(banListDao, Mockito.times(1))
+          .isBanListValid(
+            eq(TestConstants.BAN_LIST_START_DATE),
+            eq("TCG")
+          )
+      Mockito
+          .verify(banListDao, Mockito.times(0))
           .getBanListByBanStatus(
             eq(TestConstants.BAN_LIST_START_DATE),
             eq(BanListCardStatus.FORBIDDEN),
             eq("TCG")
           )
       Mockito
-          .verify(banListDao, Mockito.times(1))
+          .verify(banListDao, Mockito.times(0))
           .getBanListByBanStatus(
             eq(TestConstants.BAN_LIST_START_DATE),
             eq(BanListCardStatus.LIMITED),
             eq("TCG")
           )
       Mockito
-          .verify(banListDao, Mockito.times(1))
+          .verify(banListDao, Mockito.times(0))
           .getBanListByBanStatus(
             eq(TestConstants.BAN_LIST_START_DATE),
             eq(BanListCardStatus.SEMI_LIMITED),
             eq("TCG")
           )
       Mockito
-          .verify(banListDao, Mockito.times(1))
+          .verify(banListDao, Mockito.times(0))
           .getPreviousBanListDate(
             eq(TestConstants.BAN_LIST_START_DATE),
             eq("TCG")

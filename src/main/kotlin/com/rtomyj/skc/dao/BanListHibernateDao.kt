@@ -32,6 +32,10 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
   }
 
 
+  override fun isBanListValid(date: String, format: String): Boolean {
+    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
+  }
+
   @Throws(SKCException::class)
   override fun getBanListDates(format: String): BanListDates {
     val stopwatch = StopWatch()
@@ -115,10 +119,6 @@ class BanListHibernateDao @Autowired constructor(private var entityManagerFactor
   }
 
   override fun getBanListDetailsForCard(cardId: String, format: BanListFormat): List<CardBanListStatus> {
-    throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
-  }
-
-  override fun isValidBanList(banListDate: String): Boolean {
     throw UnsupportedOperationException(UNSUPPORTED_OPERATION_MESSAGE)
   }
 

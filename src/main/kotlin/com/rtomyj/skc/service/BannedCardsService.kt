@@ -47,6 +47,10 @@ class BannedCardsService @Autowired constructor(
   ): BanListInstance {
     log.info("Retrieving ban list content for ban list w/ start date {} & format {}", banListStartDate, format)
 
+    if (!banListDao.isBanListValid(banListStartDate, format)) {
+      throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+    }
+
     lateinit var forbiddenCards: List<Card>
 
     lateinit var limitedCards: List<Card>
@@ -90,8 +94,6 @@ class BannedCardsService @Autowired constructor(
         this.numLimitedTwo = this.limitedTwo!!.size
         this.numLimitedThree = this.limitedThree!!.size
       }
-
-      validateBanListInstance(this, banListStartDate)
 
       if (fetchAllInfo) {
         newContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
@@ -176,17 +178,5 @@ class BannedCardsService @Autowired constructor(
     }
 
     return content
-  }
-
-
-  @Throws(SKCException::class)
-  private fun validateBanListInstance(banListInstance: BanListInstance, banListStartDate: String) {
-    if (banListInstance.numForbidden == 0 && banListInstance.numLimited == 0 && banListInstance.numSemiLimited == 0) {
-      throw SKCException(
-        String.format(
-          ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate
-        ), ErrorType.DB001
-      )
-    }
   }
 }

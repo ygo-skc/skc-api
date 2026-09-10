@@ -31,6 +31,16 @@ class BanListJDBCDao @Autowired constructor(
   @param:Qualifier("dbDateTimeFormatter") val dbDateFormatter: DateTimeFormatter,
   val jsonMapper: JsonMapper
 ) : BanListDao {
+  override fun isBanListValid(date: String, format: String): Boolean {
+    val query = "SELECT EXISTS(SELECT 1 FROM ban_lists WHERE duel_format = :format AND ban_list_date = :date)"
+
+    val sqlParams = MapSqlParameterSource()
+    sqlParams.addValue("date", date)
+    sqlParams.addValue("format", format)
+
+    return jdbcNamedTemplate.queryForObject(query, sqlParams, Boolean::class.java) ?: false
+  }
+
   companion object {
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
     private const val UNSUPPORTED_OPERATION_MESSAGE = "BanListJDBCDao not able to execute method."
@@ -146,17 +156,6 @@ WHERE duel_format = :format AND ban_list_date < :currentBanList""",
       if (row.next()) return@query row.getString(1)
       return@query "Unlimited"
     }
-  }
-
-
-  override fun isValidBanList(banListDate: String): Boolean {
-    val query = "select distinct ban_list_date from ban_lists where ban_list_date = :banListDate"
-
-    val sqlParams = MapSqlParameterSource()
-    sqlParams.addValue("banListDate", banListDate)
-
-    val results = listOf<Any>(jdbcNamedTemplate.queryForList(query, sqlParams, Any::class.java))
-    return results.isNotEmpty()
   }
 
   override fun getNewContentOfBanList(
