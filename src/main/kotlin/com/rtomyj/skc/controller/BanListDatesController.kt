@@ -44,7 +44,9 @@ class BanListDatesController
         @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
         @ApiResponse(responseCode = "500", ref = "internalServerError")
         @Operation(
-            summary = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
+            summary =
+                "Retrieve start (effective) dates of all ban lists stored in database in logical order. These " +
+                    "dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
             tags = [SwaggerConstants.BAN_LIST_TAG_NAME],
         )
         @GetMapping

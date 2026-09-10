@@ -116,7 +116,8 @@ WHERE duel_format = :format AND ban_list_date < :currentBanList""",
 
             val query =
                 "select" +
-                    " old_list.card_name, old_list.monster_type, old_list.card_color, old_list.card_effect, old_list.card_number, old_list.card_attribute, old_list.monster_association, old_list.ban_status" +
+                    " old_list.card_name, old_list.monster_type, old_list.card_color, old_list.card_effect, " +
+                    "old_list.card_number, old_list.card_attribute, old_list.monster_association, old_list.ban_status" +
                     " from (select card_number from ban_list_info where ban_list_date = :newBanList) as new_list" +
                     " right join" +
                     " (select * from ban_list_info where ban_list_date = :oldBanList) as old_list" +

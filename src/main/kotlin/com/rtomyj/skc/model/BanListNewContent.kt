@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 @JsonPropertyOrder("listRequested", "comparedTo", "newCards")
 @Schema(
     implementation = BanListNewContent::class,
-    description = "Cards added to requested ban list that were not in the previous ban list and/or cards that have a different ban list status (forbidden, limited, semi-limited) compared to the previous ban list.",
+    description =
+        "Cards added to requested ban list that were not in the previous ban list and/or cards that have a " +
+            "different ban list status (forbidden, limited, semi-limited) compared to the previous ban list.",
 )
 data class BanListNewContent(
     @field:Schema(

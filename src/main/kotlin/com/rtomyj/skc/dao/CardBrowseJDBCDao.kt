@@ -154,11 +154,9 @@ class CardBrowseJDBCDao
             return cardColors
         }
 
-        override fun getMonsterAttributes(): Set<String> =
-            LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_CARD_ATTRIBUTES) { row: ResultSet, _: Int -> row.getString(1) })
+        override fun getMonsterAttributes(): Set<String> = LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_CARD_ATTRIBUTES) { row: ResultSet, _: Int -> row.getString(1) })
 
-        override fun getMonsterTypes(): Set<String> =
-            LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_MONSTER_TYPES) { row: ResultSet, _: Int -> row.getString(1) })
+        override fun getMonsterTypes(): Set<String> = LinkedHashSet(jdbcNamedTemplate.query(UNIQUE_MONSTER_TYPES) { row: ResultSet, _: Int -> row.getString(1) })
 
         override fun getMonsterSubTypes(): Set<String> {
             val monsterSubTypes: MutableSet<String> =
