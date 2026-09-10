@@ -17,6 +17,9 @@ val jakartaServletApiVersion = "6.1.0"
 
 val commonLang3Version = "3.18.0"
 
+val ktlintVersion = "1.8.0"
+val ktlintKotlinVersion = "2.2.21"
+
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
 version = "3.2.0"
@@ -31,6 +34,7 @@ plugins {
   id("info.solidsoft.pitest") version "1.19.0"
   id("com.adarshr.test-logger") version "4.0.0"    // printing for JUnits
   id("io.gatling.gradle") version "3.15.1.3"
+  id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
 
   jacoco
   java
@@ -82,6 +86,17 @@ configurations {
   }
 
 }
+
+// Spring's BOM otherwise forces ktlint's embedded compiler to the project Kotlin version, breaking its PSI init
+configurations
+    .matching { it.name.startsWith("ktlint") }
+    .configureEach {
+      resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+          useVersion(ktlintKotlinVersion)
+        }
+      }
+    }
 
 dependencies {
   compileOnly("org.scala-lang:scala-library:$scalaLibraryVersion")
@@ -208,4 +223,13 @@ gatling {
 
 jacoco {
   toolVersion = "0.8.15"
+}
+
+ktlint {
+  version.set(ktlintVersion)    // rules come from .editorconfig, not from here
+
+  reporters {
+    reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+    reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
+  }
 }
