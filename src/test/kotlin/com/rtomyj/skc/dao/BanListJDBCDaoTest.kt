@@ -1,8 +1,8 @@
 package com.rtomyj.skc.dao
 
 import com.rtomyj.skc.config.DateConfig
-import com.rtomyj.skc.util.constant.TestObjects
 import com.rtomyj.skc.model.Card
+import com.rtomyj.skc.util.constant.TestObjects
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
@@ -59,6 +59,29 @@ class BanListJDBCDaoTest {
       Assertions.assertEquals(stratosTestCard.cardName, forbiddenDbResult[0].cardName)
       Assertions.assertEquals(dMaliTestCard.cardName, limitedDbResult[0].cardName)
       Assertions.assertEquals(aHeroLivesTestCard.cardName, limitedDbResult[1].cardName)
+    }
+
+
+    @Test
+    fun testFetchingPreviousBanListDate_Success() {
+      // the DL list on 2015-09-01 falls between the two TCG lists and must not be picked
+      Assertions.assertEquals("2015-07-06", banListDao.getPreviousBanListDate("2015-11-09", "TCG"))
+    }
+
+
+    @Test
+    fun testFetchingPreviousBanListDateForOldestBanList_ReturnsEmpty() {
+      Assertions.assertEquals("", banListDao.getPreviousBanListDate("2015-07-06", "TCG"))
+    }
+  }
+
+
+  @Nested
+  inner class UnhappyPath {
+    @Test
+    fun testFetchingPreviousBanListDateForUnknownDate_DoesNotThrow() {
+      Assertions.assertEquals("2015-11-09", banListDao.getPreviousBanListDate("2030-01-01", "TCG"))
+      Assertions.assertEquals("", banListDao.getPreviousBanListDate("1999-01-01", "TCG"))
     }
   }
 }

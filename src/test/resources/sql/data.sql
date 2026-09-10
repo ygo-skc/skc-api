@@ -45,3 +45,9 @@ INSERT INTO ban_lists(duel_format, ban_list_date, card_number, ban_status, notes
 	VALUES ('TCG', '2015-11-09', '40044918', 'Forbidden', '')
 	, ('TCG', '2015-11-09', '08949584', 'Limited', '')
 	, ('TCG', '2015-11-09', '09411399', 'Limited', '');
+
+-- earlier TCG list, plus a DL list dated between the two TCG lists to verify format isolation
+INSERT INTO ban_lists(duel_format, ban_list_date, card_number, ban_status, notes)
+	VALUES ('TCG', '2015-07-06', '40044918', 'Limited', '')
+	, ('TCG', '2015-07-06', '09411399', 'Semi-Limited', '')
+	, ('DL', '2015-09-01', '40044918', 'Forbidden', '');
