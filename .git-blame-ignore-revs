@@ -1,0 +1,5 @@
+# Revisions listed here are skipped by `git blame`.
+# Enable locally with:  git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# chore: apply ktlint_official formatting
+bde8c407ff48665a041eff9e51af7d49c7a70939

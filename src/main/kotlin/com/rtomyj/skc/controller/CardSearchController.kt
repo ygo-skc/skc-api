@@ -23,38 +23,43 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(path = ["/card/search"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
-class CardSearchController @Autowired constructor(
-  private val cardSearchService: CardSearchService
-) {
+class CardSearchController
+    @Autowired
+    constructor(
+        private val cardSearchService: CardSearchService,
+    ) {
+        companion object {
+            private val log = LoggerFactory.getLogger(this::class.java.name)
+        }
 
-  companion object {
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
-
-  @GetMapping
-  @Operation(
-    summary = "Search for a specific set of cards using certain properties. Props don't have to be complete. When partial props are passed, API will return Cards that contain the partial value of given prop. See below for example of partial prop (card name, card ID, monsterType)",
-  )
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @Throws(
-    SKCException::class
-  )
-  fun searchCard(@Valid cardSearchParameters: CardSearchParameters): Mono<ResponseEntity<List<Card>>> =
-    ReactiveMDC.deferMDC(Mono
-        .fromCallable {
-          cardSearchService.searchCard(cardSearchParameters)
-        }
-        .map { searchResult ->
-          ResponseEntity(searchResult, HttpStatus.OK)
-        }
-        .doOnNext { searchResult ->
-          log.info(
-            "Retrieved search results using the following criteria [{}]. Found {} results",
-            cardSearchParameters,
-            searchResult.body?.size
-          )
-        }
-        .doOnSubscribe {
-          log.info("Card search triggered")
-        })
-}
+        @GetMapping
+        @Operation(
+            summary =
+                "Search for a specific set of cards using certain properties. Props don't have to be " +
+                    "complete. When partial props are passed, API will return Cards that contain the partial value " +
+                    "of given prop. See below for example of partial prop (card name, card ID, monsterType)",
+        )
+        @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+        @Throws(
+            SKCException::class,
+        )
+        fun searchCard(
+            @Valid cardSearchParameters: CardSearchParameters,
+        ): Mono<ResponseEntity<List<Card>>> =
+            ReactiveMDC.deferMDC(
+                Mono
+                    .fromCallable {
+                        cardSearchService.searchCard(cardSearchParameters)
+                    }.map { searchResult ->
+                        ResponseEntity(searchResult, HttpStatus.OK)
+                    }.doOnNext { searchResult ->
+                        log.info(
+                            "Retrieved search results using the following criteria [{}]. Found {} results",
+                            cardSearchParameters,
+                            searchResult.body?.size,
+                        )
+                    }.doOnSubscribe {
+                        log.info("Card search triggered")
+                    },
+            )
+    }

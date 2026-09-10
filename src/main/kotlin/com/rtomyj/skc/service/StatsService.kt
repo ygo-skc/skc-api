@@ -11,26 +11,25 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 
 @Service
-class StatsService @Autowired constructor(
-  @param:Qualifier("jdbc") val dao: StatsDao
-) {
+class StatsService
+    @Autowired
+    constructor(
+        @param:Qualifier("jdbc") val dao: StatsDao,
+    ) {
+        companion object {
+            private val log = LoggerFactory.getLogger(this::class.java.name)
+        }
 
-  companion object {
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
+        fun getMonsterTypeStats(cardColor: String): MonsterTypeStats {
+            val monsterTypeStats = dao.getMonsterTypeStats(cardColor)
 
+            if (monsterTypeStats.monsterTypes.isEmpty()) {
+                throw SKCException("Requested monster type not found in DB", ErrorType.DB001) // flow ends here on err
+            }
 
-  fun getMonsterTypeStats(cardColor: String): MonsterTypeStats {
-    val monsterTypeStats = dao.getMonsterTypeStats(cardColor)
+            log.info("Retrieved stats for monster typing's: {}", monsterTypeStats.toString())
+            return monsterTypeStats
+        }
 
-    if (monsterTypeStats.monsterTypes.isEmpty()) {
-      throw SKCException("Requested monster type not found in DB", ErrorType.DB001)    // flow ends here on err
+        fun databaseStats(): DatabaseStats = dao.getDatabaseStats()
     }
-
-    log.info("Retrieved stats for monster typing's: {}", monsterTypeStats.toString())
-    return monsterTypeStats
-  }
-
-
-  fun databaseStats(): DatabaseStats = dao.getDatabaseStats()
-}

@@ -9,5 +9,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 class SKCApi
 
 fun main() {
-  SpringApplication.run(SKCApi::class.java)
+    SpringApplication.run(SKCApi::class.java)
 }

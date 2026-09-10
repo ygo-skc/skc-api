@@ -25,97 +25,111 @@ import java.util.concurrent.TimeUnit
 @RestController
 @RequestMapping(path = ["/card/browse"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_CARD_TAG_NAMED)
-class CardBrowseController @Autowired constructor(
-  private val cardBrowseService: CardBrowseService
-) {
+class CardBrowseController
+    @Autowired
+    constructor(
+        private val cardBrowseService: CardBrowseService,
+    ) {
+        private val cardBrowseCriteriaSupplier =
+            Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria() }, 10, TimeUnit.MINUTES)
 
-  private val cardBrowseCriteriaSupplier =
-    Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria() }, 10, TimeUnit.MINUTES)
-
-  companion object {
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
-
-
-  @GetMapping
-  @Operation(
-    summary = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria)."
-  )
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "badRequest")
-  @ApiResponse(responseCode = "404", ref = "notFound")
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  fun browse(
-    @Parameter(
-      description = "Desired set of card types to include in browse results.",
-      example = "effect,fusion",
-      schema = Schema(implementation = String::class)
-    ) @RequestParam(value = "cardColors", defaultValue = "") cardColors: String = "", @Parameter(
-      description = "Desired set of attributes to include in browse results.",
-      example = "wind,dark,light",
-      schema = Schema(implementation = String::class)
-    ) @RequestParam(value = "attributes", defaultValue = "") attributes: String = "", @Parameter(
-      description = "Desired set of monster types to include in browse results.",
-      example = "spellcaster,wyrm,warrior",
-      schema = Schema(implementation = String::class)
-    ) @RequestParam(value = "monsterTypes", defaultValue = "") monsterTypes: String = "", @Parameter(
-      description = "Desired set of monster sub types to include in browse results.",
-      example = "flip,gemini,toon",
-      schema = Schema(implementation = String::class)
-    ) @RequestParam(value = "monsterSubTypes", defaultValue = "") monsterSubTypes: String = "", @Parameter(
-      description = "Desired set of monster levels to include in browse results.",
-      example = "4,5,6,7,8",
-      schema = Schema(implementation = Int::class)
-    ) @RequestParam(value = "levels", defaultValue = "") monsterLevels: String = "", @Parameter(
-      description = "Desired set of monster ranks to include in browse results.",
-      example = "4,7,8",
-      schema = Schema(implementation = Int::class)
-    ) @RequestParam(value = "ranks", defaultValue = "") monsterRanks: String = "", @Parameter(
-      description = "Desired set of monster ranks to include in browse results.",
-      example = "4,7,8",
-      schema = Schema(implementation = Int::class)
-    ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = ""
-  ): Mono<CardBrowseResults> = ReactiveMDC.deferMDC(Mono
-      .fromCallable {
-        val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
-        val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
-        val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
-        val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
-
-        val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
-        val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
-        val linkRatingSet =
-          CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
-
-        val criteria = CardBrowseCriteria(
-          cardColorsSet, attributeSet, monsterTypeSet, monsterSubTypeSet, levelSet, rankSet, linkRatingSet
-        )
-
-        Tuples.of(criteria, cardBrowseService.browseResults(criteria))
-      }
-      .doOnNext {
-        log.info("Found {} matching results using criteria: [{}]", it.t2, it.t1.toString())
-      }
-      .map {
-        it.t2
-      }
-      .doOnSubscribe {
-        log.info("Retrieving browse results")
-      })
-
-  @GetMapping("/criteria")
-  @Operation(
-    summary = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
-  )
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "400", ref = "badRequest")
-  @ApiResponse(responseCode = "404", ref = "notFound")
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  fun browseCriteria(): Mono<CardBrowseCriteria> = ReactiveMDC.deferMDC(
-    Mono
-        .fromCallable { cardBrowseCriteriaSupplier.get() }
-        .doOnSuccess {
-          log.info("Retrieved card browse criteria")
+        companion object {
+            private val log = LoggerFactory.getLogger(this::class.java.name)
         }
-        .doOnSubscribe { log.info("Retrieving card browse criteria") })
-}
+
+        @GetMapping
+        @Operation(
+            summary = "Fetches cards given a set of criteria (use /api/v1/browse/criteria for valid criteria).",
+        )
+        @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+        @ApiResponse(responseCode = "400", ref = "badRequest")
+        @ApiResponse(responseCode = "404", ref = "notFound")
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        fun browse(
+            @Parameter(
+                description = "Desired set of card types to include in browse results.",
+                example = "effect,fusion",
+                schema = Schema(implementation = String::class),
+            ) @RequestParam(value = "cardColors", defaultValue = "") cardColors: String = "",
+            @Parameter(
+                description = "Desired set of attributes to include in browse results.",
+                example = "wind,dark,light",
+                schema = Schema(implementation = String::class),
+            ) @RequestParam(value = "attributes", defaultValue = "") attributes: String = "",
+            @Parameter(
+                description = "Desired set of monster types to include in browse results.",
+                example = "spellcaster,wyrm,warrior",
+                schema = Schema(implementation = String::class),
+            ) @RequestParam(value = "monsterTypes", defaultValue = "") monsterTypes: String = "",
+            @Parameter(
+                description = "Desired set of monster sub types to include in browse results.",
+                example = "flip,gemini,toon",
+                schema = Schema(implementation = String::class),
+            ) @RequestParam(value = "monsterSubTypes", defaultValue = "") monsterSubTypes: String = "",
+            @Parameter(
+                description = "Desired set of monster levels to include in browse results.",
+                example = "4,5,6,7,8",
+                schema = Schema(implementation = Int::class),
+            ) @RequestParam(value = "levels", defaultValue = "") monsterLevels: String = "",
+            @Parameter(
+                description = "Desired set of monster ranks to include in browse results.",
+                example = "4,7,8",
+                schema = Schema(implementation = Int::class),
+            ) @RequestParam(value = "ranks", defaultValue = "") monsterRanks: String = "",
+            @Parameter(
+                description = "Desired set of monster ranks to include in browse results.",
+                example = "4,7,8",
+                schema = Schema(implementation = Int::class),
+            ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = "",
+        ): Mono<CardBrowseResults> =
+            ReactiveMDC.deferMDC(
+                Mono
+                    .fromCallable {
+                        val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
+                        val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
+                        val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
+                        val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
+
+                        val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
+                        val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
+                        val linkRatingSet =
+                            CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
+
+                        val criteria =
+                            CardBrowseCriteria(
+                                cardColorsSet,
+                                attributeSet,
+                                monsterTypeSet,
+                                monsterSubTypeSet,
+                                levelSet,
+                                rankSet,
+                                linkRatingSet,
+                            )
+
+                        Tuples.of(criteria, cardBrowseService.browseResults(criteria))
+                    }.doOnNext {
+                        log.info("Found {} matching results using criteria: [{}]", it.t2, it.t1.toString())
+                    }.map {
+                        it.t2
+                    }.doOnSubscribe {
+                        log.info("Retrieving browse results")
+                    },
+            )
+
+        @GetMapping("/criteria")
+        @Operation(
+            summary = "Fetches valid criteria and valid values for each criteria that can be used in browse endpoint.",
+        )
+        @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+        @ApiResponse(responseCode = "400", ref = "badRequest")
+        @ApiResponse(responseCode = "404", ref = "notFound")
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        fun browseCriteria(): Mono<CardBrowseCriteria> =
+            ReactiveMDC.deferMDC(
+                Mono
+                    .fromCallable { cardBrowseCriteriaSupplier.get() }
+                    .doOnSuccess {
+                        log.info("Retrieved card browse criteria")
+                    }.doOnSubscribe { log.info("Retrieving card browse criteria") },
+            )
+    }

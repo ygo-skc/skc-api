@@ -20,41 +20,41 @@ import java.sql.ResultSet
  */
 @Repository
 @Qualifier("jdbc")
-class JDBCDao @Autowired constructor(
-  val jdbcNamedTemplate: NamedParameterJdbcTemplate,
-  val jsonMapper: JsonMapper
-) : Dao {
-  companion object {
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
+class JDBCDao
+    @Autowired
+    constructor(
+        val jdbcNamedTemplate: NamedParameterJdbcTemplate,
+        val jsonMapper: JsonMapper,
+    ) : Dao {
+        companion object {
+            private val log = LoggerFactory.getLogger(this::class.java.name)
+        }
 
+        @Throws(SKCException::class)
+        override fun getCardInfo(cardID: String): Card {
+            val query = DBQueryConstants.GET_CARD_BY_ID
+            val sqlParams = MapSqlParameterSource()
+            sqlParams.addValue("cardId", cardID)
+            log.debug("Fetching card info from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams)
+            return jdbcNamedTemplate.query<Card?>(query, sqlParams) { row: ResultSet ->
+                if (row.next()) {
+                    return@query Card(
+                        cardID,
+                        row.getString(2),
+                        row.getString(1),
+                        row.getString(3),
+                        row.getString(4),
+                    ).apply {
+                        this.monsterType = row.getString(5)
+                        this.monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), jsonMapper)
 
-  @Throws(SKCException::class)
-  override fun getCardInfo(cardID: String): Card {
-    val query = DBQueryConstants.GET_CARD_BY_ID
-    val sqlParams = MapSqlParameterSource()
-    sqlParams.addValue("cardId", cardID)
-    log.debug("Fetching card info from DB using query: ( {} ) with sql params ( {} ).", query, sqlParams)
-    return jdbcNamedTemplate.query<Card?>(query, sqlParams) { row: ResultSet ->
-      if (row.next()) {
-        return@query Card(
-          cardID,
-          row.getString(2),
-          row.getString(1),
-          row.getString(3),
-          row.getString(4)
-        )
-            .apply {
-              this.monsterType = row.getString(5)
-              this.monsterAssociation = MonsterAssociation.parseDBString(row.getString(8), jsonMapper)
-
-              val atk = row.getInt(6)
-              this.monsterAttack = if (row.wasNull()) null else atk
-              val def = row.getInt(7)
-              this.monsterDefense = if (row.wasNull()) null else def
-            }
-      }
-      null
-    } ?: throw SKCException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID), ErrorType.DB001)
-  }
-}
+                        val atk = row.getInt(6)
+                        this.monsterAttack = if (row.wasNull()) null else atk
+                        val def = row.getInt(7)
+                        this.monsterDefense = if (row.wasNull()) null else def
+                    }
+                }
+                null
+            } ?: throw SKCException(String.format(ErrConstants.CARD_ID_REQUESTED_NOT_FOUND_IN_DB, cardID), ErrorType.DB001)
+        }
+    }

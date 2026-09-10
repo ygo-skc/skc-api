@@ -26,43 +26,60 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(path = ["/stats"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.TAG_STATS_NAME)
-class StatsController @Autowired constructor(private val statsService: StatsService) {
-  companion object {
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
-
-  @Operation(summary = "Retrieve sum of all unique monster types for a given color of a card.")
-  @GetMapping("/card/monster_type/{cardColor}")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
-    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = MonsterTypeStats::class))])
-  @ApiResponse(responseCode = "404", ref = "notFound")
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  @ApiResponse(responseCode = "500", ref = "internalServerError")
-  fun monsterTypeStats(
-    @Parameter(description = SwaggerConfig.CARD_COLOR_DESCRIPTION,
-      `in` = ParameterIn.PATH,
-      required = true,
-      examples = [ExampleObject(ref = "fusion", name = "fusion"), ExampleObject(ref = "effect", name = "effect"),
-        ExampleObject(ref = "synchro", name = "synchro")])
-    @PathVariable("cardColor") cardColor: String
-  ): Mono<MonsterTypeStats> = ReactiveMDC.deferMDC(
-    Mono
-        .fromCallable { statsService.getMonsterTypeStats(cardColor) }
-        .doOnSubscribe {
-          log.info("Retrieving monster types for cards with color {}", cardColor)
-        })
-
-  @Operation(summary = "Retrieve overview of the data currently in Database.")
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
-    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = DatabaseStats::class))])
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  @ApiResponse(responseCode = "500", ref = "internalServerError")
-  @GetMapping
-  fun databaseStats(): Mono<DatabaseStats> = ReactiveMDC.deferMDC(
-    Mono
-        .fromCallable { statsService.databaseStats() }
-        .doOnSuccess {
-          log.info("Successfully retrieved database stats: {}", it.toString())
+class StatsController
+    @Autowired
+    constructor(
+        private val statsService: StatsService,
+    ) {
+        companion object {
+            private val log = LoggerFactory.getLogger(this::class.java.name)
         }
-        .doOnSubscribe { log.info("Retrieving high level DB overview") })
-}
+
+        @Operation(summary = "Retrieve sum of all unique monster types for a given color of a card.")
+        @GetMapping("/card/monster_type/{cardColor}")
+        @ApiResponse(
+            responseCode = "200",
+            description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+            content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = MonsterTypeStats::class))],
+        )
+        @ApiResponse(responseCode = "404", ref = "notFound")
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+        fun monsterTypeStats(
+            @Parameter(
+                description = SwaggerConfig.CARD_COLOR_DESCRIPTION,
+                `in` = ParameterIn.PATH,
+                required = true,
+                examples = [
+                    ExampleObject(ref = "fusion", name = "fusion"), ExampleObject(ref = "effect", name = "effect"),
+                    ExampleObject(ref = "synchro", name = "synchro"),
+                ],
+            )
+            @PathVariable("cardColor") cardColor: String,
+        ): Mono<MonsterTypeStats> =
+            ReactiveMDC.deferMDC(
+                Mono
+                    .fromCallable { statsService.getMonsterTypeStats(cardColor) }
+                    .doOnSubscribe {
+                        log.info("Retrieving monster types for cards with color {}", cardColor)
+                    },
+            )
+
+        @Operation(summary = "Retrieve overview of the data currently in Database.")
+        @ApiResponse(
+            responseCode = "200",
+            description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+            content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = DatabaseStats::class))],
+        )
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+        @GetMapping
+        fun databaseStats(): Mono<DatabaseStats> =
+            ReactiveMDC.deferMDC(
+                Mono
+                    .fromCallable { statsService.databaseStats() }
+                    .doOnSuccess {
+                        log.info("Successfully retrieved database stats: {}", it.toString())
+                    }.doOnSubscribe { log.info("Retrieving high level DB overview") },
+            )
+    }

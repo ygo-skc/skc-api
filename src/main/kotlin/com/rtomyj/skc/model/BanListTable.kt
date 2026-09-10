@@ -14,45 +14,44 @@ import java.time.LocalDate
 @Entity
 @Table(name = "ban_lists")
 @JsonInclude(
-  JsonInclude.Include.NON_EMPTY
+    JsonInclude.Include.NON_EMPTY,
 ) // serializes non-null fields - ie returns non-null fields from REST request
 class BanListTable : Serializable {
-  /**
-   * Start date of ban list.
-   */
-  @Id
-  @Column(name = "ban_list_date")
-  var banListDate: LocalDate? = null
+    /**
+     * Start date of ban list.
+     */
+    @Id
+    @Column(name = "ban_list_date")
+    var banListDate: LocalDate? = null
 
-  /**
-   * The ID of the card.
-   */
-  @Id
-  @Column(name = "card_number", length = 8)
-  var cardNumber: String? = null
+    /**
+     * The ID of the card.
+     */
+    @Id
+    @Column(name = "card_number", length = 8)
+    var cardNumber: String? = null
 
-  /**
-   * The ID of the card.
-   */
-  @Id
-  @Column(name = "duel_format", length = 8)
-  var format: String? = null
+    /**
+     * The ID of the card.
+     */
+    @Id
+    @Column(name = "duel_format", length = 8)
+    var format: String? = null
 
-  /**
-   * Whether card is forbidden, limited, or semi-limited
-   */
-  @Column(name = "ban_status", length = 15)
-  var banStatus: String? = null
+    /**
+     * Whether card is forbidden, limited, or semi-limited
+     */
+    @Column(name = "ban_status", length = 15)
+    var banStatus: String? = null
 
-  override fun equals(other: Any?): Boolean {
-    if (other?.javaClass != this.javaClass)
-      return false
+    override fun equals(other: Any?): Boolean {
+        if (other?.javaClass != this.javaClass) {
+            return false
+        }
 
-    val o = other as BanListTable
-    return this.banListDate == o.banListDate && this.cardNumber == o.cardNumber && this.format == o.format
-  }
+        val o = other as BanListTable
+        return this.banListDate == o.banListDate && this.cardNumber == o.cardNumber && this.format == o.format
+    }
 
-  override fun hashCode(): Int {
-    return this.banListDate.hashCode() + this.cardNumber.hashCode() + this.format.hashCode()
-  }
+    override fun hashCode(): Int = this.banListDate.hashCode() + this.cardNumber.hashCode() + this.format.hashCode()
 }

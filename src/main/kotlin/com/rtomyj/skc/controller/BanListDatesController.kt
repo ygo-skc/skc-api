@@ -18,53 +18,56 @@ import reactor.core.publisher.Mono
 
 /**
  * Configures endpoint(s) for returning user the dates of the ban lists in the database.
+ * @param banListDatesService Service object to use to accomplish functionality needed by this endpoint.
  */
 @RestController
 @RequestMapping(path = ["/ban_list/dates"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.BAN_LIST_TAG_NAME)
 class BanListDatesController
-/**
- * Create object instance.
- * @param banListDatesService Service object to use to accomplish functionality needed by this endpoint.
- */ @Autowired constructor(
-  /**
-   * Service object used to interface the database DAO
-   */
-  val banListDatesService: BanListDatesService
-) {
+    @Autowired
+    constructor(
+        /**
+         * Service object used to interface the database DAO
+         */
+        val banListDatesService: BanListDatesService,
+    ) {
+        companion object {
+            @JvmStatic
+            private val log = LoggerFactory.getLogger(this::class.java.name)
+        }
 
-  companion object {
-    @JvmStatic
-    private val log = LoggerFactory.getLogger(this::class.java.name)
-  }
-
-
-  /**
-   * Looks in the database for the start dates of all ban lists stored in database.
-   * @return Map that contains a list of all dates of the ban lists in database.
-   */
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  @ApiResponse(responseCode = "500", ref = "internalServerError")
-  @Operation(
-    summary = "Retrieve start (effective) dates of all ban lists stored in database in logical order. These dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
-    tags = [SwaggerConstants.BAN_LIST_TAG_NAME]
-  )
-  @GetMapping
-  fun banListStartDates(
-    @RequestParam(
-      name = "format", required = true, defaultValue = "TCG"
-    ) format: String = "TCG"
-  ): Mono<BanListDates> = ReactiveMDC.deferMDC(banListDatesService
-      .retrieveBanListStartDates(format)
-      .doOnNext {
-        log.info(
-          "Retrieved all effective start dates for ban list using format {}. {} ban lists total",
-          format,
-          it.dates.size
+        /**
+         * Looks in the database for the start dates of all ban lists stored in database.
+         * @return Map that contains a list of all dates of the ban lists in database.
+         */
+        @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+        @Operation(
+            summary =
+                "Retrieve start (effective) dates of all ban lists stored in database in logical order. These " +
+                    "dates are \"valid\" start dates that can be used by other endpoints ban list endpoints.",
+            tags = [SwaggerConstants.BAN_LIST_TAG_NAME],
         )
-      }
-      .doOnSubscribe {
-        log.info("Retrieving all effective start dates for ban lists using format {}.", format)
-      })
-}
+        @GetMapping
+        fun banListStartDates(
+            @RequestParam(
+                name = "format",
+                required = true,
+                defaultValue = "TCG",
+            ) format: String = "TCG",
+        ): Mono<BanListDates> =
+            ReactiveMDC.deferMDC(
+                banListDatesService
+                    .retrieveBanListStartDates(format)
+                    .doOnNext {
+                        log.info(
+                            "Retrieved all effective start dates for ban list using format {}. {} ban lists total",
+                            format,
+                            it.dates.size,
+                        )
+                    }.doOnSubscribe {
+                        log.info("Retrieving all effective start dates for ban lists using format {}.", format)
+                    },
+            )
+    }

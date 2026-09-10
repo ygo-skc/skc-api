@@ -30,44 +30,54 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(path = ["/status"], produces = ["application/json; charset=UTF-8"])
 @Tag(name = SwaggerConstants.STATUS_CALL_TAG_NAME)
-class StatusController @Autowired constructor(@param:Qualifier("jdbc") val dao: StatusDao,
-                                              val suggestionEngineStatusService: SuggestionEngineStatusService) {
-  companion object {
-    private val log: Logger = LoggerFactory.getLogger(this::class.java)
-  }
+class StatusController
+    @Autowired
+    constructor(
+        @param:Qualifier("jdbc") val dao: StatusDao,
+        val suggestionEngineStatusService: SuggestionEngineStatusService,
+    ) {
+        companion object {
+            private val log: Logger = LoggerFactory.getLogger(this::class.java)
+        }
 
-  /**
-   * Retrieve basic info of the API and status on all dependant downstream services.
-   * @return Status info.
-   */
-  @GetMapping
-  @Operation(summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME])
-  @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
-    content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = StatusResponse::class))])
-  @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
-  @ApiResponse(responseCode = "500", ref = "internalServerError")
-  fun status(): ResponseEntity<Mono<StatusResponse>> = ResponseEntity.ok(ReactiveMDC.deferMDC(Flux
-      .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
-      .doOnSubscribe {
-        log.info("Health check")
-      }
-      .collectMultimap { dsStatus ->
-        if (dsStatus.name == "SKC DB") "critical" else "utility"
-      }
-      .map { downstreamStatus ->
-        val criticalPathDown = downstreamStatus
-            .getValue("critical")
-            .stream()
-            .filter {
-              it.status.equals("down", ignoreCase = true)
-            }
-            .findAny().isPresent
-
-        StatusResponse(
-          if (criticalPathDown) "API is online but functionality is impacted" else "API is online and functional",
-          AppConstants.APP_VERSION,
-          downstreamStatus.values.flatten()
+        /**
+         * Retrieve basic info of the API and status on all dependant downstream services.
+         * @return Status info.
+         */
+        @GetMapping
+        @Operation(summary = "Checking status of the API.", tags = [SwaggerConstants.STATUS_CALL_TAG_NAME])
+        @ApiResponse(
+            responseCode = "200",
+            description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE,
+            content = [Content(mediaType = APPLICATION_JSON_VALUE, schema = Schema(implementation = StatusResponse::class))],
         )
-      })
-  )
-}
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+        fun status(): ResponseEntity<Mono<StatusResponse>> =
+            ResponseEntity.ok(
+                ReactiveMDC.deferMDC(
+                    Flux
+                        .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
+                        .doOnSubscribe {
+                            log.info("Health check")
+                        }.collectMultimap { dsStatus ->
+                            if (dsStatus.name == "SKC DB") "critical" else "utility"
+                        }.map { downstreamStatus ->
+                            val criticalPathDown =
+                                downstreamStatus
+                                    .getValue("critical")
+                                    .stream()
+                                    .filter {
+                                        it.status.equals("down", ignoreCase = true)
+                                    }.findAny()
+                                    .isPresent
+
+                            StatusResponse(
+                                if (criticalPathDown) "API is online but functionality is impacted" else "API is online and functional",
+                                AppConstants.APP_VERSION,
+                                downstreamStatus.values.flatten(),
+                            )
+                        },
+                ),
+            )
+    }

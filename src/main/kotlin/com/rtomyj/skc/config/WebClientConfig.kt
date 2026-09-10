@@ -22,72 +22,71 @@ import java.time.Duration
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SNIHostName
 
-
 @Configuration
 class WebClientConfig {
-  @Bean("skc-suggestion-engine-web-client")
-  fun skcSuggestionEngineWebClient(
-    @Value($$"${api.skc-suggestion-engine.key}") apiKey: String,
-    @Value($$"${api.skc-suggestion-engine.base-uri}") skcSuggestionEngineBaseUri: String,
-    @Value($$"${api.skc-suggestion-engine.cert-hostname}") skcSuggestionEngineCertHostname: String
-  ): WebClient = WebClient
-      .builder()
-      .clientConnector(
-        ReactorClientHttpConnector(
-          HttpClient
-              .create(
-                ConnectionProvider
-                    .builder("skc-suggestion-engine-pool")
-                    .maxConnections(5)
-                    .pendingAcquireMaxCount(50)
-                    .maxIdleTime(Duration.ofMinutes(5))
-                    .maxLifeTime(Duration.ofMinutes(10))
-                    .pendingAcquireTimeout(Duration.ofSeconds(5))
-                    .evictInBackground(Duration.ofSeconds(5))
-                    .build()
-              )
-              .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
-              .responseTimeout(Duration.ofMillis(250))
-              .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 250)
-              .option(ChannelOption.SO_KEEPALIVE, true)
-              .doOnConnected { conn ->
-                conn
-                    .addHandlerLast(ReadTimeoutHandler(800, TimeUnit.MILLISECONDS))
-                    .addHandlerLast(WriteTimeoutHandler(800, TimeUnit.MILLISECONDS))
-              }
-              .secure { sslSpec: SslProvider.SslContextSpec ->
-                sslSpec.sslContext(createCustomSslContext(skcSuggestionEngineCertHostname))
-                    .build()
-              }
-        )
-      )
-      .defaultHeaders { headers ->
-        headers["API-Key"] = apiKey
-      }
-      .filter(ExchangeFilterFunction.ofResponseProcessor { response ->
-        webClientExceptionHandler(response)
-      })
-      .baseUrl(skcSuggestionEngineBaseUri)
-      .build()
+    @Bean("skc-suggestion-engine-web-client")
+    fun skcSuggestionEngineWebClient(
+        @Value($$"${api.skc-suggestion-engine.key}") apiKey: String,
+        @Value($$"${api.skc-suggestion-engine.base-uri}") skcSuggestionEngineBaseUri: String,
+        @Value($$"${api.skc-suggestion-engine.cert-hostname}") skcSuggestionEngineCertHostname: String,
+    ): WebClient =
+        WebClient
+            .builder()
+            .clientConnector(
+                ReactorClientHttpConnector(
+                    HttpClient
+                        .create(
+                            ConnectionProvider
+                                .builder("skc-suggestion-engine-pool")
+                                .maxConnections(5)
+                                .pendingAcquireMaxCount(50)
+                                .maxIdleTime(Duration.ofMinutes(5))
+                                .maxLifeTime(Duration.ofMinutes(10))
+                                .pendingAcquireTimeout(Duration.ofSeconds(5))
+                                .evictInBackground(Duration.ofSeconds(5))
+                                .build(),
+                        ).protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
+                        .responseTimeout(Duration.ofMillis(250))
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 250)
+                        .option(ChannelOption.SO_KEEPALIVE, true)
+                        .doOnConnected { conn ->
+                            conn
+                                .addHandlerLast(ReadTimeoutHandler(800, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(WriteTimeoutHandler(800, TimeUnit.MILLISECONDS))
+                        }.secure { sslSpec: SslProvider.SslContextSpec ->
+                            sslSpec
+                                .sslContext(createCustomSslContext(skcSuggestionEngineCertHostname))
+                                .build()
+                        },
+                ),
+            ).defaultHeaders { headers ->
+                headers["API-Key"] = apiKey
+            }.filter(
+                ExchangeFilterFunction.ofResponseProcessor { response ->
+                    webClientExceptionHandler(response)
+                },
+            ).baseUrl(skcSuggestionEngineBaseUri)
+            .build()
 
-  private fun webClientExceptionHandler(response: ClientResponse): Mono<ClientResponse> {
-    val statusCode = response.statusCode()
-    return if (statusCode.is4xxClientError || statusCode.is5xxServerError) {
-      response
-          .bodyToMono(String::class.java)
-          .flatMap { body ->
-            Mono.error(DownStreamException(body, statusCode.value()))
-          }
-    } else {
-      Mono.fromCallable {
-        response
-      }
+    private fun webClientExceptionHandler(response: ClientResponse): Mono<ClientResponse> {
+        val statusCode = response.statusCode()
+        return if (statusCode.is4xxClientError || statusCode.is5xxServerError) {
+            response
+                .bodyToMono(String::class.java)
+                .flatMap { body ->
+                    Mono.error(DownStreamException(body, statusCode.value()))
+                }
+        } else {
+            Mono.fromCallable {
+                response
+            }
+        }
     }
-  }
 
-  private fun createCustomSslContext(hostname: String): SslContext =
-    SslContextBuilder.forClient()
-        .protocols("TLSv1.3")
-        .serverName(SNIHostName(hostname))
-        .build()
+    private fun createCustomSslContext(hostname: String): SslContext =
+        SslContextBuilder
+            .forClient()
+            .protocols("TLSv1.3")
+            .serverName(SNIHostName(hostname))
+            .build()
 }

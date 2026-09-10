@@ -6,14 +6,15 @@ import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
-
 @Component
 class ResponseFilter : WebFilter {
-  override fun filter(
-    serverWebExchange: ServerWebExchange, chain: WebFilterChain
-  ): Mono<Void> = chain
-      .filter(serverWebExchange)
-      .doOnSubscribe {
-        serverWebExchange.response.headers.add("Cache-Control", "max-age=300")
-      }
+    override fun filter(
+        serverWebExchange: ServerWebExchange,
+        chain: WebFilterChain,
+    ): Mono<Void> =
+        chain
+            .filter(serverWebExchange)
+            .doOnSubscribe {
+                serverWebExchange.response.headers.add("Cache-Control", "max-age=300")
+            }
 }

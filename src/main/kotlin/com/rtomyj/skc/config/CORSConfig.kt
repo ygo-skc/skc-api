@@ -6,16 +6,15 @@ import org.springframework.web.reactive.config.WebFluxConfigurer
 
 @Component
 class CORSConfig : WebFluxConfigurer {
-  override fun addCorsMappings(registry: CorsRegistry) {
-    registry
-        .addMapping("/**")
-        .allowedOrigins(
-          "http://localhost:3000",
-          "https://thesupremekingscastle.com",
-          "https://www.thesupremekingscastle.com",
-          "https://dev.thesupremekingscastle.com"
-        )
-        .allowedMethods("GET")
-        .maxAge(21600) // 6 hours
-  }
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry
+            .addMapping("/**")
+            .allowedOrigins(
+                "http://localhost:3000",
+                "https://thesupremekingscastle.com",
+                "https://www.thesupremekingscastle.com",
+                "https://dev.thesupremekingscastle.com",
+            ).allowedMethods("GET")
+            .maxAge(21600) // 6 hours
+    }
 }

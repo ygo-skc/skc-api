@@ -12,25 +12,25 @@ import java.time.LocalDate
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
-  implementation = BanListDate::class,
-  description = "Information about a ban lists effective date.",
+    implementation = BanListDate::class,
+    description = "Information about a ban lists effective date.",
 )
 data class BanListDate(
-  /**
-   * Start date of ban list.
-   */
-  @field:Schema(
-    implementation = LocalDate::class,
-    description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
-  ) @field:JsonFormat(
-    shape = JsonFormat.Shape.STRING,
-    pattern = "yyyy-MM-dd"
-  ) val effectiveDate: LocalDate
+    /**
+     * Start date of ban list.
+     */
+    @field:Schema(
+        implementation = LocalDate::class,
+        description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
+    ) @field:JsonFormat(
+        shape = JsonFormat.Shape.STRING,
+        pattern = "yyyy-MM-dd",
+    ) val effectiveDate: LocalDate,
 ) {
-  @Schema(
-    implementation = String::class,
-    description = "What format the ban list dates correspond to."
-  )
-  @JsonProperty(value = "format", index = 0)
-  var format: String? = null
+    @Schema(
+        implementation = String::class,
+        description = "What format the ban list dates correspond to.",
+    )
+    @JsonProperty(value = "format", index = 0)
+    var format: String? = null
 }
