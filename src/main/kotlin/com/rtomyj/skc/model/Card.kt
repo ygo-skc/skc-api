@@ -2,7 +2,6 @@ package com.rtomyj.skc.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.rtomyj.skc.controller.CardController
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
@@ -48,8 +47,6 @@ data class Card(
 
         @JsonIgnore
         private val CARD_EFFECT_TRIM_TERMINATION = "..."
-
-        private val cardController = CardController::class.java
 
         fun trimEffect(effect: String): String =
             if (effect.length > MAX_CARD_EFFECT_LENGTH) {

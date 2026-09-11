@@ -1,6 +1,5 @@
 package com.rtomyj.skc.model
 
-import com.rtomyj.skc.controller.CardBrowseController
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
@@ -19,10 +18,6 @@ class CardBrowseResults(
     )
     val numResults: Int = 0,
 ) {
-    companion object {
-        private val cardBrowseController = CardBrowseController::class.java
-    }
-
     @Schema(
         implementation = CardBrowseCriteria::class,
         description = "Criteria used to fetch these results.",
