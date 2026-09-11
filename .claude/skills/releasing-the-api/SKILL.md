@@ -1,6 +1,6 @@
 ---
 name: releasing-the-api
-description: Use when cutting a release for skc-api — choosing the version, creating and pushing a version tag, or publishing GitHub release notes.
+description: Use when cutting a release for skc-api — choosing the version, creating and pushing a version tag, or publishing GitHub release notes. Not for building, testing, or deploying the service; the user does those.
 ---
 
 # Releasing the API
@@ -42,7 +42,6 @@ grep -n '^version' build.gradle.kts
 PREV=$(git tag --list 'v*' --sort=-v:refname | head -1)
 git log --oneline "$PREV"..HEAD
 git diff --stat "$PREV"..HEAD
-./gradlew build
 ```
 
 **`build.gradle.kts` is the source of truth — read it first.** If it already names an unreleased version (says `3.1.8` while the newest tag is
@@ -53,13 +52,23 @@ afterward, so the version commit is normally several commits behind HEAD — tha
 Report which version it should become and let the user commit and push that bump. A tag whose JAR manifest carries the previous version makes
 `/api/v1/status` and the published OpenAPI doc report the wrong release, and nothing on the server will contradict it (see Common mistakes).
 
-`./gradlew build` must pass. It is exactly what `.github/workflows/build.yaml` runs, and that workflow triggers on `tags: v**` — so anything failing
-here becomes a permanent red check on an already-published tag. Note `build` also runs the jacoco floors from `gradle/unitTest.gradle.kts`
-(LINE ≥ 30%, BRANCH ≥ 20%); a coverage regression fails the build even when every test passes.
+## Do not build, test, or deploy
 
-`integTest` (Cucumber, needs a live API to hit) and `skcAPIPerf` (Gatling) are registered
-`Verification` tasks that `build` does **not** run and CI never runs. Neither blocks a release —
-`./gradlew build` passing is the whole gate.
+**The user builds, tests, and deploys this service. You do not.** Your part starts at the version check and ends when the GitHub Release is
+published.
+
+Never run — not to "verify", not to "be safe", not in a scratch worktree:
+
+- `./gradlew build`, `test`, `check`, `bootJar`, `bootRun`, `integTest`, `skcAPIPerf`, or any other Gradle task
+- any Docker build, image push, registry login, `scp`, `ssh`, service restart, or rollout
+- any command whose purpose is to discover how the service is built or deployed
+
+CI already covers the build. `.github/workflows/build.yaml` triggers on `tags: v**`, so pushing the tag runs the real gate on GitHub's runners —
+including the jacoco floors from `gradle/unitTest.gradle.kts` (LINE ≥ 30%, BRANCH ≥ 20%). Running it locally first duplicates that and delays the
+release; it does not make the tag safer. If CI goes red, report it and let the user decide.
+
+**"Deploy it" is not a request for this skill.** Say plainly that the release is where your part ends, and leave it there. Do not go looking for a
+deploy mechanism first — the search is already the mistake.
 
 ## Choosing the version
 
@@ -111,7 +120,7 @@ is retired. It is most of the release history by count, so it is what you hit fi
 
 ## Sequence
 
-Show the version, the diff, the `./gradlew build` result, and the drafted notes. Get approval **once**. Then run the rest without stopping again:
+Show the version, the diff, and the drafted notes. Get approval **once**. Then run the rest without stopping again:
 
 ```bash
 git tag vX.Y.Z <commit>          # lightweight: no -a, no -m
@@ -145,9 +154,30 @@ a wrong version is corrected with another release, not an edit.
 - **Assuming the deployed JAR's filename tells you the version.** `createDockerJar` renames
   `skc-api-3.1.8.jar` to `skc-api.jar` so Docker can mount a stable path — a stale deploy looks identical on disk and only `/api/v1/status` reveals
   it.
-- **Running `./gradlew test` instead of `./gradlew build`.** `test` skips the jacoco coverage verification that CI enforces, so a coverage regression
-  surfaces as a red check on a tag that is already public.
-- **Treating a failing `integTest` or `skcAPIPerf` as a release blocker.** CI never runs them;
-  `./gradlew build` is the gate.
+- **Running any Gradle task.** Building locally is not part of a release here — not `test`, not `build`, and not in a throwaway worktree where
+  "nothing gets touched". CI runs the gate when the tag lands.
+- **Acting on "deploy it".** Deployment belongs to the user. Do not run it, script it, or investigate how it works.
 - **Retyping the renovate PR list.** Use the `generate-notes` API; hand-copying it is how entries get dropped or point at the wrong PR.
 - **Copying the pre-`v3.1.4` `## Changes` format.** It dominates the release history by count but is not the current convention.
+
+## Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "A quick `./gradlew build` makes the tag safer" | CI runs it on the tag regardless. A local run only delays the release. |
+| "It's mostly cached, it'll take two seconds" | A cached build proves nothing about the tree, and speed was never the objection. |
+| "I'll build in a temp worktree so the working tree stays clean" | Isolation is not the issue. Not running it is the instruction. |
+| "The version commit is at HEAD — I should confirm it still compiles" | The user confirms that. Push the tag and let CI report. |
+| "There are uncommitted changes, so I should check what they break" | Report the uncommitted changes and ask. Do not build to find out. |
+| "They said deploy, so deploying is authorized" | Permission is not procedure, and this skill has none. The user deploys. |
+| "I'll just peek at the workflows to see how deploys work" | Investigating the deploy path is the first step of deploying. Don't take it. |
+
+## Red flags — stop
+
+- Typing `./gradlew` anything
+- `git worktree add` in order to "verify" a build
+- `ls .github/workflows`, or grepping for `docker`, `deploy`, `compose`, `k8s`, `helm`
+- Reporting a build, test, or coverage result as part of a release summary
+- Treating "deploy it" as in scope
+
+**All of these mean: stop, and hand it back to the user.**
