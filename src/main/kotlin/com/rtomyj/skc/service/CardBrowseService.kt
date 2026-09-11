@@ -1,5 +1,3 @@
-@file:OptIn(DelicateCoroutinesApi::class)
-
 package com.rtomyj.skc.service
 
 import com.rtomyj.skc.dao.CardBrowseDao
@@ -9,8 +7,8 @@ import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.enumeration.MonsterAssociationExpression
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
@@ -24,6 +22,7 @@ class CardBrowseService
     @Autowired
     constructor(
         @param:Qualifier("jdbc") val dao: CardBrowseDao,
+        private val jdbcDispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         companion object {
             private val log = LoggerFactory.getLogger(this::class.java.name)
@@ -69,42 +68,29 @@ class CardBrowseService
             return cardBrowseResults
         }
 
-        fun browseCriteria(): CardBrowseCriteria {
-            var cardBrowseCriteria: CardBrowseCriteria
-
+        /**
+         * Every criterion comes from an independent query - all are started before any is awaited.
+         */
+        fun browseCriteria(): CardBrowseCriteria =
             runBlocking {
-                var levels: Set<Int> = HashSet()
-                var ranks: Set<Int> = HashSet()
-                var links: Set<Int> = HashSet()
+                val cardColors = async(jdbcDispatcher) { dao.getCardColors() }
+                val monsterAttributes = async(jdbcDispatcher) { dao.getMonsterAttributes() }
+                val monsterTypes = async(jdbcDispatcher) { dao.getMonsterTypes() }
+                val monsterSubTypes = async(jdbcDispatcher) { dao.getMonsterSubTypes() }
+                val levels = async(jdbcDispatcher) { dao.getMonsterAssociationField(MonsterAssociationType.LEVEL) }
+                val ranks = async(jdbcDispatcher) { dao.getMonsterAssociationField(MonsterAssociationType.RANK) }
+                val linkRatings = async(jdbcDispatcher) { dao.getMonsterAssociationField(MonsterAssociationType.LINK) }
 
-                val deferredMonsterAssociations =
-                    GlobalScope.async {
-                        levels = dao.getMonsterAssociationField(MonsterAssociationType.LEVEL)
-                        ranks = dao.getMonsterAssociationField(MonsterAssociationType.RANK)
-                        links = dao.getMonsterAssociationField(MonsterAssociationType.LINK)
-                    }
-
-                var cardColors: Set<String> = HashSet()
-                var monsterAttributes: Set<String> = HashSet()
-                var monsterTypes: Set<String> = HashSet()
-                var monsterSubTypes: Set<String> = HashSet()
-
-                val deferredCardFeatures =
-                    GlobalScope.async {
-                        cardColors = dao.getCardColors()
-                        monsterAttributes = dao.getMonsterAttributes()
-                        monsterTypes = dao.getMonsterTypes()
-                        monsterSubTypes = dao.getMonsterSubTypes()
-                    }
-
-                deferredMonsterAssociations.await()
-                deferredCardFeatures.await()
-
-                cardBrowseCriteria =
-                    CardBrowseCriteria(cardColors, monsterAttributes, monsterTypes, monsterSubTypes, levels, ranks, links)
+                CardBrowseCriteria(
+                    cardColors.await(),
+                    monsterAttributes.await(),
+                    monsterTypes.await(),
+                    monsterSubTypes.await(),
+                    levels.await(),
+                    ranks.await(),
+                    linkRatings.await(),
+                )
             }
-            return cardBrowseCriteria
-        }
 
         /**
          * Parses a comma-delimited string supplied by the user that contains values for a specific monster association key that a user wants to retrieve contents for.

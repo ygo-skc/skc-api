@@ -4,6 +4,7 @@ import com.rtomyj.skc.dao.CardBrowseDao
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.CardBrowseTestUtil
 import com.rtomyj.skc.util.constant.TestConstants
+import com.rtomyj.skc.util.enumeration.MonsterAssociationType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -62,6 +63,47 @@ class CardBrowseServiceTest {
             Mockito
                 .verify(dao)
                 .getBrowseResults(cardBrowseCriteria, levelSet, rankSet, linkSet)
+        }
+
+        /**
+         * Each criterion is fetched by a separate DAO call - distinct sizes per criteria so a mis-wired argument is caught.
+         */
+        @Test
+        fun `Retrieving Browse Criteria Maps Every DAO Call To The Correct Field`() {
+            val cardColors = setOf("Effect")
+            val attributes = setOf("Dark", "Light")
+            val monsterTypes = setOf("Aqua", "Beast", "Warrior")
+            val monsterSubTypes = setOf("Flip", "Toon", "Tuner", "Union")
+            val levels = setOf(4)
+            val ranks = setOf(7, 8)
+            val linkRatings = setOf(1, 2, 3)
+
+            Mockito.`when`(dao.getCardColors()).thenReturn(cardColors)
+            Mockito.`when`(dao.getMonsterAttributes()).thenReturn(attributes)
+            Mockito.`when`(dao.getMonsterTypes()).thenReturn(monsterTypes)
+            Mockito.`when`(dao.getMonsterSubTypes()).thenReturn(monsterSubTypes)
+            Mockito.`when`(dao.getMonsterAssociationField(MonsterAssociationType.LEVEL)).thenReturn(levels)
+            Mockito.`when`(dao.getMonsterAssociationField(MonsterAssociationType.RANK)).thenReturn(ranks)
+            Mockito.`when`(dao.getMonsterAssociationField(MonsterAssociationType.LINK)).thenReturn(linkRatings)
+
+            val criteria = cardBrowseService.browseCriteria()
+
+            Assertions.assertEquals(cardColors, criteria.cardColors)
+            Assertions.assertEquals(attributes, criteria.attributes)
+            Assertions.assertEquals(monsterTypes, criteria.monsterTypes)
+            Assertions.assertEquals(monsterSubTypes, criteria.monsterSubTypes)
+            Assertions.assertEquals(levels, criteria.levels)
+            Assertions.assertEquals(ranks, criteria.ranks)
+            Assertions.assertEquals(linkRatings, criteria.linkRatings)
+
+            // every criterion must be sourced exactly once
+            Mockito.verify(dao).getCardColors()
+            Mockito.verify(dao).getMonsterAttributes()
+            Mockito.verify(dao).getMonsterTypes()
+            Mockito.verify(dao).getMonsterSubTypes()
+            Mockito.verify(dao).getMonsterAssociationField(MonsterAssociationType.LEVEL)
+            Mockito.verify(dao).getMonsterAssociationField(MonsterAssociationType.RANK)
+            Mockito.verify(dao).getMonsterAssociationField(MonsterAssociationType.LINK)
         }
     }
 }
