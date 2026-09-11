@@ -397,6 +397,33 @@ class BannedCardsServiceTest {
         }
 
         /**
+         * Content for each ban status is fetched concurrently - a failure in any one of them must surface to the caller
+         * rather than being reported as a ban list that is simply missing those cards.
+         */
+        @Test
+        fun `Test Fetching Ban List Instance, One Ban Status Query Fails, Exception Propagates`() {
+            Mockito
+                .`when`(
+                    banListDao.isBanListValid(
+                        eq(TestConstants.BAN_LIST_START_DATE),
+                        eq("TCG"),
+                    ),
+                ).thenReturn(true)
+            Mockito
+                .`when`(
+                    banListDao.getBanListByBanStatus(
+                        eq(TestConstants.BAN_LIST_START_DATE),
+                        eq(BanListCardStatus.FORBIDDEN),
+                        eq("TCG"),
+                    ),
+                ).thenThrow(SKCException("DB blew up", ErrorType.DB002))
+
+            Assertions.assertThrowsExactly(SKCException::class.java) {
+                bannedCardsService.getBanListByDate(TestConstants.BAN_LIST_START_DATE, false, "TCG", false)
+            }
+        }
+
+        /**
          * Utility method that will set up mocks, call getBanListByBanStatus(), and verify mock calls for unhappy path - Ban list not found in database.
          */
         private fun dbError_BanListNotInDB(isSaveBandwidth: Boolean) {

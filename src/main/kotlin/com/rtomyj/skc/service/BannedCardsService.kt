@@ -8,30 +8,41 @@ import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
-import java.util.Collections
 
 /**
  * Service class that allows interfacing with the contents of a ban list.
  */
 @Service
-@OptIn(DelicateCoroutinesApi::class)
 class BannedCardsService
     @Autowired
     constructor(
         @param:Qualifier("ban-list-jdbc") private val banListDao: BanListDao,
         private val banListDiffService: BanListDiffService,
+        private val jdbcDispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
         companion object {
             private val log: Logger = LoggerFactory.getLogger(this::class.java)
+
+            private val STANDARD_FORMAT_STATUSES =
+                listOf(BanListCardStatus.FORBIDDEN, BanListCardStatus.LIMITED, BanListCardStatus.SEMI_LIMITED)
+
+            private val DUEL_LINKS_FORMAT_STATUSES =
+                listOf(
+                    BanListCardStatus.FORBIDDEN,
+                    BanListCardStatus.LIMITED_ONE,
+                    BanListCardStatus.LIMITED_TWO,
+                    BanListCardStatus.LIMITED_THREE,
+                )
         }
 
         /**
@@ -56,48 +67,34 @@ class BannedCardsService
                 throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
             }
 
-            lateinit var forbiddenCards: List<Card>
-
-            lateinit var limitedCards: List<Card>
-            lateinit var semiLimitedCards: List<Card>
-
-            lateinit var limitedOneCards: List<Card>
-            lateinit var limitedTwoCards: List<Card>
-            lateinit var limitedThreeCards: List<Card>
-
-            if (format != "DL") {
-                val content = fetchStandardFormatContent(banListStartDate, format)
-                forbiddenCards = content[BanListCardStatus.FORBIDDEN] ?: emptyList()
-                limitedCards = content[BanListCardStatus.LIMITED] ?: emptyList()
-                semiLimitedCards = content[BanListCardStatus.SEMI_LIMITED] ?: emptyList()
-            } else {
-                // init below vars as they will be used later regardless of format
-                limitedCards = emptyList()
-                semiLimitedCards = emptyList()
-
-                val content = fetchDuelLinksFormatContent(banListStartDate, format)
-                forbiddenCards = content[BanListCardStatus.FORBIDDEN] ?: emptyList()
-                limitedOneCards = content[BanListCardStatus.LIMITED_ONE] ?: emptyList()
-                limitedTwoCards = content[BanListCardStatus.LIMITED_TWO] ?: emptyList()
-                limitedThreeCards = content[BanListCardStatus.LIMITED_THREE] ?: emptyList()
-            }
+            val isDuelLinksFormat = format == "DL"
+            val content =
+                fetchContent(
+                    if (isDuelLinksFormat) DUEL_LINKS_FORMAT_STATUSES else STANDARD_FORMAT_STATUSES,
+                    banListStartDate,
+                    format,
+                )
 
             val banListInstance: BanListInstance =
                 BanListInstance(
                     banListStartDate,
                     banListDao.getPreviousBanListDate(banListStartDate, format),
-                    forbiddenCards,
-                    limitedCards,
-                    semiLimitedCards,
+                    content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                    content[BanListCardStatus.LIMITED] ?: emptyList(),
+                    content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
                 ).apply {
-                    if (format == "DL") {
-                        this.limitedOne = limitedOneCards
-                        this.limitedTwo = limitedTwoCards
-                        this.limitedThree = limitedThreeCards
+                    if (isDuelLinksFormat) {
+                        val limitedOneContent = content[BanListCardStatus.LIMITED_ONE] ?: emptyList()
+                        val limitedTwoContent = content[BanListCardStatus.LIMITED_TWO] ?: emptyList()
+                        val limitedThreeContent = content[BanListCardStatus.LIMITED_THREE] ?: emptyList()
 
-                        this.numLimitedOne = this.limitedOne!!.size
-                        this.numLimitedTwo = this.limitedTwo!!.size
-                        this.numLimitedThree = this.limitedThree!!.size
+                        this.limitedOne = limitedOneContent
+                        this.limitedTwo = limitedTwoContent
+                        this.limitedThree = limitedThreeContent
+
+                        this.numLimitedOne = limitedOneContent.size
+                        this.numLimitedTwo = limitedTwoContent.size
+                        this.numLimitedThree = limitedThreeContent.size
                     }
 
                     if (fetchAllInfo) {
@@ -113,84 +110,22 @@ class BannedCardsService
             return banListInstance
         }
 
-        /**
-         * This method should be used when cards are needed for a given ban list.
-         * Using BanListCardStatus, this method will use the DAO to fetch appropriate cards.
-         */
-        private fun getContent(
-            status: BanListCardStatus,
-            content: MutableMap<BanListCardStatus, List<Card>>,
+        // each status is an independent query - fan them out and collect the results rather than mutating a shared map
+        private fun fetchContent(
+            statuses: List<BanListCardStatus>,
             banListStartDate: String,
             format: String,
-        ) {
-            val cards = banListDao.getBanListByBanStatus(banListStartDate, status, format)
-            MonsterAssociation.transformMonsterLinkRating(cards)
-            content[status] = cards
-        }
-
-        private fun fetchStandardFormatContent(
-            banListStartDate: String,
-            format: String,
-        ): Map<BanListCardStatus, List<Card>> {
-            val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<Card>>())
-
+        ): Map<BanListCardStatus, List<Card>> =
             runBlocking {
-                val deferredForbidden =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, format)
-                    }
-
-                val deferredLimited =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.LIMITED, content, banListStartDate, format)
-                    }
-
-                val deferredSemiLimited =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, format)
-                    }
-
-                deferredForbidden.await()
-                deferredLimited.await()
-                deferredSemiLimited.await()
+                statuses
+                    .map { status ->
+                        async(jdbcDispatcher) {
+                            status to
+                                banListDao
+                                    .getBanListByBanStatus(banListStartDate, status, format)
+                                    .also { MonsterAssociation.transformMonsterLinkRating(it) }
+                        }
+                    }.awaitAll()
+                    .toMap()
             }
-
-            return content
-        }
-
-        private fun fetchDuelLinksFormatContent(
-            banListStartDate: String,
-            format: String,
-        ): Map<BanListCardStatus, List<Card>> {
-            val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<Card>>())
-
-            runBlocking {
-                val deferredForbidden =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, format)
-                    }
-
-                val deferredLimitedOne =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, format)
-                    }
-
-                val deferredLimitedTwo =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, format)
-                    }
-
-                val deferredLimitedThree =
-                    GlobalScope.async {
-                        getContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, format)
-                    }
-
-                deferredForbidden.await()
-                deferredLimitedOne.await()
-                deferredLimitedTwo.await()
-                deferredLimitedThree.await()
-            }
-
-            return content
-        }
     }
