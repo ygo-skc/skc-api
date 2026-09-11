@@ -1,0 +1,35 @@
+plugins {
+    java
+}
+
+val cucumberVersion = "7.34.8"
+val restAssuredVersion = "6.0.1"
+val groovyVersion = "4.0.33"
+val commonsLoggingVersion = "1.4.0"
+
+sourceSets {
+    create("integTest")
+}
+
+dependencies {
+    "integTestImplementation"("commons-logging:commons-logging:$commonsLoggingVersion")
+
+    "integTestImplementation"("io.cucumber:cucumber-java:$cucumberVersion")
+
+    "integTestImplementation"("io.rest-assured:rest-assured:$restAssuredVersion")
+    "integTestImplementation"("io.rest-assured:json-path:$restAssuredVersion")
+    "integTestImplementation"("io.rest-assured:xml-path:$restAssuredVersion")
+
+    "integTestImplementation"("org.apache.groovy:groovy:$groovyVersion") // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
+    "integTestImplementation"("org.apache.groovy:groovy-xml:$groovyVersion") // Need to specify groovy version >= 3 to be able to use rest assured version >= 4.3
+}
+
+tasks.register<JavaExec>("integTest") {
+    description = "Integration test executed using Cucumber"
+    group = "Verification"
+
+    // This task needs to be of type JavaExec in order for all subtasks to run
+    // Especially important is the processIntegTestResources task which will correctly configure/copy the cucumber.properties file in resources folder
+    classpath = sourceSets["integTest"].runtimeClasspath
+    mainClass.set("io.cucumber.core.cli.Main")
+}

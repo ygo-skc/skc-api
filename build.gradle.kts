@@ -1,4 +1,3 @@
-import io.gatling.gradle.GatlingRunTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
@@ -31,12 +30,13 @@ plugins {
 
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
-    id("info.solidsoft.pitest") version "1.19.0"
     id("com.adarshr.test-logger") version "4.0.0" // printing for JUnits
-    id("io.gatling.gradle") version "3.15.1.3"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
 
-    jacoco
+    id("skc.unit-test")
+    id("skc.integ-test")
+    id("skc.gatling")
+
     java
     scala
 }
@@ -44,14 +44,6 @@ plugins {
 repositories {
     mavenCentral()
 }
-
-sourceSets {
-    create("integTest")
-}
-
-apply(from = "gradle/unitTest.gradle.kts")
-apply(from = "gradle/integTest.gradle.kts")
-apply(from = "gradle/gatling.gradle.kts")
 
 configurations {
     all {
@@ -170,58 +162,6 @@ tasks {
 
         rename("$archivesBaseName-${project.version}.jar", "$archivesBaseName.jar")
     }
-
-    register("integTest", JavaExec::class) {
-        description = "Integration test executed using Cucumber"
-        group = "Verification"
-
-        // This task needs to be of type JavaExec in order for all subtasks to run
-        // Especially important is the processIntegTestResources task which will correctly configure/copy the cucumber.properties file in resources folder
-        classpath = sourceSets["integTest"].runtimeClasspath
-        mainClass.set("io.cucumber.core.cli.Main")
-    }
-
-    register("skcAPIPerf", GatlingRunTask::class) {
-        dependsOn(gatlingClasses)
-        description = "Performance test executed using Gatling for SKC API"
-        group = "Verification"
-        simulationClassName = "com.rtomyj.skc.simulations.BrowseSimulation"
-    }
-}
-
-pitest {
-    targetClasses.set(listOf("com.rtomyj.skc.*"))
-    excludedClasses.set(
-        listOf(
-            "com.rtomyj.skc.model.*",
-            "com.rtomyj.skc.config.*",
-            "com.rtomyj.skc.exception.*",
-            "com.rtomyj.skc.util.constant.*",
-            "com.rtomyj.skc.util.enumeration.*",
-        ),
-    )
-
-    threads.set(
-        Runtime
-            .getRuntime()
-            .availableProcessors() - 2,
-    )
-    outputFormats.set(listOf("XML", "HTML"))
-    timestampedReports.set(false)
-    junit5PluginVersion.set("1.1.2")
-
-    mutators.set(listOf("STRONGER"))
-
-    avoidCallsTo.set(setOf("kotlin.jvm.internal", "org.springframework.util.StopWatch", "org.slf4j.Logger"))
-}
-
-gatling {
-    includeMainOutput = false
-    includeTestOutput = false
-}
-
-jacoco {
-    toolVersion = "0.8.15"
 }
 
 ktlint {
