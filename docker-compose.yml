@@ -18,12 +18,23 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_PROFILES_ACTIVE=docker,prod
       - SKC_SUGGESTION_ENGINE_API_KEY=${SKC_SUGGESTION_ENGINE_API_KEY}
+      - >-
+        JDK_JAVA_OPTIONS=-XX:MaxRAMPercentage=50
+        -XX:InitialRAMPercentage=50
+        -XX:+UseG1GC
+        -XX:MaxGCPauseMillis=100
+        -XX:+UseCompactObjectHeaders
+        -XX:+UseStringDeduplication
+        -XX:MaxDirectMemorySize=64m
+        -XX:+ExitOnOutOfMemoryError
+        -XX:+PerfDisableSharedMem
+        -Dio.netty.allocator.maxOrder=6
     labels:
       com.datadoghq.ad.init_configs: '[{}]'
       com.datadoghq.ad.instances: '[{"host":"%%host%%", "port": "%%port%%"}]'
       com.datadoghq.ad.logs: >-
         [{
-          "source": "java", 
+          "source": "java",
           "service": "skc-api",
           "auto_multi_line_detection": true,
           "log_processing_rules": [{
