@@ -32,17 +32,6 @@ class BannedCardsService
     ) {
         companion object {
             private val log: Logger = LoggerFactory.getLogger(this::class.java)
-
-            private val STANDARD_FORMAT_STATUSES =
-                listOf(BanListCardStatus.FORBIDDEN, BanListCardStatus.LIMITED, BanListCardStatus.SEMI_LIMITED)
-
-            private val DUEL_LINKS_FORMAT_STATUSES =
-                listOf(
-                    BanListCardStatus.FORBIDDEN,
-                    BanListCardStatus.LIMITED_ONE,
-                    BanListCardStatus.LIMITED_TWO,
-                    BanListCardStatus.LIMITED_THREE,
-                )
         }
 
         /**
@@ -70,7 +59,11 @@ class BannedCardsService
             val isDuelLinksFormat = format == "DL"
             val content =
                 fetchContent(
-                    if (isDuelLinksFormat) DUEL_LINKS_FORMAT_STATUSES else STANDARD_FORMAT_STATUSES,
+                    if (isDuelLinksFormat) {
+                        BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
+                    } else {
+                        BanListCardStatus.STANDARD_FORMAT_STATUSES
+                    },
                     banListStartDate,
                     format,
                 )

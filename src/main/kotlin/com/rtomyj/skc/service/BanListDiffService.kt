@@ -9,125 +9,22 @@ import com.rtomyj.skc.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
-import java.util.Collections
 
 @Service
 class BanListDiffService
     @Autowired
     constructor(
         @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao,
+        private val jdbcDispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) {
-        /**
-         * This method should be used when newly added cards are needed for a given ban list.
-         * Using the BanListCardStatus, this method will use the DAO to fetch appropriate cards.
-         */
-        private fun getNewContent(
-            banStatus: BanListCardStatus,
-            newContents: MutableMap<BanListCardStatus, List<CardsPreviousBanListStatus>>,
-            banListStartDate: String,
-            previousBanListDate: String,
-            format: String,
-        ) {
-            val newlyAdded = banListDao.getNewContentOfBanList(banListStartDate, previousBanListDate, banStatus, format)
-            newlyAdded.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
-            newContents[banStatus] = newlyAdded
-        }
-
-        @OptIn(DelicateCoroutinesApi::class)
-        private fun newContentNormalFormat(
-            banListStartDate: String,
-            previousBanListDate: String,
-            format: String,
-        ): BanListNewContent {
-            val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
-
-            runBlocking {
-                val deferredNewlyForbidden =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                val deferredNewlyLimited =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.LIMITED, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                val deferredNewlySemiLimited =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.SEMI_LIMITED, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                deferredNewlyForbidden.await()
-                deferredNewlyLimited.await()
-                deferredNewlySemiLimited.await()
-            }
-
-            return BanListNewContent(
-                banListStartDate,
-                previousBanListDate,
-                content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-                content[BanListCardStatus.LIMITED] ?: emptyList(),
-                content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
-                emptyList(),
-                emptyList(),
-                emptyList(),
-            )
-        }
-
-        @OptIn(DelicateCoroutinesApi::class)
-        private fun newContentDuelLinksFormat(
-            banListStartDate: String,
-            previousBanListDate: String,
-            format: String,
-        ): BanListNewContent {
-            val content = Collections.synchronizedMap(mutableMapOf<BanListCardStatus, List<CardsPreviousBanListStatus>>())
-
-            runBlocking {
-                val deferredNewlyForbidden =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.FORBIDDEN, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                val deferredNewlyLimitedOne =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.LIMITED_ONE, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                val deferredNewlyLimitedTwo =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.LIMITED_TWO, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                val deferredNewlyLimitedThree =
-                    GlobalScope.async {
-                        getNewContent(BanListCardStatus.LIMITED_THREE, content, banListStartDate, previousBanListDate, format)
-                    }
-
-                deferredNewlyForbidden.await()
-                deferredNewlyLimitedOne.await()
-                deferredNewlyLimitedTwo.await()
-                deferredNewlyLimitedThree.await()
-            }
-
-            return BanListNewContent(
-                banListStartDate,
-                previousBanListDate,
-                content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-                emptyList(),
-                emptyList(),
-                content[BanListCardStatus.LIMITED_ONE] ?: emptyList(),
-                content[BanListCardStatus.LIMITED_TWO] ?: emptyList(),
-                content[BanListCardStatus.LIMITED_THREE] ?: emptyList(),
-            )
-        }
-
         @Throws(SKCException::class)
         fun getNewContentForGivenBanList(
             banListStartDate: String,
@@ -137,17 +34,27 @@ class BanListDiffService
                 throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
             }
 
-            val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
-
-            // builds meta data object for new cards request
-            val newCardsMeta =
+            val previousBanListDate = banListDao.getPreviousBanListDate(banListStartDate, format)
+            val statuses =
                 if (format == "DL") {
-                    newContentDuelLinksFormat(banListStartDate, previousBanListDate, format)
+                    BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
                 } else {
-                    newContentNormalFormat(banListStartDate, previousBanListDate, format)
+                    BanListCardStatus.STANDARD_FORMAT_STATUSES
                 }
 
-            return newCardsMeta
+            // statuses not fetched for the requested format are simply absent from the map
+            val newContent = fetchNewContent(statuses, banListStartDate, previousBanListDate, format)
+
+            return BanListNewContent(
+                banListStartDate,
+                previousBanListDate,
+                newContent[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                newContent[BanListCardStatus.LIMITED] ?: emptyList(),
+                newContent[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
+                newContent[BanListCardStatus.LIMITED_ONE] ?: emptyList(),
+                newContent[BanListCardStatus.LIMITED_TWO] ?: emptyList(),
+                newContent[BanListCardStatus.LIMITED_THREE] ?: emptyList(),
+            )
         }
 
         @Throws(SKCException::class)
@@ -159,12 +66,12 @@ class BanListDiffService
                 throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
             }
 
-            val previousBanListDate = getPreviousBanListDate(banListStartDate, format)
+            val previousBanListDate = banListDao.getPreviousBanListDate(banListStartDate, format)
 
             val removedCards = banListDao.getRemovedContentOfBanList(banListStartDate, previousBanListDate, format)
             removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
 
-            // builds meta data object for removed cards request
+            // builds metadata object for removed cards request
             val removedCardsMeta =
                 BanListRemovedContent(
                     banListStartDate,
@@ -175,8 +82,28 @@ class BanListDiffService
             return removedCardsMeta
         }
 
-        private fun getPreviousBanListDate(
-            banList: String?,
+        /**
+         * Queries each status concurrently - statuses absent from [statuses] are absent from the returned map.
+         */
+        private fun fetchNewContent(
+            statuses: List<BanListCardStatus>,
+            banListStartDate: String,
+            previousBanListDate: String,
             format: String,
-        ): String = banListDao.getPreviousBanListDate(banList!!, format)
+        ): Map<BanListCardStatus, List<CardsPreviousBanListStatus>> =
+            runBlocking {
+                statuses
+                    .map { status ->
+                        async(jdbcDispatcher) {
+                            // create a pair where key is ban status and value is new content for that status
+                            status to
+                                banListDao
+                                    .getNewContentOfBanList(banListStartDate, previousBanListDate, status, format)
+                                    .also { newlyAdded ->
+                                        newlyAdded.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+                                    }
+                        }
+                    }.awaitAll()
+                    .toMap()
+            }
     }

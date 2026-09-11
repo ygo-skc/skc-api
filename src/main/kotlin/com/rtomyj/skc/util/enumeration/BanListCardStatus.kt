@@ -42,4 +42,10 @@ enum class BanListCardStatus(
      * String representation of enum.
      */
     override fun toString(): String = status
+
+    companion object {
+        val STANDARD_FORMAT_STATUSES = listOf(FORBIDDEN, LIMITED, SEMI_LIMITED)
+
+        val DUEL_LINKS_FORMAT_STATUSES = listOf(FORBIDDEN, LIMITED_ONE, LIMITED_TWO, LIMITED_THREE)
+    }
 }
