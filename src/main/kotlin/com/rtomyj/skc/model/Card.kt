@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
-import java.util.function.Consumer
 
 /**
  * Class defines properties a Yu-Gi-Oh! card can contain.
@@ -67,8 +66,7 @@ data class Card(
          * @param cards A list of Card objects whose effects have to be trimmed.
          */
         fun trimEffects(cards: List<Card>) {
-            cards
-                .forEach(Consumer { card: Card -> trimEffect(card) })
+            cards.forEach { trimEffect(it) }
         }
 
         fun trimEffects(banListInstance: BanListInstance) {
