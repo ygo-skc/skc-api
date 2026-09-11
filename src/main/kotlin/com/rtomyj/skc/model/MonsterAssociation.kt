@@ -69,10 +69,8 @@ class MonsterAssociation(
          */
         fun transformMonsterLinkRating(cards: List<Card>) {
             cards
-                .stream()
-                .map { it.monsterAssociation }
-                .filter { it != null }
-                .forEach { it!!.transformMonsterLinkRating() }
+                .mapNotNull { it.monsterAssociation }
+                .forEach { it.transformMonsterLinkRating() }
         }
 
         /**
@@ -86,15 +84,9 @@ class MonsterAssociation(
      * Takes monster link rating retrieved from DB (constants denoting position of arrow, eg: T-L (top left), T-R (top right)... etc.) and converts them to emojis.
      */
     fun transformMonsterLinkRating() {
-        if (this.linkArrows?.isNotEmpty() == true) {
-            this.linkArrows =
-                this
-                    .linkArrows!!
-                    .stream()
-                    .map { dbArrowString: String ->
-                        transformDBStringToEnum(dbArrowString)
-                            .toString()
-                    }.toList()
-        }
+        val arrows = linkArrows ?: return
+        if (arrows.isEmpty()) return
+
+        linkArrows = arrows.map { transformDBStringToEnum(it).toString() }
     }
 }
