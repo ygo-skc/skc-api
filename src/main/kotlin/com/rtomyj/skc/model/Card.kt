@@ -43,18 +43,14 @@ data class Card(
     var cardEffect: String,
 ) {
     companion object {
-        @JvmStatic
         @JsonIgnore
         private val MAX_CARD_EFFECT_LENGTH = 120
 
-        @JvmStatic
         @JsonIgnore
         private val CARD_EFFECT_TRIM_TERMINATION = "..."
 
-        @JvmStatic
         private val cardController = CardController::class.java
 
-        @JvmStatic
         fun trimEffect(effect: String): String =
             if (effect.length > MAX_CARD_EFFECT_LENGTH) {
                 effect.substring(
@@ -65,7 +61,6 @@ data class Card(
                 effect
             }
 
-        @JvmStatic
         fun trimEffect(card: Card) {
             card.cardEffect = trimEffect(card.cardEffect)
         }
@@ -74,13 +69,11 @@ data class Card(
          * Modifies a list of cards to trim card effects to save on bandwidth
          * @param cards A list of Card objects whose effects have to be trimmed.
          */
-        @JvmStatic
         fun trimEffects(cards: List<Card>) {
             cards
                 .forEach(Consumer { card: Card -> trimEffect(card) })
         }
 
-        @JvmStatic
         fun trimEffects(banListInstance: BanListInstance) {
             trimEffects(banListInstance.forbidden)
             trimEffects(banListInstance.limited)

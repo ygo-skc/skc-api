@@ -42,7 +42,6 @@ class MonsterAssociation(
     companion object {
         private val log = LoggerFactory.getLogger(this::class.java.name)
 
-        @JvmStatic
         fun parseDBString(
             dbMonsterAssociationJson: String?,
             jsonMapper: JsonMapper,
@@ -68,7 +67,6 @@ class MonsterAssociation(
          * Calls [.transformMonsterLinkRating] on a list of Cards
          * @param cards list of cards whose link rating should be transformed
          */
-        @JvmStatic
         fun transformMonsterLinkRating(cards: List<Card>) {
             cards
                 .stream()

@@ -33,7 +33,6 @@ class CardSearchJDBCDao
         companion object {
             private val log = LoggerFactory.getLogger(this::class.java.name)
 
-            @JvmStatic
             private fun prepSearchParams(cardSearchParameters: CardSearchParameters): MapSqlParameterSource {
                 val sqlParams = MapSqlParameterSource()
                 sqlParams.addValue("cardId", if (cardSearchParameters.cId.isEmpty()) "" else "%${cardSearchParameters.cId}%")
@@ -43,7 +42,6 @@ class CardSearchJDBCDao
                 return sqlParams
             }
 
-            @JvmStatic
             private fun fullTextQueryTransformer(query: String): String =
                 if (query.isNotBlank()) {
                     "+$query"

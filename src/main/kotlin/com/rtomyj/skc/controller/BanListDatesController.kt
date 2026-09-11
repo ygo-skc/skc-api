@@ -32,7 +32,6 @@ class BanListDatesController
         val banListDatesService: BanListDatesService,
     ) {
         companion object {
-            @JvmStatic
             private val log = LoggerFactory.getLogger(this::class.java.name)
         }
 

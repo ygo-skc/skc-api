@@ -43,7 +43,6 @@ class BanListDiffController
         val banListDiffService: BanListDiffService,
     ) {
         companion object {
-            @JvmStatic
             private val log = LoggerFactory.getLogger(this::class.java.name)
         }
 

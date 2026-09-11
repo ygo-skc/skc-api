@@ -33,7 +33,6 @@ enum class LinkArrow(
             dbStringToEnumMap["M-L"] = MIDDLE_LEFT
         }
 
-        @JvmStatic
         fun transformDBStringToEnum(dbString: String): LinkArrow = dbStringToEnumMap[dbString.uppercase(Locale.getDefault())] ?: NONE
     }
 }
