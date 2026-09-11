@@ -107,8 +107,7 @@ pitest {
     )
     outputFormats.set(listOf("XML", "HTML"))
     timestampedReports.set(false)
-    junit5PluginVersion.set("1.1.2")
-    verbose.set(true)
+    junit5PluginVersion.set("1.2.3")
 
     mutators.set(listOf("STRONGER"))
 
