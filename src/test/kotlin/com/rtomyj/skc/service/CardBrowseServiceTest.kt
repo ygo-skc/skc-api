@@ -1,5 +1,6 @@
 package com.rtomyj.skc.service
 
+import com.rtomyj.skc.config.DispatcherConfig
 import com.rtomyj.skc.dao.CardBrowseDao
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.util.CardBrowseTestUtil
@@ -17,7 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [CardBrowseService::class])
+@ContextConfiguration(classes = [CardBrowseService::class, DispatcherConfig::class])
 @Tag("Service")
 class CardBrowseServiceTest {
     @MockitoBean(name = "jdbc")

@@ -3,6 +3,7 @@ package com.rtomyj.skc.service
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
+import com.rtomyj.skc.config.DispatcherConfig
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListNewContent
@@ -24,7 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import kotlin.test.assertNotNull
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [BanListDiffService::class])
+@ContextConfiguration(classes = [BanListDiffService::class, DispatcherConfig::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

@@ -8,7 +8,6 @@ import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.enumeration.MonsterAssociationExpression
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
@@ -22,7 +21,7 @@ class CardBrowseService
     @Autowired
     constructor(
         @param:Qualifier("jdbc") val dao: CardBrowseDao,
-        private val jdbcDispatcher: CoroutineDispatcher = Dispatchers.IO,
+        @param:Qualifier("jdbc-dispatcher") private val jdbcDispatcher: CoroutineDispatcher,
     ) {
         companion object {
             private val log = LoggerFactory.getLogger(this::class.java.name)

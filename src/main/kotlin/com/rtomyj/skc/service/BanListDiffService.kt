@@ -10,7 +10,6 @@ import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -23,7 +22,7 @@ class BanListDiffService
     @Autowired
     constructor(
         @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao,
-        private val jdbcDispatcher: CoroutineDispatcher = Dispatchers.IO,
+        @param:Qualifier("jdbc-dispatcher") private val jdbcDispatcher: CoroutineDispatcher,
     ) {
         @Throws(SKCException::class)
         fun getNewContentForGivenBanList(

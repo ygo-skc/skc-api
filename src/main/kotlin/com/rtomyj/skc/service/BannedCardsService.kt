@@ -9,7 +9,6 @@ import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
@@ -28,7 +27,7 @@ class BannedCardsService
     constructor(
         @param:Qualifier("ban-list-jdbc") private val banListDao: BanListDao,
         private val banListDiffService: BanListDiffService,
-        private val jdbcDispatcher: CoroutineDispatcher = Dispatchers.IO,
+        @param:Qualifier("jdbc-dispatcher") private val jdbcDispatcher: CoroutineDispatcher,
     ) {
         companion object {
             private val log: Logger = LoggerFactory.getLogger(this::class.java)

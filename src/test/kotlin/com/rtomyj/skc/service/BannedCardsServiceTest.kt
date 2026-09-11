@@ -2,6 +2,7 @@ package com.rtomyj.skc.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.nhaarman.mockito_kotlin.eq
+import com.rtomyj.skc.config.DispatcherConfig
 import com.rtomyj.skc.dao.BanListDao
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
@@ -27,7 +28,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [BannedCardsService::class, BanListDiffService::class])
+@ContextConfiguration(classes = [BannedCardsService::class, BanListDiffService::class, DispatcherConfig::class])
 @TestInstance(TestInstance.Lifecycle.PER_METHOD) // allows usage of init as opposed to static context
 // Re-creates DiffService which is needed since cache will have the ban list info after one of the tests executes, ruining other tests
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
