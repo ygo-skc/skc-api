@@ -19,6 +19,9 @@ val commonLang3Version = "3.18.0"
 val ktlintVersion = "1.8.0"
 val ktlintKotlinVersion = "2.2.21"
 
+// Spring's BOM manages kotlinx-coroutines via this property - ensure its using desired kotlinCoroutineVersion
+extra["kotlin-coroutines.version"] = kotlinCoroutineVersion
+
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
 version = "3.2.1"
