@@ -1,6 +1,6 @@
 package com.rtomyj.skc.exception
 
-data class DownStreamException(
-    override val message: String,
+class DownStreamException(
+    message: String,
     val statusCode: Int,
-) : RuntimeException()
+) : RuntimeException(message)

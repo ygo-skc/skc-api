@@ -1,6 +1,6 @@
 package com.rtomyj.skc.exception
 
-data class SKCException(
-    override val message: String,
+class SKCException(
+    message: String,
     val errorType: ErrorType,
-) : RuntimeException()
+) : RuntimeException(message)
