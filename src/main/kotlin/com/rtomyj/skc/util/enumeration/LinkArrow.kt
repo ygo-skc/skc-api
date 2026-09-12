@@ -20,18 +20,17 @@ enum class LinkArrow(
     override fun toString(): String = arrowEmoji
 
     companion object {
-        private val dbStringToEnumMap: MutableMap<String, LinkArrow> = HashMap()
-
-        init {
-            dbStringToEnumMap["T-L"] = TOP_LEFT
-            dbStringToEnumMap["T-C"] = TOP_CENTER
-            dbStringToEnumMap["T-R"] = TOP_RIGHT
-            dbStringToEnumMap["M-R"] = MIDDLE_RIGHT
-            dbStringToEnumMap["B-R"] = BOTTOM_RIGHT
-            dbStringToEnumMap["B-C"] = BOTTOM_CENTER
-            dbStringToEnumMap["B-L"] = BOTTOM_LEFT
-            dbStringToEnumMap["M-L"] = MIDDLE_LEFT
-        }
+        private val dbStringToEnumMap =
+            mapOf(
+                "T-L" to TOP_LEFT,
+                "T-C" to TOP_CENTER,
+                "T-R" to TOP_RIGHT,
+                "M-R" to MIDDLE_RIGHT,
+                "B-R" to BOTTOM_RIGHT,
+                "B-C" to BOTTOM_CENTER,
+                "B-L" to BOTTOM_LEFT,
+                "M-L" to MIDDLE_LEFT,
+            )
 
         fun transformDBStringToEnum(dbString: String): LinkArrow = dbStringToEnumMap[dbString.uppercase(Locale.getDefault())] ?: NONE
     }

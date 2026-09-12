@@ -6,14 +6,13 @@ import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
-import java.util.Date
 
 /**
  * Model containing information about a Ban List.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY) // serializes non-null fields - ie returns non-null fields from REST request
 @Schema(
-    implementation = BanListInstance::class,
+    implementation = CardBanListStatus::class,
     description = "Each object instance describes a particular card, a start date of a ban list it was a part of, and the specific status (forbidden, limited, semi-limited).",
 )
 data class CardBanListStatus(
@@ -21,7 +20,7 @@ data class CardBanListStatus(
      * Start date of ban list.
      */
     @field:Schema(
-        implementation = Date::class,
+        implementation = LocalDate::class,
         description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
     )
     @field:JsonFormat(
@@ -45,6 +44,5 @@ data class CardBanListStatus(
         description = "The ban status for the card (forbidden, limited, semi-limited).",
     )
     val banStatus: String,
-//    @JsonIgnore
     val format: BanListFormat,
 )

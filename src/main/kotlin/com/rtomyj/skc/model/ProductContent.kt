@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     JsonInclude.Include.NON_EMPTY,
 )
 @Schema(
-    implementation = Products::class,
+    implementation = ProductContent::class,
 )
 data class ProductContent(
     @field:Schema(
