@@ -5,7 +5,7 @@ plugins {
     id("io.gatling.gradle")
 }
 
-val gatlingVersion = "3.15.1"
+val gatlingVersion = "3.16.0"
 
 configurations {
     gatlingImplementation {
