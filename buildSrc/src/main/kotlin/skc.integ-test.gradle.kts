@@ -4,7 +4,7 @@ plugins {
 
 val cucumberVersion = "8.0.4"
 val restAssuredVersion = "6.2.0"
-val groovyVersion = "4.0.33"
+val groovyVersion = "6.0.0"
 val commonsLoggingVersion = "1.4.0"
 
 sourceSets {
