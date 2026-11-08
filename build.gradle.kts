@@ -24,7 +24,7 @@ extra["kotlin-coroutines.version"] = kotlinCoroutineVersion
 
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
-version = "3.2.3"
+version = "3.2.4"
 java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
