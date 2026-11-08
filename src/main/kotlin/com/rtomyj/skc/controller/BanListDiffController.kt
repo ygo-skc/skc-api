@@ -1,11 +1,9 @@
 package com.rtomyj.skc.controller
 
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListNewContent
 import com.rtomyj.skc.model.BanListRemovedContent
 import com.rtomyj.skc.service.BanListDiffService
-import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -63,9 +61,6 @@ class BanListDiffController
         @ApiResponse(responseCode = "404", ref = "notFound")
         @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
         @ApiResponse(responseCode = "500", ref = "internalServerError")
-        @Throws(
-            SKCException::class,
-        )
         fun getNewlyAddedContentForBanList(
             @Parameter(
                 description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
@@ -82,13 +77,11 @@ class BanListDiffController
                 defaultValue = "TCG",
             ) format: String = "TCG",
         ): Mono<BanListNewContent> =
-            Blocking
-                .mono {
-                    banListDiffService.getNewContentForGivenBanList(
-                        banListStartDate,
-                        format,
-                    )
-                }.doOnNext { banListNewContent ->
+            banListDiffService
+                .getNewContentForGivenBanList(
+                    banListStartDate,
+                    format,
+                ).doOnNext { banListNewContent ->
                     if (format == "DL") {
                         log.info(
                             "Retrieved new content for ban list w/ start date {} & format {}, using previous ban list ({}) for comparison. Newly; forbidden ({}), limited 1 ({}), limited 2 ({}), limited 3 ({})",
@@ -129,9 +122,6 @@ class BanListDiffController
         @ApiResponse(responseCode = "404", ref = "notFound")
         @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
         @ApiResponse(responseCode = "500", ref = "internalServerError")
-        @Throws(
-            SKCException::class,
-        )
         fun getNewlyRemovedContentForBanList(
             @Parameter(
                 description = SwaggerConstants.BAN_LIST_START_DATE_DESCRIPTION,
@@ -148,8 +138,8 @@ class BanListDiffController
                 defaultValue = "TCG",
             ) format: String = "TCG",
         ): Mono<BanListRemovedContent> =
-            Blocking
-                .mono { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
+            banListDiffService
+                .getRemovedContentForGivenBanList(banListStartDate, format)
                 .doOnNext {
                     log.info(
                         "Retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",

@@ -26,6 +26,7 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
 @ExtendWith(SpringExtension::class)
@@ -165,7 +166,7 @@ class BannedCardsServiceTest {
                             eq(TestConstants.BAN_LIST_START_DATE),
                             eq("TCG"),
                         ),
-                    ).thenReturn(banListNewContent)
+                    ).thenReturn(Mono.just(banListNewContent))
 
                 Mockito
                     .`when`(
@@ -173,7 +174,7 @@ class BannedCardsServiceTest {
                             eq(TestConstants.BAN_LIST_START_DATE),
                             eq("TCG"),
                         ),
-                    ).thenReturn(banListRemovedContent)
+                    ).thenReturn(Mono.just(banListRemovedContent))
             }
 
             // call code being tested

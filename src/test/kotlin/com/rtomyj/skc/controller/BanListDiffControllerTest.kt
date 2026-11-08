@@ -19,6 +19,7 @@ import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
 @WebFluxTest(BanListDiffController::class)
 @Tag("Controller")
@@ -52,7 +53,7 @@ class BanListDiffControllerTest {
             // mock exception when Service is called
             `when`(
                 banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG"),
-            ).thenReturn(banListNewContent)
+            ).thenReturn(Mono.just(banListNewContent))
 
             // call controller
             mockMvc
@@ -76,7 +77,7 @@ class BanListDiffControllerTest {
             // mock exception when Service is called
             `when`(
                 banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG"),
-            ).thenReturn(banListRemovedContent)
+            ).thenReturn(Mono.just(banListRemovedContent))
 
             // call controller
             mockMvc

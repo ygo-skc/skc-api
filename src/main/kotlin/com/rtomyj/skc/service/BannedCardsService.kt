@@ -50,59 +50,71 @@ class BannedCardsService
             format: String,
             fetchAllInfo: Boolean,
         ): Mono<BanListInstance> =
-            Blocking.mono {
-                log.info("Retrieving ban list content for ban list w/ start date {} & format {}", banListStartDate, format)
+            Blocking
+                .mono {
+                    log.info("Retrieving ban list content for ban list w/ start date {} & format {}", banListStartDate, format)
 
-                if (!banListDao.isBanListValid(banListStartDate, format)) {
-                    throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
-                }
-
-                val isDuelLinksFormat = format == "DL"
-                val content =
-                    fetchContent(
-                        if (isDuelLinksFormat) {
-                            BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
-                        } else {
-                            BanListCardStatus.STANDARD_FORMAT_STATUSES
-                        },
-                        banListStartDate,
-                        format,
-                    )
-
-                val banListInstance: BanListInstance =
-                    BanListInstance(
-                        banListStartDate,
-                        banListDao.getPreviousBanListDate(banListStartDate, format),
-                        content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-                        content[BanListCardStatus.LIMITED] ?: emptyList(),
-                        content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
-                    ).apply {
-                        if (isDuelLinksFormat) {
-                            val limitedOneContent = content[BanListCardStatus.LIMITED_ONE] ?: emptyList()
-                            val limitedTwoContent = content[BanListCardStatus.LIMITED_TWO] ?: emptyList()
-                            val limitedThreeContent = content[BanListCardStatus.LIMITED_THREE] ?: emptyList()
-
-                            this.limitedOne = limitedOneContent
-                            this.limitedTwo = limitedTwoContent
-                            this.limitedThree = limitedThreeContent
-
-                            this.numLimitedOne = limitedOneContent.size
-                            this.numLimitedTwo = limitedTwoContent.size
-                            this.numLimitedThree = limitedThreeContent.size
-                        }
-
-                        if (fetchAllInfo) {
-                            newContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
-                            removedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format)
-                        }
-
-                        if (saveBandwidth) {
-                            Card.trimEffects(this)
-                        }
+                    if (!banListDao.isBanListValid(banListStartDate, format)) {
+                        throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
                     }
 
-                banListInstance
-            }
+                    val isDuelLinksFormat = format == "DL"
+                    val content =
+                        fetchContent(
+                            if (isDuelLinksFormat) {
+                                BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
+                            } else {
+                                BanListCardStatus.STANDARD_FORMAT_STATUSES
+                            },
+                            banListStartDate,
+                            format,
+                        )
+
+                    val banListInstance: BanListInstance =
+                        BanListInstance(
+                            banListStartDate,
+                            banListDao.getPreviousBanListDate(banListStartDate, format),
+                            content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                            content[BanListCardStatus.LIMITED] ?: emptyList(),
+                            content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
+                        ).apply {
+                            if (isDuelLinksFormat) {
+                                val limitedOneContent = content[BanListCardStatus.LIMITED_ONE] ?: emptyList()
+                                val limitedTwoContent = content[BanListCardStatus.LIMITED_TWO] ?: emptyList()
+                                val limitedThreeContent = content[BanListCardStatus.LIMITED_THREE] ?: emptyList()
+
+                                this.limitedOne = limitedOneContent
+                                this.limitedTwo = limitedTwoContent
+                                this.limitedThree = limitedThreeContent
+
+                                this.numLimitedOne = limitedOneContent.size
+                                this.numLimitedTwo = limitedTwoContent.size
+                                this.numLimitedThree = limitedThreeContent.size
+                            }
+
+                            if (saveBandwidth) {
+                                Card.trimEffects(this)
+                            }
+                        }
+
+                    banListInstance
+                }.flatMap { banListInstance ->
+                    if (fetchAllInfo) {
+                        // new and removed content are independent lookups - zip runs them concurrently
+                        Mono
+                            .zip(
+                                banListDiffService.getNewContentForGivenBanList(banListStartDate, format),
+                                banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format),
+                            ).map {
+                                banListInstance.apply {
+                                    newContent = it.t1
+                                    removedContent = it.t2
+                                }
+                            }
+                    } else {
+                        Mono.just(banListInstance)
+                    }
+                }
 
         // each status is an independent query - fan them out and collect the results rather than mutating a shared map
         private fun fetchContent(

@@ -22,6 +22,7 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import reactor.test.StepVerifier
 import kotlin.test.assertNotNull
 
 @ExtendWith(SpringExtension::class)
@@ -96,41 +97,42 @@ class DiffServiceTest {
                 ).thenReturn(TestConstants.PREVIOUS_BAN_LIST_START_DATE)
 
             // call method with above mocks
-            val banListNewContentInstance =
-                banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
+            StepVerifier
+                .create(banListDiffService.getNewContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG"))
+                .assertNext { banListNewContentInstance ->
+                    val newForbiddenCards = banListNewContentInstance.newForbidden
+                    val newLimitedCards = banListNewContentInstance.newLimited
+                    val newSemiLimitedCards = banListNewContentInstance.newSemiLimited
 
-            val newForbiddenCards = banListNewContentInstance.newForbidden
-            val newLimitedCards = banListNewContentInstance.newLimited
-            val newSemiLimitedCards = banListNewContentInstance.newSemiLimited
+                    // ensure correct dates are used
+                    Assertions.assertEquals(TestConstants.BAN_LIST_START_DATE, banListNewContentInstance.listRequested)
+                    Assertions.assertEquals(TestConstants.PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.comparedTo)
 
-            // ensure correct dates are used
-            Assertions.assertEquals(TestConstants.BAN_LIST_START_DATE, banListNewContentInstance.listRequested)
-            Assertions.assertEquals(TestConstants.PREVIOUS_BAN_LIST_START_DATE, banListNewContentInstance.comparedTo)
+                    // ensure size of each object is returned to consumer, null values will cause issues
+                    Assertions.assertNotNull(newForbiddenCards)
+                    Assertions.assertNotNull(newLimitedCards)
+                    Assertions.assertNotNull(newSemiLimitedCards)
 
-            // ensure size of each object is returned to consumer, null values will cause issues
-            Assertions.assertNotNull(newForbiddenCards)
-            Assertions.assertNotNull(newLimitedCards)
-            Assertions.assertNotNull(newSemiLimitedCards)
+                    // ensure returned number of cards is as expected for each status
+                    Assertions.assertEquals(1, banListNewContentInstance.numNewForbidden)
+                    Assertions.assertEquals(2, banListNewContentInstance.numNewLimited)
+                    Assertions.assertEquals(0, banListNewContentInstance.numNewSemiLimited)
 
-            // ensure returned number of cards is as expected for each status
-            Assertions.assertEquals(1, banListNewContentInstance.numNewForbidden)
-            Assertions.assertEquals(2, banListNewContentInstance.numNewLimited)
-            Assertions.assertEquals(0, banListNewContentInstance.numNewSemiLimited)
+                    // ensure array returned has the same number of elements being reported by size field, size field is validated in above block
+                    Assertions.assertEquals(1, newForbiddenCards.size)
+                    Assertions.assertEquals(2, newLimitedCards.size)
+                    Assertions.assertEquals(0, newSemiLimitedCards.size)
 
-            // ensure array returned has the same number of elements being reported by size field, size field is validated in above block
-            Assertions.assertEquals(1, newForbiddenCards.size)
-            Assertions.assertEquals(2, newLimitedCards.size)
-            Assertions.assertEquals(0, newSemiLimitedCards.size)
+                    // validate correct data is returned in each list for each ban status
+                    Assertions.assertEquals(TestConstants.STRATOS_ID, newForbiddenCards[0].card.cardID)
+                    Assertions.assertEquals("Limited", newForbiddenCards[0].previousBanStatus)
 
-            // validate correct data is returned in each list for each ban status
-            Assertions.assertEquals(TestConstants.STRATOS_ID, newForbiddenCards[0].card.cardID)
-            Assertions.assertEquals("Limited", newForbiddenCards[0].previousBanStatus)
+                    Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards[0].card.cardID)
+                    Assertions.assertEquals("Unlimited", newLimitedCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, newLimitedCards[0].card.cardID)
-            Assertions.assertEquals("Unlimited", newLimitedCards[0].previousBanStatus)
-
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].card.cardID)
-            Assertions.assertEquals("Forbidden", newLimitedCards[1].previousBanStatus)
+                    Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, newLimitedCards[1].card.cardID)
+                    Assertions.assertEquals("Forbidden", newLimitedCards[1].previousBanStatus)
+                }.verifyComplete()
 
             // ensure mocks are called appropriate number of times
             Mockito
@@ -188,36 +190,38 @@ class DiffServiceTest {
                 ).thenReturn(true)
 
             // call code w/ above mocks
-            val banListRemovedContentInstance =
-                banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG")
-            val removedCards = banListRemovedContentInstance.removedCards
+            StepVerifier
+                .create(banListDiffService.getRemovedContentForGivenBanList(TestConstants.BAN_LIST_START_DATE, "TCG"))
+                .assertNext { banListRemovedContentInstance ->
+                    val removedCards = banListRemovedContentInstance.removedCards
 
-            // sanity
-            Assertions.assertNotNull(removedCards)
+                    // sanity
+                    Assertions.assertNotNull(removedCards)
 
-            // ensure dates make sense with context of test request
-            Assertions.assertEquals(TestConstants.BAN_LIST_START_DATE, banListRemovedContentInstance.listRequested)
-            Assertions.assertEquals(
-                TestConstants.PREVIOUS_BAN_LIST_START_DATE,
-                banListRemovedContentInstance.comparedTo,
-            )
+                    // ensure dates make sense with context of test request
+                    Assertions.assertEquals(TestConstants.BAN_LIST_START_DATE, banListRemovedContentInstance.listRequested)
+                    Assertions.assertEquals(
+                        TestConstants.PREVIOUS_BAN_LIST_START_DATE,
+                        banListRemovedContentInstance.comparedTo,
+                    )
 
-            // validate number of cards being returned as removed is as expected
-            Assertions.assertEquals(3, banListRemovedContentInstance.numRemoved)
-            Assertions.assertEquals(3, removedCards.size)
+                    // validate number of cards being returned as removed is as expected
+                    Assertions.assertEquals(3, banListRemovedContentInstance.numRemoved)
+                    Assertions.assertEquals(3, removedCards.size)
 
-            // ensure correct values are being returned in removedCards array
-            Assertions.assertEquals(TestConstants.STRATOS_ID, removedCards[0].card.cardID)
-            Assertions.assertEquals(TestConstants.STRATOS_NAME, removedCards[0].card.cardName)
-            Assertions.assertEquals("Forbidden", removedCards[0].previousBanStatus)
+                    // ensure correct values are being returned in removedCards array
+                    Assertions.assertEquals(TestConstants.STRATOS_ID, removedCards[0].card.cardID)
+                    Assertions.assertEquals(TestConstants.STRATOS_NAME, removedCards[0].card.cardName)
+                    Assertions.assertEquals("Forbidden", removedCards[0].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards[1].card.cardID)
-            Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, removedCards[1].card.cardName)
-            Assertions.assertEquals("Limited", removedCards[1].previousBanStatus)
+                    Assertions.assertEquals(TestConstants.A_HERO_LIVES_ID, removedCards[1].card.cardID)
+                    Assertions.assertEquals(TestConstants.A_HERO_LIVES_NAME, removedCards[1].card.cardName)
+                    Assertions.assertEquals("Limited", removedCards[1].previousBanStatus)
 
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].card.cardID)
-            Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].card.cardName)
-            Assertions.assertEquals("Semi-Limited", removedCards[2].previousBanStatus)
+                    Assertions.assertEquals(TestConstants.D_MALICIOUS_ID, removedCards[2].card.cardID)
+                    Assertions.assertEquals(TestConstants.D_MALICIOUS_NAME, removedCards[2].card.cardName)
+                    Assertions.assertEquals("Semi-Limited", removedCards[2].previousBanStatus)
+                }.verifyComplete()
 
             // verify mocks are called the correct number of times
             Mockito
@@ -244,12 +248,13 @@ class DiffServiceTest {
                 .`when`(banListDao.isBanListValid(eq(TestConstants.BAN_LIST_START_DATE), eq("TCG")))
                 .thenReturn(false)
 
-            Assertions.assertThrows(SKCException::class.java) {
-                banListDiffService.getNewContentForGivenBanList(
-                    TestConstants.BAN_LIST_START_DATE,
-                    "TCG",
-                )
-            }
+            StepVerifier
+                .create(
+                    banListDiffService.getNewContentForGivenBanList(
+                        TestConstants.BAN_LIST_START_DATE,
+                        "TCG",
+                    ),
+                ).verifyError(SKCException::class.java)
 
             Mockito
                 .verify(banListDao, Mockito.times(0))
@@ -290,12 +295,13 @@ class DiffServiceTest {
                 .thenReturn(false)
 
             // call code w/ above mocks, expecting an exception
-            Assertions.assertThrows(SKCException::class.java) {
-                banListDiffService.getRemovedContentForGivenBanList(
-                    TestConstants.BAN_LIST_START_DATE,
-                    "TCG",
-                )
-            }
+            StepVerifier
+                .create(
+                    banListDiffService.getRemovedContentForGivenBanList(
+                        TestConstants.BAN_LIST_START_DATE,
+                        "TCG",
+                    ),
+                ).verifyError(SKCException::class.java)
 
             Mockito
                 .verify(banListDao, Mockito.times(1))

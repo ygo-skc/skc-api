@@ -7,6 +7,7 @@ import com.rtomyj.skc.model.BanListNewContent
 import com.rtomyj.skc.model.BanListRemovedContent
 import com.rtomyj.skc.model.CardsPreviousBanListStatus
 import com.rtomyj.skc.model.MonsterAssociation
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.PropagationContextElement
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
 class BanListDiffService
@@ -25,62 +27,62 @@ class BanListDiffService
         @param:Qualifier("ban-list-jdbc") val banListDao: BanListDao,
         @param:Qualifier("jdbc-dispatcher") private val jdbcDispatcher: CoroutineDispatcher,
     ) {
-        @Throws(SKCException::class)
         fun getNewContentForGivenBanList(
             banListStartDate: String,
             format: String,
-        ): BanListNewContent {
-            if (!banListDao.isBanListValid(banListStartDate, format)) {
-                throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
-            }
-
-            val previousBanListDate = banListDao.getPreviousBanListDate(banListStartDate, format)
-            val statuses =
-                if (format == "DL") {
-                    BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
-                } else {
-                    BanListCardStatus.STANDARD_FORMAT_STATUSES
+        ): Mono<BanListNewContent> =
+            Blocking.mono {
+                if (!banListDao.isBanListValid(banListStartDate, format)) {
+                    throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
                 }
 
-            // statuses not fetched for the requested format are simply absent from the map
-            val newContent = fetchNewContent(statuses, banListStartDate, previousBanListDate, format)
+                val previousBanListDate = banListDao.getPreviousBanListDate(banListStartDate, format)
+                val statuses =
+                    if (format == "DL") {
+                        BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
+                    } else {
+                        BanListCardStatus.STANDARD_FORMAT_STATUSES
+                    }
 
-            return BanListNewContent(
-                banListStartDate,
-                previousBanListDate,
-                newContent[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-                newContent[BanListCardStatus.LIMITED] ?: emptyList(),
-                newContent[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
-                newContent[BanListCardStatus.LIMITED_ONE] ?: emptyList(),
-                newContent[BanListCardStatus.LIMITED_TWO] ?: emptyList(),
-                newContent[BanListCardStatus.LIMITED_THREE] ?: emptyList(),
-            )
-        }
+                // statuses not fetched for the requested format are simply absent from the map
+                val newContent = fetchNewContent(statuses, banListStartDate, previousBanListDate, format)
 
-        @Throws(SKCException::class)
+                BanListNewContent(
+                    banListStartDate,
+                    previousBanListDate,
+                    newContent[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                    newContent[BanListCardStatus.LIMITED] ?: emptyList(),
+                    newContent[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
+                    newContent[BanListCardStatus.LIMITED_ONE] ?: emptyList(),
+                    newContent[BanListCardStatus.LIMITED_TWO] ?: emptyList(),
+                    newContent[BanListCardStatus.LIMITED_THREE] ?: emptyList(),
+                )
+            }
+
         fun getRemovedContentForGivenBanList(
             banListStartDate: String,
             format: String,
-        ): BanListRemovedContent {
-            if (!banListDao.isBanListValid(banListStartDate, format)) {
-                throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+        ): Mono<BanListRemovedContent> =
+            Blocking.mono {
+                if (!banListDao.isBanListValid(banListStartDate, format)) {
+                    throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
+                }
+
+                val previousBanListDate = banListDao.getPreviousBanListDate(banListStartDate, format)
+
+                val removedCards = banListDao.getRemovedContentOfBanList(banListStartDate, previousBanListDate, format)
+                removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
+
+                // builds metadata object for removed cards request
+                val removedCardsMeta =
+                    BanListRemovedContent(
+                        banListStartDate,
+                        previousBanListDate,
+                        removedCards,
+                    )
+
+                removedCardsMeta
             }
-
-            val previousBanListDate = banListDao.getPreviousBanListDate(banListStartDate, format)
-
-            val removedCards = banListDao.getRemovedContentOfBanList(banListStartDate, previousBanListDate, format)
-            removedCards.forEach { MonsterAssociation.transformMonsterLinkRating(it.card) }
-
-            // builds metadata object for removed cards request
-            val removedCardsMeta =
-                BanListRemovedContent(
-                    banListStartDate,
-                    previousBanListDate,
-                    removedCards,
-                )
-
-            return removedCardsMeta
-        }
 
         /**
          * Queries each status concurrently - statuses absent from [statuses] are absent from the returned map.
