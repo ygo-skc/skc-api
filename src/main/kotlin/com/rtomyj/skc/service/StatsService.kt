@@ -5,10 +5,12 @@ import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
+import com.rtomyj.skc.util.Blocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 @Service
 class StatsService
@@ -20,16 +22,17 @@ class StatsService
             private val log = LoggerFactory.getLogger(this::class.java.name)
         }
 
-        fun getMonsterTypeStats(cardColor: String): MonsterTypeStats {
-            val monsterTypeStats = dao.getMonsterTypeStats(cardColor)
+        fun getMonsterTypeStats(cardColor: String): Mono<MonsterTypeStats> =
+            Blocking.mono {
+                val monsterTypeStats = dao.getMonsterTypeStats(cardColor)
 
-            if (monsterTypeStats.monsterTypes.isEmpty()) {
-                throw SKCException("Requested monster type not found in DB", ErrorType.DB001) // flow ends here on err
+                if (monsterTypeStats.monsterTypes.isEmpty()) {
+                    throw SKCException("Requested monster type not found in DB", ErrorType.DB001) // flow ends here on err
+                }
+
+                log.info("Retrieved stats for monster typing's: {}", monsterTypeStats.toString())
+                monsterTypeStats
             }
 
-            log.info("Retrieved stats for monster typing's: {}", monsterTypeStats.toString())
-            return monsterTypeStats
-        }
-
-        fun databaseStats(): DatabaseStats = dao.getDatabaseStats()
+        fun databaseStats(): Mono<DatabaseStats> = Blocking.mono(dao::getDatabaseStats)
     }
