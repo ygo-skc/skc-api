@@ -1,7 +1,7 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.DownstreamStatus
+import com.rtomyj.skc.service.DatabaseStatusService
 import com.rtomyj.skc.service.SuggestionEngineStatusService
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Tag
@@ -21,8 +21,8 @@ class StatusControllerTest {
     @Autowired
     private lateinit var mockMvc: WebTestClient
 
-    @MockitoBean(name = "jdbc")
-    private lateinit var dao: StatusDao
+    @MockitoBean
+    private lateinit var databaseStatusService: DatabaseStatusService
 
     @MockitoBean
     private lateinit var suggestionEngineStatusService: SuggestionEngineStatusService
@@ -52,8 +52,8 @@ class StatusControllerTest {
         @Test
         fun `Calling Test Call Endpoint With Get Method - Success`() {
             Mockito
-                .`when`(dao.dbConnection())
-                .thenReturn(SKC_DB_UP)
+                .`when`(databaseStatusService.getStatus())
+                .thenReturn(Mono.just(SKC_DB_UP))
 
             Mockito
                 .`when`(suggestionEngineStatusService.getStatus())
@@ -89,8 +89,8 @@ class StatusControllerTest {
         @Test
         fun `Calling Test Call Endpoint With Get Method - SKC Suggestion Engine Has One Service Down`() {
             Mockito
-                .`when`(dao.dbConnection())
-                .thenReturn(SKC_DB_UP)
+                .`when`(databaseStatusService.getStatus())
+                .thenReturn(Mono.just(SKC_DB_UP))
 
             Mockito
                 .`when`(suggestionEngineStatusService.getStatus())
@@ -126,8 +126,8 @@ class StatusControllerTest {
         @Test
         fun `Calling Test Call Endpoint With Get Method - SKC Suggestion Engine Status Results In An Error`() {
             Mockito
-                .`when`(dao.dbConnection())
-                .thenReturn(SKC_DB_UP)
+                .`when`(databaseStatusService.getStatus())
+                .thenReturn(Mono.just(SKC_DB_UP))
 
             Mockito
                 .`when`(suggestionEngineStatusService.getStatus())

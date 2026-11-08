@@ -1,10 +1,9 @@
 package com.rtomyj.skc.controller
 
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.StatusResponse
+import com.rtomyj.skc.service.DatabaseStatusService
 import com.rtomyj.skc.service.SuggestionEngineStatusService
-import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,7 +31,7 @@ import reactor.core.publisher.Mono
 class StatusController
     @Autowired
     constructor(
-        @param:Qualifier("jdbc") val dao: StatusDao,
+        val databaseStatusService: DatabaseStatusService,
         val suggestionEngineStatusService: SuggestionEngineStatusService,
     ) {
         companion object {
@@ -56,7 +54,7 @@ class StatusController
         fun status(): ResponseEntity<Mono<StatusResponse>> =
             ResponseEntity.ok(
                 Flux
-                    .concat(suggestionEngineStatusService.getStatus(), Blocking.mono(dao::dbConnection))
+                    .concat(suggestionEngineStatusService.getStatus(), databaseStatusService.getStatus())
                     .doOnSubscribe {
                         log.info("Health check")
                     }.collectMultimap { dsStatus ->
