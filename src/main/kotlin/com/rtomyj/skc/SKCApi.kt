@@ -9,5 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 class SKCApi
 
 fun main() {
+    // must be set before Reactor's Schedulers class loads
+    System.setProperty("reactor.schedulers.defaultBoundedElasticOnVirtualThreads", "true")
     SpringApplication.run(SKCApi::class.java)
 }
