@@ -4,6 +4,7 @@ import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.dao.StatusDao
 import com.rtomyj.skc.model.StatusResponse
 import com.rtomyj.skc.service.SuggestionEngineStatusService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.AppConstants
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -55,7 +56,7 @@ class StatusController
         fun status(): ResponseEntity<Mono<StatusResponse>> =
             ResponseEntity.ok(
                 Flux
-                    .concat(suggestionEngineStatusService.getStatus(), Mono.fromCallable(dao::dbConnection))
+                    .concat(suggestionEngineStatusService.getStatus(), Blocking.mono(dao::dbConnection))
                     .doOnSubscribe {
                         log.info("Health check")
                     }.collectMultimap { dsStatus ->

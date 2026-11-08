@@ -1,5 +1,6 @@
 package com.rtomyj.skc.config
 
+import com.rtomyj.skc.util.Blocking
 import io.micrometer.context.integration.Slf4jThreadLocalAccessor
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -27,6 +28,17 @@ class ContextPropagationTest {
         @AfterAll
         @JvmStatic
         fun afterAll() = Hooks.disableAutomaticContextPropagation()
+    }
+
+    @Test
+    fun `MDC is restored inside blocking call on boundedElastic`() {
+        StepVerifier
+            .create(
+                Blocking
+                    .mono { MDC.get("reqIp") }
+                    .contextWrite { it.put(Slf4jThreadLocalAccessor.KEY, MDC_VALUES) },
+            ).expectNext("10.20.30.40")
+            .verifyComplete()
     }
 
     @Test
@@ -73,8 +85,8 @@ class ContextPropagationTest {
 
         StepVerifier
             .create(
-                Mono
-                    .fromCallable {
+                Blocking
+                    .mono {
                         runBlocking(PropagationContextElement()) {
                             async(jdbcDispatcher) { MDC.get("reqIp") }.await()
                         }

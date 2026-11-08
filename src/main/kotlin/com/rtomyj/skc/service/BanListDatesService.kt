@@ -1,12 +1,11 @@
 package com.rtomyj.skc.service
 
 import com.rtomyj.skc.dao.BanListDao
-import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListDates
+import com.rtomyj.skc.util.Blocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.format.DateTimeFormatter
 
@@ -28,12 +27,8 @@ class BanListDatesService
          * Uses banListDao helper object to retrieve start dates of all ban lists in the database.
          * @return List of BanList objects
          */
-        @Throws(SKCException::class)
         fun retrieveBanListStartDates(format: String): Mono<BanListDates> =
-            Flux
-                .fromIterable(banListDao.getBanListDates(format).dates)
-                .collectList()
-                .map { dates ->
-                    BanListDates(dates.filterNotNull())
-                }
+            Blocking
+                .mono { banListDao.getBanListDates(format) }
+                .map { BanListDates(it.dates.filterNotNull()) }
     }

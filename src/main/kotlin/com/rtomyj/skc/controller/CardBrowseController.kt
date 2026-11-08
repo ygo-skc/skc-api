@@ -5,6 +5,7 @@ import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.service.CardBrowseService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -81,8 +82,8 @@ class CardBrowseController
                 schema = Schema(implementation = Int::class),
             ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = "",
         ): Mono<CardBrowseResults> =
-            Mono
-                .fromCallable {
+            Blocking
+                .mono {
                     val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
                     val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
                     val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
@@ -122,8 +123,8 @@ class CardBrowseController
         @ApiResponse(responseCode = "404", ref = "notFound")
         @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
         fun browseCriteria(): Mono<CardBrowseCriteria> =
-            Mono
-                .fromCallable { cardBrowseCriteriaSupplier.get() }
+            Blocking
+                .mono { cardBrowseCriteriaSupplier.get() }
                 .doOnSuccess {
                     log.info("Retrieved card browse criteria")
                 }.doOnSubscribe { log.info("Retrieving card browse criteria") }

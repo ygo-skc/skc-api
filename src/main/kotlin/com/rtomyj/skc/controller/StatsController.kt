@@ -4,6 +4,7 @@ import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
 import com.rtomyj.skc.service.StatsService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -56,8 +57,8 @@ class StatsController
             )
             @PathVariable("cardColor") cardColor: String,
         ): Mono<MonsterTypeStats> =
-            Mono
-                .fromCallable { statsService.getMonsterTypeStats(cardColor) }
+            Blocking
+                .mono { statsService.getMonsterTypeStats(cardColor) }
                 .doOnSubscribe {
                     log.info("Retrieving monster types for cards with color {}", cardColor)
                 }
@@ -72,8 +73,8 @@ class StatsController
         @ApiResponse(responseCode = "500", ref = "internalServerError")
         @GetMapping
         fun databaseStats(): Mono<DatabaseStats> =
-            Mono
-                .fromCallable { statsService.databaseStats() }
+            Blocking
+                .mono { statsService.databaseStats() }
                 .doOnSuccess {
                     log.info("Successfully retrieved database stats: {}", it.toString())
                 }.doOnSubscribe { log.info("Retrieving high level DB overview") }

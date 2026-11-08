@@ -5,6 +5,7 @@ import com.rtomyj.skc.model.MonsterAssociation
 import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.model.ProductContent
 import com.rtomyj.skc.service.TrafficService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -25,8 +26,8 @@ class ProductService
         ): Mono<Product> =
             Mono
                 .zip(
-                    Mono.fromCallable { productDao.getProductInfo(productId, locale) },
-                    Mono.fromCallable { productDao.getProductContents(productId, locale) },
+                    Blocking.mono { productDao.getProductInfo(productId, locale) },
+                    Blocking.mono { productDao.getProductContents(productId, locale) },
                     trafficService.submitTrafficData(TrafficResourceType.PRODUCT, productId, clientIP),
                 ).map {
                     it.t1.productContent.addAll(it.t2)

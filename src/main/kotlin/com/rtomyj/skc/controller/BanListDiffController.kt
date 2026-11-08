@@ -5,6 +5,7 @@ import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListNewContent
 import com.rtomyj.skc.model.BanListRemovedContent
 import com.rtomyj.skc.service.BanListDiffService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -81,8 +82,8 @@ class BanListDiffController
                 defaultValue = "TCG",
             ) format: String = "TCG",
         ): Mono<BanListNewContent> =
-            Mono
-                .fromCallable {
+            Blocking
+                .mono {
                     banListDiffService.getNewContentForGivenBanList(
                         banListStartDate,
                         format,
@@ -147,8 +148,8 @@ class BanListDiffController
                 defaultValue = "TCG",
             ) format: String = "TCG",
         ): Mono<BanListRemovedContent> =
-            Mono
-                .fromCallable { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
+            Blocking
+                .mono { banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format) }
                 .doOnNext {
                     log.info(
                         "Retrieved removed content for ban list w/ start date {} for format {}. Newly removed ({})",

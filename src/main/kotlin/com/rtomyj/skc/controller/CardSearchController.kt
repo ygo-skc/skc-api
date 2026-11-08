@@ -5,6 +5,7 @@ import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardSearchParameters
 import com.rtomyj.skc.service.CardSearchService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -45,8 +46,8 @@ class CardSearchController
         fun searchCard(
             @Valid cardSearchParameters: CardSearchParameters,
         ): Mono<ResponseEntity<List<Card>>> =
-            Mono
-                .fromCallable {
+            Blocking
+                .mono {
                     cardSearchService.searchCard(cardSearchParameters)
                 }.map { searchResult ->
                     ResponseEntity(searchResult, HttpStatus.OK)

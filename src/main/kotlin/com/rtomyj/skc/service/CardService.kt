@@ -7,6 +7,7 @@ import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBanListStatus
 import com.rtomyj.skc.service.TrafficService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.enumeration.BanListFormat
 import com.rtomyj.skc.util.enumeration.TrafficResourceType
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,7 +45,7 @@ class CardService
                 Mono
                     .zip(
                         getCardInfo(cardId),
-                        Mono.fromCallable { productDao.getProductDetailsForCard(cardId) },
+                        Blocking.mono { productDao.getProductDetailsForCard(cardId) },
                         getCardRestrictionInfo(cardId),
                         trafficService.submitTrafficData(TrafficResourceType.CARD, cardId, clientIP),
                     ).map {
@@ -66,9 +67,9 @@ class CardService
         fun getCardRestrictionInfo(cardId: String): Mono<Map<BanListFormat, MutableList<CardBanListStatus>>> =
             Flux
                 .merge(
-                    Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG) },
-                    Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD) },
-                    Mono.fromCallable { banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL) },
+                    Blocking.mono { banListDao.getBanListDetailsForCard(cardId, BanListFormat.TCG) },
+                    Blocking.mono { banListDao.getBanListDetailsForCard(cardId, BanListFormat.MD) },
+                    Blocking.mono { banListDao.getBanListDetailsForCard(cardId, BanListFormat.DL) },
                 ).collectList()
                 .map { restrictions ->
                     val m =
@@ -85,8 +86,8 @@ class CardService
                 }
 
         fun getCardInfo(cardId: String): Mono<Card> =
-            Mono
-                .fromCallable {
+            Blocking
+                .mono {
                     cardDao.getCardInfo(cardId)
                 }.doOnNext { card ->
                     card.monsterAssociation?.transformMonsterLinkRating()

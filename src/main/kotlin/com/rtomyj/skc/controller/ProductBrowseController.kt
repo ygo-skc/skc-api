@@ -3,6 +3,7 @@ package com.rtomyj.skc.controller
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.service.ProductBrowseService
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
@@ -52,7 +53,7 @@ class ProductBrowseController
             @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
             @PathVariable("locale") locale: String,
         ): Mono<ResponseEntity<Products>> =
-            Mono.fromCallable {
+            Blocking.mono {
                 log.info("Retrieving all products w/ locale: {}", locale)
 
                 ResponseEntity.ok(availableProductsService.getAllProductsWithLocale(locale))
@@ -78,7 +79,7 @@ class ProductBrowseController
             @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
             @PathVariable("locale") locale: String,
         ): Mono<ResponseEntity<Products>> =
-            Mono.fromCallable {
+            Blocking.mono {
                 log.info("Retrieving products matching product type {} and locale {}", productType, locale)
 
                 ResponseEntity.ok(availableProductsService.getProductsUsingLocaleAndProductType(productType, locale))
