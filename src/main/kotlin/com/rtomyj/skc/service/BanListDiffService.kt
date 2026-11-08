@@ -15,6 +15,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.core.PropagationContextElement
 import org.springframework.stereotype.Service
 
 @Service
@@ -90,7 +91,7 @@ class BanListDiffService
             previousBanListDate: String,
             format: String,
         ): Map<BanListCardStatus, List<CardsPreviousBanListStatus>> =
-            runBlocking {
+            runBlocking(PropagationContextElement()) {
                 statuses
                     .map { status ->
                         async(jdbcDispatcher) {

@@ -2,6 +2,7 @@ package com.rtomyj.skc.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.common.net.HttpHeaders.X_FORWARDED_FOR
+import com.rtomyj.skc.config.ContextPropagationConfig
 import com.rtomyj.skc.exception.ErrorType
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
@@ -15,13 +16,18 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration
+import org.springframework.boot.reactor.autoconfigure.ReactorAutoConfiguration
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
+import org.springframework.context.annotation.Import
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 
 @WebFluxTest(CardController::class)
+@ImportAutoConfiguration(ReactorAutoConfiguration::class) // slice skips it - enables spring.reactor.context-propagation=auto so controller MDC reads work
+@Import(ContextPropagationConfig::class)
 @Tag("Controller")
 class CardControllerTest {
     @MockitoBean

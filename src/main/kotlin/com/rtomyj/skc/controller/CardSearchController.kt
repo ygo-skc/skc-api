@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
@@ -46,20 +45,18 @@ class CardSearchController
         fun searchCard(
             @Valid cardSearchParameters: CardSearchParameters,
         ): Mono<ResponseEntity<List<Card>>> =
-            ReactiveMDC.deferMDC(
-                Mono
-                    .fromCallable {
-                        cardSearchService.searchCard(cardSearchParameters)
-                    }.map { searchResult ->
-                        ResponseEntity(searchResult, HttpStatus.OK)
-                    }.doOnNext { searchResult ->
-                        log.info(
-                            "Retrieved search results using the following criteria [{}]. Found {} results",
-                            cardSearchParameters,
-                            searchResult.body?.size,
-                        )
-                    }.doOnSubscribe {
-                        log.info("Card search triggered")
-                    },
-            )
+            Mono
+                .fromCallable {
+                    cardSearchService.searchCard(cardSearchParameters)
+                }.map { searchResult ->
+                    ResponseEntity(searchResult, HttpStatus.OK)
+                }.doOnNext { searchResult ->
+                    log.info(
+                        "Retrieved search results using the following criteria [{}]. Found {} results",
+                        cardSearchParameters,
+                        searchResult.body?.size,
+                    )
+                }.doOnSubscribe {
+                    log.info("Card search triggered")
+                }
     }

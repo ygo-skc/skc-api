@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.DatabaseStats
 import com.rtomyj.skc.model.MonsterTypeStats
@@ -57,13 +56,11 @@ class StatsController
             )
             @PathVariable("cardColor") cardColor: String,
         ): Mono<MonsterTypeStats> =
-            ReactiveMDC.deferMDC(
-                Mono
-                    .fromCallable { statsService.getMonsterTypeStats(cardColor) }
-                    .doOnSubscribe {
-                        log.info("Retrieving monster types for cards with color {}", cardColor)
-                    },
-            )
+            Mono
+                .fromCallable { statsService.getMonsterTypeStats(cardColor) }
+                .doOnSubscribe {
+                    log.info("Retrieving monster types for cards with color {}", cardColor)
+                }
 
         @Operation(summary = "Retrieve overview of the data currently in Database.")
         @ApiResponse(
@@ -75,11 +72,9 @@ class StatsController
         @ApiResponse(responseCode = "500", ref = "internalServerError")
         @GetMapping
         fun databaseStats(): Mono<DatabaseStats> =
-            ReactiveMDC.deferMDC(
-                Mono
-                    .fromCallable { statsService.databaseStats() }
-                    .doOnSuccess {
-                        log.info("Successfully retrieved database stats: {}", it.toString())
-                    }.doOnSubscribe { log.info("Retrieving high level DB overview") },
-            )
+            Mono
+                .fromCallable { statsService.databaseStats() }
+                .doOnSuccess {
+                    log.info("Successfully retrieved database stats: {}", it.toString())
+                }.doOnSubscribe { log.info("Retrieving high level DB overview") }
     }

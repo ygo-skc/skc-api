@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.BanListDates
 import com.rtomyj.skc.service.BanListDatesService
@@ -56,17 +55,15 @@ class BanListDatesController
                 defaultValue = "TCG",
             ) format: String = "TCG",
         ): Mono<BanListDates> =
-            ReactiveMDC.deferMDC(
-                banListDatesService
-                    .retrieveBanListStartDates(format)
-                    .doOnNext {
-                        log.info(
-                            "Retrieved all effective start dates for ban list using format {}. {} ban lists total",
-                            format,
-                            it.dates.size,
-                        )
-                    }.doOnSubscribe {
-                        log.info("Retrieving all effective start dates for ban lists using format {}.", format)
-                    },
-            )
+            banListDatesService
+                .retrieveBanListStartDates(format)
+                .doOnNext {
+                    log.info(
+                        "Retrieved all effective start dates for ban list using format {}. {} ban lists total",
+                        format,
+                        it.dates.size,
+                    )
+                }.doOnSubscribe {
+                    log.info("Retrieving all effective start dates for ban lists using format {}.", format)
+                }
     }

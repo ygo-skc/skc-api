@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.Product
 import com.rtomyj.skc.service.ProductService
@@ -62,18 +61,13 @@ class ProductController
             @PathVariable("locale") locale: String,
         ): ResponseEntity<Mono<Product>> =
             ResponseEntity.ok(
-                ReactiveMDC.deferMDC(
-                    // defer so MDC is read after deferMDC restores it on the subscribing thread
-                    Mono
-                        .defer {
-                            availablePacksService.getSingleProductUsingLocale(
-                                productId,
-                                locale.uppercase(),
-                                MDC.get(AppConstants.CLIENT_IP_MDC),
-                            )
-                        }.doOnSubscribe {
-                            log.info("Retrieving product info for product w/ ID {} & locale {}", productId, locale.uppercase())
-                        },
-                ),
+                availablePacksService
+                    .getSingleProductUsingLocale(
+                        productId,
+                        locale.uppercase(),
+                        MDC.get(AppConstants.CLIENT_IP_MDC),
+                    ).doOnSubscribe {
+                        log.info("Retrieving product info for product w/ ID {} & locale {}", productId, locale.uppercase())
+                    },
             )
     }

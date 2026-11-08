@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
@@ -102,17 +101,15 @@ class BannedCardsController
                 defaultValue = "false",
             ) fetchAllInfo: Boolean = false,
         ): Mono<ResponseEntity<BanListInstance>> =
-            ReactiveMDC.deferMDC(
-                Mono
-                    .fromCallable { bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo) }
-                    .map { banListInstance ->
-                        log.info(
-                            "Retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} & format {}.",
-                            banListStartDate,
-                            saveBandwidth,
-                            format,
-                        )
-                        ResponseEntity.ok(banListInstance)
-                    },
-            )
+            Mono
+                .fromCallable { bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo) }
+                .map { banListInstance ->
+                    log.info(
+                        "Retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} & format {}.",
+                        banListStartDate,
+                        saveBandwidth,
+                        format,
+                    )
+                    ResponseEntity.ok(banListInstance)
+                }
     }

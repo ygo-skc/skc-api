@@ -1,6 +1,5 @@
 package com.rtomyj.skc.controller
 
-import com.rtomyj.skc.config.ReactiveMDC
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
@@ -86,16 +85,14 @@ class CardController
                     ),
             ) @RequestParam(value = "allInfo", defaultValue = "false") fetchAllInfo: Boolean,
         ): Mono<Card> =
-            ReactiveMDC.deferMDC(
-                cardService
-                    .getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
-                    .doOnSubscribe { log.info("Retrieving card info using ID: {}.", cardId) }
-                    .doOnSuccess {
-                        log.info(
-                            "Retrieved card info for {} w/ all info {}.",
-                            cardId,
-                            fetchAllInfo,
-                        )
-                    },
-            )
+            cardService
+                .getCardInfo(cardId, fetchAllInfo, MDC.get(AppConstants.CLIENT_IP_MDC))
+                .doOnSubscribe { log.info("Retrieving card info using ID: {}.", cardId) }
+                .doOnSuccess {
+                    log.info(
+                        "Retrieved card info for {} w/ all info {}.",
+                        cardId,
+                        fetchAllInfo,
+                    )
+                }
     }

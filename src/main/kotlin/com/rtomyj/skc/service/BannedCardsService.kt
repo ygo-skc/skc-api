@@ -16,6 +16,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.core.PropagationContextElement
 import org.springframework.stereotype.Service
 
 /**
@@ -108,7 +109,7 @@ class BannedCardsService
             banListStartDate: String,
             format: String,
         ): Map<BanListCardStatus, List<Card>> =
-            runBlocking {
+            runBlocking(PropagationContextElement()) {
                 statuses
                     .map { status ->
                         async(jdbcDispatcher) {

@@ -6,6 +6,8 @@ spring:
   threads:
     virtual:
       enabled: true
+  reactor:
+    context-propagation: auto # restores MDC on Reactor thread hops, see ContextPropagationConfig
   datasource:
     hikari:
       maximumPoolSize: 30

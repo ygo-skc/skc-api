@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
-import org.slf4j.MDC
 import org.springframework.http.HttpHeaders
 import org.springframework.http.server.reactive.ServerHttpRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -37,7 +36,7 @@ class RequestFilterTest {
     }
 
     @Test
-    fun `Test MDC Configuration - Query String Not Null`() {
+    fun `Test MDC Values - Query String Not Null`() {
         // mock
         Mockito
             .`when`(request.uri)
@@ -47,21 +46,21 @@ class RequestFilterTest {
             .thenReturn(HEADERS)
 
         // call
-        RequestFilter.configureMDC(request)
+        val mdc = RequestFilter.mdcValues(request)
 
         // verify
-        assertNotNull(MDC.get("reqPath"))
-        assertNotNull(MDC.get("reqUUID"))
-        assertNotNull(MDC.get("clientID"))
-        assertNotNull(MDC.get("userAgent"))
+        assertNotNull(mdc["reqPath"])
+        assertNotNull(mdc["reqUUID"])
+        assertNotNull(mdc["clientID"])
+        assertNotNull(mdc["userAgent"])
 
-        assertEquals("$PATH?$QUERY_STRING", MDC.get("reqPath"))
-        assertEquals(CLIENT_ID, MDC.get("clientID"))
-        assertEquals(AGENT, MDC.get("userAgent"))
+        assertEquals("$PATH?$QUERY_STRING", mdc["reqPath"])
+        assertEquals(CLIENT_ID, mdc["clientID"])
+        assertEquals(AGENT, mdc["userAgent"])
     }
 
     @Test
-    fun `Test MDC Configuration - Query String Is Null`() {
+    fun `Test MDC Values - Query String Is Null`() {
         // mock
         Mockito
             .`when`(request.uri)
@@ -71,16 +70,16 @@ class RequestFilterTest {
             .thenReturn(HEADERS)
 
         // call
-        RequestFilter.configureMDC(request)
+        val mdc = RequestFilter.mdcValues(request)
 
         // verify
-        assertNotNull(MDC.get("reqPath"))
-        assertNotNull(MDC.get("reqUUID"))
-        assertNotNull(MDC.get("clientID"))
-        assertNotNull(MDC.get("userAgent"))
+        assertNotNull(mdc["reqPath"])
+        assertNotNull(mdc["reqUUID"])
+        assertNotNull(mdc["clientID"])
+        assertNotNull(mdc["userAgent"])
 
-        assertEquals(PATH, MDC.get("reqPath"))
-        assertEquals(CLIENT_ID, MDC.get("clientID"))
-        assertEquals(AGENT, MDC.get("userAgent"))
+        assertEquals(PATH, mdc["reqPath"])
+        assertEquals(CLIENT_ID, mdc["clientID"])
+        assertEquals(AGENT, mdc["userAgent"])
     }
 }

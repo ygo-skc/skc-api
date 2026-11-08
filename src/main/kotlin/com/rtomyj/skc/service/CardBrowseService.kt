@@ -13,6 +13,7 @@ import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.core.PropagationContextElement
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
 
@@ -71,7 +72,7 @@ class CardBrowseService
          * Every criterion comes from an independent query - all are started before any is awaited.
          */
         fun browseCriteria(): CardBrowseCriteria =
-            runBlocking {
+            runBlocking(PropagationContextElement()) {
                 val cardColors = async(jdbcDispatcher) { dao.getCardColors() }
                 val monsterAttributes = async(jdbcDispatcher) { dao.getMonsterAttributes() }
                 val monsterTypes = async(jdbcDispatcher) { dao.getMonsterTypes() }
