@@ -4,7 +4,6 @@ import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.service.BannedCardsService
-import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
@@ -102,8 +101,8 @@ class BannedCardsController
                 defaultValue = "false",
             ) fetchAllInfo: Boolean = false,
         ): Mono<ResponseEntity<BanListInstance>> =
-            Blocking
-                .mono { bannedCardsService.getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo) }
+            bannedCardsService
+                .getBanListByDate(banListStartDate, saveBandwidth, format, fetchAllInfo)
                 .map { banListInstance ->
                     log.info(
                         "Retrieved ban list contents for ban list w/ start date {} with saveBandwidth as {} & format {}.",

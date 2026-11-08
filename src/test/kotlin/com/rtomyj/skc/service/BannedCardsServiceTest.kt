@@ -26,6 +26,7 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import reactor.test.StepVerifier
 
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [BannedCardsService::class, BanListDiffService::class, DispatcherConfig::class])
@@ -176,17 +177,18 @@ class BannedCardsServiceTest {
             }
 
             // call code being tested
-            val banListInstance =
-                bannedCardsService
-                    .getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, "TCG", fetchAllInfo)
+            StepVerifier
+                .create(
+                    bannedCardsService.getBanListByDate(TestConstants.BAN_LIST_START_DATE, saveBandwidth, "TCG", fetchAllInfo),
+                ).assertNext { banListInstance ->
+                    val forbidden = banListInstance.forbidden
+                    val limited = banListInstance.limited
+                    val semiLimited = banListInstance.semiLimited
 
-            val forbidden = banListInstance.forbidden
-            val limited = banListInstance.limited
-            val semiLimited = banListInstance.semiLimited
-
-            assertCommonValues(banListInstance, forbidden, limited, semiLimited)
-            assertSaveBandwidthValues(forbidden, limited, semiLimited, saveBandwidth)
-            assertFetchAllInfoValues(banListInstance, fetchAllInfo)
+                    assertCommonValues(banListInstance, forbidden, limited, semiLimited)
+                    assertSaveBandwidthValues(forbidden, limited, semiLimited, saveBandwidth)
+                    assertFetchAllInfoValues(banListInstance, fetchAllInfo)
+                }.verifyComplete()
 
             // verify mocks are called the exact number of times expected
             Mockito
@@ -419,9 +421,9 @@ class BannedCardsServiceTest {
                     ),
                 ).thenThrow(SKCException("DB blew up", ErrorType.DB002))
 
-            Assertions.assertThrowsExactly(SKCException::class.java) {
-                bannedCardsService.getBanListByDate(TestConstants.BAN_LIST_START_DATE, false, "TCG", false)
-            }
+            StepVerifier
+                .create(bannedCardsService.getBanListByDate(TestConstants.BAN_LIST_START_DATE, false, "TCG", false))
+                .verifyError(SKCException::class.java)
         }
 
         /**
@@ -437,26 +439,28 @@ class BannedCardsServiceTest {
                     ),
                 ).thenReturn(false)
 
-            // call code and assert throws
-            val ex =
-                Assertions.assertThrowsExactly(SKCException::class.java) {
+            // call code and assert error
+            StepVerifier
+                .create(
                     bannedCardsService.getBanListByDate(
                         TestConstants.BAN_LIST_START_DATE,
                         isSaveBandwidth,
                         "TCG",
                         false,
-                    )
-                }
+                    ),
+                ).verifyErrorSatisfies {
+                    val ex = Assertions.assertInstanceOf(SKCException::class.java, it)
 
-            Assertions.assertEquals(
-                String.format(
-                    ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE,
-                    TestConstants.BAN_LIST_START_DATE,
-                ),
-                ex.message,
-            )
-            Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.errorType.httpStatus)
-            Assertions.assertEquals(ErrorType.DB001, ex.errorType)
+                    Assertions.assertEquals(
+                        String.format(
+                            ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE,
+                            TestConstants.BAN_LIST_START_DATE,
+                        ),
+                        ex.message,
+                    )
+                    Assertions.assertEquals(HttpStatus.NOT_FOUND, ex.errorType.httpStatus)
+                    Assertions.assertEquals(ErrorType.DB001, ex.errorType)
+                }
 
             // ban list is validated up front, so none of the content queries should be issued
             Mockito

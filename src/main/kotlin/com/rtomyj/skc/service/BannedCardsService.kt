@@ -6,6 +6,7 @@ import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.BanListInstance
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.MonsterAssociation
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.ErrConstants
 import com.rtomyj.skc.util.enumeration.BanListCardStatus
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.PropagationContextElement
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 /**
  * Service class that allows interfacing with the contents of a ban list.
@@ -40,68 +42,67 @@ class BannedCardsService
          * @param saveBandwidth Restriction on what kind of ban list cards to retrieve from DB (forbidden, limited, semi-limited)
          * @param fetchAllInfo whether all information should be fetched for a particular ban list. In this case, not only are the contents of the ban list returned
          * , but also information on newly added cards to the ban list and cards no longer on ban list (compared to previous ban list).
-         * @return Object representation of a ban list.
-         * @throws SKCException if there is no ban list for given date.
+         * @return Object representation of a ban list - errors with SKCException if there is no ban list for given date.
          */
-        @Throws(SKCException::class)
         fun getBanListByDate(
             banListStartDate: String,
             saveBandwidth: Boolean,
             format: String,
             fetchAllInfo: Boolean,
-        ): BanListInstance {
-            log.info("Retrieving ban list content for ban list w/ start date {} & format {}", banListStartDate, format)
+        ): Mono<BanListInstance> =
+            Blocking.mono {
+                log.info("Retrieving ban list content for ban list w/ start date {} & format {}", banListStartDate, format)
 
-            if (!banListDao.isBanListValid(banListStartDate, format)) {
-                throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
-            }
-
-            val isDuelLinksFormat = format == "DL"
-            val content =
-                fetchContent(
-                    if (isDuelLinksFormat) {
-                        BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
-                    } else {
-                        BanListCardStatus.STANDARD_FORMAT_STATUSES
-                    },
-                    banListStartDate,
-                    format,
-                )
-
-            val banListInstance: BanListInstance =
-                BanListInstance(
-                    banListStartDate,
-                    banListDao.getPreviousBanListDate(banListStartDate, format),
-                    content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
-                    content[BanListCardStatus.LIMITED] ?: emptyList(),
-                    content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
-                ).apply {
-                    if (isDuelLinksFormat) {
-                        val limitedOneContent = content[BanListCardStatus.LIMITED_ONE] ?: emptyList()
-                        val limitedTwoContent = content[BanListCardStatus.LIMITED_TWO] ?: emptyList()
-                        val limitedThreeContent = content[BanListCardStatus.LIMITED_THREE] ?: emptyList()
-
-                        this.limitedOne = limitedOneContent
-                        this.limitedTwo = limitedTwoContent
-                        this.limitedThree = limitedThreeContent
-
-                        this.numLimitedOne = limitedOneContent.size
-                        this.numLimitedTwo = limitedTwoContent.size
-                        this.numLimitedThree = limitedThreeContent.size
-                    }
-
-                    if (fetchAllInfo) {
-                        newContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
-                        removedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format)
-                    }
-
-                    if (saveBandwidth) {
-                        Card.trimEffects(this)
-                    }
+                if (!banListDao.isBanListValid(banListStartDate, format)) {
+                    throw SKCException(String.format(ErrConstants.BAN_LIST_NOT_FOUND_FOR_START_DATE, banListStartDate), ErrorType.DB001)
                 }
 
-            return banListInstance
-        }
+                val isDuelLinksFormat = format == "DL"
+                val content =
+                    fetchContent(
+                        if (isDuelLinksFormat) {
+                            BanListCardStatus.DUEL_LINKS_FORMAT_STATUSES
+                        } else {
+                            BanListCardStatus.STANDARD_FORMAT_STATUSES
+                        },
+                        banListStartDate,
+                        format,
+                    )
+
+                val banListInstance: BanListInstance =
+                    BanListInstance(
+                        banListStartDate,
+                        banListDao.getPreviousBanListDate(banListStartDate, format),
+                        content[BanListCardStatus.FORBIDDEN] ?: emptyList(),
+                        content[BanListCardStatus.LIMITED] ?: emptyList(),
+                        content[BanListCardStatus.SEMI_LIMITED] ?: emptyList(),
+                    ).apply {
+                        if (isDuelLinksFormat) {
+                            val limitedOneContent = content[BanListCardStatus.LIMITED_ONE] ?: emptyList()
+                            val limitedTwoContent = content[BanListCardStatus.LIMITED_TWO] ?: emptyList()
+                            val limitedThreeContent = content[BanListCardStatus.LIMITED_THREE] ?: emptyList()
+
+                            this.limitedOne = limitedOneContent
+                            this.limitedTwo = limitedTwoContent
+                            this.limitedThree = limitedThreeContent
+
+                            this.numLimitedOne = limitedOneContent.size
+                            this.numLimitedTwo = limitedTwoContent.size
+                            this.numLimitedThree = limitedThreeContent.size
+                        }
+
+                        if (fetchAllInfo) {
+                            newContent = banListDiffService.getNewContentForGivenBanList(banListStartDate, format)
+                            removedContent = banListDiffService.getRemovedContentForGivenBanList(banListStartDate, format)
+                        }
+
+                        if (saveBandwidth) {
+                            Card.trimEffects(this)
+                        }
+                    }
+
+                banListInstance
+            }
 
         // each status is an independent query - fan them out and collect the results rather than mutating a shared map
         private fun fetchContent(

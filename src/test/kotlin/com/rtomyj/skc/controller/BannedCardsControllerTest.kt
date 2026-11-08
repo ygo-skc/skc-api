@@ -20,6 +20,7 @@ import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
 @WebFluxTest(BannedCardsController::class)
 @Tag("Controller")
@@ -66,7 +67,7 @@ class BannedCardsControllerTest {
                     "TCG",
                     fetchAllInfo = true,
                 ),
-            ).thenReturn(banListInstanceFullText)
+            ).thenReturn(Mono.just(banListInstanceFullText))
 
             // perform operation on endpoint
             mockMvc
