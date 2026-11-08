@@ -1,11 +1,9 @@
 package com.rtomyj.skc.controller
 
 import com.rtomyj.skc.config.SwaggerConfig
-import com.rtomyj.skc.exception.SKCException
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardSearchParameters
 import com.rtomyj.skc.service.CardSearchService
-import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -40,16 +38,12 @@ class CardSearchController
                     "of given prop. See below for example of partial prop (card name, card ID, monsterType)",
         )
         @ApiResponse(responseCode = "200", description = SwaggerConfig.HTTP_200_SWAGGER_MESSAGE)
-        @Throws(
-            SKCException::class,
-        )
         fun searchCard(
             @Valid cardSearchParameters: CardSearchParameters,
         ): Mono<ResponseEntity<List<Card>>> =
-            Blocking
-                .mono {
-                    cardSearchService.searchCard(cardSearchParameters)
-                }.map { searchResult ->
+            cardSearchService
+                .searchCard(cardSearchParameters)
+                .map { searchResult ->
                     ResponseEntity(searchResult, HttpStatus.OK)
                 }.doOnNext { searchResult ->
                     log.info(

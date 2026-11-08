@@ -3,7 +3,6 @@ package com.rtomyj.skc.controller
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.Products
 import com.rtomyj.skc.service.ProductBrowseService
-import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SKCRegex
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import com.rtomyj.skc.util.enumeration.ProductType
@@ -53,11 +52,10 @@ class ProductBrowseController
             @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
             @PathVariable("locale") locale: String,
         ): Mono<ResponseEntity<Products>> =
-            Blocking.mono {
-                log.info("Retrieving all products w/ locale: {}", locale)
-
-                ResponseEntity.ok(availableProductsService.getAllProductsWithLocale(locale))
-            }
+            availableProductsService
+                .getAllProductsWithLocale(locale)
+                .map { ResponseEntity.ok(it) }
+                .doOnSubscribe { log.info("Retrieving all products w/ locale: {}", locale) }
 
         @GetMapping("/{productType}/{locale}")
         @Operation(summary = "Retrieve products that fit a certain product type and locale.")
@@ -79,9 +77,8 @@ class ProductBrowseController
             @Pattern(regexp = SKCRegex.LOCALE, message = "Locale is formatted incorrectly")
             @PathVariable("locale") locale: String,
         ): Mono<ResponseEntity<Products>> =
-            Blocking.mono {
-                log.info("Retrieving products matching product type {} and locale {}", productType, locale)
-
-                ResponseEntity.ok(availableProductsService.getProductsUsingLocaleAndProductType(productType, locale))
-            }
+            availableProductsService
+                .getProductsUsingLocaleAndProductType(productType, locale)
+                .map { ResponseEntity.ok(it) }
+                .doOnSubscribe { log.info("Retrieving products matching product type {} and locale {}", productType, locale) }
     }
