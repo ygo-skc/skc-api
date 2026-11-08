@@ -12,13 +12,11 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
 @WebFluxTest(CardBrowseController::class)
-// since we cache Browse Criteria using Guava cache, we need to clean up after each test execution
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Tag("Controller")
 class CardBrowseControllerTest {
     @MockitoBean
@@ -46,7 +44,7 @@ class CardBrowseControllerTest {
 
             Mockito
                 .`when`(cardBrowseService.browseResults(cardBrowseCriteria))
-                .thenReturn(CardBrowseResults(listOf(CardBrowseTestUtil.stratos), 0))
+                .thenReturn(Mono.just(CardBrowseResults(listOf(CardBrowseTestUtil.stratos), 0)))
 
             // perform call
             mockMvc
@@ -89,7 +87,7 @@ class CardBrowseControllerTest {
 
             Mockito
                 .`when`(cardBrowseService.browseCriteria())
-                .thenReturn(cardBrowseCriteria)
+                .thenReturn(Mono.just(cardBrowseCriteria))
 
             // perform call
             mockMvc

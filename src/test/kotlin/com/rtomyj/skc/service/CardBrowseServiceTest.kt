@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import reactor.test.StepVerifier
 
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(classes = [CardBrowseService::class, DispatcherConfig::class])
@@ -41,24 +42,26 @@ class CardBrowseServiceTest {
                 .`when`(dao.getBrowseResults(cardBrowseCriteria, levelSet, rankSet, linkSet))
                 .thenReturn(CardBrowseResults(listOf(CardBrowseTestUtil.stratos, CardBrowseTestUtil.crusader), 2))
 
-            val results = cardBrowseService.browseResults(cardBrowseCriteria)
+            StepVerifier
+                .create(cardBrowseService.browseResults(cardBrowseCriteria))
+                .assertNext { results ->
+                    Assertions.assertNotNull(results)
+                    Assertions.assertEquals(2, results.numResults)
+                    Assertions.assertEquals(2, results.results.size)
+                    Assertions.assertEquals(cardBrowseCriteria, results.requestedCriteria)
 
-            Assertions.assertNotNull(results)
-            Assertions.assertEquals(2, results.numResults)
-            Assertions.assertEquals(2, results.results.size)
-            Assertions.assertEquals(cardBrowseCriteria, results.requestedCriteria)
+                    Assertions.assertEquals(TestConstants.STRATOS_TRIMMED_EFFECT, results.results[0].cardEffect)
+                    Assertions.assertNotEquals(TestConstants.STRATOS_FULL_EFFECT, results.results[0].cardEffect)
+                    Assertions.assertNotNull(results.results[0].monsterAssociation)
+                    Assertions.assertNotNull(results.results[0].monsterAssociation!!.level)
+                    Assertions.assertEquals(4, results.results[0].monsterAssociation!!.level)
 
-            Assertions.assertEquals(TestConstants.STRATOS_TRIMMED_EFFECT, results.results[0].cardEffect)
-            Assertions.assertNotEquals(TestConstants.STRATOS_FULL_EFFECT, results.results[0].cardEffect)
-            Assertions.assertNotNull(results.results[0].monsterAssociation)
-            Assertions.assertNotNull(results.results[0].monsterAssociation!!.level)
-            Assertions.assertEquals(4, results.results[0].monsterAssociation!!.level)
-
-            Assertions.assertEquals(TestConstants.CRUSADER_TRIMMED_EFFECT, results.results[1].cardEffect)
-            Assertions.assertNotNull(results.results[1].monsterAssociation)
-            Assertions.assertNotNull(results.results[1].monsterAssociation!!.linkArrows)
-            Assertions.assertEquals(2, results.results[1].monsterAssociation!!.linkRating)
-            Assertions.assertNotEquals(listOf("B-L", "B-R"), results.results[1].monsterAssociation!!.linkArrows)
+                    Assertions.assertEquals(TestConstants.CRUSADER_TRIMMED_EFFECT, results.results[1].cardEffect)
+                    Assertions.assertNotNull(results.results[1].monsterAssociation)
+                    Assertions.assertNotNull(results.results[1].monsterAssociation!!.linkArrows)
+                    Assertions.assertEquals(2, results.results[1].monsterAssociation!!.linkRating)
+                    Assertions.assertNotEquals(listOf("B-L", "B-R"), results.results[1].monsterAssociation!!.linkArrows)
+                }.verifyComplete()
 
             // verify mocks are called
             Mockito
@@ -87,15 +90,17 @@ class CardBrowseServiceTest {
             Mockito.`when`(dao.getMonsterAssociationField(MonsterAssociationType.RANK)).thenReturn(ranks)
             Mockito.`when`(dao.getMonsterAssociationField(MonsterAssociationType.LINK)).thenReturn(linkRatings)
 
-            val criteria = cardBrowseService.browseCriteria()
-
-            Assertions.assertEquals(cardColors, criteria.cardColors)
-            Assertions.assertEquals(attributes, criteria.attributes)
-            Assertions.assertEquals(monsterTypes, criteria.monsterTypes)
-            Assertions.assertEquals(monsterSubTypes, criteria.monsterSubTypes)
-            Assertions.assertEquals(levels, criteria.levels)
-            Assertions.assertEquals(ranks, criteria.ranks)
-            Assertions.assertEquals(linkRatings, criteria.linkRatings)
+            StepVerifier
+                .create(cardBrowseService.browseCriteria())
+                .assertNext { criteria ->
+                    Assertions.assertEquals(cardColors, criteria.cardColors)
+                    Assertions.assertEquals(attributes, criteria.attributes)
+                    Assertions.assertEquals(monsterTypes, criteria.monsterTypes)
+                    Assertions.assertEquals(monsterSubTypes, criteria.monsterSubTypes)
+                    Assertions.assertEquals(levels, criteria.levels)
+                    Assertions.assertEquals(ranks, criteria.ranks)
+                    Assertions.assertEquals(linkRatings, criteria.linkRatings)
+                }.verifyComplete()
 
             // every criterion must be sourced exactly once
             Mockito.verify(dao).getCardColors()

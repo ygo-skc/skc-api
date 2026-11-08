@@ -1,11 +1,9 @@
 package com.rtomyj.skc.controller
 
-import com.google.common.base.Suppliers
 import com.rtomyj.skc.config.SwaggerConfig
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.service.CardBrowseService
-import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.constant.SwaggerConstants
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
-import reactor.util.function.Tuples
-import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping(path = ["/card/browse"], produces = ["application/json; charset=UTF-8"])
@@ -30,9 +26,6 @@ class CardBrowseController
     constructor(
         private val cardBrowseService: CardBrowseService,
     ) {
-        private val cardBrowseCriteriaSupplier =
-            Suppliers.memoizeWithExpiration({ cardBrowseService.browseCriteria() }, 10, TimeUnit.MINUTES)
-
         companion object {
             private val log = LoggerFactory.getLogger(this::class.java.name)
         }
@@ -81,38 +74,36 @@ class CardBrowseController
                 example = "4,7,8",
                 schema = Schema(implementation = Int::class),
             ) @RequestParam(value = "linkRatings", defaultValue = "") monsterLinkRatings: String = "",
-        ): Mono<CardBrowseResults> =
-            Blocking
-                .mono {
-                    val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
-                    val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
-                    val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
-                    val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
+        ): Mono<CardBrowseResults> {
+            val cardColorsSet: Set<String> = CardBrowseService.criteriaStringToSet(cardColors)
+            val attributeSet: Set<String> = CardBrowseService.criteriaStringToSet(attributes)
+            val monsterTypeSet: Set<String> = CardBrowseService.criteriaStringToSet(monsterTypes)
+            val monsterSubTypeSet = CardBrowseService.criteriaStringToSet(monsterSubTypes)
 
-                    val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
-                    val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
-                    val linkRatingSet =
-                        CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
+            val levelSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLevels))
+            val rankSet = CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterRanks))
+            val linkRatingSet =
+                CardBrowseService.stringSetToIntSet(CardBrowseService.criteriaStringToSet(monsterLinkRatings))
 
-                    val criteria =
-                        CardBrowseCriteria(
-                            cardColorsSet,
-                            attributeSet,
-                            monsterTypeSet,
-                            monsterSubTypeSet,
-                            levelSet,
-                            rankSet,
-                            linkRatingSet,
-                        )
+            val criteria =
+                CardBrowseCriteria(
+                    cardColorsSet,
+                    attributeSet,
+                    monsterTypeSet,
+                    monsterSubTypeSet,
+                    levelSet,
+                    rankSet,
+                    linkRatingSet,
+                )
 
-                    Tuples.of(criteria, cardBrowseService.browseResults(criteria))
-                }.doOnNext {
-                    log.info("Found {} matching results using criteria: [{}]", it.t2, it.t1.toString())
-                }.map {
-                    it.t2
+            return cardBrowseService
+                .browseResults(criteria)
+                .doOnNext {
+                    log.info("Found {} matching results using criteria: [{}]", it, criteria.toString())
                 }.doOnSubscribe {
                     log.info("Retrieving browse results")
                 }
+        }
 
         @GetMapping("/criteria")
         @Operation(
@@ -123,8 +114,8 @@ class CardBrowseController
         @ApiResponse(responseCode = "404", ref = "notFound")
         @ApiResponse(responseCode = "422", ref = "unprocessableEntity")
         fun browseCriteria(): Mono<CardBrowseCriteria> =
-            Blocking
-                .mono { cardBrowseCriteriaSupplier.get() }
+            cardBrowseService
+                .browseCriteria()
                 .doOnSuccess {
                     log.info("Retrieved card browse criteria")
                 }.doOnSubscribe { log.info("Retrieving card browse criteria") }

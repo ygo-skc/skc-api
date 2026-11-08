@@ -1,10 +1,12 @@
 package com.rtomyj.skc.service
 
+import com.google.common.base.Suppliers
 import com.rtomyj.skc.dao.CardBrowseDao
 import com.rtomyj.skc.model.Card
 import com.rtomyj.skc.model.CardBrowseCriteria
 import com.rtomyj.skc.model.CardBrowseResults
 import com.rtomyj.skc.model.MonsterAssociation
+import com.rtomyj.skc.util.Blocking
 import com.rtomyj.skc.util.enumeration.MonsterAssociationExpression
 import com.rtomyj.skc.util.enumeration.MonsterAssociationType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.PropagationContextElement
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
+import reactor.core.publisher.Mono
+import java.util.concurrent.TimeUnit
 
 @Service
 class CardBrowseService
@@ -24,6 +28,9 @@ class CardBrowseService
         @param:Qualifier("jdbc") val dao: CardBrowseDao,
         @param:Qualifier("jdbc-dispatcher") private val jdbcDispatcher: CoroutineDispatcher,
     ) {
+        private val browseCriteriaSupplier =
+            Suppliers.memoizeWithExpiration({ fetchBrowseCriteria() }, 10, TimeUnit.MINUTES)
+
         companion object {
             private val log = LoggerFactory.getLogger(this::class.java.name)
 
@@ -43,35 +50,39 @@ class CardBrowseService
                     .toSet()
         }
 
-        fun browseResults(criteria: CardBrowseCriteria): CardBrowseResults {
-            val watch = StopWatch()
-            watch.start()
+        fun browseResults(criteria: CardBrowseCriteria): Mono<CardBrowseResults> =
+            Blocking.mono {
+                val watch = StopWatch()
+                watch.start()
 
-            val monsterLevelSet =
-                transformMonsterAssociationValuesIntoSQL(criteria.levels, MonsterAssociationExpression.LEVEL_EXPRESSION)
-            val monsterRankSet =
-                transformMonsterAssociationValuesIntoSQL(criteria.ranks, MonsterAssociationExpression.RANK_EXPRESSION)
-            val monsterLinkRatingsSet =
-                transformMonsterAssociationValuesIntoSQL(
-                    criteria.linkRatings,
-                    MonsterAssociationExpression.LINK_RATING_EXPRESSION,
-                )
+                val monsterLevelSet =
+                    transformMonsterAssociationValuesIntoSQL(criteria.levels, MonsterAssociationExpression.LEVEL_EXPRESSION)
+                val monsterRankSet =
+                    transformMonsterAssociationValuesIntoSQL(criteria.ranks, MonsterAssociationExpression.RANK_EXPRESSION)
+                val monsterLinkRatingsSet =
+                    transformMonsterAssociationValuesIntoSQL(
+                        criteria.linkRatings,
+                        MonsterAssociationExpression.LINK_RATING_EXPRESSION,
+                    )
 
-            val cardBrowseResults = dao.getBrowseResults(criteria, monsterLevelSet, monsterRankSet, monsterLinkRatingsSet)
+                val cardBrowseResults = dao.getBrowseResults(criteria, monsterLevelSet, monsterRankSet, monsterLinkRatingsSet)
 
-            cardBrowseResults.requestedCriteria = criteria
-            watch.stop()
-            Card.trimEffects(cardBrowseResults.results)
-            MonsterAssociation.transformMonsterLinkRating(cardBrowseResults.results)
+                cardBrowseResults.requestedCriteria = criteria
+                watch.stop()
+                Card.trimEffects(cardBrowseResults.results)
+                MonsterAssociation.transformMonsterLinkRating(cardBrowseResults.results)
 
-            log.debug("Time taken to get card browse results {}ms", watch.totalTimeMillis)
-            return cardBrowseResults
-        }
+                log.debug("Time taken to get card browse results {}ms", watch.totalTimeMillis)
+                cardBrowseResults
+            }
+
+        // criteria rarely change - cached for 10 minutes
+        fun browseCriteria(): Mono<CardBrowseCriteria> = Blocking.mono { browseCriteriaSupplier.get() }
 
         /**
          * Every criterion comes from an independent query - all are started before any is awaited.
          */
-        fun browseCriteria(): CardBrowseCriteria =
+        private fun fetchBrowseCriteria(): CardBrowseCriteria =
             runBlocking(PropagationContextElement()) {
                 val cardColors = async(jdbcDispatcher) { dao.getCardColors() }
                 val monsterAttributes = async(jdbcDispatcher) { dao.getMonsterAttributes() }
