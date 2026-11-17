@@ -7,7 +7,7 @@ repositories {
     gradlePluginPortal()
 }
 
-val gatlingPluginVersion = "3.16.0"
+val gatlingPluginVersion = "3.16.1"
 val pitestPluginVersion = "1.19.0"
 
 dependencies {
