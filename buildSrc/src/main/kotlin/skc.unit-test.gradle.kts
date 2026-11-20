@@ -7,7 +7,7 @@ plugins {
 val springVersion = "4.1.2"
 val h2Version = "2.5.252"
 val mockitKotlinVersion = "1.6.0"
-val reactorTestVersion = "3.8.8"
+val reactorTestVersion = "3.9.0"
 val jacocoVersion = "0.8.16"
 
 dependencies {
