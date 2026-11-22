@@ -4,7 +4,7 @@ plugins {
     id("info.solidsoft.pitest")
 }
 
-val springVersion = "4.1.2"
+val springVersion = "4.2.0"
 val h2Version = "2.5.252"
 val mockitKotlinVersion = "1.6.0"
 val reactorTestVersion = "3.9.0"
