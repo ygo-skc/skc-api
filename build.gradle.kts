@@ -13,7 +13,6 @@ val guavaVersion = "33.7.2-jre"
 val kotlinCoroutineVersion = "1.11.0"
 val slf4jVersion = "2.0.20"
 val contextPropagationVersion = "1.2.1"
-val jakartaServletApiVersion = "6.1.0"
 
 val commonLang3Version = "3.18.0"
 
@@ -71,6 +70,19 @@ configurations {
         exclude(group = "org.apache.tomcat")
         exclude(group = "junit")
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+
+        // HTTP/3 + QUIC native libs - only H2/HTTP1.1 are used
+        exclude(group = "io.netty", module = "netty-codec-http3")
+        exclude(group = "io.netty", module = "netty-codec-classes-quic")
+        exclude(group = "io.netty", module = "netty-codec-native-quic")
+
+        // AspectJ weaving pulled in by data-jpa - no @Aspect/@Configurable usage
+        exclude(group = "org.springframework", module = "spring-aspects")
+        exclude(group = "org.aspectj", module = "aspectjweaver")
+
+        // Guava's compile-time-only annotation jars
+        exclude(group = "com.google.errorprone", module = "error_prone_annotations")
+        exclude(group = "com.google.j2objc", module = "j2objc-annotations")
     }
 
     testImplementation {
@@ -99,8 +111,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-validation:$springBootVersion") // needed for @Validated to work
-
-    implementation("jakarta.servlet:jakarta.servlet-api:$jakartaServletApiVersion")
 
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$springDocVersion")
 
@@ -131,6 +141,8 @@ tasks {
     withType<BootJar> {
         group = "Build"
         description = "Creates a JAR file that can be executed to launch YGO service"
+
+        includeTools = false
 
         manifest.attributes.apply {
             put("Implementation-Title", archivesBaseName)
