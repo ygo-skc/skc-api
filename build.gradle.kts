@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val scalaLibraryVersion = "3.10.1"
@@ -25,7 +24,6 @@ extra["kotlin-coroutines.version"] = kotlinCoroutineVersion
 val archivesBaseName = "skc-api"
 group = "com.rtomyj.skc"
 version = "3.2.6"
-java.sourceCompatibility = JavaVersion.VERSION_25
 
 plugins {
     kotlin("jvm") version "2.4.21"
@@ -46,6 +44,10 @@ plugins {
 
 repositories {
     mavenCentral()
+}
+
+kotlin {
+    jvmToolchain(25)
 }
 
 configurations {
@@ -131,13 +133,6 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> {
-        compilerOptions {
-            apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3)
-            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25
-        }
-    }
-
     withType<BootJar> {
         group = "Build"
         description = "Creates a JAR file that can be executed to launch YGO service"
